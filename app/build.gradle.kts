@@ -1,6 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.noffice.android.application)
+    alias(libs.plugins.noffice.android.application.compose)
+    alias(libs.plugins.noffice.android.application.flavors)
+    alias(libs.plugins.noffice.android.application.test)
+    alias(libs.plugins.noffice.android.application.firebase)
+    alias(libs.plugins.noffice.android.hilt)
 }
 
 android {
@@ -40,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
     packaging {
         resources {
