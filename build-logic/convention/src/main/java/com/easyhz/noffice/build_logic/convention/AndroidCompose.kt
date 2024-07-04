@@ -21,6 +21,8 @@ internal fun Project.configureAndroidCompose(
             add("implementation", platform(bom))
             add("androidTestImplementation", platform(bom))
 
+            add("implementation", libs.findLibrary("androidx.core.ktx").get())
+            add("implementation", libs.findLibrary("androidx.appcompat").get())
             add("implementation", libs.findLibrary("androidx.ui").get())
             add("implementation", libs.findLibrary("androidx.ui.tooling").get())
             add("implementation", libs.findLibrary("androidx.ui.tooling.preview").get())
