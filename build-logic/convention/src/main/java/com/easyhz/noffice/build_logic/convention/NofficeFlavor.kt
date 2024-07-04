@@ -7,8 +7,8 @@ import com.android.build.api.dsl.ProductFlavor
 
 
 @Suppress("EnumEntryName")
-enum class NofficeFlavor(val appLabel: String, val applicationIdSuffix: String) {
-    prod("노피스", ".prod"),
+enum class NofficeFlavor(val appLabel: String, val applicationIdSuffix: String? = null) {
+    prod("노피스"),
     dev("노피스 dev", ".dev")
 }
 
@@ -24,7 +24,9 @@ fun configureFlavors(
                     dimension = "build-type"
                     flavorConfigurationBlock(this, flavor)
                     if (this@apply is ApplicationExtension && this is ApplicationProductFlavor) {
-                        applicationIdSuffix = flavor.applicationIdSuffix
+                        if (flavor.applicationIdSuffix != null) {
+                            applicationIdSuffix = flavor.applicationIdSuffix
+                        }
                     }
                     manifestPlaceholders["appLabel"] = flavor.appLabel
                 }

@@ -20,7 +20,7 @@ hiltNavigation = "1.2.0"
 gmsPlugin = "4.4.0"
 #firebaseCrashlyticsPlugin = "2.9.9"
 kotlinxCoroutines = "1.8.1"
-androidxComposeCompiler = "1.5.10"
+androidxComposeCompiler = "1.5.11"
 firebaseBom = "33.1.0"
 
 [libraries]
