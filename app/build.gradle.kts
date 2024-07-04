@@ -44,5 +44,18 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.network)
+
+    implementation(projects.data.my)
+    implementation(projects.data.notice)
+    implementation(projects.data.team)
+
+    implementation(projects.domain.home)
+    implementation(projects.domain.my)
+    implementation(projects.domain.team)
+
+    implementation(projects.feature.home)
+    implementation(projects.feature.my)
+    implementation(projects.feature.team)
 
 }
