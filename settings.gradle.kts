@@ -23,3 +23,5 @@ dependencyResolutionManagement {
 rootProject.name = "Noffice"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":data")
+include(":data:notice")

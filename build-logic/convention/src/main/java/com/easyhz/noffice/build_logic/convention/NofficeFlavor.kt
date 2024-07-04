@@ -27,7 +27,6 @@ fun configureFlavors(
                         applicationIdSuffix = flavor.applicationIdSuffix
                     }
                     manifestPlaceholders["appLabel"] = flavor.appLabel
-
                 }
             }
         }
