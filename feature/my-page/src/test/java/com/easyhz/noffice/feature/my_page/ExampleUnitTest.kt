@@ -1,4 +1,4 @@
-package com.easyhz.noffice.feature.mypage
+package com.easyhz.noffice.feature.my_page
 
 import org.junit.Test
 

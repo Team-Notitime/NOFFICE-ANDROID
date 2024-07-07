@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    namespace = "com.easyhz.noffice.feature.mypage"
+    namespace = "com.easyhz.noffice.feature.my_page"
 }
 
 dependencies {
