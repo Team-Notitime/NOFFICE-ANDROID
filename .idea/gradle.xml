@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/announcement" />
+            <option value="$PROJECT_DIR$/data/member" />
             <option value="$PROJECT_DIR$/data/notification" />
             <option value="$PROJECT_DIR$/data/organization" />
             <option value="$PROJECT_DIR$/domain" />
