@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.design_system.component.bottomBar
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,30 +17,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey300
+import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.BottomMenu
 
 
 @Composable
-fun HomeBottomBar(
+fun <T>  HomeBottomBar(
     modifier: Modifier = Modifier,
-    current: BottomMenu,
-    onClick: (BottomMenu) -> Unit,
-) {
+    current: T,
+    tabs: Array<T>,
+    onClick: (T) -> Unit,
+) where T: Enum<T>, T: BottomMenu {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(49.dp)
+            .background(White)
         ,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BottomMenu.entries.forEach { item ->
-            if (item != BottomMenu.ADD) {
+        tabs.forEach { item ->
+            if (item != tabs[1]) {
                 BottomBarItem(
                     modifier = Modifier.weight(1f),
                     iconId = item.iconId,
@@ -49,7 +51,7 @@ fun HomeBottomBar(
                 )
             } else {
                 Box(
-                    modifier = Modifier.width(72.dp).noRippleClickable { onClick(BottomMenu.ADD) },
+                    modifier = Modifier.width(72.dp).noRippleClickable { onClick(tabs[1]) },
                 )
             }
         }
@@ -82,17 +84,5 @@ internal fun BottomBarItem(
             tint = if (selected) Green500 else Grey300,
             contentDescription = label,
         )
-    }
-}
-
-@Preview(backgroundColor = 0xFFFFFFFF)
-@Composable
-private fun BottomBarPrev() {
-    NofficeScaffold(
-        bottomBar = {
-            HomeBottomBar(current = BottomMenu.HOME, onClick = { })
-        }
-    ) {
-
     }
 }

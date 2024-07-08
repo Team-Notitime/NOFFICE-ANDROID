@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.noffice.android.application.test)
     alias(libs.plugins.noffice.android.application.firebase)
     alias(libs.plugins.noffice.android.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -51,5 +52,8 @@ dependencies {
     implementation(projects.domain.home)
 
     implementation(projects.feature.home)
+    implementation(projects.feature.myPage)
+    implementation(projects.feature.organization)
 
+    implementation(libs.kotlinx.serialization.json)
 }
