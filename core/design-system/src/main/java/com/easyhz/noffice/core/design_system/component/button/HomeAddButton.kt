@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.BottomMenu
 
 @Composable
@@ -32,7 +33,8 @@ fun HomeAddButton(
         Icon(
             modifier = Modifier.align(Alignment.Center),
             painter = painterResource(id = BottomMenu.ADD.iconId),
-            contentDescription = BottomMenu.ADD.label
+            contentDescription = BottomMenu.ADD.label,
+            tint = White
         )
     }
 }
