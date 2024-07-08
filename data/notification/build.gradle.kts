@@ -4,9 +4,8 @@ plugins {
     alias(libs.plugins.noffice.android.application.test)
 }
 
-
 android {
-    namespace = "com.easyhz.noffice.data.announcement"
+    namespace = "com.easyhz.noffice.data.notification"
 }
 
 dependencies {
