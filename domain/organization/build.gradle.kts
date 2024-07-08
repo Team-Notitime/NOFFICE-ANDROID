@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.easyhz.noffice.domain.home"
+    namespace = "com.easyhz.noffice.domain.organization"
 }
 
 dependencies {
