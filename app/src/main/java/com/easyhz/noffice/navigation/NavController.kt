@@ -26,7 +26,7 @@ internal class NofficeNavController(
     private val routes: List<String>
         @Composable get() = remember { BottomMenuTabs.entries.map { it.qualifierName } }
 
-    val currentRoute: String?
+    private val currentRoute: String?
         @Composable get() = navBackStackEntry?.destination?.route
 
     @Composable
