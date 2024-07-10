@@ -40,7 +40,7 @@ jobs:
 
         if (!issue) {
           console.log('No issue information available.');
-          return;
+          process.exit(0);
         }
 
         const jiraAuth = Buffer.from(`${jiraEmail}:${jiraApiToken}`).toString('base64');
