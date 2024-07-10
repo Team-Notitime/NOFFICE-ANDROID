@@ -1,0 +1,153 @@
+name: Sync GitHub Issues with Jira
+
+on:
+  issues:
+    types: [opened, edited, labeled, unlabeled, closed, reopened]
+  issue_comment:
+    types: [created, edited, deleted]
+
+jobs:
+  sync_with_jira:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Sync GitHub Issues with Jira
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        npm install -g axios
+
+        node <<EOF
+        const axios = require('axios');
+
+        const jiraBaseUrl = process.env.JIRA_BASE_URL;
+        const jiraEmail = process.env.JIRA_EMAIL;
+        const jiraApiToken = process.env.JIRA_API_TOKEN;
+        const githubToken = process.env.GITHUB_TOKEN;
+
+        const issue = process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH).issue : null;
+        const action = process.env.GITHUB_EVENT_PATH ? require(process.env.GITHUB_EVENT_PATH).action : null;
+
+        if (!issue) {
+          console.log('No issue information available.');
+          return;
+        }
+
+        const jiraAuth = Buffer.from(`${jiraEmail}:${jiraApiToken}`).toString('base64');
+        const jiraSearchUrl = `${jiraBaseUrl}/rest/api/3/search`;
+
+        async function getJiraIssueKey(issueTitle) {
+          try {
+            const jql = `project=NOFFICE AND summary~"${issueTitle}"`;
+            const response = await axios.get(jiraSearchUrl, {
+              headers: {
+                'Authorization': `Basic ${jiraAuth}`,
+                'Content-Type': 'application/json'
+              },
+              params: {
+                jql: jql
+              }
+            });
+            const issues = response.data.issues;
+            if (issues.length > 0) {
+              return issues[0].key;
+            } else {
+              console.log('No matching Jira issue found.');
+              return null;
+            }
+          } catch (error) {
+            console.error('Error fetching Jira issue:', error.response ? error.response.data : error.message);
+            return null;
+          }
+        }
+
+        async function updateJiraIssue(jiraIssueKey) {
+          try {
+            const jiraIssueUrl = `${jiraBaseUrl}/rest/api/3/issue/${jiraIssueKey}`;
+            const githubIssueUrl = issue.html_url;
+
+            const updateData = {
+              fields: {
+                summary: issue.title,
+                description: issue.body + `\n\n[View on GitHub](${githubIssueUrl})`
+              }
+            };
+
+            await axios.put(jiraIssueUrl, updateData, {
+              headers: {
+                'Authorization': `Basic ${jiraAuth}`,
+                'Content-Type': 'application/json'
+              }
+            });
+
+            if (action === 'labeled' || action === 'unlabeled') {
+              const labels = issue.labels.map(label => label.name);
+              const updateLabelsData = {
+                update: {
+                  labels: labels.map(label => ({ set: { value: label } }))
+                }
+              };
+
+              await axios.put(jiraIssueUrl, updateLabelsData, {
+                headers: {
+                  'Authorization': `Basic ${jiraAuth}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+            }
+
+            if (action === 'closed') {
+              const transitionData = {
+                transition: {
+                  id: '31' // Transition ID for Done
+                }
+              };
+
+              await axios.post(`${jiraIssueUrl}/transitions`, transitionData, {
+                headers: {
+                  'Authorization': `Basic ${jiraAuth}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+            }
+
+            if (action === 'reopened') {
+              const transitionData = {
+                transition: {
+                  id: '11' // Transition ID for Reopened
+                }
+              };
+
+              await axios.post(`${jiraIssueUrl}/transitions`, transitionData, {
+                headers: {
+                  'Authorization': `Basic ${jiraAuth}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+            }
+
+            console.log('Jira issue updated successfully.');
+          } catch (error) {
+            console.error('Error updating Jira issue:', error.response ? error.response.data : error.message);
+          }
+        }
+
+        async function main() {
+          const jiraIssueKey = await getJiraIssueKey(issue.title);
+          if (jiraIssueKey) {
+            await updateJiraIssue(jiraIssueKey);
+          }
+        }
+
+        main();
+        EOF
