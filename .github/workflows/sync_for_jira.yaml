@@ -25,10 +25,8 @@ jobs:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        npm install -g axios
-
         node <<EOF
-        const axios = require('axios');
+        const https = require('https');
 
         const jiraBaseUrl = process.env.JIRA_BASE_URL;
         const jiraEmail = process.env.JIRA_EMAIL;
@@ -44,21 +42,50 @@ jobs:
         }
 
         const jiraAuth = Buffer.from(\`\${jiraEmail}:\${jiraApiToken}\`).toString('base64');
-        const jiraSearchUrl = \`\${jiraBaseUrl}/rest/api/3/search\`;
+        const jiraSearchUrl = new URL('/rest/api/3/search', jiraBaseUrl);
+
+        function httpsRequest(url, options, data) {
+          return new Promise((resolve, reject) => {
+            const req = https.request(url, options, (res) => {
+              let body = '';
+              res.on('data', (chunk) => {
+                body += chunk;
+              });
+              res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                  resolve(JSON.parse(body));
+                } else {
+                  reject(new Error(body));
+                }
+              });
+            });
+
+            req.on('error', reject);
+
+            if (data) {
+              req.write(data);
+            }
+
+            req.end();
+          });
+        }
 
         async function getJiraIssueKey(issueTitle) {
           try {
             const jql = \`project=NOFFICE AND summary~"\${issueTitle}"\`;
-            const response = await axios.get(jiraSearchUrl, {
+            const searchParams = new URLSearchParams({ jql: jql });
+            jiraSearchUrl.search = searchParams.toString();
+
+            const options = {
+              method: 'GET',
               headers: {
                 'Authorization': \`Basic \${jiraAuth}\`,
                 'Content-Type': 'application/json'
-              },
-              params: {
-                jql: jql
               }
-            });
-            const issues = response.data.issues;
+            };
+
+            const response = await httpsRequest(jiraSearchUrl, options);
+            const issues = response.issues;
             if (issues.length > 0) {
               return issues[0].key;
             } else {
@@ -66,79 +93,73 @@ jobs:
               return null;
             }
           } catch (error) {
-            console.error('Error fetching Jira issue:', error.response ? error.response.data : error.message);
+            console.error('Error fetching Jira issue:', error.message);
             return null;
           }
         }
 
         async function updateJiraIssue(jiraIssueKey) {
           try {
-            const jiraIssueUrl = \`\${jiraBaseUrl}/rest/api/3/issue/\${jiraIssueKey}\`;
+            const jiraIssueUrl = new URL(`/rest/api/3/issue/\${jiraIssueKey}`, jiraBaseUrl);
             const githubIssueUrl = issue.html_url;
 
-            const updateData = {
+            const updateData = JSON.stringify({
               fields: {
                 summary: issue.title,
                 description: issue.body + \`\n\n[View on GitHub](\${githubIssueUrl})\`
               }
-            };
+            });
 
-            await axios.put(jiraIssueUrl, updateData, {
+            const options = {
+              method: 'PUT',
               headers: {
                 'Authorization': \`Basic \${jiraAuth}\`,
                 'Content-Type': 'application/json'
               }
-            });
+            };
+
+            await httpsRequest(jiraIssueUrl, options, updateData);
 
             if (action === 'labeled' || action === 'unlabeled') {
               const labels = issue.labels.map(label => label.name);
-              const updateLabelsData = {
+              const updateLabelsData = JSON.stringify({
                 update: {
                   labels: labels.map(label => ({ set: { value: label } }))
                 }
-              };
-
-              await axios.put(jiraIssueUrl, updateLabelsData, {
-                headers: {
-                  'Authorization': \`Basic \${jiraAuth}\`,
-                  'Content-Type': 'application/json'
-                }
               });
+
+              await httpsRequest(jiraIssueUrl, options, updateLabelsData);
             }
 
             if (action === 'closed') {
-              const transitionData = {
+              const transitionData = JSON.stringify({
                 transition: {
                   id: '31' // Transition ID for Done
                 }
-              };
-
-              await axios.post(\`\${jiraIssueUrl}/transitions\`, transitionData, {
-                headers: {
-                  'Authorization': \`Basic \${jiraAuth}\`,
-                  'Content-Type': 'application/json'
-                }
               });
+
+              await httpsRequest(new URL(\`\${jiraIssueUrl}/transitions\`, jiraBaseUrl), {
+                method: 'POST',
+                headers: options.headers
+              }, transitionData);
             }
 
             if (action === 'reopened') {
-              const transitionData = {
+              const transitionData = JSON.stringify({
                 transition: {
                   id: '11' // Transition ID for Reopened
                 }
-              };
-
-              await axios.post(\`\${jiraIssueUrl}/transitions\`, transitionData, {
-                headers: {
-                  'Authorization': \`Basic \${jiraAuth}\`,
-                  'Content-Type': 'application/json'
-                }
               });
+
+              await httpsRequest(new URL(\`\${jiraIssueUrl}/transitions\`, jiraBaseUrl), {
+                method: 'POST',
+                headers: options.headers
+              }, transitionData);
             }
 
             console.log('Jira issue updated successfully.');
           } catch (error) {
-            console.error('Error updating Jira issue:', error.response ? error.response.data : error.message);
+            console.error('Error updating Jira issue:', error.message);
           }
         }
 
