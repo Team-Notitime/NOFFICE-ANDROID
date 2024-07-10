@@ -52,7 +52,7 @@ jobs:
           fields: |
             {
               "parent": {
-                "key": "${{ steps.issue-parser.outputs.issueparser_parentKey }}"
+                "key": "NOFFICE-33"
               }
             }
 
