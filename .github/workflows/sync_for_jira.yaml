@@ -48,10 +48,10 @@ jobs:
 
         async function getJiraIssueKey(issueTitle) {
           try {
-            const jql = `project=NOFFICE AND summary~"${issueTitle}"`;
+            const jql = \`project=NOFFICE AND summary~"\${issueTitle}"\`;
             const response = await axios.get(jiraSearchUrl, {
               headers: {
-                'Authorization': `Basic ${jiraAuth}`,
+                'Authorization': \`Basic \${jiraAuth}\`,
                 'Content-Type': 'application/json'
               },
               params: {
@@ -73,19 +73,19 @@ jobs:
 
         async function updateJiraIssue(jiraIssueKey) {
           try {
-            const jiraIssueUrl = `${jiraBaseUrl}/rest/api/3/issue/${jiraIssueKey}`;
+            const jiraIssueUrl = \`\${jiraBaseUrl}/rest/api/3/issue/\${jiraIssueKey}\`;
             const githubIssueUrl = issue.html_url;
 
             const updateData = {
               fields: {
                 summary: issue.title,
-                description: issue.body + `\n\n[View on GitHub](${githubIssueUrl})`
+                description: issue.body + \`\n\n[View on GitHub](\${githubIssueUrl})\`
               }
             };
 
             await axios.put(jiraIssueUrl, updateData, {
               headers: {
-                'Authorization': `Basic ${jiraAuth}`,
+                'Authorization': \`Basic \${jiraAuth}\`,
                 'Content-Type': 'application/json'
               }
             });
@@ -100,7 +100,7 @@ jobs:
 
               await axios.put(jiraIssueUrl, updateLabelsData, {
                 headers: {
-                  'Authorization': `Basic ${jiraAuth}`,
+                  'Authorization': \`Basic \${jiraAuth}\`,
                   'Content-Type': 'application/json'
                 }
               });
@@ -113,9 +113,9 @@ jobs:
                 }
               };
 
-              await axios.post(`${jiraIssueUrl}/transitions`, transitionData, {
+              await axios.post(\`\${jiraIssueUrl}/transitions\`, transitionData, {
                 headers: {
-                  'Authorization': `Basic ${jiraAuth}`,
+                  'Authorization': \`Basic \${jiraAuth}\`,
                   'Content-Type': 'application/json'
                 }
               });
@@ -128,9 +128,9 @@ jobs:
                 }
               };
 
-              await axios.post(`${jiraIssueUrl}/transitions`, transitionData, {
+              await axios.post(\`\${jiraIssueUrl}/transitions\`, transitionData, {
                 headers: {
-                  'Authorization': `Basic ${jiraAuth}`,
+                  'Authorization': \`Basic \${jiraAuth}\`,
                   'Content-Type': 'application/json'
                 }
               });
