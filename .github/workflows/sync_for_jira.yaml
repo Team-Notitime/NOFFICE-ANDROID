@@ -100,7 +100,7 @@ jobs:
 
         async function updateJiraIssue(jiraIssueKey) {
           try {
-            const jiraIssueUrl = new URL(`/rest/api/3/issue/\${jiraIssueKey}`, jiraBaseUrl);
+            const jiraIssueUrl = new URL(\`/rest/api/3/issue/\${jiraIssueKey}\`, jiraBaseUrl);
             const githubIssueUrl = issue.html_url;
 
             const updateData = JSON.stringify({
