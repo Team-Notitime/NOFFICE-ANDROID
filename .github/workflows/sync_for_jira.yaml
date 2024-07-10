@@ -43,8 +43,8 @@ jobs:
           process.exit(0);
         }
 
-        const jiraAuth = Buffer.from(`${jiraEmail}:${jiraApiToken}`).toString('base64');
-        const jiraSearchUrl = `${jiraBaseUrl}/rest/api/3/search`;
+        const jiraAuth = Buffer.from(\`\${jiraEmail}:\${jiraApiToken}\`).toString('base64');
+        const jiraSearchUrl = \`\${jiraBaseUrl}/rest/api/3/search\`;
 
         async function getJiraIssueKey(issueTitle) {
           try {
