@@ -1,0 +1,66 @@
+name: Sync with Jira
+on:
+  issues:
+    types:
+      - labeled
+      - unlabeled
+      - closed
+      - reopened
+      - edited
+
+jobs:
+  sync-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+
+      - name: Parse Issue
+        id: issue-parser
+        uses: actions/github-script@v4
+        with:
+          script: |
+            return {
+              title: github.event.issue.title,
+              body: github.event.issue.body,
+              labels: github.event.issue.labels.map(label => label.name),
+              state: github.event.issue.state,
+              html_url: github.event.issue.html_url,
+            }
+
+      - name: Sync Issue Status with Jira
+        if: github.event.action == 'closed' || github.event.action == 'reopened'
+        run: |
+          if [ "${{ github.event.action }}" == "closed" ]; then
+            JIRA_STATUS="Done"
+          else
+            JIRA_STATUS="To Do"
+          fi
+
+          jira-issue-id=$(curl -s -X GET -H "Authorization: Basic $(echo -n ${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }} | base64)" \
+          "${{ secrets.JIRA_BASE_URL }}/rest/api/2/search?jql=project=NOFFICE AND summary~\"${{ steps.issue-parser.outputs.title }}\"" \
+          | jq -r '.issues[0].id')
+
+          curl -s -X PUT -H "Authorization: Basic $(echo -n ${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }} | base64)" \
+          -H "Content-Type: application/json" \
+          -d "{\"update\": {\"status\": [{\"set\": {\"name\": \"${JIRA_STATUS}\"}}]}}" \
+          "${{ secrets.JIRA_BASE_URL }}/rest/api/2/issue/$jira-issue-id"
+
+      - name: Sync Issue Labels with Jira
+        if: github.event.action == 'labeled' || github.event.action == 'unlabeled'
+        run: |
+          jira-issue-id=$(curl -s -X GET -H "Authorization: Basic $(echo -n ${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }} | base64)" \
+          "${{ secrets.JIRA_BASE_URL }}/rest/api/2/search?jql=project=NOFFICE AND summary~\"${{ steps.issue-parser.outputs.title }}\"" \
+          | jq -r '.issues[0].id')
+
+          jira-labels=$(printf "%s\n" "${{ steps.issue-parser.outputs.labels }}" | jq -R . | jq -s .)
+
+          curl -s -X PUT -H "Authorization: Basic $(echo -n ${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }} | base64)" \
+          -H "Content-Type: application/json" \
+          -d "{\"fields\": {\"labels\": $jira-labels}}" \
+          "${{ secrets.JIRA_BASE_URL }}/rest/api/2/issue/$jira-issue-id"
