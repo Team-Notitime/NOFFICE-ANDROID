@@ -52,7 +52,7 @@ jobs:
           fields: |
             {
               "parent": {
-                "key": "NOFFICE-33"
+                "key": "https://rlawldms.atlassian.net/browse/NOFFICE-33"
               }
             }
 
