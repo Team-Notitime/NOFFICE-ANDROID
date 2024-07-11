@@ -23,6 +23,31 @@ private val Pretendard = FontFamily(
 
 private val LetterSpacing = 0.sp
 
+val SemiBold14 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.Black,
+    fontSize = 14.sp,
+    lineHeight = 14.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+fun semiBold(fontSize: Int) = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.Black,
+    fontSize = fontSize.sp,
+    lineHeight = fontSize.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SemiBold16 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,

@@ -1,7 +1,7 @@
 package com.easyhz.noffice.navigation.util
 
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.util.BottomMenu
+ import com.easyhz.noffice.core.design_system.util.bottomBar.BottomMenu
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.screen.Organization
 

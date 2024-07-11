@@ -1,4 +1,4 @@
-package com.easyhz.noffice.core.design_system.util
+package com.easyhz.noffice.core.design_system.util.bottomBar
 
 import androidx.annotation.DrawableRes
 
