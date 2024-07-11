@@ -23,7 +23,7 @@ import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.White
 
 @Composable
-fun MediumButton(
+fun MainButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
@@ -62,8 +62,8 @@ fun MediumButton(
 
 @Preview(group = "button", name = "enabled")
 @Composable
-private fun MediumButtonEnabledPrev() {
-    MediumButton(
+private fun MainButtonEnabledPrev() {
+    MainButton(
         text = "다음",
         enabled = true
     ) {
@@ -73,8 +73,8 @@ private fun MediumButtonEnabledPrev() {
 
 @Preview(group = "button", name = "disabled")
 @Composable
-private fun MediumButtonDisabledPrev() {
-    MediumButton(
+private fun MainButtonDisabledPrev() {
+    MainButton(
         text = "다음",
         enabled = false
     ) {
