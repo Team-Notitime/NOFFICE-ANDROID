@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -26,7 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.component.tab.TabRow
+import com.easyhz.noffice.core.design_system.component.tab.TabRowDefaults.tabIndicatorOffset
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Green500
@@ -47,7 +45,6 @@ fun <T> HomeTopBar(
     onClickTab: (T) -> Unit
 ) where T : Enum<T>, T : TopBarMenu {
     val selectedIndex = rememberSaveable { mutableIntStateOf(0) }
-    val width = if (tabs.size == 1) 88.dp else 105.dp
 
     Box(
         modifier = modifier
@@ -59,8 +56,8 @@ fun <T> HomeTopBar(
         TabRow(
             modifier = Modifier
                 .fillMaxHeight()
-                .widthIn(max = width)
                 .align(Alignment.CenterStart),
+            tabSpacing = 5.dp,
             selectedTabIndex = selectedIndex.intValue,
             containerColor = Color.Transparent,
             contentColor = Grey400,
@@ -72,12 +69,12 @@ fun <T> HomeTopBar(
                         .tabIndicatorOffset(tabPositions[selectedIndex.intValue]),
                     color = Green500
                 )
-            }
+            },
         ) {
             tabs.forEachIndexed { index, topBarMenu ->
                 Text(
                     modifier = Modifier
-                        .padding(vertical = 8.5.dp)
+                        .padding(vertical = 8.5.dp, horizontal = 4.dp)
                         .noRippleClickable {
                             selectedIndex.intValue = index
                             onClickTab(topBarMenu)
