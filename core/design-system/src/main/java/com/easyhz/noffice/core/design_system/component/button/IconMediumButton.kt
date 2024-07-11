@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,12 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green500
-import com.easyhz.noffice.core.design_system.theme.Grey100
-import com.easyhz.noffice.core.design_system.theme.Grey500
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.White
 
-@Composable
+ @Composable
 fun IconMediumButton(
     modifier: Modifier = Modifier,
     text: String,
