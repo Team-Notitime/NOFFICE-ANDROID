@@ -4,6 +4,6 @@
     <style name="Theme.Noffice" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/white</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/grey_50</item>
     </style>
 </resources>
