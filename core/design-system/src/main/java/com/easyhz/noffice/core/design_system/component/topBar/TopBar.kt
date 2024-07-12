@@ -115,11 +115,10 @@ fun <T> HomeTopBar(
     }
 }
 
-@Preview(backgroundColor = 0xFFFFFFFF)
+@Preview(showBackground = true)
 @Composable
 private fun TopBarPrev() {
     HomeTopBar(
-        modifier = Modifier.background(White),
         tabs = enumValues<MockTopBarMenus>(),
         onClickIconMenu = { }
     ) {

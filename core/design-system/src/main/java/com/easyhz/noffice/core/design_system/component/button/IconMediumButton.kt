@@ -70,20 +70,17 @@ fun IconMediumButton(
     }
 }
 
-@Preview(backgroundColor = 0xFFFFFFFF)
+@Preview(showBackground = true)
 @Composable
 private fun IconButtonPrev() {
-    Scaffold {
-        Spacer(modifier = Modifier.padding(it))
-        IconMediumButton(
-            modifier = Modifier.padding(16.dp),
-            text = "새로운 투두",
-            iconId = R.drawable.ic_plus,
-            contentColor = Green500,
-            containerColor = Green500.copy(0.06f),
-            borderColor = Green500
-        ) {
+    IconMediumButton(
+        modifier = Modifier.padding(16.dp),
+        text = "새로운 투두",
+        iconId = R.drawable.ic_plus,
+        contentColor = Green500,
+        containerColor = Green500.copy(0.06f),
+        borderColor = Green500
+    ) {
 
-        }
     }
 }
