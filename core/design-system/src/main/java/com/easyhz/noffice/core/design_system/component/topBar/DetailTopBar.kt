@@ -17,6 +17,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.semiBold
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 
@@ -65,7 +66,8 @@ private fun DetailTopBarTopDetailPrev() {
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_chevron_left),
-                    contentDescription = "left"
+                    contentDescription = "left",
+                    tint = Grey400
                 )
             },
             onClick = { }
@@ -82,7 +84,8 @@ private fun DetailTopBarTopRightPrev() {
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_chevron_left),
-                    contentDescription = "left"
+                    contentDescription = "left",
+                    tint = Grey400
                 )
             },
             onClick = { }
