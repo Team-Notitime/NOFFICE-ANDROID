@@ -22,6 +22,30 @@ private val Pretendard = FontFamily(
 
 private val LetterSpacing = 0.sp
 
+val Title1 =  TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey800,
+    fontSize = 24.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val Title2 =  TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Normal,
+    color = Grey800,
+    fontSize = 24.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SemiBold14 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
