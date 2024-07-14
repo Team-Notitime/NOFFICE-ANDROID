@@ -16,4 +16,11 @@
         아직 등록된
         \n노티가 없어요.
     </string>
+
+    <string name="banner_intro">
+        님, 활기찬 오늘은\n
+    </string>
+    <string name="banner_outro">
+        이에요!
+    </string>
 </resources>
