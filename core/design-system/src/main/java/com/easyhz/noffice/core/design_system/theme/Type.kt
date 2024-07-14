@@ -135,3 +135,15 @@ val SubBody12 = TextStyle(
         includeFontPadding = false,
     )
 )
+
+val InputDialogTitle = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey800,
+    fontSize = 20.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
