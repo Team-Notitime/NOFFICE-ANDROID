@@ -7,4 +7,13 @@
     <string name="error_forbidden">권한을 확인해 주세요.</string>
     <string name="error_not_found">요청한 페이지가 존재하지 않아요.</string>
     <string name="error_internal_server">서버에 문제가 발생했어요. 잠시 후 다시 시도해 주세요.</string>
+
+    <string name="card_exception_accept_wait">
+        리더의 수락을
+        \n기다리고 있어요.
+    </string>
+    <string name="card_exception_no_result">
+        아직 등록된
+        \n노티가 없어요.
+    </string>
 </resources>
