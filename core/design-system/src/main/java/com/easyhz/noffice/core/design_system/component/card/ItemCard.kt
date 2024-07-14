@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.theme.CardExceptionTitle
 import com.easyhz.noffice.core.design_system.theme.Grey200
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey600
@@ -143,22 +144,27 @@ fun ExceptionCard(
         .clip(RoundedCornerShape(16.dp))
         .border(1.dp, color = Grey200, RoundedCornerShape(16.dp))
     ) {
-        Box(modifier = Modifier.fillMaxWidth().weight(1f).padding(bottom = 4.dp)) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .weight(0.9f)
+            .padding(bottom = 10.dp)) {
             Text(
                 modifier = Modifier
                     .align(Alignment.BottomCenter),
                 text = stringResource(id = type.stringId),
                 textAlign = TextAlign.Center,
-                style = semiBold(22),
+                style = CardExceptionTitle,
                 color = Grey400
             )
         }
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = type.resId),
-            contentScale = ContentScale.Crop,
-            contentDescription = type.name
-        )
+        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+            Image(
+                modifier = Modifier.align(Alignment.TopCenter),
+                painter = painterResource(id = type.resId),
+                contentScale = ContentScale.Crop,
+                contentDescription = type.name
+            )
+        }
     }
 }
 

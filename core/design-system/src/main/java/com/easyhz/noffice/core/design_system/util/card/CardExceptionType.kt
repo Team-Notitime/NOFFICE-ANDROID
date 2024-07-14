@@ -9,7 +9,7 @@ enum class CardExceptionType(
     @StringRes val stringId: Int
 ) {
     ACCEPT_WAIT(
-        resId = R.drawable.ic_accept_wait,
+        resId = R.drawable.ic_loading,
         stringId = R.string.card_exception_accept_wait
     ), NO_RESULT(
         resId = R.drawable.ic_no_result,

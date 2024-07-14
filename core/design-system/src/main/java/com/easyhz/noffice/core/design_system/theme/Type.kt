@@ -1,6 +1,5 @@
 package com.easyhz.noffice.core.design_system.theme
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -141,6 +140,18 @@ val InputDialogTitle = TextStyle(
     fontWeight = FontWeight.SemiBold,
     color = Grey800,
     fontSize = 20.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val CardExceptionTitle = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey800,
+    fontSize = 22.sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
     platformStyle = PlatformTextStyle(
