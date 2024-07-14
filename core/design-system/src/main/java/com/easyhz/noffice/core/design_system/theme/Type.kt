@@ -26,7 +26,7 @@ private val LetterSpacing = 0.sp
 val SemiBold14 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
-    color = Color.Black,
+    color = Grey800,
     fontSize = 14.sp,
     lineHeight = 14.sp,
     letterSpacing = LetterSpacing,
@@ -38,7 +38,7 @@ val SemiBold14 = TextStyle(
 fun semiBold(fontSize: Int) = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
-    color = Color.Black,
+    color = Grey800,
     fontSize = fontSize.sp,
     lineHeight = fontSize.sp,
     letterSpacing = LetterSpacing,
@@ -51,7 +51,7 @@ fun semiBold(fontSize: Int) = TextStyle(
 val Body14 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
-    color = Color.Black,
+    color = Grey800,
     fontSize = 14.sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
@@ -63,7 +63,7 @@ val Body14 = TextStyle(
 val Body15 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
-    color = Color.Black,
+    color = Grey800,
     fontSize = 15.sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
@@ -75,7 +75,7 @@ val Body15 = TextStyle(
 val SubHeading15 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.Bold,
-    color = Color.Black,
+    color = Grey800,
     fontSize = 15.sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
@@ -87,9 +87,48 @@ val SubHeading15 = TextStyle(
 val SemiBold16 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
-    color = Color.Black,
+    color = Grey800,
     fontSize = 16.sp,
     lineHeight = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val SubBody16 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Medium,
+    color = Grey800,
+    fontSize = 16.sp,
+    lineHeight = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val SubBody14 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Medium,
+    color = Grey800,
+    fontSize = 14.sp,
+    lineHeight = 14.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val SubBody12 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Medium,
+    color = Grey800,
+    fontSize = 12.sp,
+    lineHeight = 12.sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
     platformStyle = PlatformTextStyle(
