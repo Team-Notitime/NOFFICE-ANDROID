@@ -60,7 +60,12 @@ fun InputDialog(
                 .padding(top = 16.dp, bottom = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .padding(start = 4.dp)
+            ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = title,
@@ -93,8 +98,9 @@ fun InputDialog(
                 )
             }
         }
-    }    
+    }
 }
+
 @Preview(
     showBackground = true,
 //    device = "spec:shape=Normal,width=240,height=640, unit=dp, dpi= 480"
@@ -108,7 +114,7 @@ fun DialogPreview() {
         ) {
             InputDialog(
                 title = "그룹 가입이 수락 됐는데\n실명으로 할 건지 아닌지 얼른 고르셈 지금 고르지 않으면..",
-                value =  TextFieldValue(),
+                value = TextFieldValue(),
                 onValueChange = { },
                 placeholder = "실명을 입력하세요",
                 maxCount = 10,
