@@ -173,9 +173,21 @@ val InputDialogTitle = TextStyle(
 
 val CardExceptionTitle = TextStyle(
     fontFamily = Pretendard,
-    fontWeight = FontWeight.SemiBold,
-    color = Grey800,
-    fontSize = 22.sp,
+    fontWeight = FontWeight.Medium,
+    color = Grey600,
+    fontSize = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+val CardExceptionSubTitle = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Medium,
+    color = Grey400,
+    fontSize = 12.sp,
+    lineHeight = (12 * 1.5f).sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
     platformStyle = PlatformTextStyle(

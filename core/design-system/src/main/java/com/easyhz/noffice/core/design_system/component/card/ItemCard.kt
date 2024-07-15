@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.theme.CardExceptionSubTitle
 import com.easyhz.noffice.core.design_system.theme.CardExceptionTitle
 import com.easyhz.noffice.core.design_system.theme.Grey200
-import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.theme.SemiBold14
 import com.easyhz.noffice.core.design_system.theme.semiBold
@@ -142,27 +142,34 @@ fun ExceptionCard(
         .width(283.dp)
         .height(296.dp)
         .clip(RoundedCornerShape(16.dp))
-        .border(1.dp, color = Grey200, RoundedCornerShape(16.dp))
+        .border(1.dp, color = Grey200, RoundedCornerShape(16.dp)),
+        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .weight(0.9f)
-            .padding(bottom = 10.dp)) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter),
-                text = stringResource(id = type.stringId),
-                textAlign = TextAlign.Center,
-                style = CardExceptionTitle,
-                color = Grey400
-            )
-        }
         Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
             Image(
-                modifier = Modifier.align(Alignment.TopCenter),
+                modifier = Modifier.align(Alignment.BottomCenter),
                 painter = painterResource(id = type.resId),
                 contentScale = ContentScale.Crop,
                 contentDescription = type.name
+            )
+        }
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .weight(0.8f),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier,
+                text = stringResource(id = type.titleStringId),
+                textAlign = TextAlign.Center,
+                style = CardExceptionTitle,
+            )
+            Text(
+                modifier = Modifier,
+                text = stringResource(id = type.subTitleStringId),
+                textAlign = TextAlign.Center,
+                style = CardExceptionSubTitle,
             )
         }
     }

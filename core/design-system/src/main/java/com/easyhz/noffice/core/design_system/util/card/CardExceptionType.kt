@@ -6,13 +6,16 @@ import com.easyhz.noffice.core.design_system.R
 
 enum class CardExceptionType(
     @DrawableRes val resId: Int,
-    @StringRes val stringId: Int
+    @StringRes val titleStringId: Int,
+    @StringRes val subTitleStringId: Int
 ) {
     ACCEPT_WAIT(
         resId = R.drawable.ic_loading,
-        stringId = R.string.card_exception_accept_wait
+        titleStringId = R.string.card_exception_accept_wait_title,
+        subTitleStringId = R.string.card_exception_accept_wait_sub_title,
     ), NO_RESULT(
         resId = R.drawable.ic_no_result,
-        stringId = R.string.card_exception_no_result
+        titleStringId = R.string.card_exception_no_result_title,
+        subTitleStringId = R.string.card_exception_no_result_sub_title,
     )
 }
