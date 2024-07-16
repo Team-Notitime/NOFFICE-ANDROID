@@ -46,10 +46,9 @@ fun NofficeApp() {
         }
     ) {
         NavHost(
-            modifier = Modifier.padding(it),
             navController = navController, startDestination = Home
         ) {
-            homeScreen()
+            homeScreen(modifier = Modifier.padding(it))
             organizationScreen()
         }
     }
