@@ -6,7 +6,7 @@ enum class HomeTopBarMenu : TopBarMenu {
     NOTICE {
         override val label: String
             get() = "노티"
-    }, TODO {
+    }, TASK {
         override val label: String
             get() = "투두"
     }

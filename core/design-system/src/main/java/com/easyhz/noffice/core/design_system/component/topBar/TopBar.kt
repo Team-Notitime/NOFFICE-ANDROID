@@ -1,7 +1,6 @@
 package com.easyhz.noffice.core.design_system.component.topBar
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -31,7 +30,6 @@ import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey500
 import com.easyhz.noffice.core.design_system.theme.Grey800
-import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.theme.semiBold
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarMenu
@@ -132,7 +130,7 @@ enum class MockTopBarMenus : TopBarMenu {
         override val label: String
             get() = "메뉴"
     },
-    TODO {
+    TASK {
         override val label: String
             get() = "메뉴"
     },
