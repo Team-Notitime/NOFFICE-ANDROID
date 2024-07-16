@@ -76,3 +76,12 @@ val Blue200 = Color(0xFFB8E8FF)
 val Blue300 = Color(0xFF85D8FF)
 @Stable
 val Blue400 = Color(0xFF52C8FF)
+@Stable
+val Blue500 = Color(0xFF1FB8FF)
+@Stable
+val Blue600 = Color(0xFF00A0EB)
+@Stable
+val Blue700 = Color(0xFF007DB8)
+
+@Stable
+val DimColor = Color(0xFF121212).copy(alpha = 0.5f)

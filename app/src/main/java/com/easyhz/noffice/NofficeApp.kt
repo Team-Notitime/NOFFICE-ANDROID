@@ -1,5 +1,6 @@
 package com.easyhz.noffice
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
@@ -25,6 +26,7 @@ fun NofficeApp() {
     val currentTab = nofficeNavController.mapRouteToTab()
 
     NofficeScaffold(
+        modifier = Modifier.navigationBarsPadding(),
         floatingActionButton = {
             if(isVisibleBottomBar) {
                 HomeAddButton(

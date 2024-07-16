@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey300
-import com.easyhz.noffice.core.design_system.theme.White
-import com.easyhz.noffice.core.design_system.util.BottomMenu
+import com.easyhz.noffice.core.design_system.theme.Grey50
+import com.easyhz.noffice.core.design_system.util.bottomBar.BottomMenu
 
 
 @Composable
@@ -36,7 +36,7 @@ fun <T>  HomeBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .height(49.dp)
-            .background(White)
+            .background(Grey50)
         ,
         verticalAlignment = Alignment.CenterVertically
     ) {

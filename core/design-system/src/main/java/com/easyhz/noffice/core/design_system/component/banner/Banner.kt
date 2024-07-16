@@ -1,0 +1,90 @@
+package com.easyhz.noffice.core.design_system.component.banner
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.theme.Green100
+import com.easyhz.noffice.core.design_system.theme.Title1
+import com.easyhz.noffice.core.design_system.theme.Title2
+import com.easyhz.noffice.core.design_system.theme.White
+
+@Composable
+fun Banner(
+    modifier: Modifier = Modifier,
+    userName: String,
+    date: String,
+) {
+    val bannerIntro = stringResource(id = R.string.banner_intro)
+    val bannerOutro = stringResource(id = R.string.banner_outro)
+    val annotatedString = remember {
+        buildAnnotatedString {
+            withStyle(style = ParagraphStyle(lineHeight = 32.sp)) {
+                withStyle(style = Title1.toSpanStyle()) {
+                    append(userName)
+                }
+                withStyle(style = Title2.toSpanStyle()) {
+                    append(bannerIntro)
+                }
+                withStyle(style = Title1.toSpanStyle()) {
+                    append(date)
+                }
+                withStyle(style = Title2.toSpanStyle()) {
+                    append(bannerOutro)
+                }
+            }
+
+        }
+    }
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 180.dp)
+            .background(
+                brush = Brush.verticalGradient(listOf(White, Green100)),
+            )
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart),
+            painter = painterResource(id = R.drawable.ic_banner),
+            contentDescription = "banner",
+            contentScale = ContentScale.Crop
+        )
+        Text(text = annotatedString,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .screenHorizonPadding()
+                .padding(bottom = 20.dp)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun BannerPrev() {
+    Banner(
+        userName = "푸바옹",
+        date = "8월 27일 화요일"
+    )
+}

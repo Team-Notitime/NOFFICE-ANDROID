@@ -46,9 +46,9 @@ object NoRippleTheme : RippleTheme {
 
     @Composable
     override fun rippleAlpha(): RippleAlpha = RippleAlpha(
-        draggedAlpha = 0f,
-        focusedAlpha = 0f,
-        hoveredAlpha = 0f,
-        pressedAlpha = 0f,
+        draggedAlpha = 0.0f,
+        focusedAlpha = 0.0f,
+        hoveredAlpha = 0.0f,
+        pressedAlpha = 0.0f,
     )
 }

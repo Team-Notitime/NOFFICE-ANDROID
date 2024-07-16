@@ -1,4 +1,4 @@
-package com.easyhz.noffice.feature.home
+package com.easyhz.noffice.feature.home.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 
 @Composable
-fun HomeScreen() {
+fun TodoScreen() {
     NofficeScaffold(
         topBar = {
             Box(modifier = Modifier.fillMaxWidth()) {
