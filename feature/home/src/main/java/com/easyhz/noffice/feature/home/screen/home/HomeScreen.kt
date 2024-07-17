@@ -38,7 +38,7 @@ fun HomeScreen(
         ) { screen ->
             when (screen) {
                 HomeTopBarMenu.NOTICE -> {
-                    // TODO : NOTICE
+                    NoticeView(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
                 }
 
                 HomeTopBarMenu.TASK -> {
