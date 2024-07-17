@@ -13,9 +13,12 @@ import androidx.compose.ui.unit.dp
 
 fun Modifier.screenHorizonPadding(): Modifier = padding(horizontal = 16.dp)
 
-inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
+inline fun Modifier.noRippleClickable(
+    interactionSource: MutableInteractionSource? = null,
+    crossinline onClick: () -> Unit,
+): Modifier = composed {
     clickable(indication = null,
-        interactionSource = remember { MutableInteractionSource() }) {
+        interactionSource = interactionSource ?: remember { MutableInteractionSource() }) {
         onClick()
     }
 }
