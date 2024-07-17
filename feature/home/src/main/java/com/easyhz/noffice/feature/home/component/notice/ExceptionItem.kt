@@ -13,9 +13,9 @@ import com.easyhz.noffice.core.design_system.component.card.ExceptionCard
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.util.card.CardExceptionType
 
-fun LazyListScope.noResultItem() {
+fun LazyListScope.exceptionItem(type: CardExceptionType) {
     item {
-        ExceptionCard(type = CardExceptionType.NO_RESULT)
+        ExceptionCard(type = type)
     }
     item {
         Box(modifier = Modifier
