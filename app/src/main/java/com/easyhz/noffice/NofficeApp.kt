@@ -49,7 +49,7 @@ fun NofficeApp() {
             navController = navController, startDestination = Home
         ) {
             homeScreen(modifier = Modifier.padding(it))
-            organizationScreen()
+            organizationScreen(modifier = Modifier.padding(it))
         }
     }
 }
