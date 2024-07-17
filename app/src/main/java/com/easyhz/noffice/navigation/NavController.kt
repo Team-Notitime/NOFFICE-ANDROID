@@ -55,7 +55,7 @@ internal class NofficeNavController(
         when (route) {
             BottomMenuTabs.HOME -> navController.navigateToHome(navOptions)
             BottomMenuTabs.ADD -> navController.navigateToHome(navOptions) // FIXME : 바꾸기
-            BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions) // FIXME : 바꾸기
+            BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions)
         }
     }
 }

@@ -12,8 +12,11 @@ import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarMenu
 
 @Composable
-fun OrganizationScreen() {
+fun OrganizationScreen(
+    modifier: Modifier = Modifier,
+) {
     NofficeScaffold(
+        modifier = modifier,
         topBar = {
             HomeTopBar(
                 tabs = enumValues<OrganizationTopBarMenu>(),
@@ -32,6 +35,6 @@ fun OrganizationScreen() {
 enum class OrganizationTopBarMenu : TopBarMenu {
     ORGANIZATION {
         override val label: String
-            get() = "나의 그룹"
+            get() = "그룹"
     }
 }
