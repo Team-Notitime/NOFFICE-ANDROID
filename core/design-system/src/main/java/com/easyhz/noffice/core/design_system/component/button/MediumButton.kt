@@ -18,22 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey600
-import com.easyhz.noffice.core.design_system.theme.Grey900
 import com.easyhz.noffice.core.design_system.theme.SemiBold18
+import com.easyhz.noffice.core.design_system.theme.White
 
 @Composable
 fun MediumButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
-    contentColor: Color = Grey900,
+    contentColor: Color = White,
     containerColor: Color = Green500,
+    textStyle: TextStyle = SemiBold18,
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -55,7 +57,6 @@ fun MediumButton(
             .scale(scale)
             .imePadding()
             .height(54.dp)
-            .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundColor)
             .noRippleClickable(interactionSource) { onClickInvoke() },
@@ -63,7 +64,7 @@ fun MediumButton(
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = text,
-            style = SemiBold18,
+            style = textStyle,
             color = textColor
         )
     }
@@ -74,20 +75,18 @@ fun MediumButton(
 @Composable
 private fun MediumButtonEnabledPrev() {
     MediumButton(
+        modifier = Modifier.fillMaxWidth(),
         text = "다음",
         enabled = true
-    ) {
-
-    }
+    ) { }
 }
 
 @Preview(group = "button", name = "disabled")
 @Composable
 private fun MediumButtonDisabledPrev() {
     MediumButton(
+        modifier = Modifier.fillMaxWidth(),
         text = "다음",
         enabled = false
-    ) {
-
-    }
+    ) { }
 }
