@@ -20,7 +20,7 @@ import com.easyhz.noffice.core.design_system.theme.CardExceptionTitle
 import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
 
 @Composable
-internal fun NoGroupView(
+internal fun ExceptionView(
     modifier: Modifier = Modifier,
     type: ExceptionType
 ) {
@@ -61,7 +61,7 @@ internal fun NoGroupView(
 @Preview
 @Composable
 private fun NoGroupPrev() {
-    NoGroupView(
+    ExceptionView(
         modifier = Modifier.fillMaxSize(),
         type = ExceptionType.NO_GROUP
     )
@@ -70,7 +70,7 @@ private fun NoGroupPrev() {
 @Preview
 @Composable
 private fun NoTaskPrev() {
-    NoGroupView(
+    ExceptionView(
         modifier = Modifier.fillMaxSize(),
         type = ExceptionType.NO_TASK
     )
