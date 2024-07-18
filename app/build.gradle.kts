@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.easyhz.noffice"
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -54,6 +54,7 @@ dependencies {
     implementation(projects.feature.home)
     implementation(projects.feature.myPage)
     implementation(projects.feature.organization)
+    implementation(projects.feature.sign)
 
     implementation(libs.kotlinx.serialization.json)
 }
