@@ -10,4 +10,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+
+    // Glide
+    implementation(libs.glide)
 }

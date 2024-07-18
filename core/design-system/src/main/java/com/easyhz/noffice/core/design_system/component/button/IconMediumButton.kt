@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
+import com.easyhz.noffice.core.design_system.util.interaction.useInteraction
 
  @Composable
 fun IconMediumButton(
@@ -38,15 +40,17 @@ fun IconMediumButton(
     borderColor: Color = Color.Transparent,
     onClick: () -> Unit
 ) {
+    val (interactionSource, scale) = useInteraction()
     Box(
         modifier = modifier
             .imePadding()
+            .scale(scale)
             .height(42.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(containerColor)
             .border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
-            .noRippleClickable { onClick() },
+            .noRippleClickable(interactionSource) { onClick() },
     ) {
         Row(
             modifier = Modifier.align(Alignment.Center),

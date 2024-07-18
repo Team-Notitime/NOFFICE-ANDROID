@@ -20,6 +20,18 @@
     <string name="card_exception_no_result_sub_title">
         앞으로 어떤 즐거운 이벤트가 있을까요?
     </string>
+    <string name="exception_no_group_title">
+        참여한 그룹이 없어요
+    </string>
+    <string name="exception_no_group_sub_title">
+        그룹에 참여해서 공지를 확인해 보세요!
+    </string>
+    <string name="exception_no_task_title">
+        아직 할 일이 없어요
+    </string>
+    <string name="exception_no_task_sub_title">
+        여유를 즐겨볼까요?
+    </string>
 
     <string name="banner_intro">
         님, 활기찬 오늘은\n
@@ -27,4 +39,6 @@
     <string name="banner_outro">
         이에요!
     </string>
+
+    <string name="organization_new">새로운 그룹</string>
 </resources>
