@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
-import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.semiBold
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
@@ -92,7 +92,7 @@ private fun DetailTopBarTopRightPrev() {
         ),
         trailingItem = DetailTopBarMenu(
             content = {
-                Text(text = "완료", style = semiBold(18), color = Green500)
+                Text(text = "완료", style = semiBold(18), color = Green700)
             },
             onClick = { }
         )
