@@ -47,6 +47,7 @@
             <option value="$PROJECT_DIR$/feature/my-page" />
             <option value="$PROJECT_DIR$/feature/notification" />
             <option value="$PROJECT_DIR$/feature/organization" />
+            <option value="$PROJECT_DIR$/feature/sign" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
