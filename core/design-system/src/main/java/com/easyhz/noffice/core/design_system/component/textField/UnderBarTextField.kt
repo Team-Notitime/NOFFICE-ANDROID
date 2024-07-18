@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.borderBottom
@@ -94,7 +95,9 @@ private fun UnderBarTextFieldContainer(
                         .padding(start = 2.dp),
                     text = placeholder,
                     style = semiBold(20),
-                    color = Grey300
+                    color = Grey300,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

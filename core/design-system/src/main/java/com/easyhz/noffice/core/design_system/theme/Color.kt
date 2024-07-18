@@ -39,7 +39,7 @@ val Green300 = Color(0xFF97EDB3)
 @Stable
 val Green400 = Color(0xFF6CE594)
 @Stable
-val Green500 = Color(0xFF40DD74)
+val Green500 = Color(0xFF26D961)
 @Stable
 val Green600 = Color(0xFF23C75A)
 @Stable

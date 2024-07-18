@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Grey100
@@ -108,7 +109,9 @@ private fun TextFieldContainerContent(
                     modifier = Modifier.align(Alignment.CenterStart).padding(start = 2.dp),
                     text = placeholder,
                     style = SubBody14,
-                    color = Grey400
+                    color = Grey400,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

@@ -23,12 +23,14 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Blue100
-import com.easyhz.noffice.core.design_system.theme.Blue500
+ import com.easyhz.noffice.core.design_system.theme.Blue700
 import com.easyhz.noffice.core.design_system.theme.Body14
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey300
+import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey600
 
@@ -85,10 +87,10 @@ data class CheckButtonDefaults(
     companion object {
         fun default() = CheckButtonDefaults(
             completeContainerColor = Grey100,
-            completeContentColor = Grey300,
+            completeContentColor = Grey400,
             completeIconColor = Grey300,
             incompleteContainerColor = Blue100,
-            incompleteContentColor = Blue500,
+            incompleteContentColor = Blue700,
             incompleteIconColor = null
         )
     }
@@ -152,8 +154,8 @@ private fun CheckButtonOrganizationIncompletePrev() {
         isComplete = true,
         color = CheckButtonDefaults(
             completeContainerColor = Green100,
-            completeContentColor = Green500,
-            completeIconColor = Green500,
+            completeContentColor = Green700,
+            completeIconColor = Green700,
             incompleteContainerColor = Grey50,
             incompleteContentColor = Grey600,
             incompleteIconColor = Grey300

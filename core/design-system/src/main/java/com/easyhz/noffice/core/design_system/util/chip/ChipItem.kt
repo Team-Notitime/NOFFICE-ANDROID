@@ -6,8 +6,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import com.easyhz.noffice.core.design_system.theme.Green300
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.SubHeading15
-import com.easyhz.noffice.core.design_system.theme.White
 
 data class ChipItem(
     var label: String,
@@ -22,7 +22,7 @@ enum class ChipState {
 
 data class ChipStyle(
     val containerColor: Color = Green500,
-    val contentColor: Color = White,
+    val contentColor: Color = Grey800,
     val iconColor: Color? = Green300,
     val textStyle: TextStyle = SubHeading15
 )
