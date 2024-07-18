@@ -27,6 +27,7 @@ import com.easyhz.noffice.core.design_system.theme.Blue100
 import com.easyhz.noffice.core.design_system.theme.Body14
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey300
 import com.easyhz.noffice.core.design_system.theme.Grey400
@@ -153,8 +154,8 @@ private fun CheckButtonOrganizationIncompletePrev() {
         isComplete = true,
         color = CheckButtonDefaults(
             completeContainerColor = Green100,
-            completeContentColor = Green500,
-            completeIconColor = Green500,
+            completeContentColor = Green700,
+            completeIconColor = Green700,
             incompleteContainerColor = Grey50,
             incompleteContentColor = Grey600,
             incompleteIconColor = Grey300
