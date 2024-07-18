@@ -120,6 +120,19 @@ val SemiBold16 = TextStyle(
     )
 )
 
+val SemiBold18 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey800,
+    fontSize = 18.sp,
+    lineHeight = 18.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SubBody16 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.Medium,
@@ -182,6 +195,7 @@ val CardExceptionTitle = TextStyle(
         includeFontPadding = false,
     )
 )
+
 val CardExceptionSubTitle = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.Medium,

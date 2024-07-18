@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey100
-import com.easyhz.noffice.core.design_system.theme.Grey500
-import com.easyhz.noffice.core.design_system.theme.SemiBold16
-import com.easyhz.noffice.core.design_system.theme.White
+import com.easyhz.noffice.core.design_system.theme.Grey600
+import com.easyhz.noffice.core.design_system.theme.Grey900
+import com.easyhz.noffice.core.design_system.theme.SemiBold18
 
 @Composable
 fun MediumButton(
     modifier: Modifier = Modifier,
     text: String,
     enabled: Boolean = true,
-    contentColor: Color = White,
+    contentColor: Color = Grey900,
     containerColor: Color = Green500,
     onClick: () -> Unit
 ) {
@@ -47,7 +47,7 @@ fun MediumButton(
         if (enabled) containerColor else Grey100
     }
     val textColor = remember(enabled, contentColor) {
-        if (enabled) contentColor else Grey500
+        if (enabled) contentColor else Grey600
     }
 
     Box(
@@ -63,7 +63,7 @@ fun MediumButton(
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = text,
-            style = SemiBold16,
+            style = SemiBold18,
             color = textColor
         )
     }
