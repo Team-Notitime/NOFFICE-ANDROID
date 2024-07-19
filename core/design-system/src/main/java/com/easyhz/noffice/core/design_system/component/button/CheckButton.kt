@@ -52,7 +52,7 @@ fun CheckButton(
             .heightIn(min = 42.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(if (isComplete) color.completeContainerColor else color.incompleteContainerColor)
-            .padding(vertical = 10.dp)
+            .padding(vertical = 14.dp)
             .screenHorizonPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -63,11 +63,11 @@ fun CheckButton(
             color = if(isComplete) color.completeContentColor else color.incompleteContentColor,
             style = Body14
         )
-        if (isComplete || color.incompleteIconColor != null) {
+        if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_check),
                 contentDescription = "check",
-                tint = if (isComplete) color.completeIconColor else color.incompleteIconColor ?: color.completeIconColor
+                tint = (if (isComplete) color.completeIconColor else color.incompleteIconColor) ?: color.completeContentColor
             )
         }
     }
@@ -79,7 +79,7 @@ fun CheckButton(
 data class CheckButtonDefaults(
     val completeContainerColor: Color,
     val completeContentColor: Color,
-    val completeIconColor: Color,
+    val completeIconColor: Color?,
     val incompleteContainerColor: Color,
     val incompleteContentColor: Color,
     val incompleteIconColor: Color?,
@@ -180,6 +180,27 @@ private fun CheckButtonOrganizationCompletePrev() {
             incompleteContainerColor = Grey50,
             incompleteContentColor = Grey600,
             incompleteIconColor = Grey300
+        )
+    ) {
+
+    }
+}
+
+
+@Preview(group = "checkButton", name = "organization - complete")
+@Composable
+private fun CheckButtonOrganizationCompletePrev2() {
+    CheckButton(
+        modifier = Modifier.width(300.dp),
+        text = "CMC 15th",
+        isComplete = true,
+        color = CheckButtonDefaults(
+            completeContainerColor = Green100,
+            completeContentColor = Green700,
+            completeIconColor = null,
+            incompleteContainerColor = Grey50,
+            incompleteContentColor = Grey600,
+            incompleteIconColor = null
         )
     ) {
 
