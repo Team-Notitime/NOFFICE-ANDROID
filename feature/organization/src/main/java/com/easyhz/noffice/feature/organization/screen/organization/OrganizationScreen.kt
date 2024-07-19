@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.IconMediumButton
 import com.easyhz.noffice.core.design_system.component.exception.ExceptionView
@@ -21,17 +22,19 @@ import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
 import com.easyhz.noffice.feature.organization.component.organization.OrganizationItem
+import com.easyhz.noffice.feature.organization.contract.organization.OrganizationIntent
+import com.easyhz.noffice.feature.organization.contract.organization.OrganizationSideEffect
 import com.easyhz.noffice.feature.organization.util.OrganizationTopBarMenu
 
 @Composable
 fun OrganizationScreen(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationViewModel = hiltViewModel()
+    viewModel: OrganizationViewModel = hiltViewModel(),
+    navigateToCreation: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NofficeScaffold(
-        modifier = modifier,
         topBar = {
             HomeTopBar(
                 tabs = enumValues<OrganizationTopBarMenu>(),
@@ -48,7 +51,7 @@ fun OrganizationScreen(
             )
         }
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(top = it.calculateTopPadding())
                 .screenHorizonPadding()
         ) {
@@ -57,7 +60,7 @@ fun OrganizationScreen(
                 text = stringResource(id = R.string.organization_new),
                 iconId = R.drawable.ic_plus
             ) {
-
+                viewModel.postIntent(OrganizationIntent.ClickOrganizationCreation)
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -73,6 +76,12 @@ fun OrganizationScreen(
                 }
             }
 
+        }
+    }
+
+    viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
+        when(sideEffect) {
+            is OrganizationSideEffect.NavigateToCreation -> { navigateToCreation() }
         }
     }
 }

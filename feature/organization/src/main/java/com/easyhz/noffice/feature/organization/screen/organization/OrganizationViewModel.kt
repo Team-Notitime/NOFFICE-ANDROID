@@ -14,6 +14,12 @@ class OrganizationViewModel @Inject constructor(
     initialState = OrganizationState.init()
 ) {
     override fun handleIntent(intent: OrganizationIntent) {
-        TODO("Not yet implemented")
+        when(intent) {
+            is OrganizationIntent.ClickOrganizationCreation -> { onClickOrganizationCreation() }
+        }
+    }
+
+    private fun onClickOrganizationCreation() {
+        postSideEffect { OrganizationSideEffect.NavigateToCreation }
     }
 }
