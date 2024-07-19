@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel<State: UiState, Intent: UiIntent, SideEffect: UiSideEffect>(
     initialState: State
 ): ViewModel() {
-    private val currentState: State
+    protected val currentState: State
         get() = uiState.value
 
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
