@@ -33,12 +33,12 @@ internal class NofficeNavController(
     fun isInBottomTabs(): Boolean = currentRoute in routes
 
     @Composable
-    fun mapRouteToTab(): BottomMenuTabs {
+    fun mapRouteToTab(): BottomMenuTabs? {
         return when (currentRoute) {
             Home::class.java.name -> BottomMenuTabs.HOME
 //            Add::class.java.name -> BottomMenuTabs.ADD // FIXME
             Organization::class.java.name -> BottomMenuTabs.ORGANIZATION
-            else -> BottomMenuTabs.HOME
+            else -> null
         }
     }
 
