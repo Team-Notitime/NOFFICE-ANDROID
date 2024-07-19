@@ -51,8 +51,8 @@ class SignUpViewModel @Inject constructor(
         reduce { updateTermsCheck(terms) }
     }
 
-    private fun onChangeNameTextValue(newText: TextFieldValue) {
-        val isEnabledButton = newText.text.isNotBlank()
+    private fun onChangeNameTextValue(newText: String) {
+        val isEnabledButton = newText.isNotBlank()
         reduce { copy(name = newText, enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, isEnabledButton)) }
     }
 

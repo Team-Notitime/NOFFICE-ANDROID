@@ -16,7 +16,7 @@ data class SignUpState(
     val enabledStepButton: EnumMap<SignUpStep, Boolean>,
     val isCheckedAllTerms: Boolean,
     val termsStatusMap: EnumMap<Terms, Boolean>,
-    val name: TextFieldValue,
+    val name: String,
 ) : UiState() {
     companion object {
         fun init() = SignUpState(
@@ -24,7 +24,7 @@ data class SignUpState(
             enabledStepButton = SignUpStep.entries.toEnabledStepButton(),
             isCheckedAllTerms = false,
             termsStatusMap = Terms.entries.toTermsMap(),
-            name = TextFieldValue("")
+            name = ""
         )
     }
 
