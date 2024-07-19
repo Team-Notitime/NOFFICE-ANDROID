@@ -1,6 +1,5 @@
 package com.easyhz.noffice
 
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
@@ -12,9 +11,10 @@ import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.navigation.home.homeScreen
-import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.organizationScreen
 import com.easyhz.noffice.navigation.rememberNofficeNavController
+import com.easyhz.noffice.navigation.sign.screen.SignUp
+import com.easyhz.noffice.navigation.sign.signScreen
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
 
 @Composable
@@ -45,10 +45,11 @@ fun NofficeApp() {
         }
     ) {
         NavHost(
-            navController = navController, startDestination = Home
+            navController = navController, startDestination = SignUp
         ) {
             homeScreen(modifier = Modifier.padding(it))
             organizationScreen(modifier = Modifier.padding(it))
+            signScreen()
         }
     }
 }
