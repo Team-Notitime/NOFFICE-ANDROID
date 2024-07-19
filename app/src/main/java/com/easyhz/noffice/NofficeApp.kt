@@ -54,11 +54,11 @@ fun NofficeApp() {
             AnimatedVisibility(
                 visible = isVisibleBottomBar,
                 enter = slideInVertically(
-                    initialOffsetY = { it},
+                    initialOffsetY = { it },
                     animationSpec = tween(durationMillis = BOTTOM_BAR_DURATION)
                 ),
                 exit = slideOutVertically(
-                    targetOffsetY = { it},
+                    targetOffsetY = { it },
                     animationSpec = tween(durationMillis = BOTTOM_BAR_DURATION)
                 )
             ) {
