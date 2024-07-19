@@ -21,6 +21,12 @@
     <string name="sign_up_terms_required">(필수)</string>
     <string name="sign_up_terms_not_required">(선택)</string>
 
+    <string name="sign_up_name_title">
+        가입을 환영해요!
+        \n여러분의 이름을 알려주세요
+    </string>
+    <string name="sign_up_name_placeholder">실명을 입력해 주세요.</string>
+
     <string name="card_exception_accept_wait_title">
         수락을 기다리고 있어요
     </string>

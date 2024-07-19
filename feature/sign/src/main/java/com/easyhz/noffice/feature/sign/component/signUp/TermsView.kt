@@ -67,9 +67,9 @@ internal fun TermsView(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             text = stringResource(id = R.string.sign_up_button),
-            enabled = uiState.isEnabledButton
+            enabled = uiState.enabledStepButton[uiState.step.currentStep] ?: false
         ) {
-            println("다음")
+            viewModel.postIntent(SignUpIntent.ClickNextButton)
         }
     }
 }

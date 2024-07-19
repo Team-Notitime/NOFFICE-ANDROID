@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.sign.screen.signUp
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -14,17 +15,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
+import com.easyhz.noffice.feature.sign.component.signUp.NameView
 import com.easyhz.noffice.feature.sign.component.signUp.TermsView
+import com.easyhz.noffice.feature.sign.contract.signUp.SignUpIntent
+import com.easyhz.noffice.feature.sign.contract.signUp.SignUpSideEffect
 import com.easyhz.noffice.feature.sign.util.signUp.SignUpStep
 
 @Composable
@@ -32,6 +38,11 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val focusManager = LocalFocusManager.current
+
+    BackHandler(onBack = {
+        viewModel.postIntent(SignUpIntent.ClickBackButton)
+    })
 
     NofficeBasicScaffold(
         topBar = {
@@ -45,7 +56,7 @@ fun SignUpScreen(
                             tint = Grey400
                         )
                     },
-                    onClick = { }
+                    onClick = { viewModel.postIntent(SignUpIntent.ClickBackButton) }
                 )
             )
         }
@@ -71,8 +82,16 @@ fun SignUpScreen(
                 SignUpStep.TERMS -> {
                     TermsView(modifier = Modifier.screenHorizonPadding())
                 }
-                SignUpStep.NAME -> { }
+                SignUpStep.NAME -> {
+                    NameView(modifier = Modifier.screenHorizonPadding())
+                }
             }
+        }
+    }
+
+    viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
+        when(sideEffect) {
+            is SignUpSideEffect.ClearFocus -> { focusManager.clearFocus() }
         }
     }
 }
