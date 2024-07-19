@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
@@ -38,6 +39,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey600
 @Composable
 fun CheckButton(
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
     text: String,
     isComplete: Boolean,
     color: CheckButtonDefaults = CheckButtonDefaults.default(),
@@ -61,7 +63,8 @@ fun CheckButton(
             modifier = Modifier.weight(1f),
             text = text,
             color = if(isComplete) color.completeContentColor else color.incompleteContentColor,
-            style = Body14
+            style = Body14,
+            textAlign = textAlign
         )
         if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
             Icon(
@@ -189,7 +192,7 @@ private fun CheckButtonOrganizationCompletePrev() {
 
 @Preview(group = "checkButton", name = "organization - complete")
 @Composable
-private fun CheckButtonOrganizationCompletePrev2() {
+private fun CheckButtonOrganizationCompleteNullPrev() {
     CheckButton(
         modifier = Modifier.width(300.dp),
         text = "CMC 15th",
