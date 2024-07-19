@@ -47,7 +47,7 @@ internal fun NameView(
             placeholder = stringResource(id = R.string.sign_up_name_placeholder),
             isFilled = false,
             singleLine = true,
-            icon = null
+            icon = null // FIXME
         )
         Spacer(modifier = Modifier
             .fillMaxWidth()
