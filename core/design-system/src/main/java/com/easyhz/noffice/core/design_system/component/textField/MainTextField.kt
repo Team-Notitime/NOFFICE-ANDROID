@@ -26,7 +26,7 @@ fun MainTextField(
     maxCount: Int? = null,
     singleLine: Boolean,
     minLines: Int = 1,
-    icon: TextFieldIcon,
+    icon: TextFieldIcon? = TextFieldIcon.CLEAR,
     onClickIcon: (() -> Unit) = {},
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
