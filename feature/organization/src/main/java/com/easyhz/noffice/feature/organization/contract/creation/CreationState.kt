@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.organization.contract.creation
 
+import android.net.Uri
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.common.extension.toEnumMap
 import com.easyhz.noffice.core.common.util.Step
@@ -12,16 +13,18 @@ import java.util.EnumMap
 data class CreationState(
     val step: Step<CreationStep>,
     val enabledStepButton: EnumMap<CreationStep, Boolean>,
-    val groupName: String,
-    val category: List<CategoryState>
+    val organizationName: String,
+    val category: List<CategoryState>,
+    val organizationImage: Uri
 ): UiState() {
     companion object {
-        const val GROUP_NAME_MAX = 10
+        const val ORGANIZATION_NAME_MAX = 10
         fun init() = CreationState(
-            step = Step(currentStep = CreationStep.GROUP_NAME, previousStep = null),
+            step = Step(currentStep = CreationStep.ORGANIZATION_NAME, previousStep = null),
             enabledStepButton = CreationStep.entries.toEnabledStepButton(),
-            groupName = "",
-            category = Category.toState()
+            organizationName = "",
+            category = Category.toState(),
+            organizationImage = Uri.EMPTY
         )
     }
 

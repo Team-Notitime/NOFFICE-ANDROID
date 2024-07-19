@@ -32,7 +32,7 @@ fun ExceptionView(
     ) {
         Image(
             painter = painterResource(id = type.resId),
-            contentDescription = "no_group"
+            contentDescription = "no_organization"
         )
         Column(modifier = Modifier
             .padding(top = 10.dp)
@@ -59,10 +59,10 @@ fun ExceptionView(
 
 @Preview
 @Composable
-private fun NoGroupPrev() {
+private fun NoOrganizationPrev() {
     ExceptionView(
         modifier = Modifier.fillMaxSize(),
-        type = ExceptionType.NO_GROUP
+        type = ExceptionType.NO_ORGANIZATION
     )
 }
 

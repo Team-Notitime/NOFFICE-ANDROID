@@ -9,10 +9,10 @@ enum class ExceptionType(
     @StringRes val titleStringId: Int,
     @StringRes val subTitleStringId: Int
 ) {
-    NO_GROUP(
+    NO_ORGANIZATION(
         resId = R.drawable.ic_empty_no_group,
-        titleStringId = R.string.exception_no_group_title,
-        subTitleStringId = R.string.exception_no_group_sub_title,
+        titleStringId = R.string.exception_no_organization_title,
+        subTitleStringId = R.string.exception_no_organization_sub_title,
     ), NO_TASK(
         resId = R.drawable.ic_empty_no_task,
         titleStringId = R.string.exception_no_task_title,

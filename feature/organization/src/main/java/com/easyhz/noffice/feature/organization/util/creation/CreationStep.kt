@@ -3,7 +3,7 @@ package com.easyhz.noffice.feature.organization.util.creation
 import com.easyhz.noffice.core.common.util.StepRequired
 
 enum class CreationStep: StepRequired {
-    GROUP_NAME {
+    ORGANIZATION_NAME {
         override val isRequired: Boolean
             get() = true
     }, CATEGORY {

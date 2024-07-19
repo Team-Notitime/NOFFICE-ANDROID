@@ -16,11 +16,11 @@ import com.easyhz.noffice.core.design_system.component.button.MediumButton
 import com.easyhz.noffice.core.design_system.component.textField.MainTextField
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
-import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.GROUP_NAME_MAX
+import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
 
 @Composable
-internal fun GroupNameView(
+internal fun OrganizationNameView(
     modifier: Modifier = Modifier,
     viewModel: OrganizationCreationViewModel = hiltViewModel()
 ) {
@@ -37,14 +37,14 @@ internal fun GroupNameView(
         )
         MainTextField(
             modifier = Modifier.weight(0.3f),
-            value = uiState.groupName,
-            onValueChange = { viewModel.postIntent(CreationIntent.ChangeGroupNameTextValue(it)) },
+            value = uiState.organizationName,
+            onValueChange = { viewModel.postIntent(CreationIntent.ChangeOrganizationNameTextValue(it)) },
             title = null,
             placeholder = stringResource(id = R.string.organization_creation_name_placeholder),
             isFilled = false,
             singleLine = true,
-            maxCount = GROUP_NAME_MAX,
-            onClickIcon =  { viewModel.postIntent(CreationIntent.ClearGroupName) }
+            maxCount = ORGANIZATION_NAME_MAX,
+            onClickIcon =  { viewModel.postIntent(CreationIntent.ClearOrganizationName) }
         )
         Spacer(modifier = Modifier
             .fillMaxWidth()

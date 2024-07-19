@@ -1,13 +1,15 @@
 package com.easyhz.noffice.feature.organization.contract.creation
 
-import androidx.compose.ui.text.input.TextFieldValue
+import android.net.Uri
 import com.easyhz.noffice.core.common.base.UiIntent
 
 sealed class CreationIntent: UiIntent() {
     data object ClickBackButton: CreationIntent()
     data object ClickNextButton: CreationIntent()
-    data class ChangeGroupNameTextValue(val text: String): CreationIntent()
-    data object ClearGroupName: CreationIntent()
+    data class ChangeOrganizationNameTextValue(val text: String): CreationIntent()
+    data object ClearOrganizationName: CreationIntent()
     data object ClearFocus: CreationIntent()
     data class ClickCategoryItem(val selectedIndex: Int): CreationIntent()
+    data object ClickImageView : CreationIntent()
+    data class PickImage(val uri: Uri?) : CreationIntent()
 }

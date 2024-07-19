@@ -47,7 +47,7 @@ fun OrganizationScreen(
         if(uiState.organizationList.isEmpty()) {
             ExceptionView(
                 modifier = Modifier.fillMaxSize(),
-                type = ExceptionType.NO_GROUP
+                type = ExceptionType.NO_ORGANIZATION
             )
         }
         Column(

@@ -1,11 +1,12 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
+import android.net.Uri
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
-import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.GROUP_NAME_MAX
+import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,10 +20,12 @@ class OrganizationCreationViewModel @Inject constructor(
         when (intent) {
             is CreationIntent.ClickBackButton -> { onClickBackButton() }
             is CreationIntent.ClickNextButton -> { onClickNextButton() }
-            is CreationIntent.ChangeGroupNameTextValue -> { onChangeGroupNameTextValue(intent.text) }
-            is CreationIntent.ClearGroupName -> { onClearGroupName() }
+            is CreationIntent.ChangeOrganizationNameTextValue -> { onChangeOrganizationNameTextValue(intent.text) }
+            is CreationIntent.ClearOrganizationName -> { onClearOrganizationName() }
             is CreationIntent.ClearFocus -> { onClearFocus() }
             is CreationIntent.ClickCategoryItem -> { onClickCategoryItem(intent.selectedIndex) }
+            is CreationIntent.ClickImageView -> { onClickImageView() }
+            is CreationIntent.PickImage -> { onPickImage(intent.uri) }
         }
     }
 
@@ -41,12 +44,12 @@ class OrganizationCreationViewModel @Inject constructor(
         }
     }
 
-    private fun onChangeGroupNameTextValue(newText: String) {
-        if (newText.length > GROUP_NAME_MAX) return
+    private fun onChangeOrganizationNameTextValue(newText: String) {
+        if (newText.length > ORGANIZATION_NAME_MAX) return
         val isEnabledButton = newText.isNotBlank()
         reduce {
             copy(
-                groupName = newText,
+                organizationName = newText,
                 enabledStepButton = enabledStepButton.updateStepButton(
                     step.currentStep,
                     isEnabledButton
@@ -55,8 +58,8 @@ class OrganizationCreationViewModel @Inject constructor(
         }
     }
 
-    private fun onClearGroupName() {
-        reduce { copy(groupName = "") }
+    private fun onClearOrganizationName() {
+        reduce { copy(organizationName = "") }
     }
 
     private fun onClearFocus() {
@@ -65,5 +68,14 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun onClickCategoryItem(selectedIndex: Int) {
         reduce { updateCategoryItem(selectedIndex) }
+    }
+
+    private fun onClickImageView() {
+        postSideEffect { CreationSideEffect.NavigateToGallery }
+    }
+    private fun onPickImage(uri: Uri?) {
+        uri?.let {
+            reduce { copy(organizationImage = it) }
+        }
     }
 }

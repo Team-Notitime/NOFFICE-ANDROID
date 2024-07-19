@@ -1,6 +1,9 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -29,7 +32,8 @@ import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.organization.component.creation.CategoryView
-import com.easyhz.noffice.feature.organization.component.creation.GroupNameView
+import com.easyhz.noffice.feature.organization.component.creation.OrganizationNameView
+import com.easyhz.noffice.feature.organization.component.creation.ImageView
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.util.creation.CreationStep
@@ -41,6 +45,11 @@ fun OrganizationCreationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
+    val galleryLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { viewModel.postIntent(CreationIntent.PickImage(it)) }
+        )
 
     BackHandler(onBack = {
         viewModel.postIntent(CreationIntent.ClickBackButton)
@@ -81,9 +90,9 @@ fun OrganizationCreationScreen(
             }, label = "organizationCreationFlow"
         ) { targetScreen ->
             when(targetScreen) {
-                CreationStep.GROUP_NAME -> { GroupNameView(modifier = Modifier.screenHorizonPadding()) }
+                CreationStep.ORGANIZATION_NAME -> { OrganizationNameView(modifier = Modifier.screenHorizonPadding()) }
                 CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.IMAGE -> { }
+                CreationStep.IMAGE -> { ImageView(modifier = Modifier.screenHorizonPadding()) }
                 CreationStep.END_DATE -> { }
                 CreationStep.PROMOTION -> { }
                 CreationStep.SUCCESS -> { }
@@ -94,6 +103,9 @@ fun OrganizationCreationScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
         when(sideEffect) {
             is CreationSideEffect.ClearFocus -> { focusManager.clearFocus() }
+            is CreationSideEffect.NavigateToGallery -> {
+                galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
         }
     }
 }
