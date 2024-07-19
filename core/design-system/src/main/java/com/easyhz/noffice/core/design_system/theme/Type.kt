@@ -45,6 +45,19 @@ val Title2 =  TextStyle(
         includeFontPadding = false,
     )
 )
+
+val Title3 =  TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey800,
+    fontSize = 22.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SubTitle1 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.Medium,
