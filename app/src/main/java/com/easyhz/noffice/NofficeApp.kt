@@ -26,7 +26,6 @@ fun NofficeApp() {
     val currentTab = nofficeNavController.mapRouteToTab()
 
     NofficeScaffold(
-        modifier = Modifier.navigationBarsPadding(),
         floatingActionButton = {
             if(isVisibleBottomBar) {
                 HomeAddButton(
