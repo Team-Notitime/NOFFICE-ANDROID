@@ -34,7 +34,7 @@ internal fun TextFieldContainer(
     maxCount: Int?,
     textCount: Int,
     state: TextFieldState,
-    icon: TextFieldIcon,
+    icon: TextFieldIcon?,
     onClickIcon: (() -> Unit),
     innerTextField: @Composable () -> Unit
 ) {
@@ -91,7 +91,7 @@ private fun TextFieldContainerContent(
     modifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String,
-    icon: TextFieldIcon,
+    icon: TextFieldIcon?,
     onClickIcon: (() -> Unit),
     innerTextField: @Composable () -> Unit
 ) {
@@ -115,7 +115,7 @@ private fun TextFieldContainerContent(
                 )
             }
         }
-        if (state != TextFieldState.Default) {
+        if (state != TextFieldState.Default && icon != null) {
             Box(
                 modifier = Modifier
                     .sizeIn(minHeight = 32.dp, minWidth = 32.dp)

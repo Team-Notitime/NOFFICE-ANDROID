@@ -40,7 +40,7 @@ fun MediumButton(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(targetValue = if (isPressed) 0.95f else 1f, label = "scale")
+    val scale by animateFloatAsState(targetValue = if (isPressed && enabled) 0.95f else 1f, label = "scale")
 
     val onClickInvoke: () -> Unit = remember(enabled, onClick) {
         if (enabled) onClick else { { } }
