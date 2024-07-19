@@ -63,4 +63,5 @@
     <string name="organization_creation_title">그룹 만들기</string>
     <string name="organization_creation_name_title">그룹 이름이 무엇인가요?</string>
     <string name="organization_creation_name_placeholder">이름을 입력해 주세요.</string>
+    <string name="organization_creation_category_title">그룹의 카테고리를 모두 선택해 주세요</string>
 </resources>

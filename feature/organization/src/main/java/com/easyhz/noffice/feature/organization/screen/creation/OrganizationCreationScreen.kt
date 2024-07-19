@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
@@ -22,13 +23,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
-import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
+import com.easyhz.noffice.feature.organization.component.creation.CategoryView
 import com.easyhz.noffice.feature.organization.component.creation.GroupNameView
+import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
@@ -39,6 +41,10 @@ fun OrganizationCreationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
+
+    BackHandler(onBack = {
+        viewModel.postIntent(CreationIntent.ClickBackButton)
+    })
 
     NofficeBasicScaffold(
         modifier = modifier,
@@ -54,7 +60,7 @@ fun OrganizationCreationScreen(
                             tint = Grey400
                         )
                     },
-                    onClick = { }
+                    onClick = { viewModel.postIntent(CreationIntent.ClickBackButton) }
                 )
             )
         }
@@ -76,7 +82,7 @@ fun OrganizationCreationScreen(
         ) { targetScreen ->
             when(targetScreen) {
                 CreationStep.GROUP_NAME -> { GroupNameView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.CATEGORY -> { }
+                CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding()) }
                 CreationStep.IMAGE -> { }
                 CreationStep.END_DATE -> { }
                 CreationStep.PROMOTION -> { }

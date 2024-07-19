@@ -1,6 +1,5 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
-import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
@@ -23,6 +22,7 @@ class OrganizationCreationViewModel @Inject constructor(
             is CreationIntent.ChangeGroupNameTextValue -> { onChangeGroupNameTextValue(intent.text) }
             is CreationIntent.ClearGroupName -> { onClearGroupName() }
             is CreationIntent.ClearFocus -> { onClearFocus() }
+            is CreationIntent.ClickCategoryItem -> { onClickCategoryItem(intent.selectedIndex) }
         }
     }
 
@@ -35,14 +35,15 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onClickNextButton() {
         currentState.step.currentStep.nextStep()?.let { nextStep ->
             reduce { updateStep(currentStep = nextStep) }
+            postSideEffect { CreationSideEffect.ClearFocus }
         } ?: run {
             /* TODO NEXT */
         }
     }
 
-    private fun onChangeGroupNameTextValue(newText: TextFieldValue) {
-        if (newText.text.length > GROUP_NAME_MAX) return
-        val isEnabledButton = newText.text.isNotBlank()
+    private fun onChangeGroupNameTextValue(newText: String) {
+        if (newText.length > GROUP_NAME_MAX) return
+        val isEnabledButton = newText.isNotBlank()
         reduce {
             copy(
                 groupName = newText,
@@ -55,10 +56,14 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onClearGroupName() {
-        reduce { copy(groupName = TextFieldValue("")) }
+        reduce { copy(groupName = "") }
     }
 
     private fun onClearFocus() {
         postSideEffect { CreationSideEffect.ClearFocus }
+    }
+
+    private fun onClickCategoryItem(selectedIndex: Int) {
+        reduce { updateCategoryItem(selectedIndex) }
     }
 }
