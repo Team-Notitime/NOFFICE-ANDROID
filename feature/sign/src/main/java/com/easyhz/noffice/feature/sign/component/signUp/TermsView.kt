@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.sign.component.signUp
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -114,14 +115,19 @@ private fun TermsCheck(
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
             Box(modifier = Modifier.size(32.dp).noRippleClickable { onClickAllCheck() }) {
-                Image(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 3.dp)
-                        .size(18.dp),
-                    painter = painterResource(id = allCheckIconId),
-                    contentDescription = "check"
-                )
+                Crossfade(
+                    modifier = Modifier.align(Alignment.TopStart),
+                    targetState = allCheckIconId,
+                    label = "Check"
+                ) { iconId ->
+                    Image(
+                        modifier = Modifier
+                            .padding(top = 3.dp)
+                            .size(18.dp),
+                        painter = painterResource(id = iconId),
+                        contentDescription = "check"
+                    )
+                }
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -173,13 +179,18 @@ private fun TermsItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.size(32.dp).noRippleClickable { onClickCheck() }) {
-            Image(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .size(18.dp),
-                painter = painterResource(id = checkedIconId),
-                contentDescription = "check"
-            )
+            Crossfade(
+                modifier = Modifier.align(Alignment.CenterStart),
+                targetState = checkedIconId,
+                label = "Check"
+            ) { iconId ->
+                Image(
+                    modifier = Modifier
+                        .size(18.dp),
+                    painter = painterResource(id = iconId),
+                    contentDescription = "check"
+                )
+            }
         }
         Row(
             modifier = Modifier.noRippleClickable { onClickDetail() },
