@@ -43,9 +43,7 @@ class OrganizationCreationViewModel @Inject constructor(
         currentState.step.currentStep.nextStep()?.let { nextStep ->
             reduce { updateStep(currentStep = nextStep) }
             postSideEffect { CreationSideEffect.ClearFocus }
-        } ?: run {
-            /* TODO NEXT */
-        }
+        } ?: onNavigateToInvitation()
     }
 
     private fun onChangeOrganizationNameTextValue(newText: String) {
@@ -94,5 +92,15 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun onClearPromotionCode() {
         reduce { copy(promotionCode = "") }
+    }
+
+    // TODO: 서버 통신 로직 추가
+    private fun onNavigateToInvitation() {
+        postSideEffect {
+            CreationSideEffect.NavigateToInvitation(
+                "www.noffice/dhedgyeqi3e83",
+                currentState.organizationImage.toString()
+            )
+        }
     }
 }

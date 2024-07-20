@@ -7,15 +7,21 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
+import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationScreen
+import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
 import com.easyhz.noffice.feature.organization.screen.organization.OrganizationScreen
 import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
+import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 import com.easyhz.noffice.navigation.util.DURATION
 
 internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
-    navigateToCreation: () -> Unit
+    navigateToCreation: () -> Unit,
+    navigateToInvitation: (String, String)-> Unit,
+    navigateToHome: () -> Unit
 ) {
     composable<Organization> {
         OrganizationScreen(
@@ -29,8 +35,24 @@ internal fun NavGraphBuilder.organizationScreen(
         popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
         popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
     ) {
-        OrganizationCreationScreen()
+        OrganizationCreationScreen(
+            navigateToInvitation = navigateToInvitation
+        )
     }
+    composable<OrganizationInvitation>(
+        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
+        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
+        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
+        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
+    ) {
+        val args = it.toRoute<OrganizationInvitation>()
+        OrganizationInvitationScreen(
+            invitationUrl = args.invitationUrl,
+            imageUrl = args.imageUrl,
+            navigateToHome = navigateToHome
+        )
+    }
+
 }
 
 internal fun NavController.navigateToOrganization(navOptions: NavOptions) {
@@ -42,4 +64,11 @@ internal fun NavController.navigateToOrganization(navOptions: NavOptions) {
 
 internal fun NavController.navigateToOrganizationCreation() {
     navigate(OrganizationCreation)
+}
+
+internal fun NavController.navigateToOrganizationInvitation(invitationUrl: String, imageUrl: String) {
+    val navOptions = navOptions {
+        popUpTo(OrganizationCreation) { inclusive = true }
+    }
+    navigate(OrganizationInvitation(invitationUrl = invitationUrl, imageUrl = imageUrl), navOptions)
 }

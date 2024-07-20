@@ -11,13 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
 import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.navigation.home.homeScreen
+import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
+import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
 import com.easyhz.noffice.navigation.organization.organizationScreen
+import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 import com.easyhz.noffice.navigation.rememberNofficeNavController
 import com.easyhz.noffice.navigation.sign.signScreen
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
@@ -76,7 +80,19 @@ fun NofficeApp() {
             homeScreen(modifier = Modifier.padding(it))
             organizationScreen(
                 modifier = Modifier.padding(it),
-                navigateToCreation = navController::navigateToOrganizationCreation
+                navigateToCreation = navController::navigateToOrganizationCreation,
+                navigateToInvitation = navController::navigateToOrganizationInvitation,
+                navigateToHome = {
+                    val navOptions = navOptions {
+                        popUpTo(navController.graph.id) {
+                            saveState = true
+                            inclusive = false
+                        }
+                        launchSingleTop  = true
+                        restoreState = true
+                    }
+                    navController.navigateToHome(navOptions)
+                }
             )
             signScreen()
         }

@@ -69,4 +69,9 @@
     <string name="organization_creation_end_date_caption">에 활동을 종료할 예정이에요!</string>
     <string name="organization_creation_promotion_title">프로모션 코드를 입력해 주세요</string>
     <string name="organization_creation_promotion_placeholder">코드를 입력해 주세요.</string>
+
+    <string name="organization_creation_success_title">그룹을 만들었어요!</string>
+    <string name="organization_creation_success_sub_title">링크를 통해 멤버들을 초대해 보세요.</string>
+    <string name="organization_creation_success_home_button">그룹 메인으로</string>
+    <string name="organization_creation_success_copy_button">초대 링크 복사</string>
 </resources>

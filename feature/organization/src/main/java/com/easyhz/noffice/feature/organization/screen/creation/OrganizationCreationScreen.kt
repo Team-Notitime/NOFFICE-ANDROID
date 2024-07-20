@@ -43,7 +43,8 @@ import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 @Composable
 fun OrganizationCreationScreen(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationCreationViewModel = hiltViewModel()
+    viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    navigateToInvitation: (String, String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -106,6 +107,9 @@ fun OrganizationCreationScreen(
             is CreationSideEffect.ClearFocus -> { focusManager.clearFocus() }
             is CreationSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+            is CreationSideEffect.NavigateToInvitation -> {
+                navigateToInvitation(sideEffect.invitationUrl, sideEffect.imageUrl)
             }
         }
     }

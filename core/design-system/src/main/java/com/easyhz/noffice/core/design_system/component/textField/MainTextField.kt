@@ -24,6 +24,7 @@ fun MainTextField(
     placeholder: String,
     isFilled: Boolean,
     maxCount: Int? = null,
+    readOnly: Boolean = false,
     singleLine: Boolean,
     minLines: Int = 1,
     icon: TextFieldIcon? = TextFieldIcon.CLEAR,
@@ -41,6 +42,7 @@ fun MainTextField(
         textStyle = SubBody16.copy(
             color = Grey800
         ),
+        readOnly = readOnly,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,
