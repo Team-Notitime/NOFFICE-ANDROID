@@ -1,6 +1,5 @@
 package com.easyhz.noffice.core.design_system.component.banner
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -58,24 +55,16 @@ fun Banner(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 180.dp)
+            .heightIn(min = 108.dp)
             .background(
                 brush = Brush.verticalGradient(listOf(White, Green100)),
             )
     ) {
-        Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomStart),
-            painter = painterResource(id = R.drawable.ic_banner),
-            contentDescription = "banner",
-            contentScale = ContentScale.Crop
-        )
         Text(text = annotatedString,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .screenHorizonPadding()
-                .padding(bottom = 20.dp)
+                .padding(bottom = 8.dp)
         )
     }
 }
