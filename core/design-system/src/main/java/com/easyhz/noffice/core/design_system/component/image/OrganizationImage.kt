@@ -26,7 +26,7 @@ fun OrganizationImage(
         Image(
             modifier = modifier.clip(CircleShape),
             painter = painterResource(id = R.drawable.ic_profile_group),
-            contentDescription = "group_profile",
+            contentDescription = "organization_profile",
             contentScale = ContentScale.Crop
         )
     } else {

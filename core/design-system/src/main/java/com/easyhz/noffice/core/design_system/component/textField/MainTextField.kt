@@ -18,12 +18,13 @@ import com.easyhz.noffice.core.design_system.util.textField.getTextFieldState
 @Composable
 fun MainTextField(
     modifier: Modifier = Modifier,
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
+    value: String,
+    onValueChange: (String) -> Unit,
     title: String?,
     placeholder: String,
     isFilled: Boolean,
     maxCount: Int? = null,
+    readOnly: Boolean = false,
     singleLine: Boolean,
     minLines: Int = 1,
     icon: TextFieldIcon? = TextFieldIcon.CLEAR,
@@ -32,7 +33,7 @@ fun MainTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
-    val state = getTextFieldState(text = value.text, isFilled = isFilled)
+    val state = getTextFieldState(text = value, isFilled = isFilled)
 
     BasicTextField(
         value = value,
@@ -41,6 +42,7 @@ fun MainTextField(
         textStyle = SubBody16.copy(
             color = Grey800
         ),
+        readOnly = readOnly,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,
@@ -57,7 +59,7 @@ fun MainTextField(
                 onClickIcon = {
                     onClickIcon()
                 },
-                textCount = value.text.length,
+                textCount = value.length,
                 maxCount = maxCount,
                 innerTextField = innerTextField
             )
@@ -69,7 +71,7 @@ fun MainTextField(
 @Composable
 private fun MainTextFieldPrev() {
     MainTextField(
-        value = TextFieldValue("내용이 잇음"),
+        value = "내용이 잇음",
         onValueChange = { },
         title = null,
         placeholder = "내용으 입력",
@@ -83,7 +85,7 @@ private fun MainTextFieldPrev() {
 @Composable
 private fun MainTextFieldPlaceholderPrev() {
     MainTextField(
-        value = TextFieldValue(""),
+        value = "",
         onValueChange = { },
         title = null,
         placeholder = "내용dmf dlqfur 입력",
@@ -97,7 +99,7 @@ private fun MainTextFieldPlaceholderPrev() {
 @Composable
 private fun MainTextFieldTitlePrev() {
     MainTextField(
-        value = TextFieldValue(""),
+        value = "",
         onValueChange = { },
         title = "내용",
         placeholder = "내용dmf dlqfur 입력",
@@ -111,7 +113,7 @@ private fun MainTextFieldTitlePrev() {
 @Composable
 private fun MainTextFieldMaxCountPrev() {
     MainTextField(
-        value = TextFieldValue(""),
+        value = "",
         onValueChange = { },
         title = null,
         placeholder = "내용dmf dlqfur 입력",

@@ -28,7 +28,7 @@ import com.easyhz.noffice.core.design_system.util.bottomBar.BottomMenu
 @Composable
 fun <T>  HomeBottomBar(
     modifier: Modifier = Modifier,
-    current: T,
+    current: T?,
     tabs: Array<T>,
     onClick: (T) -> Unit,
 ) where T: Enum<T>, T: BottomMenu {

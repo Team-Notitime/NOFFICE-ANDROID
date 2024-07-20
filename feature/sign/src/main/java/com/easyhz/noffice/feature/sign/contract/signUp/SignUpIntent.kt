@@ -11,6 +11,6 @@ sealed class SignUpIntent: UiIntent() {
     data object ClickTermsAllCheck: SignUpIntent()
     data class ClickTermsCheck(val terms: Terms): SignUpIntent()
     data class ClickTermsDetail(val terms: Terms): SignUpIntent()
-    data class ChangeNameTextValue(val text: TextFieldValue): SignUpIntent()
+    data class ChangeNameTextValue(val text: String): SignUpIntent()
     data object ClearFocus: SignUpIntent()
 }

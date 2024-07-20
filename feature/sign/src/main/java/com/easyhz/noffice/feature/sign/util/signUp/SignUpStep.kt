@@ -1,9 +1,15 @@
 package com.easyhz.noffice.feature.sign.util.signUp
 
-import java.util.EnumMap
+import com.easyhz.noffice.core.common.util.StepRequired
 
-enum class SignUpStep {
-    TERMS, NAME;
+enum class SignUpStep: StepRequired {
+    TERMS {
+        override val isRequired: Boolean
+            get() = true
+    }, NAME {
+        override val isRequired: Boolean
+            get() = true
+    };
 
     fun nextStep(): SignUpStep? =
         entries.getOrNull(this.ordinal + 1)
@@ -11,10 +17,3 @@ enum class SignUpStep {
     fun beforeStep(): SignUpStep? =
         entries.getOrNull(this.ordinal - 1)
 }
-
-fun List<SignUpStep>.toEnabledStepButton(): EnumMap<SignUpStep, Boolean> =
-    EnumMap<SignUpStep, Boolean>(SignUpStep::class.java).apply {
-        this@toEnabledStepButton.forEach { step ->
-            this[step] = false
-        }
-    }

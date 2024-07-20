@@ -15,9 +15,12 @@ fun Modifier.screenHorizonPadding(): Modifier = padding(horizontal = 16.dp)
 
 inline fun Modifier.noRippleClickable(
     interactionSource: MutableInteractionSource? = null,
+    enabled: Boolean = true,
     crossinline onClick: () -> Unit,
 ): Modifier = composed {
-    clickable(indication = null,
+    clickable(
+        indication = null,
+        enabled = enabled,
         interactionSource = interactionSource ?: remember { MutableInteractionSource() }) {
         onClick()
     }

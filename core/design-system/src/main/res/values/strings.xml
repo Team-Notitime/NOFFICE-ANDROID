@@ -39,10 +39,10 @@
     <string name="card_exception_no_result_sub_title">
         앞으로 어떤 즐거운 이벤트가 있을까요?
     </string>
-    <string name="exception_no_group_title">
+    <string name="exception_no_organization_title">
         참여한 그룹이 없어요
     </string>
-    <string name="exception_no_group_sub_title">
+    <string name="exception_no_organization_sub_title">
         그룹에 참여해서 공지를 확인해 보세요!
     </string>
     <string name="exception_no_task_title">
@@ -60,4 +60,18 @@
     </string>
 
     <string name="organization_new">새로운 그룹</string>
+    <string name="organization_creation_title">그룹 만들기</string>
+    <string name="organization_creation_name_title">그룹 이름이 무엇인가요?</string>
+    <string name="organization_creation_name_placeholder">이름을 입력해 주세요.</string>
+    <string name="organization_creation_category_title">그룹의 카테고리를 모두 선택해 주세요</string>
+    <string name="organization_creation_image_title">대표 이미지를 설정해 주세요</string>
+    <string name="organization_creation_end_date_title">활동 종료 날짜가 언제인가요?</string>
+    <string name="organization_creation_end_date_caption">에 활동을 종료할 예정이에요!</string>
+    <string name="organization_creation_promotion_title">프로모션 코드를 입력해 주세요</string>
+    <string name="organization_creation_promotion_placeholder">코드를 입력해 주세요.</string>
+
+    <string name="organization_creation_success_title">그룹을 만들었어요!</string>
+    <string name="organization_creation_success_sub_title">링크를 통해 멤버들을 초대해 보세요.</string>
+    <string name="organization_creation_success_home_button">그룹 메인으로</string>
+    <string name="organization_creation_success_copy_button">초대 링크 복사</string>
 </resources>

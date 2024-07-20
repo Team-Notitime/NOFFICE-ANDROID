@@ -13,4 +13,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
+
+    // Calendar
+    implementation(libs.calendar.compose)
 }

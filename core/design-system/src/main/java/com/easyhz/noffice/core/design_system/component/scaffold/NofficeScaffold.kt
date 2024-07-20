@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.White
 
 @Composable
@@ -28,6 +29,16 @@ fun NofficeScaffold(
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            updateWindowColors(
+                view = view,
+                statusBarColor = null,
+                navigationBarColor = Grey50
+            )
+        }
+    }
     Scaffold(
         modifier = modifier,
         topBar = topBar,

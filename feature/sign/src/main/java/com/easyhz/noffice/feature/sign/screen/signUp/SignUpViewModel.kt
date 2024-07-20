@@ -2,10 +2,10 @@ package com.easyhz.noffice.feature.sign.screen.signUp
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpIntent
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpSideEffect
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpState
-import com.easyhz.noffice.feature.sign.contract.signUp.updateStatus
 import com.easyhz.noffice.feature.sign.util.signUp.Terms
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -51,9 +51,9 @@ class SignUpViewModel @Inject constructor(
         reduce { updateTermsCheck(terms) }
     }
 
-    private fun onChangeNameTextValue(newText: TextFieldValue) {
-        val isEnabledButton = newText.text.isNotBlank()
-        reduce { copy(name = newText, enabledStepButton = enabledStepButton.updateStatus(step.currentStep, isEnabledButton)) }
+    private fun onChangeNameTextValue(newText: String) {
+        val isEnabledButton = newText.isNotBlank()
+        reduce { copy(name = newText, enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, isEnabledButton)) }
     }
 
     private fun onClearFocus() {

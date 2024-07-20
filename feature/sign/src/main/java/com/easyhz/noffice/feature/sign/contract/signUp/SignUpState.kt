@@ -3,18 +3,20 @@ package com.easyhz.noffice.feature.sign.contract.signUp
 import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.common.extension.toEnumMap
+import com.easyhz.noffice.core.common.util.Step
+import com.easyhz.noffice.core.common.util.toEnabledStepButton
+import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.feature.sign.util.signUp.SignUpStep
 import com.easyhz.noffice.feature.sign.util.signUp.Terms
-import com.easyhz.noffice.feature.sign.util.signUp.toEnabledStepButton
 import com.easyhz.noffice.feature.sign.util.signUp.toTermsMap
 import java.util.EnumMap
 
 data class SignUpState(
-    val step: Step,
+    val step: Step<SignUpStep>,
     val enabledStepButton: EnumMap<SignUpStep, Boolean>,
     val isCheckedAllTerms: Boolean,
     val termsStatusMap: EnumMap<Terms, Boolean>,
-    val name: TextFieldValue,
+    val name: String,
 ) : UiState() {
     companion object {
         fun init() = SignUpState(
@@ -22,7 +24,7 @@ data class SignUpState(
             enabledStepButton = SignUpStep.entries.toEnabledStepButton(),
             isCheckedAllTerms = false,
             termsStatusMap = Terms.entries.toTermsMap(),
-            name = TextFieldValue("")
+            name = ""
         )
     }
 
@@ -43,7 +45,7 @@ data class SignUpState(
         return copy(
             termsStatusMap = newMap,
             isCheckedAllTerms = isCheckedAll,
-            enabledStepButton = enabledStepButton.updateStatus(step.currentStep, isEnabledButton)
+            enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, isEnabledButton)
         )
     }
 
@@ -53,17 +55,7 @@ data class SignUpState(
         return copy(
             termsStatusMap = newMap,
             isCheckedAllTerms = !isCheckedAllTerms,
-            enabledStepButton = enabledStepButton.updateStatus(step.currentStep, isEnabledButton)
+            enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, isEnabledButton)
         )
     }
-}
-
-data class Step(
-    val currentStep: SignUpStep,
-    val previousStep: SignUpStep?
-)
-
-internal fun EnumMap<SignUpStep, Boolean>.updateStatus(key: SignUpStep, isEnabled: Boolean): EnumMap<SignUpStep, Boolean> {
-    this[key] = isEnabled
-    return this
 }
