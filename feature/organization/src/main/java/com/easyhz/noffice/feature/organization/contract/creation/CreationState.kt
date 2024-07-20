@@ -17,6 +17,7 @@ data class CreationState(
     val organizationName: String,
     val category: List<CategoryState>,
     val organizationImage: Uri,
+    val isEnabledGallery: Boolean,
     val endDate: LocalDate,
     val promotionCode: String,
 ): UiState() {
@@ -28,6 +29,7 @@ data class CreationState(
             organizationName = "",
             category = Category.toState(),
             organizationImage = Uri.EMPTY,
+            isEnabledGallery = true,
             endDate = LocalDate.now(),
             promotionCode = ""
         )

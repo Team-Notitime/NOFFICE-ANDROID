@@ -51,7 +51,9 @@ internal fun ImageView(
                 .align(Alignment.CenterHorizontally)
                 .clip(RoundedCornerShape(24.dp))
                 .background(Grey50)
-                .noRippleClickable { viewModel.postIntent(CreationIntent.ClickImageView) }
+                .noRippleClickable {
+                    viewModel.postIntent(CreationIntent.ClickImageView)
+                }
         ) {
             when (uiState.organizationImage) {
                 Uri.EMPTY -> {
