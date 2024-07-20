@@ -8,6 +8,7 @@ import com.easyhz.noffice.core.common.util.toEnabledStepButton
 import com.easyhz.noffice.feature.organization.util.creation.Category
 import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 import com.easyhz.noffice.feature.organization.util.creation.toState
+import java.time.LocalDate
 import java.util.EnumMap
 
 data class CreationState(
@@ -15,7 +16,8 @@ data class CreationState(
     val enabledStepButton: EnumMap<CreationStep, Boolean>,
     val organizationName: String,
     val category: List<CategoryState>,
-    val organizationImage: Uri
+    val organizationImage: Uri,
+    val endDate: LocalDate,
 ): UiState() {
     companion object {
         const val ORGANIZATION_NAME_MAX = 10
@@ -24,7 +26,8 @@ data class CreationState(
             enabledStepButton = CreationStep.entries.toEnabledStepButton(),
             organizationName = "",
             category = Category.toState(),
-            organizationImage = Uri.EMPTY
+            organizationImage = Uri.EMPTY,
+            endDate = LocalDate.now()
         )
     }
 

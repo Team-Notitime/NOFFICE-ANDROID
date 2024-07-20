@@ -65,4 +65,5 @@
     <string name="organization_creation_name_placeholder">이름을 입력해 주세요.</string>
     <string name="organization_creation_category_title">그룹의 카테고리를 모두 선택해 주세요</string>
     <string name="organization_creation_image_title">대표 이미지를 설정해 주세요</string>
+    <string name="organization_creation_end_date_title">활동 종료 날짜가 언제인가요?</string>
 </resources>

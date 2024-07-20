@@ -8,6 +8,7 @@ import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEff
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +27,7 @@ class OrganizationCreationViewModel @Inject constructor(
             is CreationIntent.ClickCategoryItem -> { onClickCategoryItem(intent.selectedIndex) }
             is CreationIntent.ClickImageView -> { onClickImageView() }
             is CreationIntent.PickImage -> { onPickImage(intent.uri) }
+            is CreationIntent.ChangeEndDate -> { onChangeEndDate(intent.date) }
         }
     }
 
@@ -73,9 +75,14 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onClickImageView() {
         postSideEffect { CreationSideEffect.NavigateToGallery }
     }
+
     private fun onPickImage(uri: Uri?) {
         uri?.let {
             reduce { copy(organizationImage = it) }
         }
+    }
+
+    private fun onChangeEndDate(date: LocalDate) {
+        reduce { copy(endDate = date) }
     }
 }
