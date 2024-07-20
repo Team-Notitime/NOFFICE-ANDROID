@@ -36,7 +36,7 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onClickBackButton() {
         currentState.step.currentStep.beforeStep()?.let { beforeStep ->
             reduce { updateStep(currentStep = beforeStep) }
-        } // TODO NAVIGATE TO BACK
+        } ?: onNavigateToHome()
     }
 
     private fun onClickNextButton() {
@@ -73,13 +73,13 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onClickImageView() {
+        if (!currentState.isEnabledGallery) return
         postSideEffect { CreationSideEffect.NavigateToGallery }
+        reduce { copy(isEnabledGallery = false) }
     }
 
     private fun onPickImage(uri: Uri?) {
-        uri?.let {
-            reduce { copy(organizationImage = it) }
-        }
+        reduce { copy(organizationImage = uri ?: Uri.EMPTY, isEnabledGallery = true) }
     }
 
     private fun onChangeEndDate(date: LocalDate) {
@@ -92,6 +92,10 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun onClearPromotionCode() {
         reduce { copy(promotionCode = "") }
+    }
+
+    private fun onNavigateToHome() {
+        postSideEffect { CreationSideEffect.NavigateToHome }
     }
 
     // TODO: 서버 통신 로직 추가

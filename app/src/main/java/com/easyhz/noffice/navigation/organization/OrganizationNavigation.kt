@@ -36,7 +36,8 @@ internal fun NavGraphBuilder.organizationScreen(
         popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
     ) {
         OrganizationCreationScreen(
-            navigateToInvitation = navigateToInvitation
+            navigateToInvitation = navigateToInvitation,
+            navigateToHome = navigateToHome
         )
     }
     composable<OrganizationInvitation>(

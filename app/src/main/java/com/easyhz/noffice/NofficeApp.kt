@@ -21,7 +21,6 @@ import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
 import com.easyhz.noffice.navigation.organization.organizationScreen
-import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 import com.easyhz.noffice.navigation.rememberNofficeNavController
 import com.easyhz.noffice.navigation.sign.signScreen
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
@@ -85,11 +84,8 @@ fun NofficeApp() {
                 navigateToHome = {
                     val navOptions = navOptions {
                         popUpTo(navController.graph.id) {
-                            saveState = true
-                            inclusive = false
+                            inclusive = true
                         }
-                        launchSingleTop  = true
-                        restoreState = true
                     }
                     navController.navigateToHome(navOptions)
                 }
