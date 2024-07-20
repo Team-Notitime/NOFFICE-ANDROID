@@ -18,7 +18,6 @@ import com.easyhz.noffice.feature.home.component.common.OrganizationHeader
 fun NoticeView(
     modifier: Modifier = Modifier,
 ) {
-
     Column(modifier = modifier) {
         Banner(userName = "푸바옹", date = "금요일")
         OrganizationHeader(
