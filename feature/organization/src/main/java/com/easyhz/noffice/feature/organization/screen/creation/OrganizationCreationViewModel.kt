@@ -28,6 +28,8 @@ class OrganizationCreationViewModel @Inject constructor(
             is CreationIntent.ClickImageView -> { onClickImageView() }
             is CreationIntent.PickImage -> { onPickImage(intent.uri) }
             is CreationIntent.ChangeEndDate -> { onChangeEndDate(intent.date) }
+            is CreationIntent.ChangePromotionTextValue -> { onChangePromotionTextValue(intent.text) }
+            is CreationIntent.ClearPromotionCode -> { onClearPromotionCode() }
         }
     }
 
@@ -84,5 +86,13 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun onChangeEndDate(date: LocalDate) {
         reduce { copy(endDate = date) }
+    }
+
+    private fun onChangePromotionTextValue(newText: String) {
+        reduce { copy(promotionCode = newText) }
+    }
+
+    private fun onClearPromotionCode() {
+        reduce { copy(promotionCode = "") }
     }
 }

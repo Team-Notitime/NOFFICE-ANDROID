@@ -18,6 +18,7 @@ data class CreationState(
     val category: List<CategoryState>,
     val organizationImage: Uri,
     val endDate: LocalDate,
+    val promotionCode: String,
 ): UiState() {
     companion object {
         const val ORGANIZATION_NAME_MAX = 10
@@ -27,7 +28,8 @@ data class CreationState(
             organizationName = "",
             category = Category.toState(),
             organizationImage = Uri.EMPTY,
-            endDate = LocalDate.now()
+            endDate = LocalDate.now(),
+            promotionCode = ""
         )
     }
 

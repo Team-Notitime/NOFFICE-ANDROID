@@ -35,6 +35,7 @@ import com.easyhz.noffice.feature.organization.component.creation.CategoryView
 import com.easyhz.noffice.feature.organization.component.creation.EndDateView
 import com.easyhz.noffice.feature.organization.component.creation.OrganizationNameView
 import com.easyhz.noffice.feature.organization.component.creation.ImageView
+import com.easyhz.noffice.feature.organization.component.creation.PromotionView
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.util.creation.CreationStep
@@ -95,8 +96,7 @@ fun OrganizationCreationScreen(
                 CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding()) }
                 CreationStep.IMAGE -> { ImageView(modifier = Modifier.screenHorizonPadding()) }
                 CreationStep.END_DATE -> { EndDateView() }
-                CreationStep.PROMOTION -> { }
-                CreationStep.SUCCESS -> { }
+                CreationStep.PROMOTION -> { PromotionView(modifier = Modifier.screenHorizonPadding()) }
             }
         }
     }

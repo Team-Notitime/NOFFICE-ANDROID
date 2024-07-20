@@ -18,9 +18,6 @@ enum class CreationStep: StepRequired {
     }, PROMOTION {
         override val isRequired: Boolean
             get() = false
-    }, SUCCESS {
-        override val isRequired: Boolean
-            get() = false
     };
 
     fun nextStep(): CreationStep? =

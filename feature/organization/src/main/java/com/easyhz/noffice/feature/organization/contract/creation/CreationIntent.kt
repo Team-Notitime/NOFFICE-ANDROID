@@ -14,4 +14,6 @@ sealed class CreationIntent: UiIntent() {
     data object ClickImageView : CreationIntent()
     data class PickImage(val uri: Uri?) : CreationIntent()
     data class ChangeEndDate(val date: LocalDate): CreationIntent()
+    data class ChangePromotionTextValue(val text: String): CreationIntent()
+    data object ClearPromotionCode: CreationIntent()
 }
