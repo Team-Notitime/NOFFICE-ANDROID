@@ -233,3 +233,27 @@ val CardExceptionSubTitle = TextStyle(
         includeFontPadding = false,
     )
 )
+
+val CalendarCaption1 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Green800,
+    fontSize = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val CalendarCaption2 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey400,
+    fontSize = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
