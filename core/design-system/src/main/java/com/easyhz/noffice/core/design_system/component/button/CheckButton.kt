@@ -2,6 +2,7 @@ package com.easyhz.noffice.core.design_system.component.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -66,12 +67,14 @@ fun CheckButton(
             style = Body14,
             textAlign = textAlign
         )
-        if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_check),
-                contentDescription = "check",
-                tint = (if (isComplete) color.completeIconColor else color.incompleteIconColor) ?: color.completeContentColor
-            )
+        Box(modifier = Modifier.heightIn(18.dp)) {
+            if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_check),
+                    contentDescription = "check",
+                    tint = (if (isComplete) color.completeIconColor else color.incompleteIconColor) ?: color.completeContentColor
+                )
+            }
         }
     }
 }
