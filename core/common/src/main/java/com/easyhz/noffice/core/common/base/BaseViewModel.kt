@@ -2,13 +2,11 @@ package com.easyhz.noffice.core.common.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -31,8 +29,8 @@ abstract class BaseViewModel<State: UiState, Intent: UiIntent, SideEffect: UiSid
     private val _intent: MutableSharedFlow<Intent> = MutableSharedFlow()
     val intent = _intent.asSharedFlow()
 
-    private val _sideEffect: Channel<SideEffect> = Channel()
-    val sideEffect = _sideEffect.receiveAsFlow()
+    private val _sideEffect: MutableSharedFlow<SideEffect> = MutableSharedFlow()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         subscribeIntent()
@@ -63,5 +61,5 @@ abstract class BaseViewModel<State: UiState, Intent: UiIntent, SideEffect: UiSid
     /**
      * [SideEffect] 설정
      */
-    fun postSideEffect(builder: () -> SideEffect) = viewModelScope.launch { _sideEffect.send(builder()) }
+    fun postSideEffect(builder: () -> SideEffect) = viewModelScope.launch { _sideEffect.emit(builder()) }
 }
