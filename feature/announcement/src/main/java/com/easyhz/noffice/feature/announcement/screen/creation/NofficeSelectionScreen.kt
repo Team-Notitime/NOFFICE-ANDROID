@@ -71,7 +71,7 @@ fun NofficeSelectionScreen(
                 .screenHorizonPadding(),
         ) {
             CreationTitle(
-                title = stringResource(id = R.string.announcement_creation_noffice_selection)
+                title = stringResource(id = R.string.announcement_creation_noffice_selection_title)
             )
 
             LazyColumn(

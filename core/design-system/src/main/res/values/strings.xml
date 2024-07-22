@@ -78,7 +78,7 @@
     <string name="organization_creation_success_copy_button">초대 링크 복사</string>
 
     <string name="announcement_creation_title">노티 등록</string>
-    <string name="announcement_creation_noffice_selection">
+    <string name="announcement_creation_noffice_selection_title">
         어느 노피스에
         \n노티를 등록할까요?
     </string>
