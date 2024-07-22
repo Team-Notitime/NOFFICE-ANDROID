@@ -76,4 +76,10 @@
     <string name="organization_creation_success_sub_title">링크를 통해 멤버들을 초대해 보세요.</string>
     <string name="organization_creation_success_home_button">그룹 메인으로</string>
     <string name="organization_creation_success_copy_button">초대 링크 복사</string>
+
+    <string name="announcement_creation_title">노티 등록</string>
+    <string name="announcement_creation_noffice_selection">
+        어느 노피스에
+        \n노티를 등록할까요?
+    </string>
 </resources>
