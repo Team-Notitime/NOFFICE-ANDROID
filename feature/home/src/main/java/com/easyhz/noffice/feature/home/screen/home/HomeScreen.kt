@@ -10,7 +10,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
+import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.feature.home.component.notice.NoticeView
+import com.easyhz.noffice.feature.home.component.task.TaskView
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
 import com.easyhz.noffice.feature.home.util.HomeTopBarMenu
 
@@ -42,7 +44,7 @@ fun HomeScreen(
                 }
 
                 HomeTopBarMenu.TASK -> {
-                    // TODO : TASK
+                    TaskView(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()).screenHorizonPadding())
                 }
             }
         }
