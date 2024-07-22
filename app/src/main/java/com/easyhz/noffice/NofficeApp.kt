@@ -51,10 +51,7 @@ fun NofficeApp() {
             ) {
                 HomeAddButton(
                     modifier = Modifier.offset(y = 52.dp)
-                ) {
-                    println("click")
-                    navController.navigateToAnnouncementNofficeSelection()
-                }
+                ) { navController.navigateToAnnouncementNofficeSelection() }
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
