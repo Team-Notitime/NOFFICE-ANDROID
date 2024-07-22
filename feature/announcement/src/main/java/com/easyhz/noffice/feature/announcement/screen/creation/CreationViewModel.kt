@@ -17,6 +17,7 @@ class CreationViewModel @Inject constructor(
         when(intent) {
             is CreationIntent.ClickBackButton -> { onClickBackButton() }
             is CreationIntent.ClickNextButton -> { onClickNextButton() }
+            is CreationIntent.SelectedOrganization -> { onSelectedOrganization(organization = intent.organization) }
         }
     }
 
@@ -26,5 +27,9 @@ class CreationViewModel @Inject constructor(
 
     private fun onClickNextButton() {
         postSideEffect { CreationSideEffect.NavigateToNext }
+    }
+
+    private fun onSelectedOrganization(organization: String) {
+        reduce { copy(selectedOrganization = organization) }
     }
 }

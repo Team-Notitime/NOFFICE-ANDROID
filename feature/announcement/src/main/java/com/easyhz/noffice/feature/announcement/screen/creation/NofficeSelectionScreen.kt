@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,10 +63,10 @@ fun NofficeSelectionScreen(
                 title = stringResource(id = R.string.announcement_creation_title),
             )
         }
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = modifier
-                .padding(it)
+                .padding(paddingValues)
                 .fillMaxSize()
                 .screenHorizonPadding(),
         ) {
@@ -80,11 +81,11 @@ fun NofficeSelectionScreen(
                 item {
                     Spacer(modifier = Modifier.width(4.dp))
                 }
-                items(30) {
+                items(uiState.organizationList) {
                     CheckButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "CMC ${it + 1}th",
-                        isComplete = true,
+                        text = it,
+                        isComplete = uiState.selectedOrganization == it,
                         color = CheckButtonDefaults(
                             completeContainerColor = Green100,
                             completeContentColor = Green700,
@@ -94,7 +95,7 @@ fun NofficeSelectionScreen(
                             incompleteIconColor = Grey300
                         )
                     ) {
-
+                        viewModel.postIntent(CreationIntent.SelectedOrganization(it))
                     }
                 }
             }
