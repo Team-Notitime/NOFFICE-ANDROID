@@ -27,6 +27,7 @@ okhttp = "4.12.0"
 serialization = "1.6.3"
 glide = "1.0.0-beta01"
 calendar = "2.6.0-beta01"
+googleid = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +68,7 @@ retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
 glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide" }
 calendar-compose = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
