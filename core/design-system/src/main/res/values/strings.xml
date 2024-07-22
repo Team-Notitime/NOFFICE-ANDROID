@@ -8,6 +8,8 @@
     <string name="error_not_found">요청한 페이지가 존재하지 않아요.</string>
     <string name="error_internal_server">서버에 문제가 발생했어요. 잠시 후 다시 시도해 주세요.</string>
 
+    <string name="social_login_google">Google로 로그인</string>
+
     <string name="sign_up_button">다음</string>
     <string name="sign_up_terms_title">약관에 동의해 주세요</string>
     <string name="sign_up_terms_sub_title">여러분의 개인 정보와 서비스 이용 권리를 \n잘 지켜드릴게요.</string>
