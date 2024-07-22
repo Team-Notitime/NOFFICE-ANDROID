@@ -14,6 +14,9 @@ import androidx.navigation.compose.NavHost
 import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
+import com.easyhz.noffice.navigation.announcement.announcementScreen
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementCreationContent
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeScreen
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
@@ -48,7 +51,10 @@ fun NofficeApp() {
             ) {
                 HomeAddButton(
                     modifier = Modifier.offset(y = 52.dp)
-                ) { }
+                ) {
+                    println("click")
+                    navController.navigateToAnnouncementNofficeSelection()
+                }
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
@@ -85,7 +91,9 @@ fun NofficeApp() {
             )
             signScreen(
                  navigateToHome = navController::navigateToHome
-
+            )
+            announcementScreen(
+                navigateToAnnouncementCreationContent = navController::navigateToAnnouncementCreationContent
             )
         }
     }

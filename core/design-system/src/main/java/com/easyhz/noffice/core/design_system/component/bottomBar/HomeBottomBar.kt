@@ -51,7 +51,7 @@ fun <T>  HomeBottomBar(
                 )
             } else {
                 Box(
-                    modifier = Modifier.width(72.dp).noRippleClickable { onClick(tabs[1]) },
+                    modifier = Modifier.width(72.dp).height(49.dp).noRippleClickable { onClick(tabs[1]) },
                 )
             }
         }
