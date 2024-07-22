@@ -36,7 +36,7 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onClickBackButton() {
         currentState.step.currentStep.beforeStep()?.let { beforeStep ->
             reduce { updateStep(currentStep = beforeStep) }
-        } ?: onNavigateToHome()
+        } ?: onNavigateToUp()
     }
 
     private fun onClickNextButton() {
@@ -94,8 +94,8 @@ class OrganizationCreationViewModel @Inject constructor(
         reduce { copy(promotionCode = "") }
     }
 
-    private fun onNavigateToHome() {
-        postSideEffect { CreationSideEffect.NavigateToHome }
+    private fun onNavigateToUp() {
+        postSideEffect { CreationSideEffect.NavigateToUp }
     }
 
     // TODO: 서버 통신 로직 추가

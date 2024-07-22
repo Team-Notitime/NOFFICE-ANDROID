@@ -45,7 +45,7 @@ fun OrganizationCreationScreen(
     modifier: Modifier = Modifier,
     viewModel: OrganizationCreationViewModel = hiltViewModel(),
     navigateToInvitation: (String, String) -> Unit,
-    navigateToHome: () -> Unit
+    navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -109,10 +109,10 @@ fun OrganizationCreationScreen(
             is CreationSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
-            is CreationSideEffect.NavigateToHome -> { navigateToHome() }
             is CreationSideEffect.NavigateToInvitation -> {
                 navigateToInvitation(sideEffect.invitationUrl, sideEffect.imageUrl)
             }
+            is CreationSideEffect.NavigateToUp -> { navigateToUp() }
         }
     }
 }

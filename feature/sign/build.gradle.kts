@@ -12,4 +12,6 @@ android {
 dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.common)
+
+    implementation(libs.googleid)
 }
