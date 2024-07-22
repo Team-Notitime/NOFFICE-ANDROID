@@ -46,6 +46,7 @@ fun <T> HomeTopBar(
 
     Box(
         modifier = modifier
+            .padding(top = 8.dp)
             .screenHorizonPadding()
             .fillMaxWidth()
             .height(44.dp),

@@ -3,6 +3,7 @@ package com.easyhz.noffice.core.design_system.component.topBar
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Icon
@@ -32,6 +33,7 @@ fun DetailTopBar(
 ) {
     Box(
         modifier = modifier
+            .padding(top = 8.dp)
             .screenHorizonPadding()
             .fillMaxWidth()
             .height(44.dp),
