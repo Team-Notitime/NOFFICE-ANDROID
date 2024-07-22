@@ -20,6 +20,7 @@ import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
 import com.easyhz.noffice.navigation.organization.organizationScreen
 import com.easyhz.noffice.navigation.rememberNofficeNavController
+import com.easyhz.noffice.navigation.sign.screen.LogIn
 import com.easyhz.noffice.navigation.sign.signScreen
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
@@ -72,7 +73,7 @@ fun NofficeApp() {
         }
     ) {
         NavHost(
-            navController = navController, startDestination = Home
+            navController = navController, startDestination = LogIn
         ) {
             homeScreen(modifier = Modifier.padding(it))
             organizationScreen(
