@@ -11,13 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navOptions
 import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.navigation.home.homeScreen
 import com.easyhz.noffice.navigation.home.navigateToHome
-import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
 import com.easyhz.noffice.navigation.organization.organizationScreen
@@ -81,16 +79,13 @@ fun NofficeApp() {
                 modifier = Modifier.padding(it),
                 navigateToCreation = navController::navigateToOrganizationCreation,
                 navigateToInvitation = navController::navigateToOrganizationInvitation,
-                navigateToHome = {
-                    val navOptions = navOptions {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
-                    navController.navigateToHome(navOptions)
-                }
+                navigateToHome = navController::navigateToHome,
+                navigateToUp = navController::navigateUp
             )
-            signScreen()
+            signScreen(
+                 navigateToHome = navController::navigateToHome
+
+            )
         }
     }
 }

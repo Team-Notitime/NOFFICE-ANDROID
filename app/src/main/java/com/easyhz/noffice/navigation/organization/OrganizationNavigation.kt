@@ -21,7 +21,8 @@ internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
     navigateToCreation: () -> Unit,
     navigateToInvitation: (String, String)-> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    navigateToUp: () -> Unit,
 ) {
     composable<Organization> {
         OrganizationScreen(
@@ -37,7 +38,7 @@ internal fun NavGraphBuilder.organizationScreen(
     ) {
         OrganizationCreationScreen(
             navigateToInvitation = navigateToInvitation,
-            navigateToHome = navigateToHome
+            navigateToUp = navigateToUp
         )
     }
     composable<OrganizationInvitation>(
