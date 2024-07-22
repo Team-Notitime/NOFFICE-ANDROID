@@ -19,6 +19,7 @@ import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementCreation
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeScreen
 import com.easyhz.noffice.navigation.home.navigateToHome
+import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
 import com.easyhz.noffice.navigation.organization.organizationScreen
@@ -76,7 +77,7 @@ fun NofficeApp() {
         }
     ) {
         NavHost(
-            navController = navController, startDestination = LogIn
+            navController = navController, startDestination = Home
         ) {
             homeScreen(modifier = Modifier.padding(it))
             organizationScreen(
@@ -90,7 +91,7 @@ fun NofficeApp() {
                  navigateToHome = navController::navigateToHome
             )
             announcementScreen(
-                navigateToAnnouncementCreationContent = navController::navigateToAnnouncementCreationContent
+                navController = navController,
             )
         }
     }

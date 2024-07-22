@@ -12,4 +12,16 @@ object AnnouncementCreation: Parcelable {
 
     @Serializable
     data object Content
+
+    @Serializable
+    data object DateTime
+
+    @Serializable
+    data object Place
+
+    @Serializable
+    data object Task
+
+    @Serializable
+    data object Remind
 }
