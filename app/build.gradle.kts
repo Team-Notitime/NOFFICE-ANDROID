@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.noffice.android.application.firebase)
     alias(libs.plugins.noffice.android.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -51,6 +52,7 @@ dependencies {
 
     implementation(projects.domain.home)
 
+    implementation(projects.feature.announcement)
     implementation(projects.feature.home)
     implementation(projects.feature.myPage)
     implementation(projects.feature.organization)
