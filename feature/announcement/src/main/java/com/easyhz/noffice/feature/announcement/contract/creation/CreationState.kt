@@ -1,0 +1,21 @@
+package com.easyhz.noffice.feature.announcement.contract.creation
+
+import com.easyhz.noffice.core.common.base.UiState
+
+data class CreationState(
+    val selectedOrganization: String,
+    val healthCheck: Int,
+    val title: String,
+    val content: String,
+    val taskList: List<String>
+): UiState() {
+    companion object {
+        fun init() = CreationState(
+            selectedOrganization = "",
+            healthCheck = 0,
+            title = "",
+            content = "",
+            taskList = emptyList()
+        )
+    }
+}
