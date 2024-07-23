@@ -82,4 +82,12 @@
         어느 노피스에
         \n노티를 등록할까요?
     </string>
+    <string name="announcement_creation_title_caption">제목</string>
+    <string name="announcement_creation_title_placeholder">제목을 입력해 주세요.</string>
+    <string name="announcement_creation_content_caption">내용</string>
+    <string name="announcement_creation_content_placeholder">내용을 입력해 주세요.</string>
+    <string name="announcement_creation_option_date_time">날짜 · 시간</string>
+    <string name="announcement_creation_option_place">장소</string>
+    <string name="announcement_creation_option_task">투두</string>
+    <string name="announcement_creation_option_notification">알림</string>
 </resources>

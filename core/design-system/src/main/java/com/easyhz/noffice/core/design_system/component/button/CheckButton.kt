@@ -43,6 +43,7 @@ fun CheckButton(
     textAlign: TextAlign = TextAlign.Start,
     text: String,
     isComplete: Boolean,
+    iconId: Int = R.drawable.ic_check,
     color: CheckButtonDefaults = CheckButtonDefaults.default(),
     onClick: () -> Unit
 ) {
@@ -70,7 +71,7 @@ fun CheckButton(
         Box(modifier = Modifier.heightIn(18.dp)) {
             if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_check),
+                    painter = painterResource(id = iconId),
                     contentDescription = "check",
                     tint = (if (isComplete) color.completeIconColor else color.incompleteIconColor) ?: color.completeContentColor
                 )

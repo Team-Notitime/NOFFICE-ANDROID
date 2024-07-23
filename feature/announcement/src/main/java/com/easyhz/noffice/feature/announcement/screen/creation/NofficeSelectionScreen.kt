@@ -115,6 +115,7 @@ fun NofficeSelectionScreen(
         when(sideEffect) {
             is CreationSideEffect.NavigateToUp -> { navigateToUp() }
             is CreationSideEffect.NavigateToNext -> { navigateToAnnouncementCreationContent() }
+            else -> {  }
         }
     }
 }

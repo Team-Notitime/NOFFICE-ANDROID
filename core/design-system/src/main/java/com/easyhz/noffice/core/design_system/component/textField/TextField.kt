@@ -6,8 +6,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.easyhz.noffice.core.design_system.theme.Grey800
@@ -17,25 +18,26 @@ import com.easyhz.noffice.core.design_system.util.textField.TextFieldType
 import com.easyhz.noffice.core.design_system.util.textField.getTextFieldState
 
 @Composable
-fun MainTextField(
+fun TextField(
     modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     title: String?,
     placeholder: String,
     isFilled: Boolean,
     maxCount: Int? = null,
     readOnly: Boolean = false,
     singleLine: Boolean,
-    textFieldType: TextFieldType = TextFieldType.SINGLE,
+    textFieldType: TextFieldType = TextFieldType.MULTIPLE,
     minLines: Int = 1,
     icon: TextFieldIcon? = TextFieldIcon.CLEAR,
     onClickIcon: (() -> Unit) = {},
+    onTextLayout: (TextLayoutResult) -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
-    val state = getTextFieldState(text = value, isFilled = isFilled)
+    val state = getTextFieldState(text = value.text, isFilled = isFilled)
 
     BasicTextField(
         value = value,
@@ -51,6 +53,7 @@ fun MainTextField(
         singleLine = singleLine,
         minLines = minLines,
         visualTransformation = visualTransformation,
+        onTextLayout = onTextLayout,
         decorationBox = { innerTextField ->
             TextFieldContainer(
                 modifier = Modifier
@@ -62,83 +65,11 @@ fun MainTextField(
                 onClickIcon = {
                     onClickIcon()
                 },
-                textCount = value.length,
+                textCount = value.text.length,
                 maxCount = maxCount,
                 innerTextField = innerTextField,
                 textFieldType = textFieldType
             )
         }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainTextFieldPrev() {
-    MainTextField(
-        value = "내용이 잇음",
-        onValueChange = { },
-        title = null,
-        placeholder = "내용으 입력",
-        isFilled = false,
-        singleLine = true,
-        icon = TextFieldIcon.CLEAR
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainTextFieldPlaceholderPrev() {
-    MainTextField(
-        value = "",
-        onValueChange = { },
-        title = null,
-        placeholder = "내용dmf dlqfur 입력",
-        isFilled = false,
-        singleLine = true,
-        icon = TextFieldIcon.CLEAR
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MultipleMainTextFieldPlaceholderPrev() {
-    MainTextField(
-        textFieldType = TextFieldType.MULTIPLE,
-        value = "ewfweffffjkdafjksdhfkjshfjkhsdjkfhsjkafhksjadhfjkshdfsfjkdhdskjff",
-        onValueChange = { },
-        title = null,
-        placeholder = "내용dmf dlqfur 입력",
-        isFilled = false,
-        singleLine = false,
-        icon = TextFieldIcon.CLEAR
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainTextFieldTitlePrev() {
-    MainTextField(
-        value = "",
-        onValueChange = { },
-        title = "내용",
-        placeholder = "내용dmf dlqfur 입력",
-        isFilled = false,
-        singleLine = true,
-        icon = TextFieldIcon.CLEAR
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainTextFieldMaxCountPrev() {
-    MainTextField(
-        value = "",
-        onValueChange = { },
-        title = null,
-        placeholder = "내용dmf dlqfur 입력",
-        maxCount = 10,
-        isFilled = false,
-        singleLine = true,
-        icon = TextFieldIcon.CLEAR
     )
 }
