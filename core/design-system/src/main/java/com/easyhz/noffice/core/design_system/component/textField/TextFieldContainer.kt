@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey400
@@ -86,7 +87,8 @@ private fun TextFieldContainerTitle(
     Text(
         text = title,
         style = SemiBold14,
-        color = Grey400
+        color = Grey400,
+        lineHeight = (14 * 1.2).sp
     )
 }
 
