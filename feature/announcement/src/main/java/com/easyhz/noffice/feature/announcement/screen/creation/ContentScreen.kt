@@ -1,12 +1,10 @@
 package com.easyhz.noffice.feature.announcement.screen.creation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,7 +28,7 @@ import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaf
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Green100
-import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey300
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
@@ -47,7 +45,7 @@ fun ContentScreen(
     modifier: Modifier = Modifier,
     viewModel: CreationViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
-    navigateToPlace: () -> Unit
+    navigateToPlace: (String?, String?, String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     NofficeBasicScaffold(
@@ -100,28 +98,31 @@ fun ContentScreen(
                         onTextLayout = {  }
                     )
                 }
-                items(uiState.optionState) {item ->
+                items(uiState.optionState.toList()) {(option, item) ->
                     CheckButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = item.type.stringId),
-                        isComplete = item.isSelected,
+                        modifier = Modifier
+                            .height(42.dp)
+                            .fillMaxWidth(),
+                        text = stringResource(id = option.stringId),
+                        isComplete = item.selected,
                         iconId = R.drawable.ic_chevron_right,
+                        verticalPadding = 8.dp,
                         color = CheckButtonDefaults(
                             completeContainerColor = Green100,
-                            completeContentColor = Green500,
-                            completeIconColor = Green500,
+                            completeContentColor = Green700,
+                            completeIconColor = Green700,
                             incompleteContainerColor = Grey50,
                             incompleteContentColor = Grey600,
                             incompleteIconColor = Grey300
                         )
-                    ) { viewModel.postIntent(CreationIntent.ClickOptionButton(item)) }
+                    ) { viewModel.postIntent(CreationIntent.ClickOptionButton(option)) }
                 }
             }
             MediumButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
-                text = stringResource(id = R.string.sign_up_button),
+                text = stringResource(id = R.string.next_button),
                 enabled = true
             ) {
                 viewModel.postIntent(CreationIntent.ClickNextButton)
@@ -132,6 +133,7 @@ fun ContentScreen(
         when(sideEffect) {
             is CreationSideEffect.NavigateToUp -> { navigateToUp() }
             is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/ }
+            is CreationSideEffect.NavigateToPlace -> { navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url) }
             is CreationSideEffect.ScrollToBottom -> { }
             else -> { }
         }

@@ -6,10 +6,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.announcement.screen.creation.ContentScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 import com.easyhz.noffice.feature.announcement.screen.creation.NofficeSelectionScreen
-import com.easyhz.noffice.feature.announcement.screen.creation.PlaceScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.navigation.util.DURATION
 import com.easyhz.noffice.navigation.util.sharedViewModel
@@ -46,8 +47,12 @@ internal fun NavGraphBuilder.announcementScreen(
 
         composable<AnnouncementCreation.Place> {
             val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
+            val args = it.toRoute<AnnouncementCreation.Place>()
             PlaceScreen(
-                viewModel = viewModel,
+                creationViewModel = viewModel,
+                contactType = args.contactType,
+                title = args.title,
+                url = args.url,
                 navigateToUp = navController::navigateUp
             )
         }
@@ -73,8 +78,16 @@ internal fun NavController.navigateToAnnouncementCreationContent() {
     )
 }
 
-internal fun NavController.navigateToPlace() {
+internal fun NavController.navigateToPlace(
+    contactType: String?,
+    title: String?,
+    url: String?
+) {
     navigate(
-        route = AnnouncementCreation.Place
+        route = AnnouncementCreation.Place(
+            contactType = contactType,
+            title = title,
+            url = url
+        )
     )
 }

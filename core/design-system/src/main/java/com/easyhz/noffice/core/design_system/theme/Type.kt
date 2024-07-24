@@ -144,6 +144,18 @@ val SubHeading15 = TextStyle(
     )
 )
 
+val SubHeading16 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Bold,
+    color = Grey800,
+    fontSize = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SemiBold16 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,

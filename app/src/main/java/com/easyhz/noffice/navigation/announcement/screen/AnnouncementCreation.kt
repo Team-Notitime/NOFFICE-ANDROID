@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Parcelize
-object AnnouncementCreation: Parcelable {
+internal object AnnouncementCreation: Parcelable {
     @Serializable
     data object NofficeSelection
 
@@ -17,7 +17,11 @@ object AnnouncementCreation: Parcelable {
     data object DateTime
 
     @Serializable
-    data object Place
+    data class Place(
+        val contactType: String?,
+        val title: String?,
+        val url: String?
+    )
 
     @Serializable
     data object Task

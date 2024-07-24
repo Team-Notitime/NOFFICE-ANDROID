@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.feature.announcement.util.creation.OptionData
+import com.easyhz.noffice.feature.announcement.util.creation.initOptions
 
 data class CreationState(
     val organizationList: List<String>,
@@ -12,8 +14,8 @@ data class CreationState(
     val title: String,
     val content: TextFieldValue,
     val taskList: List<String>,
-    val optionState: List<OptionState>,
-): UiState() {
+    val optionState: HashMap<Options, OptionData<*>>,
+) : UiState() {
     companion object {
         fun init() = CreationState(
             organizationList = listOf("나의 동아리", "나의 그룹", "나의 소모임", "나의 스터디"),
@@ -22,26 +24,29 @@ data class CreationState(
             title = "",
             content = TextFieldValue(""),
             taskList = emptyList(),
-            optionState = Options.entries.map { OptionState(type = it, isSelected = false) }
+            optionState = initOptions(),
         )
+    }
+
+    fun <T> getOptionValue(type: Options): T? {
+        return (optionState[type] as? OptionData<T>)?.takeIf { it.selected }?.value
     }
 }
 
-data class OptionState(
-    val type: Options,
-    val isSelected: Boolean
-)
 
 enum class Options(
     @StringRes val stringId: Int,
 ) {
     DATE_TIME(
         stringId = R.string.announcement_creation_option_date_time
-    ), PLACE(
+    ),
+    PLACE(
         stringId = R.string.announcement_creation_option_place
-    ), TASK(
+    ),
+    TASK(
         stringId = R.string.announcement_creation_option_task
-    ), NOTIFICATION(
+    ),
+    NOTIFICATION(
         stringId = R.string.announcement_creation_option_notification
     )
 }

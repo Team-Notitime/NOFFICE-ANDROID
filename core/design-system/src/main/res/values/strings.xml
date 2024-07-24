@@ -78,6 +78,7 @@
     <string name="organization_creation_success_copy_button">초대 링크 복사</string>
 
     <string name="announcement_creation_title">노티 등록</string>
+    <string name="announcement_creation_button">등록</string>
     <string name="announcement_creation_noffice_selection_title">
         어느 노피스에
         \n노티를 등록할까요?
@@ -88,6 +89,17 @@
     <string name="announcement_creation_content_placeholder">내용을 입력해 주세요.</string>
     <string name="announcement_creation_option_date_time">날짜 · 시간</string>
     <string name="announcement_creation_option_place">장소</string>
+    <string name="announcement_creation_option_place_title">이벤트 장소를 알려주세요.</string>
+    <string name="announcement_creation_option_place_caption">
+        장소
+        \n링크
+    </string>
+    <string name="announcement_creation_option_place_placeholder">입력하세요.</string>
+    <string name="announcement_creation_option_place_type_contact">대면</string>
+    <string name="announcement_creation_option_place_type_none_contact">비대면</string>
+    <string name="announcement_creation_option_place_none_contact_title">제목</string>
+    <string name="announcement_creation_option_place_">비대면</string>
     <string name="announcement_creation_option_task">투두</string>
     <string name="announcement_creation_option_notification">알림</string>
+    <string name="announcement_creation_option_button">저장</string>
 </resources>
