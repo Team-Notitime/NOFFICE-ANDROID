@@ -6,6 +6,7 @@ import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationState
 import com.easyhz.noffice.feature.announcement.contract.creation.Options
+import com.easyhz.noffice.feature.announcement.contract.creation.datetime.SelectionDateTimeState
 import com.easyhz.noffice.feature.announcement.contract.creation.place.ContactState
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreationViewModel @Inject constructor(
 
-): BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
+) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
     override fun handleIntent(intent: CreationIntent) {
@@ -50,13 +51,24 @@ class CreationViewModel @Inject constructor(
     }
 
     private fun onClickOptionButton(option: Options) {
-        when(option) {
-            Options.DATE_TIME -> { }
-            Options.TASK -> { }
+        when (option) {
+            Options.DATE_TIME -> { navigateToDateTime() }
             Options.PLACE -> { navigateToPlace() }
+            Options.TASK -> { }
             Options.NOTIFICATION -> { }
         }
     }
+
+    private fun navigateToDateTime() {
+        val dateTimeState = currentState.getOptionValue<SelectionDateTimeState>(Options.DATE_TIME)
+        val (date, time) = dateTimeState?.let { state ->
+            state.date.toString() to state.time.toString()
+        } ?: (null to null)
+        postSideEffect {
+            CreationSideEffect.NavigateToDateTime(date, time)
+        }
+    }
+
     private fun navigateToPlace() {
         val contactState = currentState.getOptionValue<ContactState>(Options.PLACE)
         val (contactType, title, url) = contactState?.let { state ->

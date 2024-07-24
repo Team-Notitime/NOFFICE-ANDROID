@@ -14,7 +14,10 @@ internal object AnnouncementCreation: Parcelable {
     data object Content
 
     @Serializable
-    data object DateTime
+    data class DateTime(
+        val date: String?,
+        val time: String?
+    )
 
     @Serializable
     data class Place(

@@ -2,6 +2,7 @@ package com.easyhz.noffice.feature.announcement.screen.creation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,6 +46,7 @@ fun ContentScreen(
     modifier: Modifier = Modifier,
     viewModel: CreationViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
+    navigateToDateTime: (String?, String?) -> Unit,
     navigateToPlace: (String?, String?, String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -74,11 +76,11 @@ fun ContentScreen(
             LazyColumn(
                 modifier = Modifier
                     .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 item {
                     TitleTextField(
-                        modifier = Modifier.padding(top = 16.dp),
+                        modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
                         textFieldType = TextFieldType.SINGLE,
                         value = uiState.title,
                         onChangeValue = { viewModel.postIntent(CreationIntent.ChangeTitleTextValue(it)) },
@@ -97,6 +99,9 @@ fun ContentScreen(
                         placeholder = stringResource(id = R.string.announcement_creation_content_placeholder),
                         onTextLayout = {  }
                     )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(12.dp).fillMaxWidth())
                 }
                 items(uiState.optionState.toList()) {(option, item) ->
                     CheckButton(
@@ -133,6 +138,7 @@ fun ContentScreen(
         when(sideEffect) {
             is CreationSideEffect.NavigateToUp -> { navigateToUp() }
             is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/ }
+            is CreationSideEffect.NavigateToDateTime -> { navigateToDateTime(sideEffect.date, sideEffect.time) }
             is CreationSideEffect.NavigateToPlace -> { navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url) }
             is CreationSideEffect.ScrollToBottom -> { }
             else -> { }

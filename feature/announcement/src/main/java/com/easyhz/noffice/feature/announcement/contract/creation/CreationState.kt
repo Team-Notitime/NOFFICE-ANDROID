@@ -14,7 +14,7 @@ data class CreationState(
     val title: String,
     val content: TextFieldValue,
     val taskList: List<String>,
-    val optionState: HashMap<Options, OptionData<*>>,
+    val optionState: LinkedHashMap<Options, OptionData<*>>,
 ) : UiState() {
     companion object {
         fun init() = CreationState(

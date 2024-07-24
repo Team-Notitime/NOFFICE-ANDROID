@@ -10,6 +10,7 @@ import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.announcement.screen.creation.ContentScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 import com.easyhz.noffice.feature.announcement.screen.creation.NofficeSelectionScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.datetime.DateTimeScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.navigation.util.DURATION
@@ -39,11 +40,22 @@ internal fun NavGraphBuilder.announcementScreen(
             ContentScreen(
                 viewModel = viewModel,
                 navigateToUp = navController::navigateUp,
+                navigateToDateTime = navController::navigateToDateTime,
                 navigateToPlace = navController::navigateToPlace
             )
         }
 
-        composable<AnnouncementCreation.DateTime> {  }
+        composable<AnnouncementCreation.DateTime> {
+            val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
+            val args = it.toRoute<AnnouncementCreation.DateTime>()
+
+            DateTimeScreen(
+                creationViewModel = viewModel,
+                date = args.date,
+                time = args.time,
+                navigateToUp = navController::navigateUp
+            )
+        }
 
         composable<AnnouncementCreation.Place> {
             val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
@@ -75,6 +87,12 @@ internal fun NavController.navigateToAnnouncementNofficeSelection() {
 internal fun NavController.navigateToAnnouncementCreationContent() {
     navigate(
         route = AnnouncementCreation.Content
+    )
+}
+
+internal fun NavController.navigateToDateTime(date: String?, time: String?) {
+    navigate(
+        route = AnnouncementCreation.DateTime(date, time)
     )
 }
 

@@ -88,6 +88,7 @@
     <string name="announcement_creation_content_caption">내용</string>
     <string name="announcement_creation_content_placeholder">내용을 입력해 주세요.</string>
     <string name="announcement_creation_option_date_time">날짜 · 시간</string>
+    <string name="announcement_creation_option_date_time_title">이벤트 일시를 알려주세요.</string>
     <string name="announcement_creation_option_place">장소</string>
     <string name="announcement_creation_option_place_title">이벤트 장소를 알려주세요.</string>
     <string name="announcement_creation_option_place_caption">
