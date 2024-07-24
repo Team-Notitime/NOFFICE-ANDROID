@@ -45,7 +45,7 @@ fun IconMediumButton(
         modifier = modifier
             .imePadding()
             .scale(scale)
-            .height(42.dp)
+            .height(54.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(containerColor)
