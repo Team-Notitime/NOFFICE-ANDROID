@@ -53,7 +53,7 @@ internal fun PromotionView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            text = stringResource(id = R.string.sign_up_button),
+            text = stringResource(id = R.string.next_button),
             enabled = uiState.enabledStepButton[uiState.step.currentStep] ?: false
         ) {
             viewModel.postIntent(CreationIntent.ClickNextButton)

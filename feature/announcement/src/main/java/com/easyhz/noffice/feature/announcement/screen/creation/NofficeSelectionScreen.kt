@@ -103,7 +103,7 @@ fun NofficeSelectionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
-                text = stringResource(id = R.string.sign_up_button),
+                text = stringResource(id = R.string.next_button),
                 enabled = true
             ) {
                 viewModel.postIntent(CreationIntent.ClickNextButton)
