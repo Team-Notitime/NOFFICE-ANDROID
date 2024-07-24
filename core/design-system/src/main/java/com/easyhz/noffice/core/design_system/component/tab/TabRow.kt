@@ -115,7 +115,7 @@ fun TabRow(
 
             layout(tabRowWidth, tabRowHeight) {
                 currentPosition = 0
-                tabPlaceables.forEachIndexed { index, placeable ->
+                tabPlaceables.forEachIndexed { _, placeable ->
                     placeable.placeRelative(currentPosition, 0)
                     currentPosition += placeable.width + tabSpacingPx
                 }
