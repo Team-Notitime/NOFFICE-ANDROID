@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
@@ -44,6 +45,7 @@ fun CheckButton(
     text: String,
     isComplete: Boolean,
     iconId: Int = R.drawable.ic_check,
+    verticalPadding: Dp = 14.dp,
     color: CheckButtonDefaults = CheckButtonDefaults.default(),
     onClick: () -> Unit
 ) {
@@ -56,7 +58,7 @@ fun CheckButton(
             .heightIn(min = 42.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(if (isComplete) color.completeContainerColor else color.incompleteContainerColor)
-            .padding(vertical = 14.dp)
+            .padding(vertical = verticalPadding)
             .screenHorizonPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -68,7 +70,7 @@ fun CheckButton(
             style = Body14,
             textAlign = textAlign
         )
-        Box(modifier = Modifier.heightIn(18.dp)) {
+        Box(modifier = Modifier.heightIn(min = 18.dp)) {
             if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
                 Icon(
                     painter = painterResource(id = iconId),
