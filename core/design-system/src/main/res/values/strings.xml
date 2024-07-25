@@ -84,13 +84,13 @@
         \n노티를 등록할까요?
     </string>
     <string name="announcement_creation_title_caption">제목</string>
-    <string name="announcement_creation_title_placeholder">제목을 입력해 주세요.</string>
+    <string name="announcement_creation_title_placeholder">제목을 입력해 주세요</string>
     <string name="announcement_creation_content_caption">내용</string>
-    <string name="announcement_creation_content_placeholder">내용을 입력해 주세요.</string>
+    <string name="announcement_creation_content_placeholder">내용을 입력해 주세요</string>
     <string name="announcement_creation_option_date_time">날짜 · 시간</string>
-    <string name="announcement_creation_option_date_time_title">이벤트 일시를 알려주세요.</string>
+    <string name="announcement_creation_option_date_time_title">이벤트 일시를 알려주세요</string>
     <string name="announcement_creation_option_place">장소</string>
-    <string name="announcement_creation_option_place_title">이벤트 장소를 알려주세요.</string>
+    <string name="announcement_creation_option_place_title">이벤트 장소를 알려주세요</string>
     <string name="announcement_creation_option_place_caption">
         장소
         \n링크
@@ -99,8 +99,9 @@
     <string name="announcement_creation_option_place_type_contact">대면</string>
     <string name="announcement_creation_option_place_type_none_contact">비대면</string>
     <string name="announcement_creation_option_place_none_contact_title">제목</string>
-    <string name="announcement_creation_option_place_">비대면</string>
     <string name="announcement_creation_option_task">투두</string>
+    <string name="announcement_creation_option_task_title">멤버들에게 할 일을 전달해봐요</string>
+    <string name="announcement_creation_option_task_button">새로운 투두</string>
     <string name="announcement_creation_option_notification">알림</string>
     <string name="announcement_creation_option_button">저장</string>
 </resources>
