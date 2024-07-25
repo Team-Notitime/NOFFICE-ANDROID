@@ -1,5 +1,7 @@
 package com.easyhz.noffice.feature.announcement.screen.creation
 
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,13 +10,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,7 +51,9 @@ import com.easyhz.noffice.feature.announcement.component.creation.ContentTextFie
 import com.easyhz.noffice.feature.announcement.component.creation.TitleTextField
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationSideEffect
+import kotlinx.coroutines.launch
 
+// TODO: 키보드 비활성화 되면 focus clear
 @Composable
 fun ContentScreen(
     modifier: Modifier = Modifier,
@@ -50,7 +63,30 @@ fun ContentScreen(
     navigateToPlace: (String?, String?, String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val halfHeight = LocalConfiguration.current.screenHeightDp / 2
+    val view = LocalView.current
+    val density = LocalDensity.current
+
+    val paddingHeight = remember(density) { with(density) { 32.dp.toPx().toInt() } }
+
+
+    LaunchedEffect(key1 = uiState.absoluteCursorY, key2 = uiState.isFocused) {
+        val targetScroll = uiState.absoluteCursorY - halfHeight - paddingHeight
+
+        val shouldAnimateScroll = !uiState.isMoved &&
+                (uiState.isFocused || scrollState.maxValue >= halfHeight) &&
+                scrollState.value != targetScroll
+
+        if (shouldAnimateScroll) {
+            scrollState.animateScrollTo(targetScroll)
+        }
+    }
+
     NofficeBasicScaffold(
+        modifier = Modifier,
         topBar = {
             DetailTopBar(
                 leadingItem = DetailTopBarMenu(
@@ -68,42 +104,65 @@ fun ContentScreen(
             )
         }
     ) { paddingValues ->
-        Column(modifier = modifier
-            .padding(paddingValues)
-            .fillMaxSize()
-            .height(LocalConfiguration.current.screenHeightDp.dp)
-            .screenHorizonPadding()) {
-            LazyColumn(
+        Column(
+            modifier = modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .height(LocalConfiguration.current.screenHeightDp.dp)
+                .screenHorizonPadding()
+        ) {
+            Column(
                 modifier = Modifier
-                    .weight(1f),
+                    .verticalScroll(scrollState)
+                    .weight(1f)
+                    .pointerInput(Unit) {
+                        detectVerticalDragGestures(
+                            onDragStart = {
+                                focusManager.clearFocus()
+                            }
+                        ) { change, dragAmount -> // FIXME
+                            change.consume()
+                            coroutineScope.launch {
+                                scrollState.scrollBy(-dragAmount)
+                            }
+                        }
+                    },
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                item {
-                    TitleTextField(
-                        modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
-                        textFieldType = TextFieldType.SINGLE,
-                        value = uiState.title,
-                        onChangeValue = { viewModel.postIntent(CreationIntent.ChangeTitleTextValue(it)) },
-                        title = stringResource(id = R.string.announcement_creation_title_caption),
-                        placeholder = stringResource(id = R.string.announcement_creation_title_placeholder),
-                        singleLine = true,
-                    )
-                }
-                item {
-                    ContentTextField(
-                        textFieldModifier = Modifier.height(200.dp),
-                        textFieldType = TextFieldType.MULTIPLE,
-                        value = uiState.content,
-                        onChangeValue = { viewModel.postIntent(CreationIntent.ChangeContentTextValue(it)) },
-                        title = stringResource(id = R.string.announcement_creation_content_caption),
-                        placeholder = stringResource(id = R.string.announcement_creation_content_placeholder),
-                        onTextLayout = {  }
-                    )
-                }
-                item {
-                    Spacer(modifier = Modifier.height(12.dp).fillMaxWidth())
-                }
-                items(uiState.optionState.toList()) {(option, item) ->
+                TitleTextField(
+                    modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
+                    textFieldType = TextFieldType.SINGLE,
+                    value = uiState.title,
+                    onChangeValue = { viewModel.postIntent(CreationIntent.ChangeTitleTextValue(it)) },
+                    title = stringResource(id = R.string.announcement_creation_title_caption),
+                    placeholder = stringResource(id = R.string.announcement_creation_title_placeholder),
+                    singleLine = true,
+                )
+                ContentTextField(
+                    textFieldModifier = Modifier
+                        .onGloballyPositioned { _ ->
+                            viewModel.postIntent(CreationIntent.GloballyPositioned(view))
+                        }
+                        .onFocusEvent {
+                            viewModel.postIntent(CreationIntent.ChangedFocus(it.hasFocus))
+                        },
+                    textFieldType = TextFieldType.MULTIPLE,
+                    value = uiState.content,
+                    onChangeValue = {
+                        viewModel.postIntent(CreationIntent.ChangeContentTextValue(it))
+                    },
+                    title = stringResource(id = R.string.announcement_creation_content_caption),
+                    placeholder = stringResource(id = R.string.announcement_creation_content_placeholder),
+                    onTextLayout = { result ->
+                        viewModel.postIntent(CreationIntent.SetLayoutResult(result))
+                    }
+                )
+                Spacer(
+                    modifier = Modifier
+                        .height(12.dp)
+                        .fillMaxWidth()
+                )
+                uiState.optionState.forEach { (option, item) ->
                     CheckButton(
                         modifier = Modifier
                             .height(42.dp)
@@ -134,14 +193,24 @@ fun ContentScreen(
             }
         }
     }
-    viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
-        when(sideEffect) {
-            is CreationSideEffect.NavigateToUp -> { navigateToUp() }
-            is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/ }
-            is CreationSideEffect.NavigateToDateTime -> { navigateToDateTime(sideEffect.date, sideEffect.time) }
-            is CreationSideEffect.NavigateToPlace -> { navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url) }
-            is CreationSideEffect.ScrollToBottom -> { }
-            else -> { }
+    viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
+        when (sideEffect) {
+            is CreationSideEffect.NavigateToUp -> {
+                navigateToUp()
+            }
+
+            is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/
+            }
+
+            is CreationSideEffect.NavigateToDateTime -> {
+                navigateToDateTime(sideEffect.date, sideEffect.time)
+            }
+
+            is CreationSideEffect.NavigateToPlace -> {
+                navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url)
+            }
+
+            is CreationSideEffect.ScrollToBottom -> {}
         }
     }
 }

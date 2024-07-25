@@ -1,5 +1,8 @@
 package com.easyhz.noffice.feature.announcement.screen.creation
 
+import android.view.View
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
@@ -27,6 +30,9 @@ class CreationViewModel @Inject constructor(
             is CreationIntent.ChangeContentTextValue -> { onChangeContentTextValue(intent.newText) }
             is CreationIntent.ClickOptionButton -> { onClickOptionButton(intent.option) }
             is CreationIntent.SaveOptionData<*> -> { onSaveOptionData(intent.data) }
+            is CreationIntent.GloballyPositioned -> { onGloballyPositioned(intent.view) }
+            is CreationIntent.SetLayoutResult -> { setLayoutResult(intent.layoutResult) }
+            is CreationIntent.ChangedFocus -> { onChangeFocus(intent.hasFocus) }
         }
     }
 
@@ -83,5 +89,26 @@ class CreationViewModel @Inject constructor(
 
     private fun <T> onSaveOptionData(data: OptionData<T>) {
         currentState.optionState[data.type] = data
+    }
+
+    private fun onGloballyPositioned(view: View) {
+        val cursorRect = currentState.layoutResult?.getCursorRect(currentState.content.selection.end)
+        if (cursorRect != null && currentState.cursorOffset.y != cursorRect.topLeft.y) {
+            reduce { copy(cursorOffset = cursorRect.topLeft) }
+        }
+        val windowPos = IntArray(2)
+        view.getLocationInWindow(windowPos)
+        val absoluteCursorPos =
+            currentState.cursorOffset + Offset(windowPos[0].toFloat(), windowPos[1].toFloat())
+        if (currentState.absoluteCursorY == absoluteCursorPos.y.toInt()) return
+        reduce { copy(absoluteCursorY = absoluteCursorPos.y.toInt()) }
+    }
+
+    private fun setLayoutResult(textLayoutResult: TextLayoutResult) {
+        reduce { copy(layoutResult = textLayoutResult) }
+    }
+
+    private fun onChangeFocus(hasFocus: Boolean) {
+        reduce { copy(isFocused = hasFocus, isMoved = !hasFocus) }
     }
 }
