@@ -60,7 +60,9 @@ fun ContentScreen(
     viewModel: CreationViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
     navigateToDateTime: (String?, String?) -> Unit,
-    navigateToPlace: (String?, String?, String?) -> Unit
+    navigateToPlace: (String?, String?, String?) -> Unit,
+    navigateToTask: (List<String>?) -> Unit,
+    navigateToRemind: (List<String>?) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -195,22 +197,13 @@ fun ContentScreen(
     }
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when (sideEffect) {
-            is CreationSideEffect.NavigateToUp -> {
-                navigateToUp()
-            }
-
-            is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/
-            }
-
-            is CreationSideEffect.NavigateToDateTime -> {
-                navigateToDateTime(sideEffect.date, sideEffect.time)
-            }
-
-            is CreationSideEffect.NavigateToPlace -> {
-                navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url)
-            }
-
-            is CreationSideEffect.ScrollToBottom -> {}
+            is CreationSideEffect.NavigateToUp -> { navigateToUp() }
+            is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/ }
+            is CreationSideEffect.NavigateToDateTime -> { navigateToDateTime(sideEffect.date, sideEffect.time) }
+            is CreationSideEffect.NavigateToPlace -> { navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url) }
+            is CreationSideEffect.NavigateToTask -> { navigateToTask(sideEffect.taskList ?: emptyList()) }
+            is CreationSideEffect.NavigateToRemind -> { navigateToRemind(sideEffect.remindList ?: emptyList()) }
+            is CreationSideEffect.ScrollToBottom -> { }
         }
     }
 }

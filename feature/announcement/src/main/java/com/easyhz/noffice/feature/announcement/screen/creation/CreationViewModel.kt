@@ -60,8 +60,8 @@ class CreationViewModel @Inject constructor(
         when (option) {
             Options.DATE_TIME -> { navigateToDateTime() }
             Options.PLACE -> { navigateToPlace() }
-            Options.TASK -> { }
-            Options.NOTIFICATION -> { }
+            Options.TASK -> { navigateToTask() }
+            Options.REMIND -> { navigateToRemind() }
         }
     }
 
@@ -85,6 +85,16 @@ class CreationViewModel @Inject constructor(
             )
         } ?: Triple(null, null, null)
         postSideEffect { CreationSideEffect.NavigateToPlace(contactType, title, url) }
+    }
+
+    private fun navigateToTask() {
+        val taskListState = currentState.getOptionValue<List<String>>(Options.TASK)
+        postSideEffect { CreationSideEffect.NavigateToTask(taskListState.orEmpty()) }
+    }
+
+    private fun navigateToRemind() {
+        val remindListState = currentState.getOptionValue<List<String>>(Options.REMIND)
+        postSideEffect { CreationSideEffect.NavigateToRemind(remindListState.orEmpty()) }
     }
 
     private fun <T> onSaveOptionData(data: OptionData<T>) {

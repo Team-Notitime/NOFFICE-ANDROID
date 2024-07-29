@@ -102,6 +102,19 @@
     <string name="announcement_creation_option_task">투두</string>
     <string name="announcement_creation_option_task_title">멤버들에게 할 일을 전달해봐요</string>
     <string name="announcement_creation_option_task_button">새로운 투두</string>
-    <string name="announcement_creation_option_notification">알림</string>
+    <string name="announcement_creation_option_task_placeholder">투두를 입력해 주세요.</string>
+    <string name="announcement_creation_option_remind">알림</string>
+    <string name="announcement_creation_option_remind_title">
+        멤버에게 전달될
+        \n리마인드 알림을 설정할까요?
+    </string>
+    <string name="announcement_creation_option_remind_field_empty">
+        알림은 필요 없어요
+    </string>
+    <string name="announcement_creation_option_remind_field_suffix">
+        에 알림을 보낼래요.
+    </string>
     <string name="announcement_creation_option_button">저장</string>
+
+    <string name="delete">삭제</string>
 </resources>

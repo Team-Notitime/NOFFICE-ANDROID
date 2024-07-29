@@ -12,6 +12,7 @@ import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 import com.easyhz.noffice.feature.announcement.screen.creation.NofficeSelectionScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.datetime.DateTimeScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindScreen
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.navigation.util.DURATION
 import com.easyhz.noffice.navigation.util.sharedViewModel
@@ -41,7 +42,9 @@ internal fun NavGraphBuilder.announcementScreen(
                 viewModel = viewModel,
                 navigateToUp = navController::navigateUp,
                 navigateToDateTime = navController::navigateToDateTime,
-                navigateToPlace = navController::navigateToPlace
+                navigateToPlace = navController::navigateToPlace,
+                navigateToTask = navController::navigateToTask,
+                navigateToRemind = navController::navigateToRemind
             )
         }
 
@@ -74,7 +77,13 @@ internal fun NavGraphBuilder.announcementScreen(
         }
 
         composable<AnnouncementCreation.Remind> {
-
+            val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
+            val args = it.toRoute<AnnouncementCreation.Remind>()
+            RemindScreen(
+                creationViewModel = viewModel,
+                selectRemind = args.remindList,
+                navigateToUp = navController::navigateUp
+            )
         }
     }
 }
@@ -107,5 +116,16 @@ internal fun NavController.navigateToPlace(
             title = title,
             url = url
         )
+    )
+}
+
+internal fun NavController.navigateToTask(taskList: List<String>?) {
+    navigate(
+        route = AnnouncementCreation.Task(taskList = taskList)
+    )
+}
+internal fun NavController.navigateToRemind(remindList: List<String>?) {
+    navigate(
+        route = AnnouncementCreation.Remind(remindList = remindList)
     )
 }

@@ -9,6 +9,17 @@ sealed class OptionData<T> {
     abstract val value: T
     abstract val selected: Boolean
 
+    companion object {
+        fun initOptions(): LinkedHashMap<Options, OptionData<*>> {
+            return linkedMapOf(
+                Options.DATE_TIME to DateTime(data = SelectionDateTimeState(), isSelected = false),
+                Options.PLACE to Place(data = ContactState(), isSelected = false),
+                Options.TASK to Task(data = emptyList(), isSelected = false),
+                Options.REMIND to Remind(data = emptyList(), isSelected = false)
+            )
+        }
+    }
+
     data class DateTime(val data: SelectionDateTimeState, val isSelected: Boolean) : OptionData<SelectionDateTimeState>() {
         override val type: Options
             get() = Options.DATE_TIME
@@ -26,11 +37,22 @@ sealed class OptionData<T> {
         override val selected: Boolean
             get() = isSelected
     }
-}
 
-fun initOptions(): LinkedHashMap<Options, OptionData<*>> {
-    return linkedMapOf(
-        Options.DATE_TIME to OptionData.DateTime(data = SelectionDateTimeState(), isSelected = false),
-        Options.PLACE to OptionData.Place(data = ContactState(), isSelected = false),
-    )
+    data class Task(val data: List<String>, val isSelected: Boolean): OptionData<List<String>>() {
+        override val type: Options
+            get() = Options.TASK
+        override val value: List<String>
+            get() = data
+        override val selected: Boolean
+            get() = isSelected
+    }
+
+    data class Remind(val data: List<String>, val isSelected: Boolean): OptionData<List<String>>() {
+        override val type: Options
+            get() = Options.REMIND
+        override val value: List<String>
+            get() = data
+        override val selected: Boolean
+            get() = isSelected
+    }
 }

@@ -7,5 +7,7 @@ sealed class CreationSideEffect: UiSideEffect() {
     data object NavigateToNext: CreationSideEffect()
     data class NavigateToDateTime(val date: String?, val time: String?): CreationSideEffect()
     data class NavigateToPlace(val contactType: String?, val title: String?, val url: String?): CreationSideEffect()
+    data class NavigateToTask(val taskList: List<String>?): CreationSideEffect()
+    data class NavigateToRemind(val remindList: List<String>?): CreationSideEffect()
     data class ScrollToBottom(val cursor: Int): CreationSideEffect()
 }

@@ -7,7 +7,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
-import com.easyhz.noffice.feature.announcement.util.creation.initOptions
 
 data class CreationState(
     val organizationList: List<String>,
@@ -31,7 +30,7 @@ data class CreationState(
             title = "",
             content = TextFieldValue(""),
             taskList = emptyList(),
-            optionState = initOptions(),
+            optionState = OptionData.initOptions(),
             layoutResult = null,
             cursorOffset = Offset.Zero,
             absoluteCursorY = 0,
@@ -58,7 +57,7 @@ enum class Options(
     TASK(
         stringId = R.string.announcement_creation_option_task
     ),
-    NOTIFICATION(
-        stringId = R.string.announcement_creation_option_notification
+    REMIND(
+        stringId = R.string.announcement_creation_option_remind
     )
 }

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import com.easyhz.noffice.core.design_system.theme.Grey50
+import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.White
 
 @Composable
@@ -26,10 +26,10 @@ fun useInteraction(
 }
 
 @Composable
-fun useInteraction(
+fun useInteractionWithColor(
     scaleDownFactor: Float = 0.95f,
     backgroundColor: Color = White,
-    pressedColor: Color = Grey50
+    pressedColor: Color = Grey100.copy(0.7f)
 ): Triple<MutableInteractionSource, Float, Color> {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
