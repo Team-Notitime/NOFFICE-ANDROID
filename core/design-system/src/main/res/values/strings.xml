@@ -95,10 +95,13 @@
         장소
         \n링크
     </string>
-    <string name="announcement_creation_option_place_placeholder">입력하세요.</string>
+    <string name="announcement_creation_option_place_place_placeholder">장소 링크를 입력하세요.</string>
+    <string name="announcement_creation_option_place_title_placeholder">장소 이름을 입력하세요.</string>
     <string name="announcement_creation_option_place_type_contact">대면</string>
     <string name="announcement_creation_option_place_type_none_contact">비대면</string>
-    <string name="announcement_creation_option_place_none_contact_title">제목</string>
+    <string name="announcement_creation_option_place_none_contact_title">이름</string>
+    <string name="announcement_creation_option_place_open_graph_error">정보를 불러오지 못했습니다.</string>
+    <string name="announcement_creation_option_place_open_graph_error_caption">다시 한번 확인해 주세요.</string>
     <string name="announcement_creation_option_task">투두</string>
     <string name="announcement_creation_option_task_title">멤버들에게 할 일을 전달해봐요</string>
     <string name="announcement_creation_option_task_button">새로운 투두</string>
