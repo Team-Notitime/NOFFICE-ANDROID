@@ -27,8 +27,9 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green700
+import com.easyhz.noffice.core.design_system.theme.Grey300
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
-import com.easyhz.noffice.core.design_system.util.interaction.useInteraction
+import com.easyhz.noffice.core.design_system.util.interaction.useInteractionWithColor
 
  @Composable
 fun IconMediumButton(
@@ -40,7 +41,10 @@ fun IconMediumButton(
     borderColor: Color = Color.Transparent,
     onClick: () -> Unit
 ) {
-    val (interactionSource, scale) = useInteraction()
+    val (interactionSource, scale, color) = useInteractionWithColor(
+        backgroundColor = containerColor,
+        pressedColor = Grey300.copy(0.3f)
+    )
     Box(
         modifier = modifier
             .imePadding()
@@ -49,6 +53,7 @@ fun IconMediumButton(
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(containerColor)
+            .background(color)
             .border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
             .noRippleClickable(interactionSource) { onClick() },
     ) {
