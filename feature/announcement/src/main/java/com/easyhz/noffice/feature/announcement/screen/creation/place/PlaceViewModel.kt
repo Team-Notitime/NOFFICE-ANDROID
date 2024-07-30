@@ -3,43 +3,79 @@ package com.easyhz.noffice.feature.announcement.screen.creation.place
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.announcement.creation.place.OpenGraph
+import com.easyhz.noffice.domain.announcement.usecase.creation.place.FetchOpenGraphDataUseCase
 import com.easyhz.noffice.feature.announcement.contract.creation.place.ContactType
 import com.easyhz.noffice.feature.announcement.contract.creation.place.PlaceIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.place.PlaceSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.place.PlaceState
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PlaceViewModel @Inject constructor(
-
-): BaseViewModel<PlaceState, PlaceIntent, PlaceSideEffect>(
+    private val fetchOpenGraphDataUseCase: FetchOpenGraphDataUseCase
+) : BaseViewModel<PlaceState, PlaceIntent, PlaceSideEffect>(
     initialState = PlaceState.init()
 ) {
     private var hasFocus by mutableStateOf(false)
-
+    private var debounceJob: Job? = null
     override fun handleIntent(intent: PlaceIntent) {
-        when(intent) {
-            is PlaceIntent.InitScreen -> { initScreen(intent.contactType, intent.title, intent.url) }
-            is PlaceIntent.ClickBackButton -> { onClickBackButton() }
-            is PlaceIntent.ClickSaveButton -> { onClickSaveButton() }
-            is PlaceIntent.SelectedContactType -> { onSelectedContactType(intent.contactType) }
-            is PlaceIntent.ChangePlaceUrlTextValue -> { onChangePlaceUrlTextValue(intent.newText) }
-            is PlaceIntent.ClearPlaceUrlTextValue -> { onClearPlaceUrlTextValue() }
-            is PlaceIntent.ChangePlaceTitleTextValue -> { onChangePlaceTitleTextValue(intent.newText) }
-            is PlaceIntent.ClearPlaceTitleTextValue -> { onClearPlaceTitleTextValue() }
-            is PlaceIntent.ChangedFocus -> { onChangeFocus(intent.hasFocus) }
+        when (intent) {
+            is PlaceIntent.InitScreen -> {
+                initScreen(intent.contactType, intent.title, intent.url)
+            }
+
+            is PlaceIntent.ClickBackButton -> {
+                onClickBackButton()
+            }
+
+            is PlaceIntent.ClickSaveButton -> {
+                onClickSaveButton()
+            }
+
+            is PlaceIntent.SelectedContactType -> {
+                onSelectedContactType(intent.contactType)
+            }
+
+            is PlaceIntent.ChangePlaceUrlTextValue -> {
+                onChangePlaceUrlTextValue(intent.newText)
+            }
+
+            is PlaceIntent.ClearPlaceUrlTextValue -> {
+                onClearPlaceUrlTextValue()
+            }
+
+            is PlaceIntent.ChangePlaceTitleTextValue -> {
+                onChangePlaceTitleTextValue(intent.newText)
+            }
+
+            is PlaceIntent.ClearPlaceTitleTextValue -> {
+                onClearPlaceTitleTextValue()
+            }
+
+            is PlaceIntent.ChangedFocus -> {
+                onChangeFocus(intent.hasFocus)
+            }
+            is PlaceIntent.ReadyForOpenGraph -> {
+                onReadyForOpenGraph()
+            }
         }
     }
 
     private fun initScreen(contactType: String?, title: String?, url: String?) {
         contactType?.let {
-            when(val type = ContactType.valueOf(it)) {
+            when (val type = ContactType.valueOf(it)) {
                 ContactType.CONTACT -> {
                     reduce { updateContactState(contactType = type, url = url) }
                 }
+
                 ContactType.NONE_CONTACT -> {
                     reduce { updateContactState(contactType = type, title = title, url = url) }
                 }
@@ -54,7 +90,10 @@ class PlaceViewModel @Inject constructor(
     private fun onClickSaveButton() {
         postSideEffect {
             PlaceSideEffect.NavigateToNext(
-                OptionData.Place(currentState.contactState, currentState.contactState.url.isNotBlank())
+                OptionData.Place(
+                    currentState.contactState,
+                    currentState.contactState.url.isNotBlank()
+                )
             )
         }
     }
@@ -68,10 +107,14 @@ class PlaceViewModel @Inject constructor(
 
     private fun onChangePlaceUrlTextValue(newText: String) {
         reduce { updateContactState(url = newText) }
+        setVisibilityOpenGraph()
+        debounceJob?.cancel()
+        debounceJob = fetchOpenGraphData()
     }
 
     private fun onClearPlaceUrlTextValue() {
         reduce { updateContactState(url = "") }
+        setVisibilityOpenGraph()
     }
 
     private fun onChangePlaceTitleTextValue(newText: String) {
@@ -86,4 +129,54 @@ class PlaceViewModel @Inject constructor(
         this.hasFocus = hasFocus
     }
 
+    private fun setVisibilityOpenGraph() {
+        val isUrlBlank = currentState.contactState.url.isBlank()
+
+        if (currentState.isVisible && isUrlBlank) {
+            reduce { copy(isVisible = false) }
+        } else if (!currentState.isVisible && !isUrlBlank) {
+            reduce { copy(isVisible = true, isLoading = true) }
+        } else if(currentState.isVisible && !currentState.isLoading) {
+            reduce { copy(isLoading = true) }
+        }
+    }
+
+    private fun fetchOpenGraphData() = viewModelScope.launch {
+        delay(1500)
+        val currentUrl = currentState.contactState.url
+        if (currentUrl.isBlank()) return@launch
+        val url = validateUrl(currentUrl) ?: return@launch
+        val openGraph = fetchOpenGraphDataUseCase.invoke(url).getOrElse {
+            OpenGraph(
+                title = "",
+                description = "",
+                imageUrl = "",
+                url = currentUrl
+            )
+        }.copy(url = currentUrl)
+        reduce { copy(isLoading = false, openGraph = openGraph) }
+        postSideEffect { PlaceSideEffect.ClearFocus }
+    }
+
+    private fun onReadyForOpenGraph() {
+        postSideEffect { PlaceSideEffect.ClearFocus }
+    }
+
+    private fun validateUrl(url: String): String? {
+        return if (url.isBlank()) {
+            null
+        } else if(!extractUrl(url).isNullOrBlank()) {
+            extractUrl(url)
+        } else if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            "https://$url"
+        } else {
+            url
+        }
+    }
+
+    private fun extractUrl(text: String): String? {
+        val urlRegex = "https?://[\\w\\-]+(\\.[\\w\\-]+)+[/\\w\\-.,@?^=%&:;#~+]*[\\w\\-@?^=%&/~+#]?"
+        val regex = Regex(urlRegex)
+        return regex.find(text)?.value
+    }
 }

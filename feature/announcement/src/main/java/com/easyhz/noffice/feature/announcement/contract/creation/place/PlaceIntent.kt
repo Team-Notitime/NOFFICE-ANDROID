@@ -12,4 +12,5 @@ sealed class PlaceIntent: UiIntent() {
     data class ChangePlaceTitleTextValue(val newText: String): PlaceIntent()
     data object ClearPlaceTitleTextValue: PlaceIntent()
     data class ChangedFocus(val hasFocus: Boolean): PlaceIntent()
+    data object ReadyForOpenGraph: PlaceIntent()
 }

@@ -281,3 +281,16 @@ val CalendarCaption2 = TextStyle(
         includeFontPadding = false,
     )
 )
+
+val Footer14 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Normal,
+    color = Grey800,
+    fontSize = 14.sp,
+    lineHeight = 14.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)

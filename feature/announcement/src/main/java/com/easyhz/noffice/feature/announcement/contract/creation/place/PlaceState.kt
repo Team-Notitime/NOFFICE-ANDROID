@@ -3,13 +3,25 @@ package com.easyhz.noffice.feature.announcement.contract.creation.place
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.tab.SegmentType
+import com.easyhz.noffice.core.model.announcement.creation.place.OpenGraph
 
 data class PlaceState(
-    val contactState: ContactState
+    val contactState: ContactState,
+    val openGraph: OpenGraph,
+    val isLoading: Boolean,
+    val isVisible: Boolean,
 ) : UiState() {
     companion object {
         fun init() = PlaceState(
-            contactState = ContactState()
+            contactState = ContactState(),
+            openGraph = OpenGraph(
+                title = null,
+                description = null,
+                imageUrl = null,
+                url = null
+            ),
+            isLoading = false,
+            isVisible = false
         )
     }
 
