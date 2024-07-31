@@ -25,7 +25,6 @@ class CreationViewModel @Inject constructor(
         when(intent) {
             is CreationIntent.ClickBackButton -> { onClickBackButton() }
             is CreationIntent.ClickNextButton -> { onClickNextButton() }
-            is CreationIntent.SelectedOrganization -> { onSelectedOrganization(organization = intent.organization) }
             is CreationIntent.ChangeTitleTextValue -> { onChangeTitleTextValue(intent.newText) }
             is CreationIntent.ChangeContentTextValue -> { onChangeContentTextValue(intent.newText) }
             is CreationIntent.ClickOptionButton -> { onClickOptionButton(intent.option) }
@@ -42,10 +41,6 @@ class CreationViewModel @Inject constructor(
 
     private fun onClickNextButton() {
         postSideEffect { CreationSideEffect.NavigateToNext }
-    }
-
-    private fun onSelectedOrganization(organization: String) {
-        reduce { copy(selectedOrganization = organization) }
     }
 
     private fun onChangeTitleTextValue(newText: String) {

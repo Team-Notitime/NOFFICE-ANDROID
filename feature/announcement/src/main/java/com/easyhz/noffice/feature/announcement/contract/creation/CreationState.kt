@@ -9,9 +9,6 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 
 data class CreationState(
-    val organizationList: List<String>,
-    val selectedOrganization: String,
-    val healthCheck: Int,
     val title: String,
     val content: TextFieldValue,
     val taskList: List<String>,
@@ -21,12 +18,10 @@ data class CreationState(
     val absoluteCursorY: Int,
     val isFocused: Boolean,
     val isMoved: Boolean,
+    val enabledButton: Boolean,
 ) : UiState() {
     companion object {
         fun init() = CreationState(
-            organizationList = listOf("나의 동아리", "나의 그룹", "나의 소모임", "나의 스터디"),
-            selectedOrganization = "",
-            healthCheck = 0,
             title = "",
             content = TextFieldValue(""),
             taskList = emptyList(),
@@ -35,7 +30,8 @@ data class CreationState(
             cursorOffset = Offset.Zero,
             absoluteCursorY = 0,
             isFocused = false,
-            isMoved = false
+            isMoved = false,
+            enabledButton = false
         )
     }
 
