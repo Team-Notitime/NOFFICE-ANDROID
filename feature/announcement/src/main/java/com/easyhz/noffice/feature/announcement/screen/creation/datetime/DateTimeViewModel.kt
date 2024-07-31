@@ -29,8 +29,8 @@ class DateTimeViewModel @Inject constructor(
     }
 
     private fun initScreen(date: String?, time: String?) {
-        if (date == null || time == null) return
-        reduce { copy(selectionDate = DateFormat.stringToLocalDate(date), selectionTime = DateFormat.stringToLocalTime(time)) }
+        if (date == null) return
+        reduce { copy(selectionDate = DateFormat.stringToLocalDate(date), selectionTime = DateFormat.stringToLocalTime(time ?: "00:00")) }
     }
 
     private fun onClickBackButton() {
@@ -43,7 +43,7 @@ class DateTimeViewModel @Inject constructor(
             currentState.selectionDate,
             currentState.selectionTime
         )
-        val isSelected = dateTimeState.date != null && dateTimeState.time != null
+        val isSelected = dateTimeState.date != null
         postSideEffect {
             DateTimeSideEffect.NavigateToNext(OptionData.DateTime(dateTimeState, isSelected))
         }
