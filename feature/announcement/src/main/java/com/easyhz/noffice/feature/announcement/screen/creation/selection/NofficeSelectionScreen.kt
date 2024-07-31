@@ -1,4 +1,4 @@
-package com.easyhz.noffice.feature.announcement.screen.creation
+package com.easyhz.noffice.feature.announcement.screen.creation.selection
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,13 +35,13 @@ import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.announcement.component.creation.CreationTitle
-import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
-import com.easyhz.noffice.feature.announcement.contract.creation.CreationSideEffect
+import com.easyhz.noffice.feature.announcement.contract.creation.selection.SelectionIntent
+import com.easyhz.noffice.feature.announcement.contract.creation.selection.SelectionSideEffect
 
 @Composable
 fun NofficeSelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: CreationViewModel = hiltViewModel(),
+    viewModel: SelectionViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
     navigateToAnnouncementCreationContent: () -> Unit
 ) {
@@ -58,7 +58,7 @@ fun NofficeSelectionScreen(
                             tint = Grey400
                         )
                     },
-                    onClick = { viewModel.postIntent(CreationIntent.ClickBackButton) }
+                    onClick = { viewModel.postIntent(SelectionIntent.ClickBackButton) }
                 ),
                 title = stringResource(id = R.string.announcement_creation_title),
             )
@@ -95,7 +95,7 @@ fun NofficeSelectionScreen(
                             incompleteIconColor = Grey300
                         )
                     ) {
-                        viewModel.postIntent(CreationIntent.SelectedOrganization(it))
+                        viewModel.postIntent(SelectionIntent.SelectedOrganization(it))
                     }
                 }
             }
@@ -104,18 +104,17 @@ fun NofficeSelectionScreen(
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
                 text = stringResource(id = R.string.next_button),
-                enabled = true
+                enabled = uiState.enabledButton
             ) {
-                viewModel.postIntent(CreationIntent.ClickNextButton)
+                viewModel.postIntent(SelectionIntent.ClickNextButton)
             }
         }
     }
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
         when(sideEffect) {
-            is CreationSideEffect.NavigateToUp -> { navigateToUp() }
-            is CreationSideEffect.NavigateToNext -> { navigateToAnnouncementCreationContent() }
-            else -> {  }
+            is SelectionSideEffect.NavigateToUp -> { navigateToUp() }
+            is SelectionSideEffect.NavigateToNext -> { navigateToAnnouncementCreationContent() }
         }
     }
 }
