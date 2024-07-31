@@ -1,6 +1,6 @@
 package com.easyhz.noffice.core.design_system.component.calendar
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,15 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Grey500
 import com.easyhz.noffice.core.design_system.theme.InputDialogTitle
-import com.easyhz.noffice.core.design_system.util.interaction.useInteractionWithColor
 
 @Composable
 internal fun MonthHeader(
@@ -32,8 +29,6 @@ internal fun MonthHeader(
     onClickBefore: () -> Unit,
     onClickNext: () -> Unit
 ) {
-    val (beforeInteractionSource, beforeScale, beforeColor) = useInteractionWithColor()
-    val (nextInteractionSource, nextScale, nextColor) = useInteractionWithColor()
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -41,10 +36,8 @@ internal fun MonthHeader(
     ) {
         Box(modifier = Modifier
             .size(32.dp)
-            .scale(beforeScale)
             .clip(RoundedCornerShape(8.dp))
-            .background(beforeColor)
-            .noRippleClickable(beforeInteractionSource) { onClickBefore() }) {
+            .clickable { onClickBefore() }) {
             Icon(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -62,10 +55,8 @@ internal fun MonthHeader(
         )
         Box(modifier = Modifier
             .size(32.dp)
-            .scale(nextScale)
             .clip(RoundedCornerShape(8.dp))
-            .background(nextColor)
-            .noRippleClickable(nextInteractionSource) { onClickNext() }) {
+            .clickable { onClickNext() }) {
             Icon(
                 modifier = Modifier
                     .align(Alignment.Center)

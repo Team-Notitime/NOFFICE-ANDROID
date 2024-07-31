@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -38,7 +37,6 @@ import com.easyhz.noffice.core.design_system.theme.Grey500
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.SubHeading16
 import com.easyhz.noffice.core.design_system.theme.White
-import com.easyhz.noffice.core.design_system.util.interaction.useInteraction
 import com.easyhz.noffice.core.design_system.util.tab.SegmentType
 
 @Composable
@@ -48,7 +46,7 @@ fun <T> SegmentedButton(
     items: Array<T>,
     onSelectionChange: (T) -> Unit
 ) where T: Enum<T>, T: SegmentType {
-    val (interactionSource, scale) = useInteraction()
+
     BoxWithConstraints(
         modifier
             .height(44.dp)
@@ -98,10 +96,9 @@ fun <T> SegmentedButton(
                 items.forEachIndexed { index, item ->
                     Box(
                         modifier = Modifier
-                            .scale(scale)
                             .width(tabWidth)
                             .fillMaxHeight()
-                            .noRippleClickable(interactionSource) {
+                            .noRippleClickable {
                                 onSelectionChange(item)
                             },
                         contentAlignment = Alignment.Center

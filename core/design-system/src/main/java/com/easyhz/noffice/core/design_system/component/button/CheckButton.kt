@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.design_system.component.button
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -23,10 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Blue100
- import com.easyhz.noffice.core.design_system.theme.Blue700
+import com.easyhz.noffice.core.design_system.theme.Blue700
 import com.easyhz.noffice.core.design_system.theme.Body14
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green500
@@ -52,12 +52,12 @@ fun CheckButton(
 
     Row(
         modifier = modifier
-            .noRippleClickable {
-                onClick()
-            }
             .heightIn(min = 42.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(if (isComplete) color.completeContainerColor else color.incompleteContainerColor)
+            .clickable {
+                onClick()
+            }
             .padding(vertical = verticalPadding)
             .screenHorizonPadding(),
         verticalAlignment = Alignment.CenterVertically,

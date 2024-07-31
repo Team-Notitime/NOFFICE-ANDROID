@@ -2,6 +2,7 @@ package com.easyhz.noffice.feature.sign.component.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,15 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.extension.buttonShadowEffect
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.SubBody14
-import com.easyhz.noffice.core.design_system.util.interaction.useInteraction
 import com.easyhz.noffice.feature.sign.util.login.SocialLoginType
 
 
@@ -49,10 +47,8 @@ private fun SocialLoginButton(
     socialLoginType: SocialLoginType,
     onClick: () -> Unit
 ) {
-    val (interactionSource, scale) = useInteraction()
     Row(
         modifier = modifier
-            .scale(scale)
             .buttonShadowEffect(
                 shadowColor = Color.Black.copy(0.25f),
                 borderRadius = 12.dp,
@@ -63,7 +59,7 @@ private fun SocialLoginButton(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(socialLoginType.containerColor)
-            .noRippleClickable(interactionSource) { onClick() },
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

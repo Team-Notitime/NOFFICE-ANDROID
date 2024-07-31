@@ -1,7 +1,7 @@
 package com.easyhz.noffice.feature.announcement.component.creation.remind
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,15 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Blue500
 import com.easyhz.noffice.core.design_system.theme.Grey200
 import com.easyhz.noffice.core.design_system.theme.SubTitle1
-import com.easyhz.noffice.core.design_system.util.interaction.useInteractionWithColor
 
 @Composable
 internal fun RemindItem(
@@ -33,18 +30,14 @@ internal fun RemindItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val (interactionSource, scale, color) = useInteractionWithColor()
     Column {
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .noRippleClickable(interactionSource) { onClick() }
-                .padding(vertical = 4.dp)
+                .height(48.dp)
+                .clickable { onClick() }
                 .clip(RoundedCornerShape(8.dp))
-                .background(color)
-                .padding(horizontal = 14.dp)
-                .scale(scale),
+                .padding(horizontal = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
@@ -64,6 +57,10 @@ internal fun RemindItem(
                 )
             }
         }
-        Divider(color = Grey200, thickness = 1.dp)
+        Divider(
+            modifier = Modifier.padding(vertical = 4.dp),
+            color = Grey200,
+            thickness = 1.dp
+        )
     }
 }

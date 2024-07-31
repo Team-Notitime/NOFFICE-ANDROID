@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.home.component.common
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -17,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.InputDialogTitle
 
@@ -27,9 +27,9 @@ internal fun OrganizationHeader(
     organizationName: String,
     onClick: () -> Unit
 ) {
-    Box(modifier) {
+    Box(modifier.clickable { onClick() }) {
         Row(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier.padding(horizontal = 14.dp).fillMaxWidth().fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -37,7 +37,7 @@ internal fun OrganizationHeader(
             Box(modifier = Modifier
                 .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
                 .fillMaxHeight()
-                .noRippleClickable { onClick() }) {
+            ) {
                 Icon(
                     modifier = Modifier.align(Alignment.CenterEnd),
                     painter = painterResource(id = R.drawable.ic_chevron_right),
