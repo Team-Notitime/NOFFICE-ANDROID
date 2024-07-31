@@ -1,7 +1,7 @@
 package com.easyhz.noffice.core.common.error
 
 import androidx.annotation.StringRes
-import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.common.R
 
 @StringRes
 private fun Throwable.handleError(): Int {
