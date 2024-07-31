@@ -97,7 +97,6 @@ fun RemindScreen(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(uiState.remindMap.toList(),) {(text, isSelected)->
-                    println("hi $text + $isSelected")
                     RemindItem(
                         text = text,
                         isSelected = isSelected

@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -21,6 +22,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
 import com.easyhz.noffice.core.design_system.component.calendar.MonthCalendarView
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
+import com.easyhz.noffice.core.design_system.component.timePicker.NofficeTimePicker
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
@@ -82,7 +84,16 @@ fun DateTimeScreen(
             ) {
                 viewModel.postIntent(DateTimeIntent.SelectDate(it))
             }
-
+            NofficeTimePicker(
+                modifier = Modifier
+                    .weight(0.5f)
+                    .align(
+                        Alignment.CenterHorizontally
+                    ),
+                initialTime = uiState.selectionTime
+            ) { h, m, isAm ->
+                viewModel.postIntent(DateTimeIntent.ChangeTimeValue(h, m, isAm))
+            }
             MediumButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,9 +106,12 @@ fun DateTimeScreen(
         }
     }
 
-    viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
-        when(sideEffect) {
-            is DateTimeSideEffect.NavigateToUp -> { navigateToUp() }
+    viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
+        when (sideEffect) {
+            is DateTimeSideEffect.NavigateToUp -> {
+                navigateToUp()
+            }
+
             is DateTimeSideEffect.NavigateToNext -> {
                 creationViewModel.postIntent(CreationIntent.SaveOptionData(sideEffect.data))
                 navigateToUp()

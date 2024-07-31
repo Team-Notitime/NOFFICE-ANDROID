@@ -18,7 +18,7 @@ object DateFormat {
     }
 
 
-    fun stringToLocalTime(time: String, pattern: String = "HH:mm:ss.SSS"): LocalTime = try {
+    fun stringToLocalTime(time: String, pattern: String = "HH:mm"): LocalTime = try {
         val formatter = DateTimeFormatter.ofPattern(pattern)
         LocalTime.parse(time, formatter)
     } catch (e: DateTimeParseException) {

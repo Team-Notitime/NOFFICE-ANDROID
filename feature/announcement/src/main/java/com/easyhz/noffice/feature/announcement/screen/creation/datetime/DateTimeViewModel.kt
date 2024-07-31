@@ -2,6 +2,7 @@ package com.easyhz.noffice.feature.announcement.screen.creation.datetime
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.common.util.TimeFormat
 import com.easyhz.noffice.feature.announcement.contract.creation.datetime.DateTimeIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.datetime.DateTimeSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.datetime.DateTimeState
@@ -23,6 +24,7 @@ class DateTimeViewModel @Inject constructor(
             is DateTimeIntent.ClickBackButton -> { onClickBackButton() }
             is DateTimeIntent.ClickSaveButton -> { onClickSaveButton() }
             is DateTimeIntent.SelectDate -> { onSelectedDate(intent.date) }
+            is DateTimeIntent.ChangeTimeValue -> { onChangeTimeValue(intent.hour, intent.minute, intent.isAm) }
         }
     }
 
@@ -36,15 +38,21 @@ class DateTimeViewModel @Inject constructor(
     }
 
     private fun onClickSaveButton() {
+        reduce { copy(selectionTime = TimeFormat.convertToLocalTime(hour, minute, isAm)) }
         val dateTimeState = SelectionDateTimeState(
             currentState.selectionDate,
             currentState.selectionTime
         )
+        val isSelected = dateTimeState.date != null && dateTimeState.time != null
         postSideEffect {
-            DateTimeSideEffect.NavigateToNext(OptionData.DateTime(dateTimeState, true))
+            DateTimeSideEffect.NavigateToNext(OptionData.DateTime(dateTimeState, isSelected))
         }
     }
     private fun onSelectedDate(date: LocalDate) {
-        reduce { copy(selectionDate = date) }
+        reduce { copy(selectionDate = date.takeIf { it != currentState.selectionDate }) }
+    }
+
+    private fun onChangeTimeValue(hour: Int, minute: Int, isAm: Boolean) {
+        reduce { copy(hour = hour, minute = minute, isAm = isAm) }
     }
 }

@@ -5,17 +5,23 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class DateTimeState(
-    val selectionDate: LocalDate,
-    val selectionTime: LocalTime,
+    val selectionDate: LocalDate?,
+    val selectionTime: LocalTime?,
+    val hour: Int,
+    val minute: Int,
+    val isAm: Boolean,
 ): UiState() {
     companion object {
         fun init(): DateTimeState = DateTimeState(
-            selectionDate = LocalDate.now(),
-            selectionTime = LocalTime.now()
+            selectionDate = null,
+            selectionTime = null,
+            hour = 12,
+            minute = 0,
+            isAm = true
         )
     }
 }
 data class SelectionDateTimeState(
-    val date: LocalDate = LocalDate.now(),
-    val time: LocalTime = LocalTime.now()
+    val date: LocalDate? = null,
+    val time: LocalTime? = null
 )
