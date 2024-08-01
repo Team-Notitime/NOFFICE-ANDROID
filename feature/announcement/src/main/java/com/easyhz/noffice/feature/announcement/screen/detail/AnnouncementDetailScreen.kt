@@ -1,11 +1,14 @@
 package com.easyhz.noffice.feature.announcement.screen.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -27,6 +30,7 @@ import com.easyhz.noffice.feature.announcement.component.detail.ContentField
 import com.easyhz.noffice.feature.announcement.component.detail.DetailField
 import com.easyhz.noffice.feature.announcement.component.detail.DetailTitle
 import com.easyhz.noffice.feature.announcement.component.detail.OrganizationField
+import com.easyhz.noffice.feature.announcement.component.detail.TaskListField
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.util.detail.DetailType
 
@@ -39,6 +43,7 @@ fun AnnouncementDetailScreen(
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
         viewModel.postIntent(DetailIntent.InitScreen(id, title))
@@ -49,6 +54,7 @@ fun AnnouncementDetailScreen(
         navigationBarColor = Grey50,
         topBar = {
             DetailTopBar(
+                modifier = Modifier.background(Grey50),
                 leadingItem = DetailTopBarMenu(
                     content = {
                         Icon(
@@ -65,8 +71,10 @@ fun AnnouncementDetailScreen(
     ) {
         Column(
             modifier = modifier
+                .verticalScroll(scrollState)
                 .padding(it)
                 .padding(horizontal = 24.dp)
+                .padding(bottom = 16.dp)
         ) {
             DetailTitle(
                 title = uiState.detail.title,
@@ -109,10 +117,12 @@ fun AnnouncementDetailScreen(
                 content = uiState.detail.content,
                 isLoading = uiState.isLoading
             )
-
-//            items(uiState.detail.taskList) {
-//
-//            }
+            TaskListField(
+                taskList = uiState.detail.taskList,
+                isLoading = uiState.isLoading
+            ) {
+                println("click task list >> $it")
+            }
         }
     }
 }

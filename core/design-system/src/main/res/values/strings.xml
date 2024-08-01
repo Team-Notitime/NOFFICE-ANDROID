@@ -114,4 +114,5 @@
 
     <string name="announcement_detail_date_time">이벤트 일시</string>
     <string name="announcement_detail_place">이벤트 장소</string>
+    <string name="announcement_detail_task_list_header">TO DO LIST</string>
 </resources>
