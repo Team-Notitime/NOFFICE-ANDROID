@@ -51,8 +51,8 @@ fun Modifier.borderBottom(color: Color, width: Dp): Modifier = this.drawBehind {
 
     drawLine(
         color = color,
-        start = androidx.compose.ui.geometry.Offset(0f, y),
-        end = androidx.compose.ui.geometry.Offset(size.width, y),
+        start = Offset(0f, y),
+        end = Offset(size.width, y),
         strokeWidth = strokeWidth
     )
 }
