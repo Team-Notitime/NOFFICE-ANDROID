@@ -94,6 +94,7 @@ class CreationViewModel @Inject constructor(
 
     private fun <T> onSaveOptionData(data: OptionData<T>) {
         currentState.optionState[data.type] = data
+        setEnabledButton()
     }
 
     private fun onGloballyPositioned(view: View) {
@@ -115,5 +116,14 @@ class CreationViewModel @Inject constructor(
 
     private fun onChangeFocus(hasFocus: Boolean) {
         reduce { copy(isFocused = hasFocus, isMoved = !hasFocus) }
+    }
+
+    private fun setEnabledButton() {
+        val isOptionSelected = currentState.optionState.values.any { it.selected }
+        val isTitleNotBlank = currentState.title.isNotBlank()
+        val isContentNotBlank = currentState.content.text.isNotBlank()
+
+        val buttonEnabled = isOptionSelected && isTitleNotBlank && isContentNotBlank
+        reduce { copy(enabledButton = buttonEnabled) }
     }
 }

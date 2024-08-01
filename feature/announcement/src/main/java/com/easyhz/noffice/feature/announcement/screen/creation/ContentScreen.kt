@@ -189,7 +189,7 @@ fun ContentScreen(
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
                 text = stringResource(id = R.string.next_button),
-                enabled = true
+                enabled = uiState.enabledButton
             ) {
                 viewModel.postIntent(CreationIntent.ClickNextButton)
             }
