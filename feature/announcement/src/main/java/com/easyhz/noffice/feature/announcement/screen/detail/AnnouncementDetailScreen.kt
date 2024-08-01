@@ -1,11 +1,11 @@
 package com.easyhz.noffice.feature.announcement.screen.detail
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -63,62 +63,53 @@ fun AnnouncementDetailScreen(
             )
         }
     ) {
-        LazyColumn(
+        Column(
             modifier = modifier
                 .padding(it)
                 .padding(horizontal = 24.dp)
         ) {
-            item {
-                DetailTitle(
-                    title = uiState.detail.title,
-                    date = uiState.detail.creationDate,
-                    isLoading = uiState.isLoading
-                )
-            }
-            item {
-                Divider(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Grey200,
-                    thickness = 1.dp
-                )
-            }
-            item {
-                OrganizationField(
-                    modifier = Modifier.padding(vertical = 12.dp),
-                    organizationName = uiState.detail.organizationName,
-                    profileImage = uiState.detail.organizationProfileImage,
-                    category = uiState.detail.organizationCategory,
-                    isLoading = uiState.isLoading
-                )
-            }
-            item {
-                DetailField(
-                    detailType = DetailType.DATE_TIME,
-                    value = uiState.detail.date,
-                    isLoading = uiState.isLoading
-                ) { }
-            }
-            item {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(12.dp)
-                )
-            }
-            item {
-                DetailField(
-                    detailType = DetailType.PLACE,
-                    value = uiState.detail.place,
-                    isLoading = uiState.isLoading
-                ) { }
-            }
-            item {
-                ContentField(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    content = uiState.detail.content,
-                    isLoading = uiState.isLoading
-                )
-            }
+            DetailTitle(
+                title = uiState.detail.title,
+                date = uiState.detail.creationDate,
+                isLoading = uiState.isLoading
+            )
+            Divider(
+                modifier = Modifier.fillMaxWidth(),
+                color = Grey200,
+                thickness = 1.dp
+            )
+            OrganizationField(
+                modifier = Modifier.padding(vertical = 12.dp),
+                organizationName = uiState.detail.organizationName,
+                profileImage = uiState.detail.organizationProfileImage,
+                category = uiState.detail.organizationCategory,
+                isLoading = uiState.isLoading
+            )
+
+            DetailField(
+                detailType = DetailType.DATE_TIME,
+                value = uiState.detail.date,
+                isLoading = uiState.isLoading
+            ) { }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(12.dp)
+            )
+
+            DetailField(
+                detailType = DetailType.PLACE,
+                value = uiState.detail.place,
+                isLoading = uiState.isLoading
+            ) { }
+
+            ContentField(
+                modifier = Modifier.padding(vertical = 16.dp),
+                content = uiState.detail.content,
+                isLoading = uiState.isLoading
+            )
+
 //            items(uiState.detail.taskList) {
 //
 //            }
