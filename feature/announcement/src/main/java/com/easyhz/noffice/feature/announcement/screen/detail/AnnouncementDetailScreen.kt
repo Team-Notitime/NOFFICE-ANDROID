@@ -1,39 +1,49 @@
 package com.easyhz.noffice.feature.announcement.screen.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.component.bottomSheet.BottomSheet
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
+import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey200
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
+import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.announcement.component.detail.ContentField
 import com.easyhz.noffice.feature.announcement.component.detail.DetailField
 import com.easyhz.noffice.feature.announcement.component.detail.DetailTitle
 import com.easyhz.noffice.feature.announcement.component.detail.OrganizationField
+import com.easyhz.noffice.feature.announcement.component.detail.PlaceWebView
 import com.easyhz.noffice.feature.announcement.component.detail.TaskListField
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.util.detail.DetailType
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnnouncementDetailScreen(
     modifier: Modifier = Modifier,
@@ -110,7 +120,7 @@ fun AnnouncementDetailScreen(
                 detailType = DetailType.PLACE,
                 value = uiState.detail.place,
                 isLoading = uiState.isLoading
-            ) { }
+            ) { viewModel.postIntent(DetailIntent.ClickPlace) }
 
             ContentField(
                 modifier = Modifier.padding(vertical = 16.dp),
@@ -122,6 +132,29 @@ fun AnnouncementDetailScreen(
                 isLoading = uiState.isLoading
             ) {
                 println("click task list >> $it")
+            }
+        }
+        if (uiState.isShowBottomSheet) {
+            BottomSheet(
+                containerColor = White,
+                onDismissRequest = { viewModel.postIntent(DetailIntent.HideBottomSheet) }
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxHeight(0.9f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    PlaceWebView(
+                        url = uiState.detail.placeUrl
+                    ) {
+                        viewModel.postIntent(DetailIntent.LoadWebView(it))
+                    }
+                    if (uiState.isWebViewLoading) {
+                            CircularProgressIndicator(
+                                strokeWidth = 3.dp,
+                                color = Green500
+                            )
+                    }
+                }
             }
         }
     }

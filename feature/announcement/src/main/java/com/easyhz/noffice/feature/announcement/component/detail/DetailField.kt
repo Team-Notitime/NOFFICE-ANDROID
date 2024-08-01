@@ -48,7 +48,7 @@ internal fun DetailField(
             .clip(RoundedCornerShape(8.dp))
             .background(White)
             .clickable(
-                enabled = detailType.hasDetail
+                enabled = detailType.hasDetail && !isLoading
             ) { onClick() }
             .screenHorizonPadding()
             .padding(vertical = 18.dp),

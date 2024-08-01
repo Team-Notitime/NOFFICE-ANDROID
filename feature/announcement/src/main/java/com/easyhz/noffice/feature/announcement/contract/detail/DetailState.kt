@@ -6,11 +6,15 @@ import com.easyhz.noffice.core.model.task.Task
 
 data class DetailState(
     val isLoading: Boolean,
+    val isShowBottomSheet: Boolean,
+    val isWebViewLoading: Boolean,
     val detail: AnnouncementDetail
 ): UiState() {
     companion object {
         fun init() = DetailState(
             isLoading = true,
+            isShowBottomSheet = false,
+            isWebViewLoading = true,
             detail = AnnouncementDetail(
                 title = "",
                 creationDate = "",
@@ -42,7 +46,7 @@ internal val DUMMY = AnnouncementDetail(
     organizationProfileImage = "",
     date = "2024.07.27(토) 14:02",
     place = "서울 창업 허브 : 장소 이름이름이름이름..",
-    placeUrl = "https://kko.to/OWaCVd-s-J",
+    placeUrl = "www.naver.com",
     content = """
         15기 챌린저 전원이 함께 모여 작업할 수 있는 모각작 세션과 UT(User Test)가 진행됩니다.
         User Test는 실제 사용자가 서비스를 테스트하며 피드백하는 중요한 과정입니다. 사용자가 주어진 작업을 완료하는 데 걸리는 시간을 관찰하는 등의 방법을 통해 사용성을 평가하고, 피드백을 받아 서비스를 더욱 더 발전시킬 수 있습니다.

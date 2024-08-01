@@ -21,6 +21,9 @@ class AnnouncementDetailViewModel @Inject constructor(
     override fun handleIntent(intent: DetailIntent) {
         when(intent) {
             is DetailIntent.InitScreen -> { initScreen(intent.id, intent.title)}
+            is DetailIntent.ClickPlace -> { showBottomSheet() }
+            is DetailIntent.HideBottomSheet -> { hideBottomSheet() }
+            is DetailIntent.LoadWebView -> { onLoadWebView(intent.isLoading) }
         }
     }
 
@@ -35,4 +38,15 @@ class AnnouncementDetailViewModel @Inject constructor(
         reduce { copy(detail = DUMMY, isLoading = false) }
     }
 
+    private fun showBottomSheet() {
+        reduce { copy(isShowBottomSheet = true) }
+    }
+
+    private fun hideBottomSheet() {
+        reduce { copy(isShowBottomSheet = false) }
+    }
+
+    private fun onLoadWebView(isLoading: Boolean) {
+        reduce { copy(isWebViewLoading = isLoading) }
+    }
 }
