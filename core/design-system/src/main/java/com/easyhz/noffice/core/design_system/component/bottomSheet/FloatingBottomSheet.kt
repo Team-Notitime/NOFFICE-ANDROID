@@ -47,9 +47,9 @@ fun FloatingBottomSheet(
         Box(
             modifier = Modifier
                 .navigationBarsPadding()
-                .padding(bottom = 10.dp)
+                .padding(bottom = 32.dp)
                 .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(24.dp))
+                .clip(RoundedCornerShape(12.dp))
                 .fillMaxWidth()
                 .background(backgroundColor)
         ) {

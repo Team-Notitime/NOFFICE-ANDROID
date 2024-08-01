@@ -27,7 +27,9 @@ internal object AnnouncementCreation: Parcelable {
     )
 
     @Serializable
-    data object Task
+    data class Task(
+        val taskList: List<String>? = null
+    )
 
     @Serializable
     data class Remind(

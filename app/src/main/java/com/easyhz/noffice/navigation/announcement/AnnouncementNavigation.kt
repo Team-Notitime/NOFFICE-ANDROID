@@ -9,11 +9,12 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.announcement.screen.creation.ContentScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
-import com.easyhz.noffice.feature.announcement.screen.creation.NofficeSelectionScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.selection.NofficeSelectionScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.datetime.DateTimeScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindScreen
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
+import com.easyhz.noffice.feature.announcement.screen.creation.task.TaskScreen
 import com.easyhz.noffice.navigation.util.DURATION
 import com.easyhz.noffice.navigation.util.sharedViewModel
 
@@ -28,9 +29,7 @@ internal fun NavGraphBuilder.announcementScreen(
         popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
     ) {
         composable<AnnouncementCreation.NofficeSelection> {
-            val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
             NofficeSelectionScreen(
-                viewModel = viewModel,
                 navigateToUp = navController::navigateUp,
                 navigateToAnnouncementCreationContent = navController::navigateToAnnouncementCreationContent
             )
@@ -73,7 +72,13 @@ internal fun NavGraphBuilder.announcementScreen(
         }
 
         composable<AnnouncementCreation.Task> {
-
+            val viewModel = it.sharedViewModel<CreationViewModel>(navController =  navController)
+            val args = it.toRoute<AnnouncementCreation.Task>()
+            TaskScreen(
+                creationViewModel = viewModel,
+                taskList = args.taskList,
+                navigateToUp = navController::navigateUp
+            )
         }
 
         composable<AnnouncementCreation.Remind> {

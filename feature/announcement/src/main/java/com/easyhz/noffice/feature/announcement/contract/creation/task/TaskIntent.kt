@@ -10,4 +10,7 @@ sealed class TaskIntent: UiIntent() {
     data class ChangeTaskTextValue(val newText: String): TaskIntent()
     data object ClearFocus: TaskIntent()
     data object SaveTask: TaskIntent()
+    data class OpenDeleteBottomSheet(val index: Int): TaskIntent()
+    data object CloseDeleteBottomSheet: TaskIntent()
+    data class DeleteTask(val index: Int): TaskIntent()
 }
