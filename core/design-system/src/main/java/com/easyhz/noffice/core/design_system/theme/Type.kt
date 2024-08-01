@@ -294,3 +294,16 @@ val Footer14 = TextStyle(
         includeFontPadding = false,
     )
 )
+
+val Body24 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Medium,
+    color = Grey800,
+    fontSize = 24.sp,
+    lineHeight = 24.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
