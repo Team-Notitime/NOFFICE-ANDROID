@@ -10,10 +10,14 @@ import com.easyhz.noffice.feature.home.screen.home.HomeScreen
 import com.easyhz.noffice.navigation.home.screen.Home
 
 internal fun NavGraphBuilder.homeScreen(
-    modifier: Modifier
+    modifier: Modifier,
+    navigateToAnnouncementDetail: (Int, String) -> Unit
 ) {
     composable<Home> {
-        HomeScreen(modifier = modifier)
+        HomeScreen(
+            modifier = modifier,
+            navigateToAnnouncementDetail = navigateToAnnouncementDetail
+        )
     }
 }
 

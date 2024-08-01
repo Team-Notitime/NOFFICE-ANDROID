@@ -19,7 +19,8 @@ import com.easyhz.noffice.feature.home.util.HomeTopBarMenu
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigateToAnnouncementDetail: (Int, String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     NofficeScaffold(
@@ -40,7 +41,10 @@ fun HomeScreen(
         ) { screen ->
             when (screen) {
                 HomeTopBarMenu.NOTICE -> {
-                    NoticeView(modifier = Modifier.padding(top = paddingValues.calculateTopPadding()))
+                    NoticeView(
+                        modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+                        navigateToAnnouncementDetail = navigateToAnnouncementDetail
+                    )
                 }
 
                 HomeTopBarMenu.TASK -> {
