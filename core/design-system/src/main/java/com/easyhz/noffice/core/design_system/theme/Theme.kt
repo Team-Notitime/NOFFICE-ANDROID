@@ -1,21 +1,17 @@
 package com.easyhz.noffice.core.design_system.theme
 
 import android.app.Activity
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.easyhz.noffice.core.design_system.provider.NofficeLocalProvider
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NofficeTheme(
     content: @Composable () -> Unit
@@ -29,14 +25,13 @@ fun NofficeTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
         }
     }
-    CompositionLocalProvider(
-        LocalRippleTheme provides NoRippleTheme,
-        LocalOverscrollConfiguration provides null,
-    ) {
-        MaterialTheme(
-            content = content
-        )
-    }
+    MaterialTheme(
+        content = {
+            NofficeLocalProvider {
+                content()
+            }
+        }
+    )
 }
 
 // no ripple

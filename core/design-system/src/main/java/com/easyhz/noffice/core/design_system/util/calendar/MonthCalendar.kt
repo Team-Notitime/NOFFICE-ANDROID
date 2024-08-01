@@ -15,7 +15,6 @@ import com.kizitonwose.calendar.compose.CalendarLayoutInfo
 import com.kizitonwose.calendar.compose.CalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
-import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -70,7 +69,7 @@ internal fun getSelectionBoxColor(isSelected: Boolean): Color {
 internal fun getTextColor(day: CalendarDay, isSelected: Boolean, enabled: Boolean): Color {
     return when {
         isSelected -> White
-        !enabled || day.position != DayPosition.MonthDate -> Grey300
+        !enabled -> Grey300
         day.date.dayOfWeek == DayOfWeek.SUNDAY -> Red
         else -> Grey700
     }

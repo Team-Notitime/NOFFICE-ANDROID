@@ -9,5 +9,7 @@ android {
 }
 
 dependencies {
-
+    api(projects.core.model)
+    implementation(projects.data.announcement)
+    implementation(projects.core.common)
 }

@@ -144,6 +144,18 @@ val SubHeading15 = TextStyle(
     )
 )
 
+val SubHeading16 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Bold,
+    color = Grey800,
+    fontSize = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SemiBold16 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
@@ -263,6 +275,32 @@ val CalendarCaption2 = TextStyle(
     fontWeight = FontWeight.SemiBold,
     color = Grey400,
     fontSize = 16.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val Footer14 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Normal,
+    color = Grey800,
+    fontSize = 14.sp,
+    lineHeight = 14.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val Body24 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Medium,
+    color = Grey800,
+    fontSize = 24.sp,
+    lineHeight = 24.sp,
     letterSpacing = LetterSpacing,
     textAlign = TextAlign.Justify,
     platformStyle = PlatformTextStyle(

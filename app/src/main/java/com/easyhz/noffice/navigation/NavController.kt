@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganization
@@ -36,7 +37,6 @@ internal class NofficeNavController(
     fun mapRouteToTab(): BottomMenuTabs? {
         return when (currentRoute) {
             Home::class.java.name -> BottomMenuTabs.HOME
-//            Add::class.java.name -> BottomMenuTabs.ADD // FIXME
             Organization::class.java.name -> BottomMenuTabs.ORGANIZATION
             else -> null
         }
@@ -54,7 +54,7 @@ internal class NofficeNavController(
         }
         when (route) {
             BottomMenuTabs.HOME -> navController.navigateToHome(navOptions)
-            BottomMenuTabs.ADD -> navController.navigateToHome(navOptions) // FIXME : 바꾸기
+            BottomMenuTabs.ADD -> navController.navigateToAnnouncementNofficeSelection()
             BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions)
         }
     }

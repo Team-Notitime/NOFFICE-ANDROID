@@ -34,7 +34,7 @@ import java.time.LocalDate
 @Composable
 fun MonthCalendarView(
     modifier: Modifier = Modifier,
-    selection: LocalDate,
+    selection: LocalDate?,
     calendarPadding: Dp,
     onChangeDate: (LocalDate) -> Unit
 ) {
@@ -51,8 +51,8 @@ fun MonthCalendarView(
     val title = rememberFirstMostVisibleMonth(state = monthState)
 
     LaunchedEffect(selection) {
-        if(title.yearMonth == selection.yearMonth) return@LaunchedEffect
-        monthState.animateScrollToMonth(selection.yearMonth)
+        if(title.yearMonth == selection?.yearMonth) return@LaunchedEffect
+        selection?.yearMonth?.let { monthState.animateScrollToMonth(it) }
     }
     Column(
         modifier = modifier,
@@ -90,7 +90,7 @@ fun MonthCalendarView(
 fun MonthCalendarContent(
     modifier: Modifier = Modifier,
     monthState: CalendarState,
-    selection: LocalDate,
+    selection: LocalDate?,
     today: LocalDate,
     onChangeDate: (LocalDate) -> Unit
 ) {

@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.design_system.component.button
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,12 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Blue100
- import com.easyhz.noffice.core.design_system.theme.Blue700
+import com.easyhz.noffice.core.design_system.theme.Blue700
 import com.easyhz.noffice.core.design_system.theme.Body14
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green500
@@ -43,19 +44,21 @@ fun CheckButton(
     textAlign: TextAlign = TextAlign.Start,
     text: String,
     isComplete: Boolean,
+    iconId: Int = R.drawable.ic_check,
+    verticalPadding: Dp = 14.dp,
     color: CheckButtonDefaults = CheckButtonDefaults.default(),
     onClick: () -> Unit
 ) {
 
     Row(
         modifier = modifier
-            .noRippleClickable {
-                onClick()
-            }
             .heightIn(min = 42.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(if (isComplete) color.completeContainerColor else color.incompleteContainerColor)
-            .padding(vertical = 14.dp)
+            .clickable {
+                onClick()
+            }
+            .padding(vertical = verticalPadding)
             .screenHorizonPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -67,10 +70,10 @@ fun CheckButton(
             style = Body14,
             textAlign = textAlign
         )
-        Box(modifier = Modifier.heightIn(18.dp)) {
+        Box(modifier = Modifier.heightIn(min = 18.dp)) {
             if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_check),
+                    painter = painterResource(id = iconId),
                     contentDescription = "check",
                     tint = (if (isComplete) color.completeIconColor else color.incompleteIconColor) ?: color.completeContentColor
                 )

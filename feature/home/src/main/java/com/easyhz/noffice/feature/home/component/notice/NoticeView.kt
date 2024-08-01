@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.component.banner.Banner
+import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.util.card.CardExceptionType
 import com.easyhz.noffice.feature.home.component.common.OrganizationHeader
 
@@ -24,7 +25,8 @@ fun NoticeView(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(72.dp)
-                .padding(horizontal = 30.dp),
+                .screenHorizonPadding()
+                .padding(vertical = 8.dp),
             organizationName = "CMC 15th"
         ) {
 

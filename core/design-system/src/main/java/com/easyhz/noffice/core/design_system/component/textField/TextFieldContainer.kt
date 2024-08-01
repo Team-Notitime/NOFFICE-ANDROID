@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey400
@@ -25,10 +28,12 @@ import com.easyhz.noffice.core.design_system.theme.SubBody12
 import com.easyhz.noffice.core.design_system.theme.SubBody14
 import com.easyhz.noffice.core.design_system.util.textField.TextFieldIcon
 import com.easyhz.noffice.core.design_system.util.textField.TextFieldState
+import com.easyhz.noffice.core.design_system.util.textField.TextFieldType
 
 @Composable
 internal fun TextFieldContainer(
     modifier: Modifier = Modifier,
+    textFieldType: TextFieldType,
     title: String?,
     placeholder: String,
     maxCount: Int?,
@@ -44,20 +49,22 @@ internal fun TextFieldContainer(
     ) {
         Row(
             modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = textFieldType.verticalAlignment
         ) {
             title?.let {
                 TextFieldContainerTitle(
+                    modifier = Modifier.widthIn(min = 30.dp),
                     title = title,
                 )
             }
             TextFieldContainerContent(
-                modifier = modifier.border(
+                modifier = modifier.heightIn(min = textFieldType.minHeight).border(
                     width = 1.dp,
                     color = Grey100,
                     shape = RoundedCornerShape(8.dp)
                 ),
+                textFieldType = textFieldType,
                 state = state,
                 placeholder = placeholder,
                 icon = icon,
@@ -77,18 +84,24 @@ internal fun TextFieldContainer(
 
 @Composable
 private fun TextFieldContainerTitle(
+    modifier: Modifier = Modifier,
     title: String,
 ) {
     Text(
+        modifier = modifier,
         text = title,
         style = SemiBold14,
-        color = Grey400
+        color = Grey400,
+        lineHeight = (14 * 1.2).sp,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 2
     )
 }
 
 @Composable
 private fun TextFieldContainerContent(
     modifier: Modifier = Modifier,
+    textFieldType: TextFieldType,
     state: TextFieldState,
     placeholder: String,
     icon: TextFieldIcon?,
@@ -100,9 +113,9 @@ private fun TextFieldContainerContent(
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = textFieldType.verticalAlignment
     ) {
-        Box(modifier = Modifier.weight(1f)) {
+        Box(modifier = Modifier.padding(vertical = textFieldType.verticalPadding).weight(1f)) {
             innerTextField()
             if (state == TextFieldState.Default) {
                 Text(
@@ -121,7 +134,7 @@ private fun TextFieldContainerContent(
                     .sizeIn(minHeight = 32.dp, minWidth = 32.dp)
                     .noRippleClickable { onClickIcon() }) {
                 Image(
-                    modifier = Modifier.align(Alignment.CenterEnd),
+                    modifier = Modifier.padding(top = textFieldType.verticalPadding).align(Alignment.CenterEnd),
                     painter = painterResource(id = icon.resId),
                     contentDescription = icon.name
                 )

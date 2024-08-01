@@ -1,18 +1,19 @@
 package com.easyhz.noffice.core.design_system.component.textField
 
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.SubBody16
 import com.easyhz.noffice.core.design_system.util.textField.TextFieldIcon
+import com.easyhz.noffice.core.design_system.util.textField.TextFieldType
 import com.easyhz.noffice.core.design_system.util.textField.getTextFieldState
 
 @Composable
@@ -26,6 +27,7 @@ fun MainTextField(
     maxCount: Int? = null,
     readOnly: Boolean = false,
     singleLine: Boolean,
+    textFieldType: TextFieldType = TextFieldType.SINGLE,
     minLines: Int = 1,
     icon: TextFieldIcon? = TextFieldIcon.CLEAR,
     onClickIcon: (() -> Unit) = {},
@@ -40,7 +42,8 @@ fun MainTextField(
         onValueChange = onValueChange,
         modifier = modifier,
         textStyle = SubBody16.copy(
-            color = Grey800
+            color = Grey800,
+            lineHeight = (16 * 1.5).sp
         ),
         readOnly = readOnly,
         keyboardOptions = keyboardOptions,
@@ -51,7 +54,7 @@ fun MainTextField(
         decorationBox = { innerTextField ->
             TextFieldContainer(
                 modifier = Modifier
-                    .height(48.dp),
+                    .heightIn(min = 48.dp),
                 title = title,
                 state = state,
                 placeholder = placeholder,
@@ -61,7 +64,8 @@ fun MainTextField(
                 },
                 textCount = value.length,
                 maxCount = maxCount,
-                innerTextField = innerTextField
+                innerTextField = innerTextField,
+                textFieldType = textFieldType
             )
         }
     )
@@ -91,6 +95,21 @@ private fun MainTextFieldPlaceholderPrev() {
         placeholder = "내용dmf dlqfur 입력",
         isFilled = false,
         singleLine = true,
+        icon = TextFieldIcon.CLEAR
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MultipleMainTextFieldPlaceholderPrev() {
+    MainTextField(
+        textFieldType = TextFieldType.MULTIPLE,
+        value = "ewfweffffjkdafjksdhfkjshfjkhsdjkfhsjkafhksjadhfjkshdfsfjkdhdskjff",
+        onValueChange = { },
+        title = null,
+        placeholder = "내용dmf dlqfur 입력",
+        isFilled = false,
+        singleLine = false,
         icon = TextFieldIcon.CLEAR
     )
 }
