@@ -88,7 +88,6 @@ fun ContentScreen(
     }
 
     NofficeBasicScaffold(
-        modifier = Modifier,
         topBar = {
             DetailTopBar(
                 leadingItem = DetailTopBarMenu(
