@@ -102,21 +102,16 @@ fun PlaceScreen(
                     .padding(top = 36.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                when (uiState.contactState.contactType) {
-                    ContactType.NONE_CONTACT -> {
-                        MainTextField(
-                            value = uiState.contactState.title,
-                            onValueChange = { viewModel.postIntent(PlaceIntent.ChangePlaceTitleTextValue(it)) },
-                            title = stringResource(id = R.string.announcement_creation_option_place_none_contact_title),
-                            placeholder = stringResource(id = R.string.announcement_creation_option_place_title_placeholder),
-                            isFilled = false,
-                            singleLine = true,
-                            icon = TextFieldIcon.CLEAR,
-                            onClickIcon = { viewModel.postIntent(PlaceIntent.ClearPlaceTitleTextValue) }
-                        )
-                    }
-                    else -> { }
-                }
+                MainTextField(
+                    value = uiState.contactState.title,
+                    onValueChange = { viewModel.postIntent(PlaceIntent.ChangePlaceTitleTextValue(it)) },
+                    title = stringResource(id = R.string.announcement_creation_option_place_none_contact_title),
+                    placeholder = stringResource(id = R.string.announcement_creation_option_place_title_placeholder),
+                    isFilled = false,
+                    singleLine = true,
+                    icon = TextFieldIcon.CLEAR,
+                    onClickIcon = { viewModel.postIntent(PlaceIntent.ClearPlaceTitleTextValue) }
+                )
                 MainTextField(
                     value = uiState.contactState.url,
                     onValueChange = { viewModel.postIntent(PlaceIntent.ChangePlaceUrlTextValue(it)) },

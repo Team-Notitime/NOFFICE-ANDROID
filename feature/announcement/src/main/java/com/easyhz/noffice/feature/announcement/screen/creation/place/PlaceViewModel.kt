@@ -73,12 +73,15 @@ class PlaceViewModel @Inject constructor(
         contactType?.let {
             when (val type = ContactType.valueOf(it)) {
                 ContactType.CONTACT -> {
-                    reduce { updateContactState(contactType = type, url = url) }
+                    reduce { updateContactState(contactType = type, title = title, url = url) }
                 }
 
                 ContactType.NONE_CONTACT -> {
                     reduce { updateContactState(contactType = type, title = title, url = url) }
                 }
+            }
+            if (url != null) {
+                onChangePlaceUrlTextValue(url)
             }
         }
     }
@@ -106,7 +109,7 @@ class PlaceViewModel @Inject constructor(
     }
 
     private fun onChangePlaceUrlTextValue(newText: String) {
-        reduce { updateContactState(url = newText) }
+        reduce { updateContactState(url = newText.replace("\n", " ")) }
         setVisibilityOpenGraph()
         debounceJob?.cancel()
         debounceJob = fetchOpenGraphData()
@@ -145,7 +148,8 @@ class PlaceViewModel @Inject constructor(
         delay(1500)
         val currentUrl = currentState.contactState.url
         if (currentUrl.isBlank()) return@launch
-        val url = validateUrl(currentUrl) ?: return@launch
+        val (isExtract , url) = validateUrl(currentUrl)
+        if (url.isNullOrBlank()) return@launch
         val openGraph = fetchOpenGraphDataUseCase.invoke(url).getOrElse {
             OpenGraph(
                 title = "",
@@ -153,8 +157,10 @@ class PlaceViewModel @Inject constructor(
                 imageUrl = "",
                 url = currentUrl
             )
-        }.copy(url = currentUrl)
-        reduce { copy(isLoading = false, openGraph = openGraph) }
+        }
+        val newOpenGraph = openGraph.takeIf { !isExtract } ?: openGraph.copy(url = currentUrl)
+        reduce { copy(isLoading = false, openGraph = newOpenGraph) }
+        setAutoFillText()
         postSideEffect { PlaceSideEffect.ClearFocus }
     }
 
@@ -162,15 +168,15 @@ class PlaceViewModel @Inject constructor(
         postSideEffect { PlaceSideEffect.ClearFocus }
     }
 
-    private fun validateUrl(url: String): String? {
+    private fun validateUrl(url: String): Pair<Boolean, String?> {
         return if (url.isBlank()) {
-            null
+            false to null
         } else if(!extractUrl(url).isNullOrBlank()) {
-            extractUrl(url)
+            false to extractUrl(url)
         } else if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            "https://$url"
+            false to "https://$url"
         } else {
-            url
+            false to url
         }
     }
 
@@ -178,5 +184,12 @@ class PlaceViewModel @Inject constructor(
         val urlRegex = "https?://[\\w\\-]+(\\.[\\w\\-]+)+[/\\w\\-.,@?^=%&:;#~+]*[\\w\\-@?^=%&/~+#]?"
         val regex = Regex(urlRegex)
         return regex.find(text)?.value
+    }
+
+    private fun setAutoFillText() {
+        if (currentState.contactState.title.isBlank()) {
+            println(">> ${currentState.openGraph}")
+            reduce { updateContactState(title = openGraph.title, url = openGraph.url) }
+        }
     }
 }
