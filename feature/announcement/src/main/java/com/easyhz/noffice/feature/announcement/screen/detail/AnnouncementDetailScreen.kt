@@ -71,7 +71,6 @@ fun AnnouncementDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    var backEnabled by remember { mutableStateOf(false) }
     val webView = remember { WebView(context) }
     LaunchedEffect(Unit) {
         viewModel.postIntent(DetailIntent.InitScreen(id, title))
