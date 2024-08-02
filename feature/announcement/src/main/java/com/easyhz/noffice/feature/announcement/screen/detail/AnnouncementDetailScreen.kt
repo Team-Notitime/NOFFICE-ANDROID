@@ -23,14 +23,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -70,8 +70,10 @@ fun AnnouncementDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
+    val clipBoardManager = LocalClipboardManager.current
     val context = LocalContext.current
     val webView = remember { WebView(context) }
+
     LaunchedEffect(Unit) {
         viewModel.postIntent(DetailIntent.InitScreen(id, title))
     }
@@ -161,6 +163,7 @@ fun AnnouncementDetailScreen(
                 dragHandle = {
                     PlaceBottomSheetTopBar(
                         placeUrl = uiState.detail.placeUrl,
+                        onClickUrl = { viewModel.postIntent(DetailIntent.CopyUrl) }
                     ) {
                         viewModel.postIntent(DetailIntent.ClickWebViewBack)
                     }
@@ -208,6 +211,9 @@ fun AnnouncementDetailScreen(
             is DetailSideEffect.OpenBrowser -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
                 context.startActivity(intent)
+            }
+            is DetailSideEffect.CopyUrl -> {
+                clipBoardManager.setText(AnnotatedString(sideEffect.url))
             }
             is DetailSideEffect.NavigateToUpInWebView -> {
                 webView.goBack()

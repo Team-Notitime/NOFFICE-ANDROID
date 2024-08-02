@@ -15,6 +15,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
@@ -32,6 +33,7 @@ import com.easyhz.noffice.core.design_system.theme.White
 internal fun PlaceBottomSheetTopBar(
     modifier: Modifier = Modifier,
     placeUrl: String,
+    onClickUrl: () -> Unit,
     onClickBack: () -> Unit,
 ) {
     Box(
@@ -64,13 +66,15 @@ internal fun PlaceBottomSheetTopBar(
             modifier = Modifier
                 .align(Alignment.Center)
                 .widthIn(max = 300.dp)
+                .noRippleClickable { onClickUrl() }
         ) {
             Text(
                 text = placeUrl,
                 style = SemiBold14,
                 color = Grey700,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                textDecoration = TextDecoration.Underline
             )
         }
     }

@@ -10,5 +10,6 @@ sealed class DetailIntent: UiIntent() {
     data class LoadWebView(val isLoading: Boolean): DetailIntent()
     data object ClickOpenBrowser: DetailIntent()
     data object ClickWebViewBack: DetailIntent()
+    data object CopyUrl: DetailIntent()
     data class UpdateCanGoBack(val canGoBack: Boolean): DetailIntent()
 }

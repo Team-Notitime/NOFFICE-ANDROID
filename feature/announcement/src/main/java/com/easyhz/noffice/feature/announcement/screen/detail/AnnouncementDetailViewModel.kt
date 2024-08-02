@@ -27,6 +27,7 @@ class AnnouncementDetailViewModel @Inject constructor(
             is DetailIntent.LoadWebView -> { onLoadWebView(intent.isLoading) }
             is DetailIntent.ClickOpenBrowser -> { onClickOpenBrowser() }
             is DetailIntent.ClickWebViewBack -> { onClickWebViewBack() }
+            is DetailIntent.CopyUrl -> { onCopyUrl() }
             is DetailIntent.UpdateCanGoBack -> { updateCanGoBack(intent.canGoBack) }
         }
     }
@@ -62,6 +63,9 @@ class AnnouncementDetailViewModel @Inject constructor(
         postSideEffect { DetailSideEffect.OpenBrowser(currentState.detail.placeUrl) }
     }
 
+    private fun onCopyUrl() {
+        postSideEffect { DetailSideEffect.CopyUrl(currentState.detail.placeUrl) }
+    }
     private fun onClickWebViewBack() {
         if (currentState.canGoBack) {
             postSideEffect { DetailSideEffect.NavigateToUpInWebView }
