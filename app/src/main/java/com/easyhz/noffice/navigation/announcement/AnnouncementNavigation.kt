@@ -23,7 +23,12 @@ import com.easyhz.noffice.navigation.util.sharedViewModel
 internal fun NavGraphBuilder.announcementScreen(
     navController: NavController,
 ) {
-    composable<AnnouncementDetail> {
+    composable<AnnouncementDetail>(
+        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
+        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
+        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
+        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
+    ) {
         val args = it.toRoute<AnnouncementDetail>()
         AnnouncementDetailScreen(
             id = args.id,
