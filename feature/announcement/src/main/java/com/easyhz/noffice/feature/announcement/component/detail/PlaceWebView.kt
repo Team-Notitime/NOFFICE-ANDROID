@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.announcement.component.detail
 
+import android.webkit.WebView
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +13,9 @@ import com.easyhz.noffice.core.design_system.component.webView.NofficeWebView
 @Composable
 internal fun PlaceWebView(
     modifier: Modifier = Modifier,
+    webView: WebView,
     url: String,
+    onGoBack: (Boolean) -> Unit,
     onLoading: (Boolean) -> Unit
 ) {
     val state = rememberScrollState()
@@ -24,8 +27,9 @@ internal fun PlaceWebView(
     ) {
         NofficeWebView(
             url = url,
-            onLoading = onLoading
+            webView = webView,
+            onGoBack = onGoBack,
+            onLoading = onLoading,
         )
     }
-
 }

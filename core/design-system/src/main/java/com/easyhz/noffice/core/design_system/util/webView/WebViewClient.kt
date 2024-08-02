@@ -7,29 +7,21 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.webkit.URLUtil
 import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.webkit.WebViewAssetLoader
 import java.net.URISyntaxException
 
 fun nofficeWebViewClient(
+    canGoBack: (Boolean) -> Unit,
     onLoading: (Boolean) -> Unit
 ) = object : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         return view?.context?.handleUrl(request?.url.toString()) ?: false
     }
 
-    override fun shouldInterceptRequest(
-        view: WebView?,
-        request: WebResourceRequest?
-    ): WebResourceResponse? {
-        val a  = WebViewAssetLoader.Builder().setHttpAllowed(true).build()
-        return super.shouldInterceptRequest(view, request)
-    }
-
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
+        canGoBack(view?.canGoBack() ?: false)
         onLoading(true)
     }
 
@@ -45,7 +37,6 @@ private fun Context.handleUrl(url: String): Boolean {
         } catch (e: Exception) {
             return false
         }
-
         return when (uri.scheme) {
             "intent" -> {
                 startSchemeIntent(url)
