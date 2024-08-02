@@ -5,4 +5,7 @@
         <domain includeSubdomains="true">dapi.kakao.com</domain>
     </domain-config>
     <base-config cleartextTrafficPermitted="true" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">m.place.naver.com</domain>
+    </domain-config>
 </network-security-config>
