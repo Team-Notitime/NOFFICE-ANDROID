@@ -12,4 +12,5 @@ sealed class DetailIntent: UiIntent() {
     data object ClickWebViewBack: DetailIntent()
     data object CopyUrl: DetailIntent()
     data class UpdateCanGoBack(val canGoBack: Boolean): DetailIntent()
+    data class CheckTask(val index: Int): DetailIntent()
 }

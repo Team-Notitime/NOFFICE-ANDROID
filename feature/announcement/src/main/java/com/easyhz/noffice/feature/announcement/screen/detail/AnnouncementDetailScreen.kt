@@ -5,7 +5,6 @@ import android.net.Uri
 import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,13 +46,13 @@ import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
-import com.easyhz.noffice.feature.announcement.component.detail.ContentField
-import com.easyhz.noffice.feature.announcement.component.detail.DetailField
-import com.easyhz.noffice.feature.announcement.component.detail.DetailTitle
-import com.easyhz.noffice.feature.announcement.component.detail.OrganizationField
 import com.easyhz.noffice.feature.announcement.component.detail.PlaceBottomSheetTopBar
 import com.easyhz.noffice.feature.announcement.component.detail.PlaceWebView
-import com.easyhz.noffice.feature.announcement.component.detail.TaskListField
+import com.easyhz.noffice.feature.announcement.component.detail.contentField
+import com.easyhz.noffice.feature.announcement.component.detail.detailField
+import com.easyhz.noffice.feature.announcement.component.detail.detailTitle
+import com.easyhz.noffice.feature.announcement.component.detail.organizationField
+import com.easyhz.noffice.feature.announcement.component.detail.taskListField
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.announcement.util.detail.DetailType
@@ -69,7 +67,6 @@ fun AnnouncementDetailScreen(
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val scrollState = rememberScrollState()
     val clipBoardManager = LocalClipboardManager.current
     val context = LocalContext.current
     val webView = remember { WebView(context) }
@@ -98,24 +95,24 @@ fun AnnouncementDetailScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = modifier
-                .verticalScroll(scrollState)
                 .padding(paddingValues)
                 .padding(horizontal = 24.dp)
-                .padding(bottom = 16.dp)
         ) {
-            DetailTitle(
+            detailTitle(
                 title = uiState.detail.title,
                 date = uiState.detail.creationDate,
                 isLoading = uiState.isLoading
             )
-            Divider(
-                modifier = Modifier.fillMaxWidth(),
-                color = Grey200,
-                thickness = 1.dp
-            )
-            OrganizationField(
+            item {
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Grey200,
+                    thickness = 1.dp
+                )
+            }
+            organizationField(
                 modifier = Modifier.padding(vertical = 12.dp),
                 organizationName = uiState.detail.organizationName,
                 profileImage = uiState.detail.organizationProfileImage,
@@ -123,34 +120,41 @@ fun AnnouncementDetailScreen(
                 isLoading = uiState.isLoading
             )
 
-            DetailField(
+            detailField(
                 detailType = DetailType.DATE_TIME,
                 value = uiState.detail.date,
                 isLoading = uiState.isLoading
             ) { }
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(12.dp)
-            )
-
-            DetailField(
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(12.dp)
+                )
+            }
+            detailField(
                 detailType = DetailType.PLACE,
                 value = uiState.detail.place,
                 isLoading = uiState.isLoading
             ) { viewModel.postIntent(DetailIntent.ClickPlace) }
 
-            ContentField(
+            contentField(
                 modifier = Modifier.padding(vertical = 16.dp),
                 content = uiState.detail.content,
                 isLoading = uiState.isLoading
             )
-            TaskListField(
-                taskList = uiState.detail.taskList,
-                isLoading = uiState.isLoading
+
+            taskListField(
+                taskList = uiState.detail.taskList
             ) {
-                println("click task list >> $it")
+                viewModel.postIntent(DetailIntent.CheckTask(it))
+            }
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                )
             }
         }
         if (uiState.isShowBottomSheet) {
@@ -178,7 +182,7 @@ fun AnnouncementDetailScreen(
                         url = uiState.detail.placeUrl,
                         webView = webView,
                         onGoBack = {
-                           viewModel.postIntent(DetailIntent.UpdateCanGoBack(it))
+                            viewModel.postIntent(DetailIntent.UpdateCanGoBack(it))
                         }
                     ) {
                         viewModel.postIntent(DetailIntent.LoadWebView(it))
@@ -207,14 +211,19 @@ fun AnnouncementDetailScreen(
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when (sideEffect) {
-            is DetailSideEffect.NavigateToUp -> { navigateToUp() }
+            is DetailSideEffect.NavigateToUp -> {
+                navigateToUp()
+            }
+
             is DetailSideEffect.OpenBrowser -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(sideEffect.url))
                 context.startActivity(intent)
             }
+
             is DetailSideEffect.CopyUrl -> {
                 clipBoardManager.setText(AnnotatedString(sideEffect.url))
             }
+
             is DetailSideEffect.NavigateToUpInWebView -> {
                 webView.goBack()
             }

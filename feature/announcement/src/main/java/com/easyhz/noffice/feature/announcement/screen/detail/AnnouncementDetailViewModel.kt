@@ -2,6 +2,7 @@ package com.easyhz.noffice.feature.announcement.screen.detail
 
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.task.Task
 import com.easyhz.noffice.feature.announcement.contract.detail.DUMMY
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
@@ -15,20 +16,50 @@ import javax.inject.Inject
 @HiltViewModel
 class AnnouncementDetailViewModel @Inject constructor(
 
-): BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
+) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
     initialState = DetailState.init()
 ) {
     override fun handleIntent(intent: DetailIntent) {
-        when(intent) {
-            is DetailIntent.InitScreen -> { initScreen(intent.id, intent.title) }
-            is DetailIntent.NavigateToUp -> { navigateToUp() }
-            is DetailIntent.ClickPlace -> { showBottomSheet() }
-            is DetailIntent.HideBottomSheet -> { hideBottomSheet() }
-            is DetailIntent.LoadWebView -> { onLoadWebView(intent.isLoading) }
-            is DetailIntent.ClickOpenBrowser -> { onClickOpenBrowser() }
-            is DetailIntent.ClickWebViewBack -> { onClickWebViewBack() }
-            is DetailIntent.CopyUrl -> { onCopyUrl() }
-            is DetailIntent.UpdateCanGoBack -> { updateCanGoBack(intent.canGoBack) }
+        when (intent) {
+            is DetailIntent.InitScreen -> {
+                initScreen(intent.id, intent.title)
+            }
+
+            is DetailIntent.NavigateToUp -> {
+                navigateToUp()
+            }
+
+            is DetailIntent.ClickPlace -> {
+                showBottomSheet()
+            }
+
+            is DetailIntent.HideBottomSheet -> {
+                hideBottomSheet()
+            }
+
+            is DetailIntent.LoadWebView -> {
+                onLoadWebView(intent.isLoading)
+            }
+
+            is DetailIntent.ClickOpenBrowser -> {
+                onClickOpenBrowser()
+            }
+
+            is DetailIntent.ClickWebViewBack -> {
+                onClickWebViewBack()
+            }
+
+            is DetailIntent.CopyUrl -> {
+                onCopyUrl()
+            }
+
+            is DetailIntent.UpdateCanGoBack -> {
+                updateCanGoBack(intent.canGoBack)
+            }
+
+            is DetailIntent.CheckTask -> {
+                onCheckTask(intent.index)
+            }
         }
     }
 
@@ -39,7 +70,7 @@ class AnnouncementDetailViewModel @Inject constructor(
 
     private fun fetchData(id: Int) = viewModelScope.launch {
         // FIXME
-        delay(1000)
+        delay(2000)
         reduce { copy(detail = DUMMY, isLoading = false) }
     }
 
@@ -66,6 +97,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     private fun onCopyUrl() {
         postSideEffect { DetailSideEffect.CopyUrl(currentState.detail.placeUrl) }
     }
+
     private fun onClickWebViewBack() {
         if (currentState.canGoBack) {
             postSideEffect { DetailSideEffect.NavigateToUpInWebView }
@@ -76,5 +108,13 @@ class AnnouncementDetailViewModel @Inject constructor(
 
     private fun updateCanGoBack(canGoBack: Boolean) {
         reduce { copy(canGoBack = canGoBack) }
+    }
+
+    private fun onCheckTask(index: Int) {
+        val updatedTaskList = currentState.detail.taskList.mapIndexed { i, task ->
+            if (i == index) task.copy(isDone = !task.isDone) else task
+        }.sortedWith(compareBy<Task> { it.isDone }.thenBy { it.content })
+        val newState = currentState.detail.copy(taskList = updatedTaskList)
+        reduce { copy(detail = newState) }
     }
 }
