@@ -15,6 +15,7 @@ import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.navigation.announcement.announcementScreen
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeScreen
 import com.easyhz.noffice.navigation.home.navigateToHome
@@ -77,7 +78,10 @@ fun NofficeApp() {
         NavHost(
             navController = navController, startDestination = Home
         ) {
-            homeScreen(modifier = Modifier.padding(it))
+            homeScreen(
+                modifier = Modifier.padding(it),
+                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail
+            )
             organizationScreen(
                 modifier = Modifier.padding(it),
                 navigateToCreation = navController::navigateToOrganizationCreation,

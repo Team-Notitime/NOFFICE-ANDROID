@@ -24,6 +24,7 @@ fun BottomSheet(
     onDismissRequest: () -> Unit,
     shape: Shape = RoundedCornerShape(24.dp),
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    containerColor: Color = Color.Transparent,
     scrimColor: Color = DimColor,
     dragHandle: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
@@ -33,7 +34,7 @@ fun BottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
         shape = shape,
-        containerColor = Color.Transparent,
+        containerColor = containerColor,
         scrimColor = scrimColor,
         dragHandle = dragHandle,
         windowInsets = BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom),

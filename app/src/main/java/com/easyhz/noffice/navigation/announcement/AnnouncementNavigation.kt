@@ -15,12 +15,27 @@ import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindScreen
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.feature.announcement.screen.creation.task.TaskScreen
+import com.easyhz.noffice.feature.announcement.screen.detail.AnnouncementDetailScreen
+import com.easyhz.noffice.navigation.announcement.screen.AnnouncementDetail
 import com.easyhz.noffice.navigation.util.DURATION
 import com.easyhz.noffice.navigation.util.sharedViewModel
 
 internal fun NavGraphBuilder.announcementScreen(
     navController: NavController,
 ) {
+    composable<AnnouncementDetail>(
+        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
+        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
+        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
+        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
+    ) {
+        val args = it.toRoute<AnnouncementDetail>()
+        AnnouncementDetailScreen(
+            id = args.id,
+            title = args.title,
+            navigateToUp = navController::navigateUp
+        )
+    }
     navigation<AnnouncementCreation>(
         startDestination = AnnouncementCreation.NofficeSelection,
         enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
@@ -92,6 +107,14 @@ internal fun NavGraphBuilder.announcementScreen(
         }
     }
 }
+
+internal fun NavController.navigateToAnnouncementDetail(
+    id: Int,
+    title: String
+) {
+    navigate(route = AnnouncementDetail(id, title))
+}
+
 internal fun NavController.navigateToAnnouncementNofficeSelection() {
     navigate(
         route = AnnouncementCreation.NofficeSelection
