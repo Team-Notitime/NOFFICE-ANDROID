@@ -1,5 +1,6 @@
 package com.easyhz.noffice.core.network.adapter
 
+import com.easyhz.noffice.core.network.model.response.BaseResponse
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.CallAdapter
@@ -28,6 +29,7 @@ class ResultCallAdapterFactory @Inject constructor(
         if (getRawType(wrapperType) != Result::class.java) return null
 
         val responseType = getParameterUpperBound(0, wrapperType as ParameterizedType)
+
         return ResultCallAdapter(responseType, gson)
     }
 }
