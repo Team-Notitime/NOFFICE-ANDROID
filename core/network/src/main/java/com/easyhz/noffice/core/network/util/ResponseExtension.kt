@@ -25,7 +25,7 @@ fun <T> Response<T>.toResult(
         val errorResponse = ErrorResponseConverter(gson).fromJsonToErrorResponse(errorBody)
 
         val httpError = getErrorByStatusCode(
-            statusCode = errorResponse.status,
+            statusCode = errorResponse.httpStatus,
             message = errorResponse.message
         )
 
