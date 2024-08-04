@@ -2,8 +2,10 @@ package com.easyhz.noffice.core.common.util
 
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.util.Locale
 
 object DateFormat {
     fun fullText(date: LocalDate): String =
@@ -26,5 +28,14 @@ object DateFormat {
         LocalTime.now()
     }
 
+    fun formatDateTime(date: String): String {
+        val dateTime = ZonedDateTime.parse(date)
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm")
+            .withLocale(Locale.KOREAN)
+        val formattedDate = dateTime.format(formatter)
+
+        return formattedDate
+    }
 
 }
