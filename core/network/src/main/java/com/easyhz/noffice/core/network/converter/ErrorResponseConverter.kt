@@ -1,10 +1,11 @@
-package com.easyhz.noffice.core.network.util
+package com.easyhz.noffice.core.network.converter
 
 import com.easyhz.noffice.core.network.model.response.ErrorResponse
 import com.google.gson.Gson
+import dagger.Provides
 import javax.inject.Inject
 
-class ErrorResponseConverter @Inject constructor(
+class ErrorResponseConverter constructor(
     private val gson: Gson
 ) {
     fun fromJsonToErrorResponse(json: String): ErrorResponse {

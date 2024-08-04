@@ -25,8 +25,16 @@ internal object InterceptorModule {
         }
 
     @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor(
+        @HttpLoggingLevel level: HttpLoggingInterceptor.Level
+    ): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().setLevel(level)
+    }
+
+    @Provides
     fun provideOkhttpClient(
-        @HttpLoggingLevel httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(httpLoggingInterceptor)
         .connectTimeout(20, TimeUnit.SECONDS)
