@@ -1,6 +1,5 @@
 package com.easyhz.noffice.core.network.adapter
 
-import com.easyhz.noffice.core.network.model.response.BaseResponse
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.CallAdapter
