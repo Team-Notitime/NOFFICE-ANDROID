@@ -18,6 +18,7 @@ data class DetailState(
             isWebViewLoading = true,
             canGoBack = false,
             detail = AnnouncementDetail(
+                id = -1,
                 title = "",
                 creationDate = "",
                 organizationName = "",
@@ -41,6 +42,7 @@ data class DetailState(
 
 // FIXME
 internal val DUMMY = AnnouncementDetail(
+    id = 1,
     title = "5차 세션 : 최종 팀 빌딩 ~ 제목이 두 줄 일 때",
     creationDate = "2024.06.29 14:02",
     organizationName = "CMC 15th",
