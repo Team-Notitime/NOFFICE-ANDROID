@@ -109,6 +109,9 @@ fun OrganizationCreationScreen(
             is CreationSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+            is CreationSideEffect.NavigateToCamera -> {
+
+            }
             is CreationSideEffect.NavigateToInvitation -> {
                 navigateToInvitation(sideEffect.invitationUrl, sideEffect.imageUrl)
             }
