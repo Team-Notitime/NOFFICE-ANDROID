@@ -15,6 +15,15 @@
         tools:targetApi="tiramisu"
         android:networkSecurityConfig="@xml/network_security_config"
         android:enableOnBackInvokedCallback="true">
+        <provider
+            android:name="com.easyhz.noffice.data.organization.provider.FileProvider"
+            android:authorities="${applicationId}.file_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
         <activity
             android:name=".MainActivity"
             android:exported="true"

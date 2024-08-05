@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.organization.component.creation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,11 +20,13 @@ import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
+import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
 @Composable
 internal fun OrganizationNameView(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationCreationViewModel = hiltViewModel()
+    viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    creationStep: CreationStep,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -33,10 +37,10 @@ internal fun OrganizationNameView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 8.dp),
-            title = stringResource(id = R.string.organization_creation_name_title)
+            creationStep = creationStep
         )
         MainTextField(
-            modifier = Modifier.weight(0.3f),
+            modifier = Modifier.weight(0.5f),
             value = uiState.organizationName,
             onValueChange = { viewModel.postIntent(CreationIntent.ChangeOrganizationNameTextValue(it)) },
             title = null,
@@ -49,6 +53,7 @@ internal fun OrganizationNameView(
         Spacer(modifier = Modifier
             .fillMaxWidth()
             .weight(1f)
+            .background(Color.Transparent)
             .noRippleClickable { viewModel.postIntent(CreationIntent.ClearFocus) }
         )
         MediumButton(

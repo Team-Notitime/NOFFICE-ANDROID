@@ -54,6 +54,11 @@ fun OrganizationCreationScreen(
             contract = ActivityResultContracts.PickVisualMedia(),
             onResult = { viewModel.postIntent(CreationIntent.PickImage(it)) }
         )
+    val cameraLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.TakePicture(),
+            onResult = { viewModel.postIntent(CreationIntent.TakePicture(it)) }
+        )
 
     BackHandler(onBack = {
         viewModel.postIntent(CreationIntent.ClickBackButton)
@@ -94,11 +99,11 @@ fun OrganizationCreationScreen(
             }, label = "organizationCreationFlow"
         ) { targetScreen ->
             when(targetScreen) {
-                CreationStep.ORGANIZATION_NAME -> { OrganizationNameView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.IMAGE -> { ImageView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.END_DATE -> { EndDateView() }
-                CreationStep.PROMOTION -> { PromotionView(modifier = Modifier.screenHorizonPadding()) }
+                CreationStep.ORGANIZATION_NAME -> { OrganizationNameView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
+                CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
+                CreationStep.IMAGE -> { ImageView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
+                CreationStep.END_DATE -> { EndDateView(creationStep = targetScreen) }
+                CreationStep.PROMOTION -> { PromotionView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
             }
         }
     }
@@ -108,6 +113,9 @@ fun OrganizationCreationScreen(
             is CreationSideEffect.ClearFocus -> { focusManager.clearFocus() }
             is CreationSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+            is CreationSideEffect.NavigateToCamera -> {
+                cameraLauncher.launch(sideEffect.uri)
             }
             is CreationSideEffect.NavigateToInvitation -> {
                 navigateToInvitation(sideEffect.invitationUrl, sideEffect.imageUrl)

@@ -25,11 +25,13 @@ import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
+import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
 @Composable
 internal fun CategoryView(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationCreationViewModel = hiltViewModel()
+    viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    creationStep: CreationStep
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -40,7 +42,7 @@ internal fun CategoryView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 8.dp),
-            title = stringResource(id = R.string.organization_creation_category_title)
+            creationStep = creationStep
         )
         LazyVerticalGrid(
             modifier = Modifier.weight(1f).padding(top = 8.dp),

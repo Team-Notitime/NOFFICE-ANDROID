@@ -40,6 +40,7 @@ import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Red
+import com.easyhz.noffice.core.design_system.theme.SubTitle1
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.announcement.component.creation.CreationTitle
 import com.easyhz.noffice.feature.announcement.component.creation.task.TaskButton
@@ -152,7 +153,7 @@ fun TaskScreen(
                 Row(
                     modifier = Modifier
                         .padding(vertical = 8.dp, horizontal = 16.dp)
-                        .heightIn(min = 52.dp)
+                        .heightIn(min = 44.dp)
                         .clickable { viewModel.postIntent(TaskIntent.DeleteTask(uiState.openBottomSheet))},
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -166,6 +167,7 @@ fun TaskScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(id = R.string.delete),
+                        style = SubTitle1,
                         color = Red
                     )
                 }

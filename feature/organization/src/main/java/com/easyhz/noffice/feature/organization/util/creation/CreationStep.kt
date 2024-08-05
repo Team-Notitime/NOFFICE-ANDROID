@@ -1,21 +1,35 @@
 package com.easyhz.noffice.feature.organization.util.creation
 
+import androidx.annotation.StringRes
 import com.easyhz.noffice.core.common.util.StepRequired
+import com.easyhz.noffice.core.design_system.R
 
-enum class CreationStep: StepRequired {
-    ORGANIZATION_NAME {
+enum class CreationStep(
+    @StringRes val titleId: Int
+): StepRequired {
+    ORGANIZATION_NAME(
+       titleId = R.string.organization_creation_name_title
+    ) {
         override val isRequired: Boolean
             get() = true
-    }, CATEGORY {
+    }, CATEGORY(
+        titleId = R.string.organization_creation_category_title
+    ) {
         override val isRequired: Boolean
             get() = true
-    }, IMAGE {
+    }, IMAGE(
+        titleId = R.string.organization_creation_image_title
+    ) {
         override val isRequired: Boolean
             get() = false
-    }, END_DATE {
+    }, END_DATE(
+        titleId = R.string.organization_creation_end_date_title
+    ) {
         override val isRequired: Boolean
             get() = false
-    }, PROMOTION {
+    }, PROMOTION(
+        titleId = R.string.organization_creation_promotion_title
+    ) {
         override val isRequired: Boolean
             get() = false
     };
