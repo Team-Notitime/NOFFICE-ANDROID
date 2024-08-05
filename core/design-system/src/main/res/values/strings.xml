@@ -60,6 +60,9 @@
     <string name="organization_creation_name_placeholder">이름을 입력해 주세요.</string>
     <string name="organization_creation_category_title">그룹의 카테고리를 모두 선택해 주세요</string>
     <string name="organization_creation_image_title">대표 이미지를 설정해 주세요</string>
+    <string name="organization_creation_image_selection_camera">사진 찍기</string>
+    <string name="organization_creation_image_selection_gallery">라이브러리에서 선택</string>
+    <string name="organization_creation_image_selection_delete">현재 사진 삭제</string>
     <string name="organization_creation_end_date_title">활동 종료 날짜가 언제인가요?</string>
     <string name="organization_creation_end_date_caption">에 활동을 종료할 예정이에요!</string>
     <string name="organization_creation_end_date_null_caption">활동을 종료할 예정된 날짜가 없어요.</string>

@@ -7,6 +7,7 @@ import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
+import com.easyhz.noffice.feature.organization.util.creation.BottomSheetItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -26,6 +27,8 @@ class OrganizationCreationViewModel @Inject constructor(
             is CreationIntent.ClearFocus -> { onClearFocus() }
             is CreationIntent.ClickCategoryItem -> { onClickCategoryItem(intent.selectedIndex) }
             is CreationIntent.ClickImageView -> { onClickImageView() }
+            is CreationIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.item) }
+            is CreationIntent.HideImageBottomSheet -> { hideImageBottomSheet() }
             is CreationIntent.PickImage -> { onPickImage(intent.uri) }
             is CreationIntent.ChangeEndDate -> { onChangeEndDate(intent.date) }
             is CreationIntent.ChangePromotionTextValue -> { onChangePromotionTextValue(intent.text) }
@@ -73,13 +76,27 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onClickImageView() {
-        if (!currentState.isEnabledGallery) return
-        postSideEffect { CreationSideEffect.NavigateToGallery }
-        reduce { copy(isEnabledGallery = false) }
+        showImageBottomSheet()
     }
 
+    private fun onClickImageBottomSheetItem(item: BottomSheetItem) {
+        when(item) {
+            BottomSheetItem.GALLERY -> {
+                postSideEffect { CreationSideEffect.NavigateToGallery }
+            }
+            BottomSheetItem.CAMERA -> {
+                postSideEffect { CreationSideEffect.NavigateToCamera }
+            }
+            BottomSheetItem.DELETE -> {
+                reduce { copy(organizationImage = Uri.EMPTY, isShowImageBottomSheet = false) }
+            }
+        }
+        if (!currentState.isShowImageBottomSheet) return
+        reduce { copy(isShowImageBottomSheet = false) }
+
+    }
     private fun onPickImage(uri: Uri?) {
-        reduce { copy(organizationImage = uri ?: Uri.EMPTY, isEnabledGallery = true) }
+        reduce { copy(organizationImage = uri ?: Uri.EMPTY) }
     }
 
     private fun onChangeEndDate(date: LocalDate) {
@@ -97,6 +114,15 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onNavigateToUp() {
         postSideEffect { CreationSideEffect.NavigateToUp }
     }
+
+    private fun showImageBottomSheet() {
+        reduce { copy(isShowImageBottomSheet = true) }
+    }
+
+    private fun hideImageBottomSheet() {
+        reduce { copy(isShowImageBottomSheet = false) }
+    }
+
 
     // TODO: 서버 통신 로직 추가
     private fun onNavigateToInvitation() {

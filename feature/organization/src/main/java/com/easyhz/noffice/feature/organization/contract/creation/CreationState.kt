@@ -17,9 +17,9 @@ data class CreationState(
     val organizationName: String,
     val category: List<CategoryState>,
     val organizationImage: Uri,
-    val isEnabledGallery: Boolean,
     val endDate: LocalDate?,
     val promotionCode: String,
+    val isShowImageBottomSheet: Boolean,
 ): UiState() {
     companion object {
         const val ORGANIZATION_NAME_MAX = 10
@@ -29,9 +29,9 @@ data class CreationState(
             organizationName = "",
             category = Category.toState(),
             organizationImage = Uri.EMPTY,
-            isEnabledGallery = true,
             endDate = null,
-            promotionCode = ""
+            promotionCode = "",
+            isShowImageBottomSheet = false
         )
     }
 
