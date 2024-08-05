@@ -1,14 +1,16 @@
 package com.easyhz.noffice.feature.organization.component.detail
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,7 @@ import com.easyhz.noffice.core.design_system.util.chip.ChipStyles
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.feature.organization.util.detail.OrganizationChipStyle
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun DetailHeader(
     modifier: Modifier = Modifier,
@@ -56,19 +59,25 @@ internal fun DetailHeader(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         repeat(2) {
-                            Box(modifier = Modifier
-                                .width((32 + it * 4).dp)
-                                .height(24.dp)
-                                .clip(RoundedCornerShape(4.dp))
-                                .skeletonEffect())
+                            Box(
+                                modifier = Modifier
+                                    .width((32 + it * 4).dp)
+                                    .height(24.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .skeletonEffect()
+                            )
                         }
                     }
                 }
             ) {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                FlowRow(
+                    modifier = Modifier
+                        .animateContentSize()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    items(organizationInformation.category) {
+                    organizationInformation.category.forEach {
                         NofficeChip(
                             text = it,
                             selectState = ChipState.Picked,

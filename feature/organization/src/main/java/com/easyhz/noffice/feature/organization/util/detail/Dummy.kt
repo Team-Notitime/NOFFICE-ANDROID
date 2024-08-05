@@ -10,6 +10,7 @@ internal val DUMMY_ORGANIZATION_INFORMATION = OrganizationInformation(
     name = "CMC 15th",
     profileImageUrl = "",
     category = listOf("IT", "창업")
+//    category = listOf("IT 계열", "문화 생활", "어학", "예술", "음악 · 공연", "스터디 · 연구", "스포츠", "창업", "종교", "마케팅 · 홍보", "자연과학", "기타")
 )
 
 internal val DUMMY_LIST = listOf(
