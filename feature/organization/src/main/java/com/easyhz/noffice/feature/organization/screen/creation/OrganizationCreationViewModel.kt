@@ -83,7 +83,7 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onChangeEndDate(date: LocalDate) {
-        reduce { copy(endDate = date) }
+        reduce { copy(endDate = date.takeIf { it != currentState.endDate }) }
     }
 
     private fun onChangePromotionTextValue(newText: String) {

@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.organization.component.creation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,7 +40,7 @@ internal fun OrganizationNameView(
             creationStep = creationStep
         )
         MainTextField(
-            modifier = Modifier.weight(0.3f),
+            modifier = Modifier.weight(0.5f),
             value = uiState.organizationName,
             onValueChange = { viewModel.postIntent(CreationIntent.ChangeOrganizationNameTextValue(it)) },
             title = null,
@@ -51,6 +53,7 @@ internal fun OrganizationNameView(
         Spacer(modifier = Modifier
             .fillMaxWidth()
             .weight(1f)
+            .background(Color.Transparent)
             .noRippleClickable { viewModel.postIntent(CreationIntent.ClearFocus) }
         )
         MediumButton(

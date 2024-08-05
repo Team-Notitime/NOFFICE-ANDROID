@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException
 
 object DateFormat {
     fun fullText(date: LocalDate): String =
-        DateTimeFormatter.ofPattern("yyyy년 MM월 d일").format(date)
+        DateTimeFormatter.ofPattern("yyyy년 MM월 dd일").format(date)
 
     fun stringToLocalDate(date: String, pattern: String = "yyyy-MM-dd"): LocalDate = try {
         val formatter = DateTimeFormatter.ofPattern(pattern)

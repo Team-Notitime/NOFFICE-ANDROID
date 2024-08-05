@@ -18,7 +18,7 @@ data class CreationState(
     val category: List<CategoryState>,
     val organizationImage: Uri,
     val isEnabledGallery: Boolean,
-    val endDate: LocalDate,
+    val endDate: LocalDate?,
     val promotionCode: String,
 ): UiState() {
     companion object {
@@ -30,7 +30,7 @@ data class CreationState(
             category = Category.toState(),
             organizationImage = Uri.EMPTY,
             isEnabledGallery = true,
-            endDate = LocalDate.now(),
+            endDate = null,
             promotionCode = ""
         )
     }
