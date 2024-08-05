@@ -23,6 +23,7 @@ class OrganizationDetailViewModel @Inject constructor(
             is DetailIntent.InitScreen -> {
                 initScreen(intent.organizationId, intent.organizationName)
             }
+            is DetailIntent.ClickAnnouncement -> { onClickAnnouncement(intent.index) }
             is DetailIntent.NavigateToUp -> { navigateToUp() }
         }
     }
@@ -46,6 +47,10 @@ class OrganizationDetailViewModel @Inject constructor(
         reduce { copy(announcementList = DUMMY_LIST, isCardLoading = false) }
     }
 
+    private fun onClickAnnouncement(index: Int) {
+        val announcement = currentState.announcementList[index]
+        postSideEffect { DetailSideEffect.NavigateToAnnouncementDetail(announcement.id, announcement.title) }
+    }
     private fun navigateToUp() {
         postSideEffect { DetailSideEffect.NavigateToUp }
     }

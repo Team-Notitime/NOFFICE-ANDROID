@@ -22,6 +22,7 @@ import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
     navigateToOrganizationDetail: (Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, String) -> Unit,
     navigateToCreation: () -> Unit,
     navigateToInvitation: (String, String)-> Unit,
     navigateToHome: () -> Unit,
@@ -44,7 +45,8 @@ internal fun NavGraphBuilder.organizationScreen(
         OrganizationDetailScreen(
             organizationId = args.organizationId,
             organizationName = args.organizationName,
-            navigateToUp = navigateToUp
+            navigateToUp = navigateToUp,
+            navigateToAnnouncementDetail = navigateToAnnouncementDetail
         )
     }
     composable<OrganizationCreation> {

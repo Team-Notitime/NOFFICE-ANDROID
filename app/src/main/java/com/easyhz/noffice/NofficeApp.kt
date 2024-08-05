@@ -105,6 +105,7 @@ fun NofficeApp() {
             organizationScreen(
                 modifier = Modifier.padding(it),
                 navigateToOrganizationDetail = navController::navigateToOrganizationDetail,
+                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
                 navigateToCreation = navController::navigateToOrganizationCreation,
                 navigateToInvitation = navController::navigateToOrganizationInvitation,
                 navigateToHome = navController::navigateToHome,
