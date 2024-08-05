@@ -1,5 +1,6 @@
 package com.easyhz.noffice
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -28,6 +29,7 @@ import com.easyhz.noffice.navigation.rememberNofficeNavController
 import com.easyhz.noffice.navigation.sign.signScreen
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
+import com.easyhz.noffice.navigation.util.DURATION
 
 @Composable
 fun NofficeApp() {
@@ -77,7 +79,24 @@ fun NofficeApp() {
         }
     ) {
         NavHost(
-            navController = navController, startDestination = Home
+            navController = navController,
+            startDestination = Home,
+            enterTransition = { slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Start, tween(
+                    DURATION
+                )) },
+            exitTransition = { slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Start, tween(
+                    DURATION
+                )) },
+            popEnterTransition = { slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.End, tween(
+                    DURATION
+                )) },
+            popExitTransition = { slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.End, tween(
+                    DURATION
+                )) }
         ) {
             homeScreen(
                 modifier = Modifier.padding(it),

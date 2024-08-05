@@ -1,7 +1,8 @@
 package com.easyhz.noffice.navigation.organization
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -17,7 +18,6 @@ import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
 import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
-import com.easyhz.noffice.navigation.util.DURATION
 
 internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
@@ -27,19 +27,19 @@ internal fun NavGraphBuilder.organizationScreen(
     navigateToHome: () -> Unit,
     navigateToUp: () -> Unit,
 ) {
-    composable<Organization> {
+    composable<Organization>(
+        enterTransition = { fadeIn(animationSpec = tween(700)) },
+        exitTransition = { fadeOut(animationSpec = tween(700)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(700)) },
+        popExitTransition = { fadeOut(animationSpec = tween(700)) }
+    ) {
         OrganizationScreen(
             modifier = modifier,
             navigateToCreation = navigateToCreation,
             navigateToDetail = navigateToOrganizationDetail
         )
     }
-    composable<OrganizationDetail>(
-        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
-        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
-    ) {
+    composable<OrganizationDetail> {
         val args = it.toRoute<OrganizationDetail>()
         OrganizationDetailScreen(
             organizationId = args.organizationId,
@@ -47,23 +47,13 @@ internal fun NavGraphBuilder.organizationScreen(
             navigateToUp = navigateToUp
         )
     }
-    composable<OrganizationCreation>(
-        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
-        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
-    ) {
+    composable<OrganizationCreation> {
         OrganizationCreationScreen(
             navigateToInvitation = navigateToInvitation,
             navigateToUp = navigateToUp
         )
     }
-    composable<OrganizationInvitation>(
-        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
-        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
-    ) {
+    composable<OrganizationInvitation> {
         val args = it.toRoute<OrganizationInvitation>()
         OrganizationInvitationScreen(
             invitationUrl = args.invitationUrl,
