@@ -16,6 +16,7 @@ sealed class CreationIntent: UiIntent() {
     data class ClickImageBottomSheetItem(val item: BottomSheetItem) : CreationIntent()
     data object HideImageBottomSheet: CreationIntent()
     data class PickImage(val uri: Uri?) : CreationIntent()
+    data class TakePicture(val isUsed: Boolean) : CreationIntent()
     data class ChangeEndDate(val date: LocalDate): CreationIntent()
     data class ChangePromotionTextValue(val text: String): CreationIntent()
     data object ClearPromotionCode: CreationIntent()

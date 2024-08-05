@@ -1,23 +1,29 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
+import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import com.easyhz.noffice.feature.organization.util.creation.BottomSheetItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationCreationViewModel @Inject constructor(
-
+    private val getTakePictureUriUseCase: GetTakePictureUriUseCase
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
+    private var takePictureUri = mutableStateOf(Uri.EMPTY)
+
     override fun handleIntent(intent: CreationIntent) {
         when (intent) {
             is CreationIntent.ClickBackButton -> { onClickBackButton() }
@@ -30,6 +36,7 @@ class OrganizationCreationViewModel @Inject constructor(
             is CreationIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.item) }
             is CreationIntent.HideImageBottomSheet -> { hideImageBottomSheet() }
             is CreationIntent.PickImage -> { onPickImage(intent.uri) }
+            is CreationIntent.TakePicture -> { onTakePicture(intent.isUsed) }
             is CreationIntent.ChangeEndDate -> { onChangeEndDate(intent.date) }
             is CreationIntent.ChangePromotionTextValue -> { onChangePromotionTextValue(intent.text) }
             is CreationIntent.ClearPromotionCode -> { onClearPromotionCode() }
@@ -80,23 +87,42 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onClickImageBottomSheetItem(item: BottomSheetItem) {
-        when(item) {
+        when (item) {
             BottomSheetItem.GALLERY -> {
                 postSideEffect { CreationSideEffect.NavigateToGallery }
             }
+
             BottomSheetItem.CAMERA -> {
-                postSideEffect { CreationSideEffect.NavigateToCamera }
+                navigateToCamera()
             }
+
             BottomSheetItem.DELETE -> {
                 reduce { copy(organizationImage = Uri.EMPTY, isShowImageBottomSheet = false) }
             }
         }
         if (!currentState.isShowImageBottomSheet) return
         reduce { copy(isShowImageBottomSheet = false) }
-
     }
+
+    private fun navigateToCamera() = viewModelScope.launch {
+        getTakePictureUriUseCase.invoke(Unit)
+            .onSuccess {
+                takePictureUri.value = it
+                postSideEffect { CreationSideEffect.NavigateToCamera(it) }
+            }
+            .onFailure {
+                // TODO fail 처리
+                println("fail: $it")
+            }
+    }
+
     private fun onPickImage(uri: Uri?) {
         reduce { copy(organizationImage = uri ?: Uri.EMPTY) }
+    }
+
+    private fun onTakePicture(isUsed: Boolean) {
+        if (!isUsed) return
+        reduce { copy(organizationImage = takePictureUri.value) }
     }
 
     private fun onChangeEndDate(date: LocalDate) {

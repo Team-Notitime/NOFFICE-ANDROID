@@ -54,6 +54,11 @@ fun OrganizationCreationScreen(
             contract = ActivityResultContracts.PickVisualMedia(),
             onResult = { viewModel.postIntent(CreationIntent.PickImage(it)) }
         )
+    val cameraLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.TakePicture(),
+            onResult = { viewModel.postIntent(CreationIntent.TakePicture(it)) }
+        )
 
     BackHandler(onBack = {
         viewModel.postIntent(CreationIntent.ClickBackButton)
@@ -110,7 +115,7 @@ fun OrganizationCreationScreen(
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             is CreationSideEffect.NavigateToCamera -> {
-
+                cameraLauncher.launch(sideEffect.uri)
             }
             is CreationSideEffect.NavigateToInvitation -> {
                 navigateToInvitation(sideEffect.invitationUrl, sideEffect.imageUrl)
