@@ -16,10 +16,16 @@ class OrganizationViewModel @Inject constructor(
     override fun handleIntent(intent: OrganizationIntent) {
         when(intent) {
             is OrganizationIntent.ClickOrganizationCreation -> { onClickOrganizationCreation() }
+            is OrganizationIntent.ClickOrganization -> { onClickOrganization(intent.index) }
         }
     }
 
     private fun onClickOrganizationCreation() {
         postSideEffect { OrganizationSideEffect.NavigateToCreation }
+    }
+
+    private fun onClickOrganization(index: Int) {
+        //FIXME
+        postSideEffect { OrganizationSideEffect.NavigateToDetail(index, currentState.organizationList[index]) }
     }
 }

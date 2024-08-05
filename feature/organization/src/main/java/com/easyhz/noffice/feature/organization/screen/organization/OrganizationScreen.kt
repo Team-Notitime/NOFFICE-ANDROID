@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -30,6 +30,7 @@ import com.easyhz.noffice.feature.organization.util.OrganizationTopBarMenu
 fun OrganizationScreen(
     modifier: Modifier = Modifier,
     viewModel: OrganizationViewModel = hiltViewModel(),
+    navigateToDetail: (Int, String) -> Unit,
     navigateToCreation: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -65,13 +66,13 @@ fun OrganizationScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(uiState.organizationList) { item ->
+                itemsIndexed(uiState.organizationList) { index, item ->
                     OrganizationItem(
                         modifier = Modifier.fillMaxWidth(),
                         organizationName = item,
-                        imageUrl = if(item.length == 2) "" else "https://picsum.photos/id/${item}/200/300"
+                        imageUrl = if(item.length == 2) "" else "https://picsum.photos/id/37/200/300"
                     ) {
-
+                        viewModel.postIntent(OrganizationIntent.ClickOrganization(index))
                     }
                 }
             }
@@ -82,6 +83,7 @@ fun OrganizationScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
         when(sideEffect) {
             is OrganizationSideEffect.NavigateToCreation -> { navigateToCreation() }
+            is OrganizationSideEffect.NavigateToDetail -> { navigateToDetail(sideEffect.id, sideEffect.name) }
         }
     }
 }
