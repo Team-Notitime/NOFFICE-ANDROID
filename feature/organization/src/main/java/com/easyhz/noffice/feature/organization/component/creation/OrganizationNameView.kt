@@ -18,11 +18,13 @@ import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
+import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
 @Composable
 internal fun OrganizationNameView(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationCreationViewModel = hiltViewModel()
+    viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    creationStep: CreationStep,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -33,7 +35,7 @@ internal fun OrganizationNameView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 8.dp),
-            title = stringResource(id = R.string.organization_creation_name_title)
+            creationStep = creationStep
         )
         MainTextField(
             modifier = Modifier.weight(0.3f),

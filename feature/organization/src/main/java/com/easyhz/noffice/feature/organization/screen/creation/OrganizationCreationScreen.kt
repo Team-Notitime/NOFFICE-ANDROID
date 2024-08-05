@@ -94,11 +94,11 @@ fun OrganizationCreationScreen(
             }, label = "organizationCreationFlow"
         ) { targetScreen ->
             when(targetScreen) {
-                CreationStep.ORGANIZATION_NAME -> { OrganizationNameView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.IMAGE -> { ImageView(modifier = Modifier.screenHorizonPadding()) }
-                CreationStep.END_DATE -> { EndDateView() }
-                CreationStep.PROMOTION -> { PromotionView(modifier = Modifier.screenHorizonPadding()) }
+                CreationStep.ORGANIZATION_NAME -> { OrganizationNameView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
+                CreationStep.CATEGORY -> { CategoryView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
+                CreationStep.IMAGE -> { ImageView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
+                CreationStep.END_DATE -> { EndDateView(creationStep = targetScreen) }
+                CreationStep.PROMOTION -> { PromotionView(modifier = Modifier.screenHorizonPadding(), creationStep = targetScreen) }
             }
         }
     }

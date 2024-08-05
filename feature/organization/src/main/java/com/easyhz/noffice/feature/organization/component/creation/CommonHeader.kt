@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,16 +18,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Grey400
+import com.easyhz.noffice.core.design_system.theme.SemiBold12
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.Title3
+import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
 @Composable
 internal fun CommonHeader(
     modifier: Modifier = Modifier,
-    title: String
+    creationStep: CreationStep
 ) {
+    val (captionStringId, color) = remember {
+        if (creationStep.isRequired) R.string.organization_creation_is_required to Green500
+        else R.string.organization_creation_is_not_required to Grey400
+    }
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Row(
@@ -45,7 +53,8 @@ internal fun CommonHeader(
                 color = Green500
             )
         }
-        Text(text = title, style = Title3)
+        Text(text = stringResource(id = creationStep.titleId), style = Title3)
+        Text(text = stringResource(id = captionStringId), style = SemiBold12, color = color)
     }
 }
 
@@ -54,6 +63,6 @@ internal fun CommonHeader(
 private fun CommonHeaderPrev() {
     CommonHeader(
         modifier = Modifier.padding(vertical = 16.dp),
-        title = "그룹 이름 머임?"
+        CreationStep.IMAGE
     )
 }

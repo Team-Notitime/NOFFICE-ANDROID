@@ -28,11 +28,13 @@ import com.easyhz.noffice.core.design_system.theme.Grey300
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
+import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
 @Composable
 internal fun ImageView(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationCreationViewModel = hiltViewModel()
+    viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    creationStep: CreationStep
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -43,7 +45,7 @@ internal fun ImageView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 8.dp),
-            title = stringResource(id = R.string.organization_creation_image_title)
+            creationStep = creationStep
         )
         Box(
             modifier = Modifier.padding(vertical = 28.dp)

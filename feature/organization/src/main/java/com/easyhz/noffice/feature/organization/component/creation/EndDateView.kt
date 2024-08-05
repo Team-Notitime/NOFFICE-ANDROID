@@ -26,11 +26,13 @@ import com.easyhz.noffice.core.design_system.theme.CalendarCaption2
 import com.easyhz.noffice.core.design_system.util.calendar.getCalendarPadding
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
+import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 
 @Composable
 internal fun EndDateView(
     modifier: Modifier = Modifier,
-    viewModel: OrganizationCreationViewModel = hiltViewModel()
+    viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    creationStep: CreationStep
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -52,7 +54,7 @@ internal fun EndDateView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp, horizontal = 24.dp),
-            title = stringResource(id = R.string.organization_creation_end_date_title)
+            creationStep = creationStep
         )
         MonthCalendarView(
             modifier = Modifier.weight(1f),

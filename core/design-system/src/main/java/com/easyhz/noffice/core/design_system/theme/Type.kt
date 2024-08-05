@@ -169,6 +169,19 @@ val SemiBold16 = TextStyle(
     )
 )
 
+val SemiBold12 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.SemiBold,
+    color = Grey800,
+    fontSize = 12.sp,
+    lineHeight = 12.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SemiBold18 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.SemiBold,
