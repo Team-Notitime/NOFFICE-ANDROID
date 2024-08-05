@@ -3,6 +3,7 @@ package com.easyhz.noffice.core.model.announcement.detail
 import com.easyhz.noffice.core.model.task.Task
 
 data class AnnouncementDetail(
+    val id: Int,
     val title: String,
     val creationDate: String,
     val organizationName: String,

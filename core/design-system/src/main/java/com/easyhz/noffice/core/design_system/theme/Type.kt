@@ -132,6 +132,18 @@ val Body15 = TextStyle(
     )
 )
 
+val Body12 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Bold,
+    color = Grey800,
+    fontSize = 12.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
 val SubHeading15 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.Bold,
@@ -224,6 +236,19 @@ val SubBody14 = TextStyle(
 val SubBody12 = TextStyle(
     fontFamily = Pretendard,
     fontWeight = FontWeight.Medium,
+    color = Grey800,
+    fontSize = 12.sp,
+    lineHeight = 12.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)
+
+val Caption12 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Normal,
     color = Grey800,
     fontSize = 12.sp,
     lineHeight = 12.sp,

@@ -1,7 +1,5 @@
 package com.easyhz.noffice.navigation.announcement
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -9,26 +7,20 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.announcement.screen.creation.ContentScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
-import com.easyhz.noffice.feature.announcement.screen.creation.selection.NofficeSelectionScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.datetime.DateTimeScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindScreen
-import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
+import com.easyhz.noffice.feature.announcement.screen.creation.selection.NofficeSelectionScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.task.TaskScreen
 import com.easyhz.noffice.feature.announcement.screen.detail.AnnouncementDetailScreen
+import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementDetail
-import com.easyhz.noffice.navigation.util.DURATION
 import com.easyhz.noffice.navigation.util.sharedViewModel
 
 internal fun NavGraphBuilder.announcementScreen(
     navController: NavController,
 ) {
-    composable<AnnouncementDetail>(
-        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
-        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
-    ) {
+    composable<AnnouncementDetail> {
         val args = it.toRoute<AnnouncementDetail>()
         AnnouncementDetailScreen(
             id = args.id,
@@ -38,10 +30,6 @@ internal fun NavGraphBuilder.announcementScreen(
     }
     navigation<AnnouncementCreation>(
         startDestination = AnnouncementCreation.NofficeSelection,
-        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(DURATION)) },
-        popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) },
-        popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(DURATION)) }
     ) {
         composable<AnnouncementCreation.NofficeSelection> {
             NofficeSelectionScreen(
@@ -87,7 +75,7 @@ internal fun NavGraphBuilder.announcementScreen(
         }
 
         composable<AnnouncementCreation.Task> {
-            val viewModel = it.sharedViewModel<CreationViewModel>(navController =  navController)
+            val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
             val args = it.toRoute<AnnouncementCreation.Task>()
             TaskScreen(
                 creationViewModel = viewModel,
@@ -152,6 +140,7 @@ internal fun NavController.navigateToTask(taskList: List<String>?) {
         route = AnnouncementCreation.Task(taskList = taskList)
     )
 }
+
 internal fun NavController.navigateToRemind(remindList: List<String>?) {
     navigate(
         route = AnnouncementCreation.Remind(remindList = remindList)

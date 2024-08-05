@@ -1,11 +1,13 @@
 package com.easyhz.noffice.feature.organization.component.organization
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.image.OrganizationImage
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
@@ -36,8 +37,9 @@ internal fun OrganizationItem(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .height(80.dp)
-            .noRippleClickable {
+            .padding(vertical = 8.dp)
+            .height(64.dp)
+            .clickable {
                 onClick()
             },
         verticalAlignment = Alignment.CenterVertically,

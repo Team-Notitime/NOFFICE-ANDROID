@@ -7,7 +7,7 @@ data class OrganizationState(
 ): UiState() {
     companion object {
         fun init() = OrganizationState(
-            organizationList = emptyList()
+            organizationList = listOf("CMC 15th")
         )
     }
 }

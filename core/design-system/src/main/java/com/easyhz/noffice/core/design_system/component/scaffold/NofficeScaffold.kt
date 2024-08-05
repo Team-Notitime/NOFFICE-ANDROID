@@ -34,7 +34,7 @@ fun NofficeScaffold(
         SideEffect {
             updateWindowColors(
                 view = view,
-                statusBarColor = null,
+                statusBarColor = White,
                 navigationBarColor = Grey50
             )
         }

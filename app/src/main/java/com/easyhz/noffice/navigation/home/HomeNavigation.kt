@@ -1,5 +1,8 @@
 package com.easyhz.noffice.navigation.home
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -13,7 +16,12 @@ internal fun NavGraphBuilder.homeScreen(
     modifier: Modifier,
     navigateToAnnouncementDetail: (Int, String) -> Unit
 ) {
-    composable<Home> {
+    composable<Home>(
+        enterTransition = { fadeIn(animationSpec = tween(700)) },
+        exitTransition = { fadeOut(animationSpec = tween(700)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(700)) },
+        popExitTransition = { fadeOut(animationSpec = tween(700)) }
+    ) {
         HomeScreen(
             modifier = modifier,
             navigateToAnnouncementDetail = navigateToAnnouncementDetail
