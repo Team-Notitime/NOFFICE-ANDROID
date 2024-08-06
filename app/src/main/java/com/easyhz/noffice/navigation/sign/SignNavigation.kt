@@ -7,7 +7,7 @@ import com.easyhz.noffice.feature.sign.screen.signUp.SignUpScreen
 import com.easyhz.noffice.navigation.sign.screen.LogIn
 import com.easyhz.noffice.navigation.sign.screen.SignUp
 
-internal fun NavGraphBuilder.signScreen(
+internal fun NavGraphBuilder.signGraph(
     navigateToHome: () -> Unit
 ) {
     composable<LogIn> {

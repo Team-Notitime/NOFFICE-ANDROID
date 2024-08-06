@@ -25,7 +25,7 @@ import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
 import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement
 
-internal fun NavGraphBuilder.organizationScreen(
+internal fun NavGraphBuilder.organizationGraph(
     modifier: Modifier,
     navController: NavController,
 ) {

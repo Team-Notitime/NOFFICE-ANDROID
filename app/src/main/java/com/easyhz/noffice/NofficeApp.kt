@@ -16,14 +16,14 @@ import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.navigation.NofficeNavController
-import com.easyhz.noffice.navigation.announcement.announcementScreen
+import com.easyhz.noffice.navigation.announcement.announcementGraph
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
-import com.easyhz.noffice.navigation.home.homeScreen
+import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
-import com.easyhz.noffice.navigation.organization.organizationScreen
-import com.easyhz.noffice.navigation.sign.signScreen
+import com.easyhz.noffice.navigation.organization.organizationGraph
+import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
 import com.easyhz.noffice.navigation.util.DURATION
@@ -107,18 +107,18 @@ internal fun NofficeApp(
                 )
             }
         ) {
-            homeScreen(
+            homeGraph(
                 modifier = Modifier.padding(it),
                 navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail
             )
-            organizationScreen(
+            organizationGraph(
                 modifier = Modifier.padding(it),
                 navController = navController,
             )
-            signScreen(
+            signGraph(
                 navigateToHome = navController::navigateToHome
             )
-            announcementScreen(
+            announcementGraph(
                 navController = navController,
             )
         }

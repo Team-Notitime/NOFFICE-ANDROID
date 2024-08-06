@@ -17,7 +17,7 @@ import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementDetail
 import com.easyhz.noffice.navigation.util.sharedViewModel
 
-internal fun NavGraphBuilder.announcementScreen(
+internal fun NavGraphBuilder.announcementGraph(
     navController: NavController,
 ) {
     composable<AnnouncementDetail> {
