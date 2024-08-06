@@ -13,11 +13,13 @@ import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationScreen
 import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailScreen
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
+import com.easyhz.noffice.feature.organization.screen.management.OrganizationManagementScreen
 import com.easyhz.noffice.feature.organization.screen.organization.OrganizationScreen
 import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
 import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
+import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement
 
 internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
@@ -49,6 +51,16 @@ internal fun NavGraphBuilder.organizationScreen(
             navigateToAnnouncementDetail = navigateToAnnouncementDetail
         )
     }
+    composable<OrganizationManagement>(
+        typeMap = OrganizationManagement.typeMap
+    ) {
+        val args = it.toRoute<OrganizationManagement>()
+        OrganizationManagementScreen(
+            organizationInformation = args.organizationInformation,
+            numberOfMembers = args.numberOfMembers,
+            navigateToUp = navigateToUp
+        )
+    }
     composable<OrganizationCreation> {
         OrganizationCreationScreen(
             navigateToInvitation = navigateToInvitation,
@@ -63,7 +75,6 @@ internal fun NavGraphBuilder.organizationScreen(
             navigateToHome = navigateToHome
         )
     }
-
 }
 
 internal fun NavController.navigateToOrganization(navOptions: NavOptions) {
