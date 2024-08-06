@@ -6,7 +6,6 @@ import com.easyhz.noffice.core.model.organization.category.CATEGORY
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.category.toState
 import com.easyhz.noffice.feature.organization.contract.detail.MemberType
-import java.net.URI
 
 data class ManagementState(
     val isLoading: Boolean,
