@@ -9,10 +9,12 @@ import com.easyhz.noffice.feature.organization.contract.detail.DetailState.Compa
 import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 import com.easyhz.noffice.feature.organization.util.detail.DUMMY_LIST
 import com.easyhz.noffice.feature.organization.util.detail.DUMMY_ORGANIZATION_INFORMATION
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class OrganizationDetailViewModel @Inject constructor(
 
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
