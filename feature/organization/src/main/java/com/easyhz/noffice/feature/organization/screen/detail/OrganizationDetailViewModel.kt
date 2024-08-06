@@ -25,8 +25,18 @@ class OrganizationDetailViewModel @Inject constructor(
             is DetailIntent.InitScreen -> {
                 initScreen(intent.organizationId, intent.organizationName)
             }
-            is DetailIntent.ClickAnnouncement -> { onClickAnnouncement(intent.index) }
-            is DetailIntent.NavigateToUp -> { navigateToUp() }
+
+            is DetailIntent.ClickAnnouncement -> {
+                onClickAnnouncement(intent.index)
+            }
+
+            is DetailIntent.NavigateToUp -> {
+                navigateToUp()
+            }
+
+            is DetailIntent.ClickEditButton -> {
+                onClickEditButton()
+            }
         }
     }
 
@@ -40,20 +50,36 @@ class OrganizationDetailViewModel @Inject constructor(
         delay(2000)
         currentState.numberOfMembers[MemberType.LEADER] = 11
         currentState.numberOfMembers[MemberType.MEMBER] = 34
-        reduce { copy(
-            organizationInformation = DUMMY_ORGANIZATION_INFORMATION,
-            hasWaitingMember = true,
-            isLoading = false
-        ) }
+        reduce {
+            copy(
+                organizationInformation = DUMMY_ORGANIZATION_INFORMATION,
+                hasWaitingMember = true,
+                isLoading = false
+            )
+        }
         delay(1000)
         reduce { copy(announcementList = DUMMY_LIST, isCardLoading = false) }
     }
 
     private fun onClickAnnouncement(index: Int) {
         val announcement = currentState.announcementList[index]
-        postSideEffect { DetailSideEffect.NavigateToAnnouncementDetail(announcement.id, announcement.title) }
+        postSideEffect {
+            DetailSideEffect.NavigateToAnnouncementDetail(
+                announcement.id,
+                announcement.title
+            )
+        }
     }
+
     private fun navigateToUp() {
         postSideEffect { DetailSideEffect.NavigateToUp }
+    }
+
+    private fun onClickEditButton() {
+        postSideEffect {
+            DetailSideEffect.NavigateToOrganizationManagement(
+                currentState.organizationInformation, currentState.numberOfMembers
+            )
+        }
     }
 }

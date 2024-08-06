@@ -29,7 +29,7 @@ class OrganizationManagementViewModel @Inject constructor(
             is ManagementIntent.InitScreen -> {
                 initScreen(intent.organizationInformation, intent.numberOfMembers)
             }
-            is ManagementIntent.NavigateToUp -> {}
+            is ManagementIntent.NavigateToUp -> { navigateToUp() }
             is ManagementIntent.ClickCategoryItem -> { onClickCategoryItem(intent.index) }
             is ManagementIntent.ClickProfileImage -> { onClickProfileImage() }
             is ManagementIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.bottomSheetItem) }
@@ -111,6 +111,10 @@ class OrganizationManagementViewModel @Inject constructor(
 
     private fun hideImageBottomSheet() {
         reduce { copy(isShowImageBottomSheet = false) }
+    }
+
+    private fun navigateToUp() {
+        postSideEffect { ManagementSideEffect.NavigateToUp }
     }
 
 }

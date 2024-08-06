@@ -10,6 +10,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.toRoute
+import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationScreen
 import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailScreen
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
@@ -25,6 +27,7 @@ internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
     navigateToOrganizationDetail: (Int, String) -> Unit,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToOrganizationManagement: (OrganizationInformation, LinkedHashMap<MemberType, Int>) -> Unit,
     navigateToCreation: () -> Unit,
     navigateToInvitation: (String, String)-> Unit,
     navigateToHome: () -> Unit,
@@ -48,7 +51,8 @@ internal fun NavGraphBuilder.organizationScreen(
             organizationId = args.organizationId,
             organizationName = args.organizationName,
             navigateToUp = navigateToUp,
-            navigateToAnnouncementDetail = navigateToAnnouncementDetail
+            navigateToAnnouncementDetail = navigateToAnnouncementDetail,
+            navigateToOrganizationManagement = navigateToOrganizationManagement
         )
     }
     composable<OrganizationManagement>(
@@ -86,6 +90,13 @@ internal fun NavController.navigateToOrganization(navOptions: NavOptions) {
 
 internal fun NavController.navigateToOrganizationDetail(id: Int, name: String) {
     navigate(OrganizationDetail(organizationId = id, organizationName = name))
+}
+
+internal fun NavController.navigateToOrganizationManagement(
+    information: OrganizationInformation,
+    number: LinkedHashMap<MemberType, Int>
+) {
+    navigate(OrganizationManagement(organizationInformation = information, numberOfMembers = number))
 }
 
 internal fun NavController.navigateToOrganizationCreation() {

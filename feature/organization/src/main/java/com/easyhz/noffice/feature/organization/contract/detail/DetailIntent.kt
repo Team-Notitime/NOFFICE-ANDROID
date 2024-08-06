@@ -6,4 +6,5 @@ sealed class DetailIntent: UiIntent() {
     data class InitScreen(val organizationId: Int, val organizationName: String): DetailIntent()
     data class ClickAnnouncement(val index: Int): DetailIntent()
     data object NavigateToUp: DetailIntent()
+    data object ClickEditButton: DetailIntent()
 }
