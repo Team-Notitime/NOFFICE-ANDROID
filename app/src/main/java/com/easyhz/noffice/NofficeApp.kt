@@ -81,22 +81,34 @@ fun NofficeApp() {
         NavHost(
             navController = navController,
             startDestination = Home,
-            enterTransition = { slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                    DURATION
-                )) },
-            exitTransition = { slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                    DURATION
-                )) },
-            popEnterTransition = { slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.End, tween(
-                    DURATION
-                )) },
-            popExitTransition = { slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.End, tween(
-                    DURATION
-                )) }
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
+                        DURATION
+                    )
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
+                        DURATION
+                    )
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End, tween(
+                        DURATION
+                    )
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End, tween(
+                        DURATION
+                    )
+                )
+            }
         ) {
             homeScreen(
                 modifier = Modifier.padding(it),
@@ -112,7 +124,7 @@ fun NofficeApp() {
                 navigateToUp = navController::navigateUp
             )
             signScreen(
-                 navigateToHome = navController::navigateToHome
+                navigateToHome = navController::navigateToHome
             )
             announcementScreen(
                 navController = navController,
