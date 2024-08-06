@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.category.Category
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
 import com.easyhz.noffice.feature.organization.contract.management.ManagementState

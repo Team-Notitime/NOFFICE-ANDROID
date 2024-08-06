@@ -5,7 +5,7 @@ import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.category.CATEGORY
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.category.toState
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
+import com.easyhz.noffice.core.model.organization.member.MemberType
 
 data class ManagementState(
     val isLoading: Boolean,

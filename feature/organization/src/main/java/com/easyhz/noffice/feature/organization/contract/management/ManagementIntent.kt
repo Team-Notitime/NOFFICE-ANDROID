@@ -3,7 +3,7 @@ package com.easyhz.noffice.feature.organization.contract.management
 import android.net.Uri
 import com.easyhz.noffice.core.common.base.UiIntent
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.util.creation.BottomSheetItem
 
 sealed class ManagementIntent : UiIntent() {

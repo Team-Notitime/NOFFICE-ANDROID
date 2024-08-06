@@ -28,6 +28,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.detail.AnnouncementCard
 import com.easyhz.noffice.feature.organization.component.detail.DetailHeader
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
@@ -35,7 +36,6 @@ import com.easyhz.noffice.feature.organization.component.detail.SkeletonCard
 import com.easyhz.noffice.feature.organization.component.detail.WaitingMemberButton
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 
 @Composable
 fun OrganizationDetailScreen(

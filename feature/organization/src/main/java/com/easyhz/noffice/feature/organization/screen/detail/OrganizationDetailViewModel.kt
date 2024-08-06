@@ -2,11 +2,11 @@ package com.easyhz.noffice.feature.organization.screen.detail
 
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState.Companion.updateOrganizationName
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 import com.easyhz.noffice.feature.organization.util.detail.DUMMY_LIST
 import com.easyhz.noffice.feature.organization.util.detail.DUMMY_ORGANIZATION_INFORMATION
 import dagger.hilt.android.lifecycle.HiltViewModel

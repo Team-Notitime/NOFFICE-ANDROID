@@ -32,11 +32,11 @@ import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.theme.semiBold
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.creation.BottomSheetItems
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
 import com.easyhz.noffice.feature.organization.component.management.ManagementHeader
 import com.easyhz.noffice.feature.organization.component.management.MemberButton
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
 import com.easyhz.noffice.feature.organization.util.creation.BottomSheetItem

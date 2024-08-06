@@ -16,7 +16,7 @@ import com.easyhz.noffice.core.design_system.component.skeleton.SkeletonProvider
 import com.easyhz.noffice.core.design_system.extension.skeletonEffect
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.SubTitle1
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
+import com.easyhz.noffice.core.model.organization.member.MemberType
 
 @Composable
 internal fun NumberOfMembersView(

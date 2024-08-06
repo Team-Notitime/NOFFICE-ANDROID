@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.toRoute
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationScreen
 import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailScreen
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen

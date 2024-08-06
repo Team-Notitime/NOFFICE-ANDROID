@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="organization_member_type_leader">Leader</string>
+    <string name="organization_member_type_member">Member</string>
+</resources>
