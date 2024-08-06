@@ -69,10 +69,15 @@ internal fun NavGraphBuilder.organizationScreen(
     }
     composable<OrganizationInvitation> {
         val args = it.toRoute<OrganizationInvitation>()
+        val navOptions = navOptions {
+            popUpTo(navController.graph.id) {
+                inclusive = true
+            }
+        }
         OrganizationInvitationScreen(
             invitationUrl = args.invitationUrl,
             imageUrl = args.imageUrl,
-            navigateToHome = navController::navigateToHome
+            navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
 }

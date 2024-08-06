@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
+import com.easyhz.noffice.navigation.NofficeNavController
 import com.easyhz.noffice.navigation.announcement.announcementScreen
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
@@ -22,20 +23,19 @@ import com.easyhz.noffice.navigation.home.homeScreen
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.organizationScreen
-import com.easyhz.noffice.navigation.rememberNofficeNavController
 import com.easyhz.noffice.navigation.sign.signScreen
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
 import com.easyhz.noffice.navigation.util.DURATION
 
 @Composable
-fun NofficeApp() {
-    val nofficeNavController = rememberNofficeNavController()
+internal fun NofficeApp(
+    nofficeNavController: NofficeNavController
+) {
     val navController = nofficeNavController.navController
     val isVisibleBottomBar = nofficeNavController.isInBottomTabs()
 
     val currentTab = nofficeNavController.mapRouteToTab()
-
     NofficeScaffold(
         floatingActionButton = {
             AnimatedVisibility(

@@ -30,14 +30,8 @@ internal fun NavGraphBuilder.homeScreen(
 }
 
 internal fun NavController.navigateToHome(navOptions: NavOptions? = null) {
-    val mNavOptions = navOptions
-        ?: navOptions {
-            popUpTo(this@navigateToHome.graph.id) {
-                inclusive = true
-            }
-        }
     navigate(
         route = Home,
-        navOptions = mNavOptions
+        navOptions = navOptions
     )
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.easyhz.noffice.core.design_system.theme.NofficeTheme
+import com.easyhz.noffice.navigation.rememberNofficeNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -12,8 +13,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            val nofficeNavController = rememberNofficeNavController()
             NofficeTheme {
-                NofficeApp()
+                NofficeApp(nofficeNavController)
             }
         }
     }
