@@ -19,6 +19,7 @@ data class DetailState(
             isLoading = true,
             isCardLoading = true,
             organizationInformation = OrganizationInformation(
+                id = -1,
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
