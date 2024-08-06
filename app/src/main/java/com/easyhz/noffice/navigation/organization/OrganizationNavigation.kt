@@ -17,6 +17,8 @@ import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailS
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
 import com.easyhz.noffice.feature.organization.screen.management.OrganizationManagementScreen
 import com.easyhz.noffice.feature.organization.screen.organization.OrganizationScreen
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
+import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
@@ -25,13 +27,7 @@ import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement
 
 internal fun NavGraphBuilder.organizationScreen(
     modifier: Modifier,
-    navigateToOrganizationDetail: (Int, String) -> Unit,
-    navigateToAnnouncementDetail: (Int, String) -> Unit,
-    navigateToOrganizationManagement: (OrganizationInformation, LinkedHashMap<MemberType, Int>) -> Unit,
-    navigateToCreation: () -> Unit,
-    navigateToInvitation: (String, String)-> Unit,
-    navigateToHome: () -> Unit,
-    navigateToUp: () -> Unit,
+    navController: NavController,
 ) {
     composable<Organization>(
         enterTransition = { fadeIn(animationSpec = tween(700)) },
@@ -41,8 +37,8 @@ internal fun NavGraphBuilder.organizationScreen(
     ) {
         OrganizationScreen(
             modifier = modifier,
-            navigateToCreation = navigateToCreation,
-            navigateToDetail = navigateToOrganizationDetail
+            navigateToCreation = navController::navigateToOrganizationCreation,
+            navigateToDetail = navController::navigateToOrganizationDetail
         )
     }
     composable<OrganizationDetail> {
@@ -50,9 +46,9 @@ internal fun NavGraphBuilder.organizationScreen(
         OrganizationDetailScreen(
             organizationId = args.organizationId,
             organizationName = args.organizationName,
-            navigateToUp = navigateToUp,
-            navigateToAnnouncementDetail = navigateToAnnouncementDetail,
-            navigateToOrganizationManagement = navigateToOrganizationManagement
+            navigateToUp = navController::navigateUp,
+            navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
+            navigateToOrganizationManagement = navController::navigateToOrganizationManagement
         )
     }
     composable<OrganizationManagement>(
@@ -62,13 +58,13 @@ internal fun NavGraphBuilder.organizationScreen(
         OrganizationManagementScreen(
             organizationInformation = args.organizationInformation,
             numberOfMembers = args.numberOfMembers,
-            navigateToUp = navigateToUp
+            navigateToUp = navController::navigateUp
         )
     }
     composable<OrganizationCreation> {
         OrganizationCreationScreen(
-            navigateToInvitation = navigateToInvitation,
-            navigateToUp = navigateToUp
+            navigateToInvitation = navController::navigateToOrganizationInvitation,
+            navigateToUp = navController::navigateUp,
         )
     }
     composable<OrganizationInvitation> {
@@ -76,7 +72,7 @@ internal fun NavGraphBuilder.organizationScreen(
         OrganizationInvitationScreen(
             invitationUrl = args.invitationUrl,
             imageUrl = args.imageUrl,
-            navigateToHome = navigateToHome
+            navigateToHome = navController::navigateToHome
         )
     }
 }

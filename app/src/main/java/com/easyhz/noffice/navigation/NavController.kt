@@ -1,8 +1,10 @@
 package com.easyhz.noffice.navigation
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -13,6 +15,7 @@ import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganization
 import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
+import kotlin.reflect.typeOf
 
 @Composable
 internal fun rememberNofficeNavController(navController: NavHostController = rememberNavController()) =

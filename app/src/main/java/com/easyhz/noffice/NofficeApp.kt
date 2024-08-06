@@ -21,10 +21,6 @@ import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeS
 import com.easyhz.noffice.navigation.home.homeScreen
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationManagement
 import com.easyhz.noffice.navigation.organization.organizationScreen
 import com.easyhz.noffice.navigation.rememberNofficeNavController
 import com.easyhz.noffice.navigation.sign.signScreen
@@ -117,13 +113,7 @@ fun NofficeApp() {
             )
             organizationScreen(
                 modifier = Modifier.padding(it),
-                navigateToOrganizationDetail = navController::navigateToOrganizationDetail,
-                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
-                navigateToOrganizationManagement = navController::navigateToOrganizationManagement,
-                navigateToCreation = navController::navigateToOrganizationCreation,
-                navigateToInvitation = navController::navigateToOrganizationInvitation,
-                navigateToHome = navController::navigateToHome,
-                navigateToUp = navController::navigateUp
+                navController = navController,
             )
             signScreen(
                 navigateToHome = navController::navigateToHome
