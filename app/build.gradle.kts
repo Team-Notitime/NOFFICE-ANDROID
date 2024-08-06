@@ -49,6 +49,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.designSystem)
     implementation(projects.core.network)
+    implementation(projects.core.model)
 
     implementation(projects.domain.home)
 
