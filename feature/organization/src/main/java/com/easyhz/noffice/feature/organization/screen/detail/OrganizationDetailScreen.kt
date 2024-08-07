@@ -45,6 +45,7 @@ fun OrganizationDetailScreen(
     organizationName: String,
     navigateToUp: () -> Unit,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToStandbyMember: (Int) -> Unit,
     navigateToOrganizationManagement: (OrganizationInformation, LinkedHashMap<MemberType, Int>) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -112,7 +113,7 @@ fun OrganizationDetailScreen(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     hasStandbyMember = uiState.hasStandbyMember
                 ) {
-                    println("Screen")
+                    viewModel.postIntent(DetailIntent.ClickStandbyMemberButton)
                 }
             }
             item {
@@ -150,6 +151,9 @@ fun OrganizationDetailScreen(
             }
             is DetailSideEffect.NavigateToOrganizationManagement -> {
                 navigateToOrganizationManagement(sideEffect.information, sideEffect.numberOfMembers)
+            }
+            is DetailSideEffect.NavigateToStandbyMember -> {
+                navigateToStandbyMember(sideEffect.id)
             }
         }
     }

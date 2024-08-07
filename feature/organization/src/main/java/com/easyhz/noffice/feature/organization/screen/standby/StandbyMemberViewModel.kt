@@ -22,7 +22,7 @@ class StandbyMemberViewModel @Inject constructor(
     }
 
     private fun onClickBackButton() {
-        StandbyMemberSideEffect.NavigateToUp
+        postSideEffect { StandbyMemberSideEffect.NavigateToUp }
     }
 
     private fun onClickLeftButton() {

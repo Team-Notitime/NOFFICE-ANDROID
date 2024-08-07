@@ -37,6 +37,9 @@ class OrganizationDetailViewModel @Inject constructor(
             is DetailIntent.ClickEditButton -> {
                 onClickEditButton()
             }
+            is DetailIntent.ClickStandbyMemberButton -> {
+                onClickStandbyMemberButton()
+            }
         }
     }
 
@@ -81,5 +84,9 @@ class OrganizationDetailViewModel @Inject constructor(
                 currentState.organizationInformation, currentState.numberOfMembers
             )
         }
+    }
+
+    private fun onClickStandbyMemberButton() {
+        postSideEffect { DetailSideEffect.NavigateToStandbyMember(currentState.organizationInformation.id) }
     }
 }

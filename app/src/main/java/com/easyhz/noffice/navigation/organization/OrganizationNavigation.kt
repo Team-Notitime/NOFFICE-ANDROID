@@ -18,6 +18,7 @@ import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInv
 import com.easyhz.noffice.feature.organization.screen.management.OrganizationManagementScreen
 import com.easyhz.noffice.feature.organization.screen.member.MemberScreen
 import com.easyhz.noffice.feature.organization.screen.organization.OrganizationScreen
+import com.easyhz.noffice.feature.organization.screen.standby.StandbyMemberScreen
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.organization.screen.MemberManagement
@@ -26,6 +27,7 @@ import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
 import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement
+import com.easyhz.noffice.navigation.organization.screen.StandbyMember
 
 internal fun NavGraphBuilder.organizationGraph(
     modifier: Modifier,
@@ -50,6 +52,7 @@ internal fun NavGraphBuilder.organizationGraph(
             organizationName = args.organizationName,
             navigateToUp = navController::navigateUp,
             navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
+            navigateToStandbyMember = navController::navigateToStandbyMember,
             navigateToOrganizationManagement = navController::navigateToOrganizationManagement
         )
     }
@@ -61,7 +64,7 @@ internal fun NavGraphBuilder.organizationGraph(
             organizationInformation = args.organizationInformation,
             numberOfMembers = args.numberOfMembers,
             navigateToUp = navController::navigateUp,
-            navigateToMemberManagement = navController::navigateToMemberManagement
+            navigateToMemberManagement = navController::navigateToMemberManagement,
         )
     }
     composable<MemberManagement> {
@@ -88,6 +91,13 @@ internal fun NavGraphBuilder.organizationGraph(
             invitationUrl = args.invitationUrl,
             imageUrl = args.imageUrl,
             navigateToHome = { navController.navigateToHome(navOptions) }
+        )
+    }
+    composable<StandbyMember> {
+        val args = it.toRoute<StandbyMember>()
+        StandbyMemberScreen(
+            organizationId = args.organizationId,
+            navigateToUp = navController::navigateUp
         )
     }
 }
@@ -123,4 +133,8 @@ internal fun NavController.navigateToOrganizationInvitation(invitationUrl: Strin
         popUpTo(OrganizationCreation) { inclusive = true }
     }
     navigate(OrganizationInvitation(invitationUrl = invitationUrl, imageUrl = imageUrl), navOptions)
+}
+
+internal fun NavController.navigateToStandbyMember(id: Int) {
+    navigate(StandbyMember(id))
 }

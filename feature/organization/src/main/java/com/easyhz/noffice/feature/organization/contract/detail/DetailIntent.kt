@@ -7,4 +7,5 @@ sealed class DetailIntent: UiIntent() {
     data class ClickAnnouncement(val index: Int): DetailIntent()
     data object NavigateToUp: DetailIntent()
     data object ClickEditButton: DetailIntent()
+    data object ClickStandbyMemberButton: DetailIntent()
 }

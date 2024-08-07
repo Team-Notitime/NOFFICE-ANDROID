@@ -29,6 +29,7 @@ import com.easyhz.noffice.feature.organization.util.member.MemberViewType
 fun StandbyMemberScreen(
     modifier: Modifier = Modifier,
     viewModel: StandbyMemberViewModel = hiltViewModel(),
+    organizationId: Int,
     navigateToUp: () -> Unit
 ) {
     NofficeBasicScaffold(
