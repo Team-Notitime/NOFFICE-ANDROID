@@ -87,4 +87,6 @@ val Blue700 = Color(0xFF007DB8)
 val DimColor = Color(0xFF121212).copy(alpha = 0.5f)
 
 @Stable
+val Red100 = Color(0xFFFFF0EF)
+@Stable
 val Red = Color(0xFFFF3F3F)
