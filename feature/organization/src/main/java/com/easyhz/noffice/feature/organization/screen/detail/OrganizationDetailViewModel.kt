@@ -53,7 +53,7 @@ class OrganizationDetailViewModel @Inject constructor(
         reduce {
             copy(
                 organizationInformation = DUMMY_ORGANIZATION_INFORMATION,
-                hasWaitingMember = true,
+                hasStandbyMember = true,
                 isLoading = false
             )
         }

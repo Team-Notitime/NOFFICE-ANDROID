@@ -30,13 +30,13 @@ import com.easyhz.noffice.core.design_system.theme.Green600
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 
 @Composable
-internal fun WaitingMemberButton(
+internal fun StandbyMemberButton(
     modifier: Modifier = Modifier,
-    hasWaitingMember: Boolean,
+    hasStandbyMember: Boolean,
     onClick: () -> Unit
 ) {
     AnimatedVisibility(
-        visible = hasWaitingMember,
+        visible = hasStandbyMember,
         enter = scaleIn(
             initialScale = 0.3f,
             animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy,stiffness = Spring.StiffnessMediumLow )
@@ -65,7 +65,7 @@ internal fun WaitingMemberButton(
                     contentDescription = "load"
                 )
                 Text(
-                    text = stringResource(id = R.string.organization_member_waiting),
+                    text = stringResource(id = R.string.organization_member_standby),
                     style = SemiBold16,
                     color = Green600,
                     maxLines = 1,

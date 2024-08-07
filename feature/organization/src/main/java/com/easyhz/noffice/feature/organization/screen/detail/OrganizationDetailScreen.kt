@@ -33,7 +33,7 @@ import com.easyhz.noffice.feature.organization.component.detail.AnnouncementCard
 import com.easyhz.noffice.feature.organization.component.detail.DetailHeader
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
 import com.easyhz.noffice.feature.organization.component.detail.SkeletonCard
-import com.easyhz.noffice.feature.organization.component.detail.WaitingMemberButton
+import com.easyhz.noffice.feature.organization.component.detail.StandbyMemberButton
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
 
@@ -108,9 +108,9 @@ fun OrganizationDetailScreen(
                 )
             }
             item {
-                WaitingMemberButton(
+                StandbyMemberButton(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    hasWaitingMember = uiState.hasWaitingMember
+                    hasStandbyMember = uiState.hasStandbyMember
                 ) {
                     println("Screen")
                 }
