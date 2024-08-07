@@ -123,8 +123,22 @@
     <string name="announcement_detail_task_list_header">TO DO LIST</string>
     <string name="announcement_detail_web_view_browser_button">기본 브라우저로 연결</string>
 
-    <string name="organization_member_type_leader">Leader</string>
-    <string name="organization_member_type_member">Member</string>
-    <string name="organization_member_waiting">가입을 대기 중인 멤버가 있어요!</string>
+    <string name="organization_member_standby">가입을 대기 중인 멤버가 있어요!</string>
     <string name="organization_detail_badge_number_of_badges">%d개</string>
+
+    <string name="organization_management_top_bar_save_button">저장</string>
+    <string name="organization_management_edit_image">사진 수정</string>
+    <string name="organization_management_member_button">그룹원 관리하기</string>
+
+    <string name="organization_management_member_management_title">그룹원 관리</string>
+    <string name="organization_management_member_management_left_button">멤버 추가하기</string>
+    <string name="organization_management_member_management_right_button">권한 설정</string>
+    <string name="organization_management_member_edit_title">권한 설정</string>
+    <string name="organization_management_member_edit_left_button">내보내기</string>
+    <string name="organization_management_member_edit_right_button">권한 변경하기</string>
+    <string name="organization_management_member_authority_button">확인</string>
+
+    <string name="organization_standby_member_title">가입 대기 멤버</string>
+    <string name="organization_standby_member_left_button">전체 선택</string>
+    <string name="organization_standby_member_right_button">수락하기</string>
 </resources>

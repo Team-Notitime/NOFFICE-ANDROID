@@ -2,7 +2,9 @@ package com.easyhz.noffice.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.NavBackStackEntry
+import androidx.compose.ui.util.trace
+import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -16,19 +18,20 @@ import com.easyhz.noffice.navigation.util.BottomMenuTabs
 
 @Composable
 internal fun rememberNofficeNavController(navController: NavHostController = rememberNavController()) =
-    remember { NofficeNavController(navController = navController) }
+    remember(navController) { NofficeNavController(navController = navController) }
 
 internal class NofficeNavController(
     val navController: NavHostController
 ) {
-    private val navBackStackEntry: NavBackStackEntry?
-        @Composable get() = navController.currentBackStackEntryAsState().value
+    private val currentDestination: NavDestination?
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination
 
     private val routes: List<String>
         @Composable get() = remember { BottomMenuTabs.entries.map { it.qualifierName } }
 
     private val currentRoute: String?
-        @Composable get() = navBackStackEntry?.destination?.route
+        @Composable get() = currentDestination?.route
 
     @Composable
     fun isInBottomTabs(): Boolean = currentRoute in routes
@@ -44,18 +47,19 @@ internal class NofficeNavController(
 
     fun navigate(route: BottomMenuTabs) {
         if (route.qualifierName == navController.currentDestination?.route) return
-        val navOptions = navOptions {
-            popUpTo(navController.graph.id) {
-                saveState = true
-                inclusive = false
+        trace("Navigation: ${route.name}") {
+            val navOptions = navOptions {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop  = true
+                restoreState = true
             }
-            launchSingleTop  = true
-            restoreState = true
-        }
-        when (route) {
-            BottomMenuTabs.HOME -> navController.navigateToHome(navOptions)
-            BottomMenuTabs.ADD -> navController.navigateToAnnouncementNofficeSelection()
-            BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions)
+            when (route) {
+                BottomMenuTabs.HOME -> navController.navigateToHome(navOptions)
+                BottomMenuTabs.ADD -> navController.navigateToAnnouncementNofficeSelection()
+                BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions)
+            }
         }
     }
 }

@@ -50,15 +50,21 @@ fun DetailTopBar(
             }
         }
         title?.let {
-            Box(modifier = Modifier.align(Alignment.Center)) {
+            Box(
+                modifier = Modifier
+                    .sizeIn(minHeight = 32.dp, minWidth = 32.dp)
+                    .align(Alignment.Center),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(text = it, style = SemiBold16, color = Grey700)
             }
         }
         trailingItem?.let { item ->
-            Box(modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .sizeIn(minHeight = 32.dp, minWidth = 32.dp)
-                .noRippleClickable { item.onClick() },
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .sizeIn(minHeight = 32.dp, minWidth = 32.dp)
+                    .noRippleClickable { item.onClick() },
                 contentAlignment = Alignment.CenterEnd
             ) {
                 item.content()
@@ -83,6 +89,12 @@ private fun DetailTopBarTopDetailPrev() {
             onClick = { }
         ),
         title = "안녕",
+        trailingItem = DetailTopBarMenu(
+            content = {
+                Text(text = "완료", style = semiBold(18), color = Green700)
+            },
+            onClick = { }
+        )
     )
 }
 

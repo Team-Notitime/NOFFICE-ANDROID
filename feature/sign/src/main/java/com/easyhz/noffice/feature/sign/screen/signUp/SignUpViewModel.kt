@@ -1,6 +1,5 @@
 package com.easyhz.noffice.feature.sign.screen.signUp
 
-import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpIntent

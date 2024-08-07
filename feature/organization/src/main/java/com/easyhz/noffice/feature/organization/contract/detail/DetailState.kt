@@ -1,17 +1,16 @@
 package com.easyhz.noffice.feature.organization.contract.detail
 
-import androidx.annotation.StringRes
 import com.easyhz.noffice.core.common.base.UiState
-import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.model.announcement.detail.AnnouncementDetail
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.member.MemberType
 
 data class DetailState(
     val isLoading: Boolean,
     val isCardLoading: Boolean,
     val organizationInformation: OrganizationInformation,
     val numberOfMembers: LinkedHashMap<MemberType, Int>,
-    val hasWaitingMember: Boolean,
+    val hasStandbyMember: Boolean,
     val announcementList: List<AnnouncementDetail>
 ): UiState() {
     companion object {
@@ -19,12 +18,13 @@ data class DetailState(
             isLoading = true,
             isCardLoading = true,
             organizationInformation = OrganizationInformation(
+                id = -1,
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
             ),
             numberOfMembers = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
-            hasWaitingMember = false,
+            hasStandbyMember = false,
             announcementList = emptyList()
         )
 
@@ -34,14 +34,4 @@ data class DetailState(
             organizationInformation = this.organizationInformation.copy(name = name)
         )
     }
-}
-
-enum class MemberType(
-    @StringRes val stringId: Int
-) {
-    LEADER(
-        stringId = R.string.organization_member_type_leader
-    ), MEMBER(
-        stringId = R.string.organization_member_type_member
-    )
 }

@@ -15,30 +15,27 @@ import androidx.navigation.compose.NavHost
 import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
-import com.easyhz.noffice.navigation.announcement.announcementScreen
+import com.easyhz.noffice.navigation.NofficeNavController
+import com.easyhz.noffice.navigation.announcement.announcementGraph
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
-import com.easyhz.noffice.navigation.home.homeScreen
+import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
-import com.easyhz.noffice.navigation.organization.navigateToOrganizationInvitation
-import com.easyhz.noffice.navigation.organization.organizationScreen
-import com.easyhz.noffice.navigation.rememberNofficeNavController
-import com.easyhz.noffice.navigation.sign.signScreen
+import com.easyhz.noffice.navigation.organization.organizationGraph
+import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
 import com.easyhz.noffice.navigation.util.DURATION
 
 @Composable
-fun NofficeApp() {
-    val nofficeNavController = rememberNofficeNavController()
+internal fun NofficeApp(
+    nofficeNavController: NofficeNavController
+) {
     val navController = nofficeNavController.navController
     val isVisibleBottomBar = nofficeNavController.isInBottomTabs()
 
     val currentTab = nofficeNavController.mapRouteToTab()
-
     NofficeScaffold(
         floatingActionButton = {
             AnimatedVisibility(
@@ -81,40 +78,47 @@ fun NofficeApp() {
         NavHost(
             navController = navController,
             startDestination = Home,
-            enterTransition = { slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                    DURATION
-                )) },
-            exitTransition = { slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                    DURATION
-                )) },
-            popEnterTransition = { slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.End, tween(
-                    DURATION
-                )) },
-            popExitTransition = { slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.End, tween(
-                    DURATION
-                )) }
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
+                        DURATION
+                    )
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
+                        DURATION
+                    )
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End, tween(
+                        DURATION
+                    )
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End, tween(
+                        DURATION
+                    )
+                )
+            }
         ) {
-            homeScreen(
+            homeGraph(
                 modifier = Modifier.padding(it),
                 navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail
             )
-            organizationScreen(
+            organizationGraph(
                 modifier = Modifier.padding(it),
-                navigateToOrganizationDetail = navController::navigateToOrganizationDetail,
-                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
-                navigateToCreation = navController::navigateToOrganizationCreation,
-                navigateToInvitation = navController::navigateToOrganizationInvitation,
-                navigateToHome = navController::navigateToHome,
-                navigateToUp = navController::navigateUp
+                navController = navController,
             )
-            signScreen(
-                 navigateToHome = navController::navigateToHome
+            signGraph(
+                navigateToHome = navController::navigateToHome
             )
-            announcementScreen(
+            announcementGraph(
                 navController = navController,
             )
         }

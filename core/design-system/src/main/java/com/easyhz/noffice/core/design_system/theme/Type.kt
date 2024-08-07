@@ -345,3 +345,16 @@ val Body24 = TextStyle(
         includeFontPadding = false,
     )
 )
+
+val Bold18 = TextStyle(
+    fontFamily = Pretendard,
+    fontWeight = FontWeight.Bold,
+    color = Grey800,
+    fontSize = 18.sp,
+    lineHeight = 18.sp,
+    letterSpacing = LetterSpacing,
+    textAlign = TextAlign.Justify,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false,
+    )
+)

@@ -17,10 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.easyhz.noffice.core.design_system.theme.Bold18
 import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey600
-import com.easyhz.noffice.core.design_system.theme.SemiBold18
 import com.easyhz.noffice.core.design_system.theme.White
 
 @Composable
@@ -30,7 +30,7 @@ fun MediumButton(
     enabled: Boolean = true,
     contentColor: Color = White,
     containerColor: Color = Green500,
-    textStyle: TextStyle = SemiBold18,
+    textStyle: TextStyle = Bold18,
     onClick: () -> Unit
 ) {
     val onClickInvoke: () -> Unit = remember(enabled, onClick) {

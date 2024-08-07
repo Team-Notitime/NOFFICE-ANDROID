@@ -7,6 +7,7 @@ import com.easyhz.noffice.core.model.task.Task
 
 // FIXME
 internal val DUMMY_ORGANIZATION_INFORMATION = OrganizationInformation(
+    id = 1,
     name = "CMC 15th",
     profileImageUrl = "",
     category = listOf("IT", "창업")

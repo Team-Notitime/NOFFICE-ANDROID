@@ -2,17 +2,19 @@ package com.easyhz.noffice.feature.organization.screen.detail
 
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState.Companion.updateOrganizationName
-import com.easyhz.noffice.feature.organization.contract.detail.MemberType
 import com.easyhz.noffice.feature.organization.util.detail.DUMMY_LIST
 import com.easyhz.noffice.feature.organization.util.detail.DUMMY_ORGANIZATION_INFORMATION
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class OrganizationDetailViewModel @Inject constructor(
 
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
@@ -23,8 +25,21 @@ class OrganizationDetailViewModel @Inject constructor(
             is DetailIntent.InitScreen -> {
                 initScreen(intent.organizationId, intent.organizationName)
             }
-            is DetailIntent.ClickAnnouncement -> { onClickAnnouncement(intent.index) }
-            is DetailIntent.NavigateToUp -> { navigateToUp() }
+
+            is DetailIntent.ClickAnnouncement -> {
+                onClickAnnouncement(intent.index)
+            }
+
+            is DetailIntent.NavigateToUp -> {
+                navigateToUp()
+            }
+
+            is DetailIntent.ClickEditButton -> {
+                onClickEditButton()
+            }
+            is DetailIntent.ClickStandbyMemberButton -> {
+                onClickStandbyMemberButton()
+            }
         }
     }
 
@@ -38,20 +53,40 @@ class OrganizationDetailViewModel @Inject constructor(
         delay(2000)
         currentState.numberOfMembers[MemberType.LEADER] = 11
         currentState.numberOfMembers[MemberType.MEMBER] = 34
-        reduce { copy(
-            organizationInformation = DUMMY_ORGANIZATION_INFORMATION,
-            hasWaitingMember = true,
-            isLoading = false
-        ) }
+        reduce {
+            copy(
+                organizationInformation = DUMMY_ORGANIZATION_INFORMATION,
+                hasStandbyMember = true,
+                isLoading = false
+            )
+        }
         delay(1000)
         reduce { copy(announcementList = DUMMY_LIST, isCardLoading = false) }
     }
 
     private fun onClickAnnouncement(index: Int) {
         val announcement = currentState.announcementList[index]
-        postSideEffect { DetailSideEffect.NavigateToAnnouncementDetail(announcement.id, announcement.title) }
+        postSideEffect {
+            DetailSideEffect.NavigateToAnnouncementDetail(
+                announcement.id,
+                announcement.title
+            )
+        }
     }
+
     private fun navigateToUp() {
         postSideEffect { DetailSideEffect.NavigateToUp }
+    }
+
+    private fun onClickEditButton() {
+        postSideEffect {
+            DetailSideEffect.NavigateToOrganizationManagement(
+                currentState.organizationInformation, currentState.numberOfMembers
+            )
+        }
+    }
+
+    private fun onClickStandbyMemberButton() {
+        postSideEffect { DetailSideEffect.NavigateToStandbyMember(currentState.organizationInformation.id) }
     }
 }

@@ -27,11 +27,13 @@ import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
+import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.detail.AnnouncementCard
 import com.easyhz.noffice.feature.organization.component.detail.DetailHeader
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
 import com.easyhz.noffice.feature.organization.component.detail.SkeletonCard
-import com.easyhz.noffice.feature.organization.component.detail.WaitingMemberButton
+import com.easyhz.noffice.feature.organization.component.detail.StandbyMemberButton
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
 
@@ -42,7 +44,9 @@ fun OrganizationDetailScreen(
     organizationId: Int,
     organizationName: String,
     navigateToUp: () -> Unit,
-    navigateToAnnouncementDetail: (Int, String) -> Unit
+    navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToStandbyMember: (Int) -> Unit,
+    navigateToOrganizationManagement: (OrganizationInformation, LinkedHashMap<MemberType, Int>) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -76,7 +80,9 @@ fun OrganizationDetailScreen(
                             tint = Grey400
                         )
                     },
-                    onClick = { /* 수정 하기 */ }
+                    onClick = {
+                        viewModel.postIntent(DetailIntent.ClickEditButton)
+                    }
                 ),
             )
         }
@@ -103,11 +109,11 @@ fun OrganizationDetailScreen(
                 )
             }
             item {
-                WaitingMemberButton(
+                StandbyMemberButton(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    hasWaitingMember = uiState.hasWaitingMember
+                    hasStandbyMember = uiState.hasStandbyMember
                 ) {
-                    println("Screen")
+                    viewModel.postIntent(DetailIntent.ClickStandbyMemberButton)
                 }
             }
             item {
@@ -142,6 +148,12 @@ fun OrganizationDetailScreen(
             }
             is DetailSideEffect.NavigateToAnnouncementDetail -> {
                 navigateToAnnouncementDetail(sideEffect.id, sideEffect.title)
+            }
+            is DetailSideEffect.NavigateToOrganizationManagement -> {
+                navigateToOrganizationManagement(sideEffect.information, sideEffect.numberOfMembers)
+            }
+            is DetailSideEffect.NavigateToStandbyMember -> {
+                navigateToStandbyMember(sideEffect.id)
             }
         }
     }
