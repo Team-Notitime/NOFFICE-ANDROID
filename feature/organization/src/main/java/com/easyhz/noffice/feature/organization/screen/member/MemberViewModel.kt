@@ -37,6 +37,7 @@ class MemberViewModel @Inject constructor(
             MemberViewType.EDIT -> {
                 reduce { copy(viewType = MemberViewType.MANAGEMENT) }
             }
+            MemberViewType.STANDBY -> { }
         }
     }
 
@@ -44,6 +45,7 @@ class MemberViewModel @Inject constructor(
         when (currentState.viewType) {
             MemberViewType.MANAGEMENT -> { }
             MemberViewType.EDIT -> { }
+            MemberViewType.STANDBY -> { }
         }
     }
 
@@ -55,6 +57,7 @@ class MemberViewModel @Inject constructor(
             MemberViewType.EDIT -> {
                 reduce { copy(isOpenBottomSheet = true, authorityType = MemberType.LEADER) }
             }
+            MemberViewType.STANDBY -> { }
         }
     }
 

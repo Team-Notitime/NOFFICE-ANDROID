@@ -39,6 +39,16 @@ enum class MemberViewType(
             containerColor = Green100,
             contentColor = Green700
         )
+    ), STANDBY(
+        title = R.string.organization_standby_member_title,
+        left = ButtonStyle(
+            title = R.string.organization_standby_member_left_button
+        ),
+        right = ButtonStyle(
+            title = R.string.organization_standby_member_right_button,
+            containerColor = Green500,
+            contentColor = White
+        )
     );
 
     interface ClickListener {
