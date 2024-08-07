@@ -16,9 +16,11 @@ import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreat
 import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailScreen
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
 import com.easyhz.noffice.feature.organization.screen.management.OrganizationManagementScreen
+import com.easyhz.noffice.feature.organization.screen.member.MemberScreen
 import com.easyhz.noffice.feature.organization.screen.organization.OrganizationScreen
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.home.navigateToHome
+import com.easyhz.noffice.navigation.organization.screen.MemberManagement
 import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
@@ -60,6 +62,10 @@ internal fun NavGraphBuilder.organizationGraph(
             numberOfMembers = args.numberOfMembers,
             navigateToUp = navController::navigateUp
         )
+    }
+    composable<MemberManagement> {
+        val args = it.toRoute<MemberManagement>()
+        MemberScreen()
     }
     composable<OrganizationCreation> {
         OrganizationCreationScreen(

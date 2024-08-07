@@ -136,4 +136,5 @@
     <string name="organization_management_member_edit_title">권한 설정</string>
     <string name="organization_management_member_edit_left_button">내보내기</string>
     <string name="organization_management_member_edit_right_button">권한 변경하기</string>
+    <string name="organization_management_member_authority_button">확인</string>
 </resources>

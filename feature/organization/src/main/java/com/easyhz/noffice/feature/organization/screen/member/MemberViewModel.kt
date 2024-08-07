@@ -1,6 +1,7 @@
 package com.easyhz.noffice.feature.organization.screen.member
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.contract.member.MemberIntent
 import com.easyhz.noffice.feature.organization.contract.member.MemberSideEffect
 import com.easyhz.noffice.feature.organization.contract.member.MemberState
@@ -11,14 +12,18 @@ import javax.inject.Inject
 @HiltViewModel
 class MemberViewModel @Inject constructor(
 
-): BaseViewModel<MemberState, MemberIntent, MemberSideEffect>(
+) : BaseViewModel<MemberState, MemberIntent, MemberSideEffect>(
     initialState = MemberState.init()
 ) {
     override fun handleIntent(intent: MemberIntent) {
-        when(intent) {
+        when (intent) {
             is MemberIntent.NavigateToUp -> { handleNavigateToUp() }
             is MemberIntent.ClickLeftButton -> { onClickLeftButton() }
             is MemberIntent.ClickRightButton -> { onClickRightButton() }
+            is MemberIntent.HideBottomSheet -> { hideBottomSheet() }
+            is MemberIntent.CompleteHideBottomSheet -> { completeHideBottomSheet() }
+            is MemberIntent.ClickAuthorityMemberType -> { onClickAuthorityMemberType(intent.type) }
+            is MemberIntent.ClickAuthorityButton -> { onClickAuthorityButton() }
         }
     }
 
@@ -27,7 +32,7 @@ class MemberViewModel @Inject constructor(
     }
 
     private fun handleNavigateToUp() {
-        when(currentState.viewType) {
+        when (currentState.viewType) {
             MemberViewType.MANAGEMENT -> { navigateToUp() }
             MemberViewType.EDIT -> {
                 reduce { copy(viewType = MemberViewType.MANAGEMENT) }
@@ -36,24 +41,41 @@ class MemberViewModel @Inject constructor(
     }
 
     private fun onClickLeftButton() {
-        when(currentState.viewType) {
+        when (currentState.viewType) {
             MemberViewType.MANAGEMENT -> { }
             MemberViewType.EDIT -> { }
         }
     }
 
     private fun onClickRightButton() {
-        when(currentState.viewType) {
+        when (currentState.viewType) {
             MemberViewType.MANAGEMENT -> {
                 reduce { copy(viewType = MemberViewType.EDIT) }
             }
             MemberViewType.EDIT -> {
-
+                reduce { copy(isOpenBottomSheet = true, authorityType = MemberType.LEADER) }
             }
         }
     }
 
     private fun navigateToUp() {
-//        postSideEffect { MemberSideEffect. }
+        postSideEffect { MemberSideEffect.NavigateToUp }
+    }
+
+    private fun onClickAuthorityMemberType(type: MemberType) {
+        reduce { copy(authorityType = type) }
+    }
+
+    private fun hideBottomSheet() {
+        postSideEffect { MemberSideEffect.HideBottomSheet }
+    }
+
+    private fun completeHideBottomSheet() {
+        reduce { copy(isOpenBottomSheet = false) }
+    }
+
+    private fun onClickAuthorityButton() {
+        //TODO 저장로직
+        hideBottomSheet()
     }
 }
