@@ -4,7 +4,7 @@ import com.easyhz.noffice.core.common.base.UiIntent
 import com.easyhz.noffice.core.model.organization.member.MemberType
 
 sealed class MemberIntent: UiIntent() {
-    data object NavigateToUp: MemberIntent()
+    data object ClickBackButton: MemberIntent()
     data object ClickLeftButton: MemberIntent()
     data object ClickRightButton: MemberIntent()
     data object HideBottomSheet: MemberIntent()

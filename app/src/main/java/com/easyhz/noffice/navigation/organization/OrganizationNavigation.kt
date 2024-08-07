@@ -60,12 +60,16 @@ internal fun NavGraphBuilder.organizationGraph(
         OrganizationManagementScreen(
             organizationInformation = args.organizationInformation,
             numberOfMembers = args.numberOfMembers,
-            navigateToUp = navController::navigateUp
+            navigateToUp = navController::navigateUp,
+            navigateToMemberManagement = navController::navigateToMemberManagement
         )
     }
     composable<MemberManagement> {
         val args = it.toRoute<MemberManagement>()
-        MemberScreen()
+        MemberScreen(
+            organizationId = args.organizationId,
+            navigateToUp = navController::navigateUp
+        )
     }
     composable<OrganizationCreation> {
         OrganizationCreationScreen(
@@ -104,6 +108,10 @@ internal fun NavController.navigateToOrganizationManagement(
     number: LinkedHashMap<MemberType, Int>
 ) {
     navigate(OrganizationManagement(organizationInformation = information, numberOfMembers = number))
+}
+
+internal fun NavController.navigateToMemberManagement(id: Int) {
+    navigate(MemberManagement(id))
 }
 
 internal fun NavController.navigateToOrganizationCreation() {

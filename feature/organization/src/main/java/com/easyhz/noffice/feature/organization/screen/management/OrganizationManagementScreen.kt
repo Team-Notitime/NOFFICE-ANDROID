@@ -49,6 +49,7 @@ fun OrganizationManagementScreen(
     organizationInformation: OrganizationInformation,
     numberOfMembers: LinkedHashMap<MemberType, Int>,
     navigateToUp: () -> Unit,
+    navigateToMemberManagement: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val galleryLauncher =
@@ -120,7 +121,7 @@ fun OrganizationManagementScreen(
             MemberButton(
                 modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
             ) {
-                /* Navigate To Member Management*/
+                viewModel.postIntent(ManagementIntent.ClickMemberManagementButton)
             }
         }
         if (uiState.isShowImageBottomSheet) {
@@ -145,7 +146,7 @@ fun OrganizationManagementScreen(
             is ManagementSideEffect.NavigateToUp -> {
                 navigateToUp()
             }
-            is ManagementSideEffect.NavigateToMemberManagement -> {}
+            is ManagementSideEffect.NavigateToMemberManagement -> { navigateToMemberManagement(sideEffect.id) }
             is ManagementSideEffect.NavigateToCamera -> {
                 cameraLauncher.launch(sideEffect.uri)
             }

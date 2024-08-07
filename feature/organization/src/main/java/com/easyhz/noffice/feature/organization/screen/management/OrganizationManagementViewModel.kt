@@ -36,6 +36,7 @@ class OrganizationManagementViewModel @Inject constructor(
             is ManagementIntent.HideImageBottomSheet -> { hideImageBottomSheet() }
             is ManagementIntent.PickImage -> { onPickImage(intent.uri) }
             is ManagementIntent.TakePicture -> { onTakePicture(intent.isUsed) }
+            is ManagementIntent.ClickMemberManagementButton -> { onClickMemberManagementButton() }
         }
     }
 
@@ -117,4 +118,7 @@ class OrganizationManagementViewModel @Inject constructor(
         postSideEffect { ManagementSideEffect.NavigateToUp }
     }
 
+    private fun onClickMemberManagementButton() {
+        postSideEffect { ManagementSideEffect.NavigateToMemberManagement(currentState.organizationInformation.id) }
+    }
 }

@@ -42,14 +42,16 @@ import com.easyhz.noffice.feature.organization.util.member.MemberViewType
 @Composable
 fun MemberScreen(
     modifier: Modifier = Modifier,
-    viewModel: MemberViewModel = hiltViewModel()
+    viewModel: MemberViewModel = hiltViewModel(),
+    organizationId: Int,
+    navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val isEditMode = remember(uiState) { uiState.viewType == MemberViewType.EDIT }
     BackHandler {
-        viewModel.postIntent(MemberIntent.NavigateToUp)
+        viewModel.postIntent(MemberIntent.ClickBackButton)
     }
     NofficeBasicScaffold(
         statusBarColor = White,
@@ -65,7 +67,7 @@ fun MemberScreen(
                             tint = Grey400
                         )
                     },
-                    onClick = { viewModel.postIntent(MemberIntent.NavigateToUp) }
+                    onClick = { viewModel.postIntent(MemberIntent.ClickBackButton) }
                 ),
                 title = stringResource(id = uiState.viewType.title),
                 trailingItem = DetailTopBarMenu(
@@ -131,7 +133,7 @@ fun MemberScreen(
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
         when(sideEffect) {
-            is MemberSideEffect.NavigateToUp -> { }
+            is MemberSideEffect.NavigateToUp -> { navigateToUp() }
             is MemberSideEffect.HideBottomSheet -> {
                 sheetState.hide()
                 viewModel.postIntent(MemberIntent.CompleteHideBottomSheet)

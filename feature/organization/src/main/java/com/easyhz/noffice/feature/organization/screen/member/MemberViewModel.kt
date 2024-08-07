@@ -17,7 +17,7 @@ class MemberViewModel @Inject constructor(
 ) {
     override fun handleIntent(intent: MemberIntent) {
         when (intent) {
-            is MemberIntent.NavigateToUp -> { handleNavigateToUp() }
+            is MemberIntent.ClickBackButton -> { onClickBackButton() }
             is MemberIntent.ClickLeftButton -> { onClickLeftButton() }
             is MemberIntent.ClickRightButton -> { onClickRightButton() }
             is MemberIntent.HideBottomSheet -> { hideBottomSheet() }
@@ -31,7 +31,7 @@ class MemberViewModel @Inject constructor(
 
     }
 
-    private fun handleNavigateToUp() {
+    private fun onClickBackButton() {
         when (currentState.viewType) {
             MemberViewType.MANAGEMENT -> { navigateToUp() }
             MemberViewType.EDIT -> {
