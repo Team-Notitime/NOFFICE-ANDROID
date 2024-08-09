@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class FileProvider : FileProvider(R.xml.file_path) {
+class NofficeFileProvider : FileProvider(R.xml.file_path) {
     companion object {
         suspend fun getTakePictureUri(context: Context): Result<Uri> = withContext(Dispatchers.IO) {
             runCatching {
