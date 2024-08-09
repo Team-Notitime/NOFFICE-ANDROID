@@ -1,4 +1,4 @@
-package com.easyhz.noffice.feature.organization.util.creation
+package com.easyhz.noffice.core.design_system.util.bottomSheet
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -7,7 +7,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.Red
 
-enum class BottomSheetItem(
+enum class ImageSelectionBottomSheetItem(
     @DrawableRes val iconId: Int,
     @StringRes val stringId: Int,
     val color: Color,

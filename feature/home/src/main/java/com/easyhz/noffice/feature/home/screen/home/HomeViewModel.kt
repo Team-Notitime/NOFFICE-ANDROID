@@ -1,6 +1,7 @@
 package com.easyhz.noffice.feature.home.screen.home
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
 import com.easyhz.noffice.feature.home.contract.home.HomeSideEffect
 import com.easyhz.noffice.feature.home.contract.home.HomeState
@@ -16,12 +17,24 @@ class HomeViewModel @Inject constructor(
 ) {
     override fun handleIntent(intent: HomeIntent) {
         when(intent) {
-          is HomeIntent.ChangeTopBarMenu ->  { onChangeTopBarMenu(intent.topBarMenu) }
+            is HomeIntent.ChangeTopBarMenu ->  { onChangeTopBarMenu(intent.topBarMenu) }
+            is HomeIntent.ClickTopBarIconMenu -> { onClickTopBarIconMenu(intent.iconMenu) }
         }
     }
 
 
     private fun onChangeTopBarMenu(topBarMenu: HomeTopBarMenu) {
         reduce { copy(topBarMenu = topBarMenu) }
+    }
+
+    private fun onClickTopBarIconMenu(iconMenu: TopBarIconMenu) {
+        when(iconMenu) {
+            TopBarIconMenu.NOTIFICATION -> { }
+            TopBarIconMenu.USER -> { navigateToMyPageScreen() }
+        }
+    }
+
+    private fun navigateToMyPageScreen() {
+        postSideEffect { HomeSideEffect.NavigateToMyPage }
     }
 }

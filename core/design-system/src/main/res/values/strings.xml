@@ -141,4 +141,23 @@
     <string name="organization_standby_member_title">가입 대기 멤버</string>
     <string name="organization_standby_member_left_button">전체 선택</string>
     <string name="organization_standby_member_right_button">수락하기</string>
+
+
+
+
+    <string name="my_page_menu_user_name">%s 님</string>
+    <string name="my_page_menu_title_guide">이용 안내</string>
+    <string name="my_page_menu_title_setting">앱 설정</string>
+    <string name="my_page_menu_title_etc">기타</string>
+
+    <string name="my_page_menu_version">버전</string>
+    <string name="my_page_menu_inquiry">문의하기</string>
+    <string name="my_page_menu_notice">공지사항</string>
+    <string name="my_page_menu_terms_of_service">서비스 이용약관</string>
+    <string name="my_page_menu_privacy_policy">개인정보 처리방침</string>
+    <string name="my_page_menu_notification">알림 설정</string>
+    <string name="my_page_menu_consent_to_information">알림 설정</string>
+    <string name="my_page_menu_delete_account">회원 탈퇴</string>
+    <string name="my_page_menu_sign_out">로그아웃</string>
+
 </resources>

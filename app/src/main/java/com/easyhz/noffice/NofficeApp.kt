@@ -22,6 +22,8 @@ import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeS
 import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
+import com.easyhz.noffice.navigation.my_page.myPageGraph
+import com.easyhz.noffice.navigation.my_page.navigateToMyPage
 import com.easyhz.noffice.navigation.organization.organizationGraph
 import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
@@ -109,7 +111,8 @@ internal fun NofficeApp(
         ) {
             homeGraph(
                 modifier = Modifier.padding(it),
-                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail
+                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
+                navigateToMyPage = navController::navigateToMyPage
             )
             organizationGraph(
                 modifier = Modifier.padding(it),
@@ -120,6 +123,9 @@ internal fun NofficeApp(
             )
             announcementGraph(
                 navController = navController,
+            )
+            myPageGraph(
+                navigateToUp = navController::navigateUp
             )
         }
     }

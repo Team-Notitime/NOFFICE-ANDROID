@@ -122,7 +122,7 @@ val Body14 = TextStyle(
 
 val Body15 = TextStyle(
     fontFamily = Pretendard,
-    fontWeight = FontWeight.SemiBold,
+    fontWeight = FontWeight.Medium,
     color = Grey800,
     fontSize = 15.sp,
     letterSpacing = LetterSpacing,

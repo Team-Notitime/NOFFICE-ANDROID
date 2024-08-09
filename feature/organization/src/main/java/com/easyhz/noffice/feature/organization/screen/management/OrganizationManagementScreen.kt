@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -21,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.component.bottomSheet.FloatingBottomSheet
+import com.easyhz.noffice.core.design_system.component.bottomSheet.ImageSelectionBottomSheet
 import com.easyhz.noffice.core.design_system.component.category.CategoryField
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
@@ -33,13 +32,11 @@ import com.easyhz.noffice.core.design_system.theme.semiBold
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.member.MemberType
-import com.easyhz.noffice.feature.organization.component.creation.BottomSheetItems
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
 import com.easyhz.noffice.feature.organization.component.management.ManagementHeader
 import com.easyhz.noffice.feature.organization.component.management.MemberButton
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
-import com.easyhz.noffice.feature.organization.util.creation.BottomSheetItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,18 +122,11 @@ fun OrganizationManagementScreen(
             }
         }
         if (uiState.isShowImageBottomSheet) {
-            FloatingBottomSheet(
-                modifier = Modifier.padding(bottom = 32.dp),
-                roundedCornerShape = RoundedCornerShape(24.dp),
-                onDismissRequest = { viewModel.postIntent(ManagementIntent.HideImageBottomSheet) }
+            ImageSelectionBottomSheet(
+                isEmptyProfile = uiState.selectedImage.isBlank(),
+                onDismissRequest = { viewModel.postIntent(ManagementIntent.HideImageBottomSheet) },
             ) {
-                BottomSheetItems(
-                    bottomSheetItem = enumValues<BottomSheetItem>().copyOfRange(
-                        0,
-                        if (uiState.selectedImage.isBlank()) 2 else 3
-                    ),
-                    onClick = { viewModel.postIntent(ManagementIntent.ClickImageBottomSheetItem(it)) }
-                )
+                viewModel.postIntent(ManagementIntent.ClickImageBottomSheetItem(it))
             }
         }
     }
