@@ -39,9 +39,6 @@ jobs:
         echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
 
     - name: Build with Gradle
-      run: ./gradlew clean build --no-daemon
-
-    - name: Build with Gradle
       run: ./gradlew build
       
     # - name: Build debug 
