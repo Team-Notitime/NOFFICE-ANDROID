@@ -13,7 +13,8 @@ import com.easyhz.noffice.navigation.home.screen.Home
 
 internal fun NavGraphBuilder.homeGraph(
     modifier: Modifier,
-    navigateToAnnouncementDetail: (Int, String) -> Unit
+    navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToMyPage: () -> Unit
 ) {
     composable<Home>(
         enterTransition = { fadeIn(animationSpec = tween(700)) },
@@ -23,7 +24,8 @@ internal fun NavGraphBuilder.homeGraph(
     ) {
         HomeScreen(
             modifier = modifier,
-            navigateToAnnouncementDetail = navigateToAnnouncementDetail
+            navigateToAnnouncementDetail = navigateToAnnouncementDetail,
+            navigateToMyPage = navigateToMyPage
         )
     }
 }

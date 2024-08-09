@@ -39,7 +39,8 @@ import com.easyhz.noffice.feature.my_page.util.MyPageSection
 @Composable
 fun MyPageScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
+    navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -115,7 +116,7 @@ fun MyPageScreen(
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
-            is MyPageSideEffect.NavigateToUp -> { }
+            is MyPageSideEffect.NavigateToUp -> { navigateToUp() }
             is MyPageSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
