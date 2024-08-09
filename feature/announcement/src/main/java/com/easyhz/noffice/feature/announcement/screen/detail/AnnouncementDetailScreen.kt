@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -106,10 +106,10 @@ fun AnnouncementDetailScreen(
                 isLoading = uiState.isLoading
             )
             item {
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier.fillMaxWidth(),
-                    color = Grey200,
-                    thickness = 1.dp
+                    thickness = 1.dp,
+                    color = Grey200
                 )
             }
             organizationField(
