@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
+import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
-import com.easyhz.noffice.feature.organization.util.creation.BottomSheetItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -86,17 +86,17 @@ class OrganizationCreationViewModel @Inject constructor(
         showImageBottomSheet()
     }
 
-    private fun onClickImageBottomSheetItem(item: BottomSheetItem) {
+    private fun onClickImageBottomSheetItem(item: ImageSelectionBottomSheetItem) {
         when (item) {
-            BottomSheetItem.GALLERY -> {
+            ImageSelectionBottomSheetItem.GALLERY -> {
                 postSideEffect { CreationSideEffect.NavigateToGallery }
             }
 
-            BottomSheetItem.CAMERA -> {
+            ImageSelectionBottomSheetItem.CAMERA -> {
                 navigateToCamera()
             }
 
-            BottomSheetItem.DELETE -> {
+            ImageSelectionBottomSheetItem.DELETE -> {
                 reduce { copy(organizationImage = Uri.EMPTY, isShowImageBottomSheet = false) }
             }
         }
