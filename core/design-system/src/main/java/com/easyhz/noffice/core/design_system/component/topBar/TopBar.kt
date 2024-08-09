@@ -62,11 +62,10 @@ fun <T> HomeTopBar(
             contentColor = Grey400,
             divider = { },
             indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier
-                        .height(3.dp)
-                        .tabIndicatorOffset(tabPositions[selectedIndex.intValue]),
-                    color = Green500
+                TabRowDefaults.SecondaryIndicator(
+                    Modifier.tabIndicatorOffset(tabPositions[selectedIndex.intValue]),
+                    color = Green500,
+                    height = 3.dp
                 )
             },
         ) {
