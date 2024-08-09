@@ -5,15 +5,15 @@ data class AnnouncementResponse(
 )
 data class AnnouncementItem(
     val announcementId: Int,
-    val content: String,
-    val createdAt: String,
-    val endAt: String,
     val memberId: Int,
-    val noticeAt: List<String>,
     val organizationId: Int,
+    val title: String,
+    val content: String,
+    val noticeAt: List<String>,
     val placeLinkName: String,
     val placeLinkUrl: String,
     val profileImageUrl: String,
-    val title: String,
+    val createdAt: String,
+    val endAt: String,
     val updatedAt: String
 )

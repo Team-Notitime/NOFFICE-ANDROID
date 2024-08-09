@@ -8,7 +8,11 @@ import javax.inject.Inject
 
 class AnnounceRepositoryImpl @Inject constructor(
     private val announceService: AnnouncementService
-): AnnounceRepository {
-    override suspend fun fetchAllAnnouncement(): Result<List<Announcement>> =
-        announceService.fetchAllAnnouncements().toResult().map { it.toModel() }
+) : AnnounceRepository {
+    override suspend fun fetchAllAnnouncements(): Result<List<Announcement>> =
+        announceService.fetchAllAnnouncements().toResult()
+            .map { it.announcements.map { item -> item.toModel() } }
+
+    override suspend fun fetchAnnouncement(announcementId: Int): Result<Announcement> =
+        announceService.fetchAnnouncement(announcementId).toResult().map { it.toModel() }
 }
