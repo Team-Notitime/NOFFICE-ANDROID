@@ -9,7 +9,6 @@ sealed class MyPageIntent: UiIntent() {
     data object ClickBackButton: MyPageIntent()
     data object ChangeProfileImage: MyPageIntent()
     data object ClickUserName: MyPageIntent()
-    data class ClickMenuItem(val item: MyPageMenu): MyPageIntent()
     data class ClickImageBottomSheetItem(val item: ImageSelectionBottomSheetItem): MyPageIntent()
     data class PickImage(val uri: Uri?): MyPageIntent()
     data class TakePicture(val isUsed: Boolean): MyPageIntent()

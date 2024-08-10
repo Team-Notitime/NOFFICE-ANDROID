@@ -161,5 +161,8 @@
     <string name="my_page_menu_sign_out">로그아웃</string>
 
     <string name="my_page_menu_user_name_placeholder">이름을 입력해 주세요.</string>
+    <string name="my_page_menu_sign_out_dialog_title">로그아웃 할까요?</string>
+    <string name="my_page_menu_sign_out_negative_button_text">취소</string>
+    <string name="my_page_menu_sign_out_positive_button_text">로그아웃</string>
 
 </resources>

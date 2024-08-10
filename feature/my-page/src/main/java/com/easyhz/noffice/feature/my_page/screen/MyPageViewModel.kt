@@ -28,7 +28,6 @@ class MyPageViewModel @Inject constructor(
             is MyPageIntent.ClickBackButton -> { }
             is MyPageIntent.ClickUserName -> { onClickUserName() }
             is MyPageIntent.ChangeProfileImage -> { onChangeProfileImage() }
-            is MyPageIntent.ClickMenuItem -> { onClickMenuItem(intent.item) }
             is MyPageIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.item) }
             is MyPageIntent.PickImage -> { onPickImage(intent.uri) }
             is MyPageIntent.TakePicture -> { onTakePicture(intent.isUsed) }
@@ -43,17 +42,6 @@ class MyPageViewModel @Inject constructor(
 
     private fun onChangeProfileImage() {
         reduce { copy(isShowImageBottomSheet = true) }
-    }
-
-    private fun onClickMenuItem(item: MyPageMenu) {
-        when(item) {
-            MyPageMenu.NOTIFICATION -> {
-                reduce { copy(isCheckedNotification = !currentState.isCheckedNotification) }
-            }
-            else -> {
-
-            }
-        }
     }
 
     private fun onClickImageBottomSheetItem(item: ImageSelectionBottomSheetItem) {
