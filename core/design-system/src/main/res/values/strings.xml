@@ -145,7 +145,7 @@
 
 
 
-    <string name="my_page_menu_user_name">%s 님</string>
+    <string name="my_page_menu_user_name">님</string>
     <string name="my_page_menu_title_guide">이용 안내</string>
     <string name="my_page_menu_title_setting">앱 설정</string>
     <string name="my_page_menu_title_etc">기타</string>
@@ -159,5 +159,7 @@
     <string name="my_page_menu_consent_to_information">알림 설정</string>
     <string name="my_page_menu_delete_account">회원 탈퇴</string>
     <string name="my_page_menu_sign_out">로그아웃</string>
+
+    <string name="my_page_menu_user_name_placeholder">이름을 입력해 주세요.</string>
 
 </resources>

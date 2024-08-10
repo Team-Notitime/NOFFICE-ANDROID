@@ -9,25 +9,35 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.component.bottomSheet.FloatingBottomSheet
 import com.easyhz.noffice.core.design_system.component.bottomSheet.ImageSelectionBottomSheet
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
+import com.easyhz.noffice.core.design_system.component.textField.MainTextField
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
+import com.easyhz.noffice.core.design_system.util.textField.TextFieldIcon
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.my_page.component.ProfileField
 import com.easyhz.noffice.feature.my_page.component.SectionItem
@@ -44,6 +54,7 @@ fun MyPageScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
+    val focusRequester = remember { FocusRequester() }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val galleryLauncher =
         rememberLauncherForActivityResult(
@@ -91,7 +102,7 @@ fun MyPageScreen(
                 imageUrl = uiState.user.profileImageUrl,
                 onChangeProfileImage = { viewModel.postIntent(MyPageIntent.ChangeProfileImage) }
             ) {
-                viewModel.postIntent(MyPageIntent.ChangeUserName)
+                viewModel.postIntent(MyPageIntent.ClickUserName)
             }
             MyPageSection.entries.forEach {
                 SectionItem(
@@ -112,20 +123,52 @@ fun MyPageScreen(
                 viewModel.postIntent(MyPageIntent.ClickImageBottomSheetItem(it))
             }
         }
+
+        if (uiState.isShowUserNameBottomSheet) {
+            FloatingBottomSheet(
+                modifier = Modifier.padding(bottom = 32.dp),
+                onDismissRequest = { viewModel.postIntent(MyPageIntent.HideUserNameBottomSheet) }
+            ) {
+                MainTextField(
+                    modifier = Modifier.focusRequester(focusRequester),
+                    value = uiState.userNameText,
+                    onValueChange = { viewModel.postIntent(MyPageIntent.ChangeUserNameText(it)) },
+                    title = null,
+                    placeholder = stringResource(id = R.string.my_page_menu_user_name_placeholder),
+                    isFilled = false,
+                    singleLine = true,
+                    icon = TextFieldIcon.CLEAR,
+                    onClickIcon = { viewModel.postIntent(MyPageIntent.ClearUserNameText) },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = {
+                        viewModel.postIntent(MyPageIntent.SaveUserName)
+                    })
+                )
+            }
+        }
     }
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
-        when(sideEffect) {
-            is MyPageSideEffect.NavigateToUp -> { navigateToUp() }
+        when (sideEffect) {
+            is MyPageSideEffect.NavigateToUp -> {
+                navigateToUp()
+            }
+
             is MyPageSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+
             is MyPageSideEffect.NavigateToCamera -> {
                 cameraLauncher.launch(sideEffect.uri)
             }
+
             is MyPageSideEffect.HideBottomSheet -> {
                 sheetState.hide()
                 viewModel.postIntent(MyPageIntent.CompleteHideBottomSheet)
+            }
+
+            is MyPageSideEffect.RequestFocus -> {
+                focusRequester.requestFocus()
             }
         }
     }
