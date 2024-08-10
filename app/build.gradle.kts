@@ -51,7 +51,11 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.model)
 
+    implementation(projects.data.organization)
+    implementation(projects.data.auth)
+
     implementation(projects.domain.home)
+    implementation(projects.domain.sign)
 
     implementation(projects.feature.announcement)
     implementation(projects.feature.home)
