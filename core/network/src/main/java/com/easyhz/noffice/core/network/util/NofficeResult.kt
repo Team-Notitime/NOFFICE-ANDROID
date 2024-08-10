@@ -2,7 +2,7 @@ package com.easyhz.noffice.core.network.util
 
 import com.easyhz.noffice.core.common.error.NofficeError
 import com.easyhz.noffice.core.common.error.getErrorByStatusCode
-import com.easyhz.noffice.core.network.model.response.BaseResponse
+import com.easyhz.noffice.core.network.model.response.base.BaseResponse
 
 typealias NofficeResult<T> = kotlin.Result<BaseResponse<T>>
 
