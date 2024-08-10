@@ -156,7 +156,7 @@
     <string name="my_page_menu_terms_of_service">서비스 이용약관</string>
     <string name="my_page_menu_privacy_policy">개인정보 처리방침</string>
     <string name="my_page_menu_notification">알림 설정</string>
-    <string name="my_page_menu_consent_to_information">알림 설정</string>
+    <string name="my_page_menu_consent_to_information">정보 동의 설정</string>
     <string name="my_page_menu_delete_account">회원 탈퇴</string>
     <string name="my_page_menu_sign_out">로그아웃</string>
 

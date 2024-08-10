@@ -24,18 +24,19 @@ class MyPageMenuViewModel @Inject constructor(
 
     private fun onClickMenuItem(item: MyPageMenu) {
         when(item) {
-            MyPageMenu.NOTIFICATION -> {
-                handleNotificationMenu()
-            }
+            MyPageMenu.INQUIRY -> { }
             MyPageMenu.NOTICE -> {
                 handleNoticeMenu()
             }
+            MyPageMenu.TERMS_OF_SERVICE -> { handleTermsOfService() }
+            MyPageMenu.PRIVACY_POLICY -> { handlePrivacyPolicy() }
+            MyPageMenu.NOTIFICATION -> { handleNotificationMenu() }
+            MyPageMenu.CONSENT_TO_INFORMATION -> { handleConsentToInformation() }
+            MyPageMenu.WITHDRAWAL -> { handleWithdrawal() }
             MyPageMenu.SIGN_OUT -> {
                 handleSignOutMenu()
             }
-            else -> {
-
-            }
+            else -> { }
         }
     }
 
@@ -44,7 +45,23 @@ class MyPageMenuViewModel @Inject constructor(
     }
 
     private fun handleNoticeMenu() {
-//        postSideEffect { MyPageSideEffect.NavigateToNotice }
+        postSideEffect { MenuSideEffect.NavigateToNotice }
+    }
+
+    private fun handleTermsOfService() {
+        postSideEffect { MenuSideEffect.NavigateToServiceOfTerms }
+    }
+
+    private fun handlePrivacyPolicy() {
+        postSideEffect { MenuSideEffect.NavigateToPrivacyPolicy }
+    }
+
+    private fun handleConsentToInformation() {
+        postSideEffect { MenuSideEffect.NavigateToConsentToInformation }
+    }
+
+    private fun handleWithdrawal() {
+        postSideEffect { MenuSideEffect.NavigateToWithdrawal }
     }
 
     private fun handleSignOutMenu() {

@@ -51,6 +51,7 @@ import com.easyhz.noffice.feature.my_page.component.SectionItem
 import com.easyhz.noffice.feature.my_page.contract.MyPageIntent
 import com.easyhz.noffice.feature.my_page.contract.MyPageSideEffect
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuIntent
+import com.easyhz.noffice.feature.my_page.contract.menu.MenuSideEffect
 import com.easyhz.noffice.feature.my_page.util.MyPageSection
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +60,7 @@ fun MyPageScreen(
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
     menuViewModel: MyPageMenuViewModel = hiltViewModel(),
-    navigateToUp: () -> Unit
+    navigateToUp: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuState by menuViewModel.uiState.collectAsStateWithLifecycle()
@@ -203,6 +204,16 @@ fun MyPageScreen(
             is MyPageSideEffect.RequestFocus -> {
                 focusRequester.requestFocus()
             }
+        }
+    }
+
+    menuViewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
+        when(sideEffect) {
+            is MenuSideEffect.NavigateToNotice -> { }
+            is MenuSideEffect.NavigateToServiceOfTerms -> { }
+            is MenuSideEffect.NavigateToPrivacyPolicy -> { }
+            is MenuSideEffect.NavigateToConsentToInformation -> { }
+            is MenuSideEffect.NavigateToWithdrawal -> { }
         }
     }
 }
