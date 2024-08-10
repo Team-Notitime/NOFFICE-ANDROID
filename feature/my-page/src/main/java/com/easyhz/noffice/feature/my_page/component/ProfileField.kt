@@ -100,7 +100,6 @@ private fun Profile(
         )
         Box(
             modifier = Modifier
-//                .padding(end = 4.dp, bottom = 4.dp)
                 .size(32.dp)
                 .clip(CircleShape)
                 .align(Alignment.BottomEnd)
