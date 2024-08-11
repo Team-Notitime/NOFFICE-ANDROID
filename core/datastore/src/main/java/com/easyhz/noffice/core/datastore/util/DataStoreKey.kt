@@ -7,5 +7,7 @@ internal enum class AuthKey(
         key = "ACCESS_TOKEN"
     ), REFRESH_TOKEN(
         key = "REFRESH_TOKEN"
+    ), AUTH_PROVIDER(
+        key = "PROVIDER"
     )
 }
