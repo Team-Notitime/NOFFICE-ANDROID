@@ -18,6 +18,7 @@ class AuthLocalDataSourceImpl @Inject constructor(
 ): AuthLocalDataSource {
     private val accessToken = stringPreferencesKey(AuthKey.ACCESS_TOKEN.key)
     private val refreshToken = stringPreferencesKey(AuthKey.REFRESH_TOKEN.key)
+    private val authProvider = stringPreferencesKey(AuthKey.AUTH_PROVIDER.key)
 
     override suspend fun getAccessToken(): Result<String> = withContext(dispatcher) {
         val preferences = dataStore.data.first()
@@ -33,23 +34,36 @@ class AuthLocalDataSourceImpl @Inject constructor(
         } ?: Result.failure(generateNullException(AuthKey.REFRESH_TOKEN))
     }
 
-    override suspend fun deleteToken() {
+    override suspend fun deleteToken(): Unit = withContext(dispatcher) {
         dataStore.edit { preferences ->
             preferences.remove(accessToken)
             preferences.remove(refreshToken)
         }
     }
 
-    override suspend fun updateAccessToken(access: String) {
+    override suspend fun updateAccessToken(access: String): Unit = withContext(dispatcher) {
         dataStore.edit { preferences ->
             preferences[accessToken] = access
         }
     }
 
-    override suspend fun updateTokens(access: String, refresh: String) {
+    override suspend fun updateTokens(access: String, refresh: String): Unit = withContext(dispatcher) {
         dataStore.edit { preferences ->
             preferences[accessToken] = access
             preferences[refreshToken] = refresh
+        }
+    }
+
+    override suspend fun getAuthProvider(): Result<String> = withContext(dispatcher) {
+        val preferences = dataStore.data.first()
+        return@withContext preferences[authProvider]?.let {
+            Result.success(it)
+        } ?: Result.failure(generateNullException(AuthKey.AUTH_PROVIDER))
+    }
+
+    override suspend fun updateAuthProvider(provider: String): Unit = withContext(dispatcher) {
+        dataStore.edit { preferences ->
+            preferences[authProvider] = provider
         }
     }
 
