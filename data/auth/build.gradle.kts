@@ -33,6 +33,7 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.model)
 
+    implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.googleid)
     implementation(libs.gms.play.services.auth)
     runtimeOnly(libs.androidx.credentials.play.services.auth)
