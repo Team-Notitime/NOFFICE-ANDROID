@@ -22,7 +22,6 @@ import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.feature.sign.component.login.LoginView
 import com.easyhz.noffice.feature.sign.contract.login.LoginIntent
 import com.easyhz.noffice.feature.sign.contract.login.LoginSideEffect
-import com.easyhz.noffice.feature.sign.util.login.SocialLoginType
 
 @Composable
 fun LoginScreen(
@@ -59,10 +58,8 @@ fun LoginScreen(
                     modifier = Modifier
                         .screenHorizonPadding()
                         .weight(0.2f),
-                    onClickSocial = object : SocialLoginType.OnItemClickListener {
-                        override fun onClickGoogle() {
-                            viewModel.postIntent(LoginIntent.ClickToLogInWithGoogle(context))
-                        }
+                    onClick = {
+                        viewModel.postIntent(LoginIntent.ClickToSocialLogin(it, context))
                     }
                 )
             }

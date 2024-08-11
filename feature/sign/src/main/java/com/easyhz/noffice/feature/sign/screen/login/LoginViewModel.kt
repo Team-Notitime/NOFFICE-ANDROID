@@ -3,10 +3,12 @@ package com.easyhz.noffice.feature.sign.screen.login
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.auth.param.AuthParam
 import com.easyhz.noffice.domain.sign.usecase.LoginUseCase
 import com.easyhz.noffice.feature.sign.contract.login.LoginIntent
 import com.easyhz.noffice.feature.sign.contract.login.LoginSideEffect
 import com.easyhz.noffice.feature.sign.contract.login.LoginState
+import com.easyhz.noffice.feature.sign.util.login.SocialLoginType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,12 +21,12 @@ class LoginViewModel @Inject constructor(
 ) {
     override fun handleIntent(intent: LoginIntent) {
         when(intent) {
-            is LoginIntent.ClickToLogInWithGoogle -> { onClickToLogInWithGoogle(intent.context) }
+            is LoginIntent.ClickToSocialLogin -> { onClickToSocialLogin(intent.loginType, intent.context) }
         }
     }
 
-    private fun onClickToLogInWithGoogle(context: Context) = viewModelScope.launch {
-        loginUseCase.invoke(context).onSuccess {
+    private fun onClickToSocialLogin(type: SocialLoginType, context: Context) = viewModelScope.launch {
+        loginUseCase.invoke(AuthParam(context, type.name)).onSuccess {
             // FIXME 가입 된 유저 네비게이션 처리
             navigateToHome()
         }.onFailure {
