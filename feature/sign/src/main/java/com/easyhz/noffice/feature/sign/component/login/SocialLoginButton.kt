@@ -28,7 +28,7 @@ import com.easyhz.noffice.feature.sign.util.login.SocialLoginType
 @Composable
 internal fun LoginView(
     modifier: Modifier = Modifier,
-    onClickSocial: SocialLoginType.OnItemClickListener,
+    onClick: (SocialLoginType) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -36,7 +36,7 @@ internal fun LoginView(
     ) {
         SocialLoginButton(
             socialLoginType = SocialLoginType.GOOGLE,
-            onClick = onClickSocial::onClickGoogle
+            onClick = onClick
         )
     }
 }
@@ -45,7 +45,7 @@ internal fun LoginView(
 private fun SocialLoginButton(
     modifier: Modifier = Modifier,
     socialLoginType: SocialLoginType,
-    onClick: () -> Unit
+    onClick: (SocialLoginType) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -59,7 +59,7 @@ private fun SocialLoginButton(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(socialLoginType.containerColor)
-            .clickable { onClick() },
+            .clickable { onClick(socialLoginType) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

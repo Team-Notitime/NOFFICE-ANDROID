@@ -2,19 +2,20 @@ package com.easyhz.noffice.data.auth.di.strategy
 
 import com.easyhz.noffice.data.auth.strategy.BaseStrategy
 import com.easyhz.noffice.data.auth.strategy.GoogleStrategy
-import dagger.Binds
+import com.easyhz.noffice.data.auth.util.google
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.multibindings.IntoMap
+import dagger.multibindings.StringKey
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class LoginStrategyModule {
+object LoginStrategyModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindGoogleStrategy(
-        googleStrategy: GoogleStrategy
-    ): BaseStrategy
+    @Provides
+    @IntoMap
+    @StringKey(google)
+    fun provideGoogleStrategy(googleStrategy: GoogleStrategy): BaseStrategy = googleStrategy
 }
