@@ -45,7 +45,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround
-            ){
+            ) {
                 Box(modifier = Modifier.weight(0.8f)) {
                     Image(
                         modifier = Modifier
@@ -59,7 +59,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .screenHorizonPadding()
                         .weight(0.2f),
-                    onClickSocial = object :SocialLoginType.OnItemClickListener {
+                    onClickSocial = object : SocialLoginType.OnItemClickListener {
                         override fun onClickGoogle() {
                             viewModel.postIntent(LoginIntent.ClickToLogInWithGoogle(context))
                         }
@@ -70,9 +70,14 @@ fun LoginScreen(
     }
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
-        when(sideEffect) {
-            is LoginSideEffect.NavigateToHome -> { navigateToHome() }
-            is LoginSideEffect.NavigateToSignUp -> { /* TODO Not yet implemented */}
+        when (sideEffect) {
+            is LoginSideEffect.NavigateToHome -> {
+                navigateToHome()
+            }
+
+            is LoginSideEffect.NavigateToSignUp -> {}
+            is LoginSideEffect.NavigateToHome -> {}
+            is LoginSideEffect.NavigateToSignUp -> {}
         }
     }
 }
