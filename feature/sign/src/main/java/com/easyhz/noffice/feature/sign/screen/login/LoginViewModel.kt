@@ -24,9 +24,9 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onClickToLogInWithGoogle(context: Context) = viewModelScope.launch {
-        // TODO 로그인 로직 처리
         loginUseCase.invoke(context).onSuccess {
-            println("success")
+            // FIXME 가입 된 유저 네비게이션 처리
+            navigateToHome()
         }.onFailure {
             it.printStackTrace()
         }

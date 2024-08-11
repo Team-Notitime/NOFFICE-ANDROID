@@ -74,10 +74,7 @@ fun LoginScreen(
             is LoginSideEffect.NavigateToHome -> {
                 navigateToHome()
             }
-
-            is LoginSideEffect.NavigateToSignUp -> {}
-            is LoginSideEffect.NavigateToHome -> {}
-            is LoginSideEffect.NavigateToSignUp -> {}
+             is LoginSideEffect.NavigateToSignUp -> {}
         }
     }
 }

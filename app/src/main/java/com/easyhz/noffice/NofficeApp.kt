@@ -20,7 +20,6 @@ import com.easyhz.noffice.navigation.announcement.announcementGraph
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeGraph
-import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.my_page.myPageGraph
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
@@ -119,7 +118,7 @@ internal fun NofficeApp(
                 navController = navController,
             )
             signGraph(
-                navigateToHome = navController::navigateToHome
+                navController = navController
             )
             announcementGraph(
                 navController = navController,
