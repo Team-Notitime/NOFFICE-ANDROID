@@ -33,6 +33,7 @@ jsoup = "1.18.1"
 webkit = "1.11.0"
 material3 = "1.2.1"
 playServicesAuth = "21.2.0"
+playServicesCoroutines = "1.6.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -78,6 +79,7 @@ googleid = { group = "com.google.android.libraries.identity.googleid", name = "g
 jsoup = { group ="org.jsoup", name ="jsoup", version.ref = "jsoup"}
 androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "webkit" }
 gms-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth"}
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref="playServicesCoroutines"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
