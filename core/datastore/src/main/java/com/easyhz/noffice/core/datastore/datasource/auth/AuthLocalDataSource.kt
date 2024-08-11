@@ -7,4 +7,6 @@ interface AuthLocalDataSource {
     suspend fun deleteToken()
     suspend fun updateAccessToken(access: String)
     suspend fun updateTokens(access: String, refresh: String)
+    suspend fun getAuthProvider(): Result<String>
+    suspend fun updateAuthProvider(provider: String)
 }
