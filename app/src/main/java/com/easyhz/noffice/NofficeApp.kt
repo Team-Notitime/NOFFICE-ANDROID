@@ -23,6 +23,7 @@ import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.my_page.myPageGraph
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
+import com.easyhz.noffice.navigation.my_page.navigateToNotice
 import com.easyhz.noffice.navigation.my_page.navigateToNoticeDetail
 import com.easyhz.noffice.navigation.organization.organizationGraph
 import com.easyhz.noffice.navigation.sign.signGraph
@@ -126,6 +127,7 @@ internal fun NofficeApp(
             )
             myPageGraph(
                 navigateToUp = navController::navigateUp,
+                navigateToNotice = navController::navigateToNotice,
                 navigateToNoticeDetail = navController::navigateToNoticeDetail
             )
         }

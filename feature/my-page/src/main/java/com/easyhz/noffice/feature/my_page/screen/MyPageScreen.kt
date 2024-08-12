@@ -61,6 +61,7 @@ fun MyPageScreen(
     viewModel: MyPageViewModel = hiltViewModel(),
     menuViewModel: MyPageMenuViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
+    navigateToNotice: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuState by menuViewModel.uiState.collectAsStateWithLifecycle()
@@ -209,7 +210,7 @@ fun MyPageScreen(
 
     menuViewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
-            is MenuSideEffect.NavigateToNotice -> { }
+            is MenuSideEffect.NavigateToNotice -> { navigateToNotice() }
             is MenuSideEffect.NavigateToServiceOfTerms -> { }
             is MenuSideEffect.NavigateToPrivacyPolicy -> { }
             is MenuSideEffect.NavigateToConsentToInformation -> { }

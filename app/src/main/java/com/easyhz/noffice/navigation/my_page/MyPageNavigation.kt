@@ -13,11 +13,13 @@ import com.easyhz.noffice.navigation.my_page.screen.NoticeDetail
 
 internal fun NavGraphBuilder.myPageGraph(
     navigateToUp: () -> Unit,
+    navigateToNotice: () -> Unit,
     navigateToNoticeDetail: (com.easyhz.noffice.core.model.notice.Notice) -> Unit
 ) {
     composable<MyPage> {
         MyPageScreen(
-            navigateToUp = navigateToUp
+            navigateToUp = navigateToUp,
+            navigateToNotice = navigateToNotice
         )
     }
 
