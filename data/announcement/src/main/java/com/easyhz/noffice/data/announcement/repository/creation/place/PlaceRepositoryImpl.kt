@@ -1,14 +1,15 @@
 package com.easyhz.noffice.data.announcement.repository.creation.place
 
+import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.model.announcement.creation.place.OpenGraph
-import com.easyhz.noffice.data.announcement.di.util.DispatcherIO
+import com.easyhz.noffice.core.common.di.NofficeDispatchers.IO
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import javax.inject.Inject
 
 class PlaceRepositoryImpl @Inject constructor(
-    @DispatcherIO private val dispatcher: CoroutineDispatcher
+    @Dispatcher(IO) private val dispatcher: CoroutineDispatcher
 ) : PlaceRepository {
     override suspend fun fetchOpenGraphData(url: String): Result<OpenGraph> =
         withContext(dispatcher) {

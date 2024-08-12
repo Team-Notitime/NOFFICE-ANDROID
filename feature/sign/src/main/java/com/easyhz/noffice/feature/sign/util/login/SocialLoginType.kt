@@ -19,9 +19,4 @@ enum class SocialLoginType(
         containerColor = Grey50,
         contentColor = Grey800,
     );
-
-    interface OnItemClickListener {
-        fun onClickGoogle()
-    }
-
 }

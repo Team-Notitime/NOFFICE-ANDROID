@@ -1,5 +1,6 @@
-package com.easyhz.noffice.data.announcement.di.util
+package com.easyhz.noffice.core.common.di
 
+import com.easyhz.noffice.core.common.di.NofficeDispatchers.IO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 @Module
 @InstallIn(SingletonComponent::class)
 object DispatcherModule {
-    @DispatcherIO
+    @Dispatcher(IO)
     @Provides
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
