@@ -7,7 +7,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import com.easyhz.noffice.core.common.error.NofficeError
-import com.easyhz.noffice.data.auth.BuildConfig
+import com.easyhz.noffice.core.network.BuildConfig
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
 import com.google.android.gms.auth.api.identity.AuthorizationResult
 import com.google.android.gms.auth.api.identity.Identity
