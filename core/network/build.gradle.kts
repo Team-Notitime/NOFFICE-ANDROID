@@ -17,7 +17,7 @@ android {
         }
         release {
             buildConfigField("String", "NOFFICE_BASE_URL", localProperties["noffice.base.url.prod"].toString())
-//            buildConfigField("String", "GOOGLE_CLIENT_ID", localProperties["google.client.id"].toString())
+            buildConfigField("String", "GOOGLE_CLIENT_ID", localProperties["google.client.id"].toString())
         }
     }
 
