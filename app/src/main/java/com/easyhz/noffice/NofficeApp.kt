@@ -116,7 +116,8 @@ internal fun NofficeApp(
             homeGraph(
                 modifier = Modifier.padding(it),
                 navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
-                navigateToMyPage = navController::navigateToMyPage
+                navigateToMyPage = navController::navigateToMyPage,
+                navigateToLogin = navController::navigateToLogIn
             )
             organizationGraph(
                 modifier = Modifier.padding(it),

@@ -11,18 +11,26 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.easyhz.noffice.feature.home.screen.home.HomeScreen
+import com.easyhz.noffice.feature.home.screen.onboarding.OnboardingScreen
 import com.easyhz.noffice.feature.home.screen.splash.SplashScreen
 import com.easyhz.noffice.navigation.home.screen.Home
+import com.easyhz.noffice.navigation.home.screen.Onboarding
 import com.easyhz.noffice.navigation.home.screen.Splash
 import com.easyhz.noffice.navigation.sign.screen.LogIn
 
 internal fun NavGraphBuilder.homeGraph(
     modifier: Modifier,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
-    navigateToMyPage: () -> Unit
+    navigateToMyPage: () -> Unit,
+    navigateToLogin: () -> Unit
 ) {
     composable<Splash> {
         SplashScreen()
+    }
+    composable<Onboarding> {
+        OnboardingScreen(
+            navigateToLogin = navigateToLogin
+        )
     }
     composable<Home>(
         enterTransition = {
