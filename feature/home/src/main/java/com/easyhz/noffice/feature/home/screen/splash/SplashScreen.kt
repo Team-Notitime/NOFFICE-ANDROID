@@ -18,7 +18,10 @@ import com.easyhz.noffice.feature.home.contract.splash.SplashSideEffect
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    viewModel: SplashViewModel = hiltViewModel()
+    viewModel: SplashViewModel = hiltViewModel(),
+    navigateToOnboarding: () -> Unit,
+    navigateToLogin: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     NofficeBasicScaffold(
         containerColor = Grey900,
@@ -40,9 +43,9 @@ fun SplashScreen(
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
-            is SplashSideEffect.NavigateToOnboarding -> { }
-            is SplashSideEffect.NavigateToLogin -> { }
-            is SplashSideEffect.NavigateToHome -> { }
+            is SplashSideEffect.NavigateToOnboarding -> { navigateToOnboarding() }
+            is SplashSideEffect.NavigateToLogin -> { navigateToLogin() }
+            is SplashSideEffect.NavigateToHome -> { navigateToHome() }
             is SplashSideEffect.NavigateToDeepLink -> { }
         }
     }

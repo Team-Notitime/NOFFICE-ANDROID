@@ -13,12 +13,16 @@ class GetSplashInfoUseCase @Inject constructor(
     override suspend fun invoke(param: Unit): Result<EnterScreenType> = runCatching {
         userRepository.getIsFirstRun().getOrElse {
             return@runCatching EnterScreenType.ONBOARDING
+        }.takeIf { it }?.let {
+            return@runCatching EnterScreenType.ONBOARDING
         }
 
         tokenRepository.getAccessToken().getOrElse {
             return@runCatching EnterScreenType.LOGIN
+        }.takeIf { it.isBlank() }?.let {
+            return@runCatching EnterScreenType.LOGIN
         }
 
-        return Result.success(EnterScreenType.HOME)
+        EnterScreenType.HOME
     }
 }

@@ -8,6 +8,7 @@ import com.easyhz.noffice.feature.home.contract.splash.SplashIntent
 import com.easyhz.noffice.feature.home.contract.splash.SplashSideEffect
 import com.easyhz.noffice.feature.home.contract.splash.SplashState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +26,7 @@ class SplashViewModel @Inject constructor(
 
     private fun getSplashInfo() = viewModelScope.launch {
         getSplashInfoUseCase.invoke(Unit).onSuccess {
+            delay(300)
             when(it) {
                 EnterScreenType.ONBOARDING -> { navigateToOnboarding() }
                 EnterScreenType.LOGIN -> { navigateToLogin() }
