@@ -8,4 +8,5 @@ sealed class MyPageSideEffect: UiSideEffect() {
     data object HideBottomSheet:  MyPageSideEffect()
     data object NavigateToGallery:  MyPageSideEffect()
     data class NavigateToCamera(val uri: Uri):  MyPageSideEffect()
+    data object RequestFocus:  MyPageSideEffect()
 }

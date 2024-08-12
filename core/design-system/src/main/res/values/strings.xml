@@ -145,7 +145,7 @@
 
 
 
-    <string name="my_page_menu_user_name">%s 님</string>
+    <string name="my_page_menu_user_name">님</string>
     <string name="my_page_menu_title_guide">이용 안내</string>
     <string name="my_page_menu_title_setting">앱 설정</string>
     <string name="my_page_menu_title_etc">기타</string>
@@ -156,8 +156,26 @@
     <string name="my_page_menu_terms_of_service">서비스 이용약관</string>
     <string name="my_page_menu_privacy_policy">개인정보 처리방침</string>
     <string name="my_page_menu_notification">알림 설정</string>
-    <string name="my_page_menu_consent_to_information">알림 설정</string>
-    <string name="my_page_menu_delete_account">회원 탈퇴</string>
+    <string name="my_page_menu_consent_to_information">정보 동의 설정</string>
+    <string name="my_page_menu_withdrawal">회원 탈퇴</string>
     <string name="my_page_menu_sign_out">로그아웃</string>
 
+    <string name="my_page_menu_user_name_placeholder">이름을 입력해 주세요.</string>
+    <string name="my_page_menu_sign_out_dialog_title">로그아웃 할까요?</string>
+    <string name="my_page_menu_sign_out_negative_button_text">취소</string>
+    <string name="my_page_menu_sign_out_positive_button_text">로그아웃</string>
+
+    <string name="my_page_menu_notice_empty">등록된 공지사항이 없습니다.</string>
+    <string name="my_page_menu_consent_to_information_text">광고성 정보 동의</string>
+
+    <string name="my_page_menu_withdrawal_title">
+        그동안 즐거웠어요!
+        \n다시 만나길 기대할게요
+    </string>
+    <string name="my_page_menu_withdrawal_type_title">회원 탈퇴 시 아래의 정보가 삭제돼요!</string>
+    <string name="my_page_menu_withdrawal_type_id">회원 ID</string>
+    <string name="my_page_menu_withdrawal_type_activity">회원님의 활동 이력, 개인정보 및 설정</string>
+    <string name="my_page_menu_withdrawal_type_info">연결된 소셜 계정 정보</string>
+    <string name="my_page_menu_withdrawal_consent">안내 사항을 확인하고 회원 탈퇴에 동의합니다.</string>
+    <string name="my_page_menu_withdrawal_button">탈퇴하기</string>
 </resources>

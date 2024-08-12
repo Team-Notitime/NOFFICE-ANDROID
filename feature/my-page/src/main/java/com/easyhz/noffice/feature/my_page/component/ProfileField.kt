@@ -9,8 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,7 +56,15 @@ internal fun ProfileField(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.my_page_menu_user_name, name),
+                    modifier = Modifier.widthIn(max = 160.dp),
+                    text = name,
+                    style = SemiBold18,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    modifier = Modifier.widthIn(max = 160.dp),
+                    text = stringResource(id = R.string.my_page_menu_user_name),
                     style = SemiBold18,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -91,7 +100,6 @@ private fun Profile(
         )
         Box(
             modifier = Modifier
-//                .padding(end = 4.dp, bottom = 4.dp)
                 .size(32.dp)
                 .clip(CircleShape)
                 .align(Alignment.BottomEnd)

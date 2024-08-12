@@ -28,3 +28,13 @@ internal fun NavGraphBuilder.signGraph(
         SignUpScreen()
     }
 }
+
+internal fun NavController.navigateToLogIn() {
+    val navOptions = navOptions {
+        popUpTo(this@navigateToLogIn.graph.startDestinationId) {
+            inclusive = true
+        }
+        launchSingleTop = true
+    }
+    navigate(LogIn, navOptions)
+}

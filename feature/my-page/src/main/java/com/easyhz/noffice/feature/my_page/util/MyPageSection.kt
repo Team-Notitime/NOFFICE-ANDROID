@@ -30,7 +30,7 @@ enum class MyPageSection(
         titleId = R.string.my_page_menu_title_etc,
         items = listOf(
             MyPageMenu.CONSENT_TO_INFORMATION,
-            MyPageMenu.DELETE_ACCOUNT,
+            MyPageMenu.WITHDRAWAL,
             MyPageMenu.SIGN_OUT
         )
     )
@@ -65,8 +65,8 @@ enum class MyPageMenu(
     CONSENT_TO_INFORMATION(
         titleId = R.string.my_page_menu_consent_to_information
     ),
-    DELETE_ACCOUNT(
-        titleId = R.string.my_page_menu_delete_account,
+    WITHDRAWAL(
+        titleId = R.string.my_page_menu_withdrawal,
         textColor = Red
     ),
     SIGN_OUT(

@@ -9,8 +9,8 @@ import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUse
 import com.easyhz.noffice.feature.my_page.contract.MyPageIntent
 import com.easyhz.noffice.feature.my_page.contract.MyPageSideEffect
 import com.easyhz.noffice.feature.my_page.contract.MyPageState
-import com.easyhz.noffice.feature.my_page.util.MyPageMenu
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,31 +24,23 @@ class MyPageViewModel @Inject constructor(
 
     override fun handleIntent(intent: MyPageIntent) {
         when(intent) {
-            is MyPageIntent.ClickBackButton -> { }
-            is MyPageIntent.ChangeUserName -> { }
+            is MyPageIntent.ClickBackButton -> { navigateToUp() }
+            is MyPageIntent.ClickUserName -> { onClickUserName() }
             is MyPageIntent.ChangeProfileImage -> { onChangeProfileImage() }
-            is MyPageIntent.ClickMenuItem -> { onClickMenuItem(intent.item) }
             is MyPageIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.item) }
             is MyPageIntent.PickImage -> { onPickImage(intent.uri) }
             is MyPageIntent.TakePicture -> { onTakePicture(intent.isUsed) }
-            is MyPageIntent.HideImageBottomSheet -> { hideBottomSheet() }
+            is MyPageIntent.HideImageBottomSheet -> { hideImageBottomSheet() }
             is MyPageIntent.CompleteHideBottomSheet -> { completeHideBottomSheet() }
+            is MyPageIntent.HideUserNameBottomSheet -> { hideUserNameBottomSheet() }
+            is MyPageIntent.ChangeUserNameText -> { onChangeUserNameText(intent.text) }
+            is MyPageIntent.SaveUserName -> { saveUserName() }
+            is MyPageIntent.ClearUserNameText -> { clearUserNameText() }
         }
     }
 
     private fun onChangeProfileImage() {
         reduce { copy(isShowImageBottomSheet = true) }
-    }
-
-    private fun onClickMenuItem(item: MyPageMenu) {
-        when(item) {
-            MyPageMenu.NOTIFICATION -> {
-                reduce { copy(isCheckedNotification = !currentState.isCheckedNotification) }
-            }
-            else -> {
-
-            }
-        }
     }
 
     private fun onClickImageBottomSheetItem(item: ImageSelectionBottomSheetItem) {
@@ -66,7 +58,7 @@ class MyPageViewModel @Inject constructor(
             }
         }
         if (!currentState.isShowImageBottomSheet) return
-        hideBottomSheet()
+        hideImageBottomSheet()
     }
 
     private fun onPickImage(uri: Uri?) {
@@ -89,11 +81,42 @@ class MyPageViewModel @Inject constructor(
         reduce { copy(user = user.copy(profileImageUrl = takePictureUri.value.toString())) }
     }
 
-    private fun hideBottomSheet() {
+    private fun hideImageBottomSheet() {
         postSideEffect { MyPageSideEffect.HideBottomSheet }
     }
 
     private fun completeHideBottomSheet() {
         reduce { copy(isShowImageBottomSheet = false) }
+    }
+
+    private fun onClickUserName() {
+        reduce { copy(isShowUserNameBottomSheet = true) }
+        viewModelScope.launch {
+            delay(300)
+            postSideEffect { MyPageSideEffect.RequestFocus }
+        }
+    }
+
+    private fun hideUserNameBottomSheet() {
+        reduce { copy(isShowUserNameBottomSheet = false) }
+    }
+
+    private fun onChangeUserNameText(newText: String) {
+        reduce { copy(userNameText = newText) }
+    }
+
+    private fun saveUserName() {
+        // TODO 저장 로직
+        if (currentState.userNameText.isBlank()) return
+        reduce { copy(user = user.copy(name = userNameText), userNameText = "") }
+        hideUserNameBottomSheet()
+    }
+
+    private fun clearUserNameText() {
+        reduce { copy(userNameText = "") }
+    }
+
+    private fun navigateToUp() {
+        postSideEffect { MyPageSideEffect.NavigateToUp }
     }
 }

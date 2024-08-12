@@ -5,8 +5,9 @@ import com.easyhz.noffice.core.model.profile.User
 
 data class MyPageState(
     val user: User,
-    val isCheckedNotification: Boolean,
-    val isShowImageBottomSheet: Boolean
+    val isShowImageBottomSheet: Boolean,
+    val isShowUserNameBottomSheet: Boolean,
+    val userNameText: String,
 ): UiState() {
     companion object {
         fun init() = MyPageState(
@@ -16,8 +17,9 @@ data class MyPageState(
                 name = "푸바옹",
                 profileImageUrl = ""
             ),
-            isCheckedNotification = true,
-            isShowImageBottomSheet = false
+            isShowImageBottomSheet = false,
+            isShowUserNameBottomSheet = false,
+            userNameText = ""
         )
     }
 }
