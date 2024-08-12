@@ -153,7 +153,6 @@
     <string name="my_page_menu_version">버전</string>
     <string name="my_page_menu_inquiry">문의하기</string>
     <string name="my_page_menu_notice">공지사항</string>
-    <string name="my_page_menu_notice_empty">등록된 공지사항이 없습니다.</string>
     <string name="my_page_menu_terms_of_service">서비스 이용약관</string>
     <string name="my_page_menu_privacy_policy">개인정보 처리방침</string>
     <string name="my_page_menu_notification">알림 설정</string>
@@ -166,4 +165,6 @@
     <string name="my_page_menu_sign_out_negative_button_text">취소</string>
     <string name="my_page_menu_sign_out_positive_button_text">로그아웃</string>
 
+    <string name="my_page_menu_notice_empty">등록된 공지사항이 없습니다.</string>
+    <string name="my_page_menu_consent_to_information_text">광고성 정보 동의</string>
 </resources>
