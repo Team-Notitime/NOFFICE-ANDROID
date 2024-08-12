@@ -26,7 +26,9 @@ import com.easyhz.noffice.navigation.my_page.navigateToConsent
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
 import com.easyhz.noffice.navigation.my_page.navigateToNotice
 import com.easyhz.noffice.navigation.my_page.navigateToNoticeDetail
+import com.easyhz.noffice.navigation.my_page.navigateToWithdrawal
 import com.easyhz.noffice.navigation.organization.organizationGraph
+import com.easyhz.noffice.navigation.sign.navigateToLogIn
 import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
@@ -130,7 +132,9 @@ internal fun NofficeApp(
                 navigateToUp = navController::navigateUp,
                 navigateToNotice = navController::navigateToNotice,
                 navigateToNoticeDetail = navController::navigateToNoticeDetail,
-                navigateToConsent = navController::navigateToConsent
+                navigateToConsent = navController::navigateToConsent,
+                navigateToWithdrawal = navController::navigateToWithdrawal,
+                navigateToLogIn = navController::navigateToLogIn
             )
         }
     }
