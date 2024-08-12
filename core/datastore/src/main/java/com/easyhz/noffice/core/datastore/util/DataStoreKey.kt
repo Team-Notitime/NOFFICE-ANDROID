@@ -1,5 +1,7 @@
 package com.easyhz.noffice.core.datastore.util
 
+import androidx.compose.runtime.key
+
 internal enum class AuthKey(
     val key: String
 ) {
@@ -9,5 +11,13 @@ internal enum class AuthKey(
         key = "REFRESH_TOKEN"
     ), AUTH_PROVIDER(
         key = "PROVIDER"
+    )
+}
+
+internal enum class UserKey(
+    val key: String
+) {
+    IS_FIRST_RUN(
+        key = "IS_FIRST_RUN"
     )
 }
