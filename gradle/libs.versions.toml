@@ -35,6 +35,7 @@ material3 = "1.2.1"
 playServicesAuth = "21.2.0"
 playServicesCoroutines = "1.6.4"
 androidxDataStore = "1.0.0"
+coreSplashscreen = "1.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -83,6 +84,7 @@ gms-play-services-auth = { group = "com.google.android.gms", name = "play-servic
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref="playServicesCoroutines"}
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStore" }
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "androidxDataStore" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
