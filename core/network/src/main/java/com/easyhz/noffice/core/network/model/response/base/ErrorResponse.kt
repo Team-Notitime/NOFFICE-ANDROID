@@ -1,4 +1,4 @@
-package com.easyhz.noffice.core.network.model.response
+package com.easyhz.noffice.core.network.model.response.base
 
 data class ErrorResponse(
     val timestamp: String,
