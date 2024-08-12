@@ -83,7 +83,7 @@ fun NoticeScreen(
                 NoticeItem(
                     item = item
                 ) {
-                    viewModel.postIntent(NoticeIntent.ClickNotice(index)) // FIXME
+                    viewModel.postIntent(NoticeIntent.ClickNotice(index))
                 }
             }
         }
