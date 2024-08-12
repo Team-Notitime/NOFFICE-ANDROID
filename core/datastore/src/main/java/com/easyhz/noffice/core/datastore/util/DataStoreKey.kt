@@ -11,3 +11,11 @@ internal enum class AuthKey(
         key = "PROVIDER"
     )
 }
+
+internal enum class UserKey(
+    val key: String
+) {
+    IS_FIRST_RUN(
+        key = "IS_FIRST_RUN"
+    )
+}

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers.IO
+import com.easyhz.noffice.core.datastore.di.AuthDataStore
 import com.easyhz.noffice.core.datastore.util.AuthKey
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 class AuthLocalDataSourceImpl @Inject constructor(
     @Dispatcher(IO) private val dispatcher: CoroutineDispatcher,
-    private val dataStore: DataStore<Preferences>
+    @AuthDataStore private val dataStore: DataStore<Preferences>
 ): AuthLocalDataSource {
     private val accessToken = stringPreferencesKey(AuthKey.ACCESS_TOKEN.key)
     private val refreshToken = stringPreferencesKey(AuthKey.REFRESH_TOKEN.key)

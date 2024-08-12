@@ -11,7 +11,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.easyhz.noffice.feature.home.screen.home.HomeScreen
+import com.easyhz.noffice.feature.home.screen.splash.SplashScreen
 import com.easyhz.noffice.navigation.home.screen.Home
+import com.easyhz.noffice.navigation.home.screen.Splash
 import com.easyhz.noffice.navigation.sign.screen.LogIn
 
 internal fun NavGraphBuilder.homeGraph(
@@ -19,6 +21,9 @@ internal fun NavGraphBuilder.homeGraph(
     navigateToAnnouncementDetail: (Int, String) -> Unit,
     navigateToMyPage: () -> Unit
 ) {
+    composable<Splash> {
+        SplashScreen()
+    }
     composable<Home>(
         enterTransition = {
             if (this.enabledSlide()) null

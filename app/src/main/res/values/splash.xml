@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Noffice.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FF212121</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_background</item>
+        <item name="windowSplashScreenAnimationDuration">100</item>
+        <item name="postSplashScreenTheme">@style/Theme.Noffice</item>
+    </style>
+</resources>
