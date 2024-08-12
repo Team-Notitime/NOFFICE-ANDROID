@@ -1,31 +1,11 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.noffice.android.library)
     alias(libs.plugins.noffice.android.hilt)
     alias(libs.plugins.noffice.android.application.test)
 }
 
-val localProperties = Properties()
-localProperties.load(project.rootProject.file("local.properties").inputStream())
-
 android {
     namespace = "com.easyhz.noffice.data.auth"
-    buildTypes {
-        debug {
-            buildConfigField(
-                "String",
-                "GOOGLE_CLIENT_ID",
-                localProperties["google.client.id"].toString()
-            )
-        }
-        release {
-//            buildConfigField("String", "GOOGLE_CLIENT_ID", localProperties["google.client.id"].toString())
-        }
-    }
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {

@@ -13,9 +13,11 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "NOFFICE_BASE_URL", localProperties["noffice.base.url.dev"].toString())
+            buildConfigField("String", "GOOGLE_CLIENT_ID", localProperties["google.client.id"].toString())
         }
         release {
             buildConfigField("String", "NOFFICE_BASE_URL", localProperties["noffice.base.url.prod"].toString())
+//            buildConfigField("String", "GOOGLE_CLIENT_ID", localProperties["google.client.id"].toString())
         }
     }
 
