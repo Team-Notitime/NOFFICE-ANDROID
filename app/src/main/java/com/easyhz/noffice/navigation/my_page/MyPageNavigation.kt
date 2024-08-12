@@ -5,8 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.easyhz.noffice.feature.my_page.screen.MyPageScreen
+import com.easyhz.noffice.feature.my_page.screen.detail.consent.ConsentToInformationScreen
 import com.easyhz.noffice.feature.my_page.screen.detail.notice.NoticeScreen
 import com.easyhz.noffice.feature.my_page.screen.detail.noticeDetail.NoticeDetailScreen
+import com.easyhz.noffice.navigation.my_page.screen.Consent
 import com.easyhz.noffice.navigation.my_page.screen.MyPage
 import com.easyhz.noffice.navigation.my_page.screen.Notice
 import com.easyhz.noffice.navigation.my_page.screen.NoticeDetail
@@ -14,12 +16,14 @@ import com.easyhz.noffice.navigation.my_page.screen.NoticeDetail
 internal fun NavGraphBuilder.myPageGraph(
     navigateToUp: () -> Unit,
     navigateToNotice: () -> Unit,
-    navigateToNoticeDetail: (com.easyhz.noffice.core.model.notice.Notice) -> Unit
+    navigateToNoticeDetail: (com.easyhz.noffice.core.model.notice.Notice) -> Unit,
+    navigateToConsent: () -> Unit
 ) {
     composable<MyPage> {
         MyPageScreen(
             navigateToUp = navigateToUp,
-            navigateToNotice = navigateToNotice
+            navigateToNotice = navigateToNotice,
+            navigateToConsent = navigateToConsent
         )
     }
 
@@ -39,6 +43,12 @@ internal fun NavGraphBuilder.myPageGraph(
             navigateToUp = navigateToUp,
         )
     }
+
+    composable<Consent> {
+        ConsentToInformationScreen(
+            navigateToUp = navigateToUp
+        )
+    }
 }
 
 internal fun NavController.navigateToMyPage() {
@@ -51,4 +61,8 @@ internal fun NavController.navigateToNotice() {
 
 internal fun NavController.navigateToNoticeDetail(item: com.easyhz.noffice.core.model.notice.Notice) {
     navigate(route = NoticeDetail(item))
+}
+
+internal fun NavController.navigateToConsent() {
+    navigate(route = Consent)
 }

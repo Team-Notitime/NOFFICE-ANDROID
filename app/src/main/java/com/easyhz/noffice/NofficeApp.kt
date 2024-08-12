@@ -22,6 +22,7 @@ import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeS
 import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.my_page.myPageGraph
+import com.easyhz.noffice.navigation.my_page.navigateToConsent
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
 import com.easyhz.noffice.navigation.my_page.navigateToNotice
 import com.easyhz.noffice.navigation.my_page.navigateToNoticeDetail
@@ -128,7 +129,8 @@ internal fun NofficeApp(
             myPageGraph(
                 navigateToUp = navController::navigateUp,
                 navigateToNotice = navController::navigateToNotice,
-                navigateToNoticeDetail = navController::navigateToNoticeDetail
+                navigateToNoticeDetail = navController::navigateToNoticeDetail,
+                navigateToConsent = navController::navigateToConsent
             )
         }
     }
