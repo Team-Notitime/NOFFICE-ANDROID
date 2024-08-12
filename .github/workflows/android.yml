@@ -36,7 +36,7 @@ jobs:
 
     - name: Create local.properties
       run: |
-        echo "${{ LOCAL_PROPERTIES_CONTENTS }}" > local.properties
+        echo "${{ secrets.LOCAL_PROPERTIES_CONTENTS }}" > ./local.properties
 
     - name: Build with Gradle
       run: ./gradlew clean build --no-daemon
