@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.util.trace
 import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -18,7 +17,7 @@ import com.easyhz.noffice.navigation.util.BottomMenuTabs
 
 @Composable
 internal fun rememberNofficeNavController(navController: NavHostController = rememberNavController()) =
-    remember(navController) { NofficeNavController(navController = navController) }
+    remember { NofficeNavController(navController = navController) }
 
 internal class NofficeNavController(
     val navController: NavHostController
@@ -49,8 +48,9 @@ internal class NofficeNavController(
         if (route.qualifierName == navController.currentDestination?.route) return
         trace("Navigation: ${route.name}") {
             val navOptions = navOptions {
-                popUpTo(navController.graph.findStartDestination().id) {
+                popUpTo(navController.graph.id) {
                     saveState = true
+                    inclusive = true
                 }
                 launchSingleTop  = true
                 restoreState = true
