@@ -178,4 +178,31 @@
     <string name="my_page_menu_withdrawal_type_info">연결된 소셜 계정 정보</string>
     <string name="my_page_menu_withdrawal_consent">안내 사항을 확인하고 회원 탈퇴에 동의합니다.</string>
     <string name="my_page_menu_withdrawal_button">탈퇴하기</string>
+
+
+    <string name="onboarding_button_next">다음</string>
+    <string name="onboarding_button_start">시작하기</string>
+    <string name="onboarding_step_1_title">
+        안 읽어서 답답했던
+        \n단체 생활 공지는 이제 안녕
+    </string>
+    <string name="onboarding_step_1_content">
+        줄 나누기, 이모지, 더 이상 필요없어요!
+        \n내가 원하는 내용만 담아서 가독성 좋게 전달할 수 있어요
+    </string>
+    <string name="onboarding_step_2_title">
+        공지와 투두를 분리해
+        \n핵심만 쏙 챙겨가세요!
+    </string>
+    <string name="onboarding_step_2_content">
+       투두 탭을 클릭해서 내가 할 일을 더욱 쉽게 파악해요
+    </string>
+    <string name="onboarding_step_3_title">
+        동아리, 스터디, 소모임
+        \n어떤 단체든 알차게 활용해요
+    </string>
+    <string name="onboarding_step_3_content">
+        리더에게는 더욱 편리한 공지 발행 과정을,
+        \n멤버에게는 복잡하지 않은 공지를 선물할게요
+    </string>
 </resources>

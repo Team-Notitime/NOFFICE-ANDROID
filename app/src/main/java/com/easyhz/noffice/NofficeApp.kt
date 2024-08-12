@@ -17,13 +17,11 @@ import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.navigation.NofficeNavController
 import com.easyhz.noffice.navigation.announcement.announcementGraph
-import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeGraph
-import com.easyhz.noffice.navigation.home.screen.Home
+import com.easyhz.noffice.navigation.home.screen.Splash
 import com.easyhz.noffice.navigation.my_page.myPageGraph
 import com.easyhz.noffice.navigation.my_page.navigateToConsent
-import com.easyhz.noffice.navigation.my_page.navigateToMyPage
 import com.easyhz.noffice.navigation.my_page.navigateToNotice
 import com.easyhz.noffice.navigation.my_page.navigateToNoticeDetail
 import com.easyhz.noffice.navigation.my_page.navigateToWithdrawal
@@ -83,7 +81,7 @@ internal fun NofficeApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = Home,
+            startDestination = Splash,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Start, tween(
@@ -115,8 +113,7 @@ internal fun NofficeApp(
         ) {
             homeGraph(
                 modifier = Modifier.padding(it),
-                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
-                navigateToMyPage = navController::navigateToMyPage
+                navController = navController
             )
             organizationGraph(
                 modifier = Modifier.padding(it),

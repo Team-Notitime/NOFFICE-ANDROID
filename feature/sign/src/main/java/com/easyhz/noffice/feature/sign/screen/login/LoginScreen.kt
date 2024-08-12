@@ -19,6 +19,7 @@ import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.feature.sign.component.login.LoginView
 import com.easyhz.noffice.feature.sign.contract.login.LoginIntent
 import com.easyhz.noffice.feature.sign.contract.login.LoginSideEffect
@@ -30,7 +31,9 @@ fun LoginScreen(
     navigateToHome: () -> Unit
 ) {
     val context = LocalContext.current
-    NofficeBasicScaffold {
+    NofficeBasicScaffold(
+        statusBarColor = White
+    ) {
         Box(modifier = modifier.fillMaxSize()) {
             Image(
                 modifier = Modifier

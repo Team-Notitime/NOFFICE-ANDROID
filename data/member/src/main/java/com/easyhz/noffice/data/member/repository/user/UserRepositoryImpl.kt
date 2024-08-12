@@ -9,4 +9,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getIsFirstRun(): Result<Boolean> {
         return userLocalDataSource.getFirstRun()
     }
+
+    override suspend fun setIsFirstRun(newValue: Boolean): Result<Unit> = runCatching {
+        return@runCatching userLocalDataSource.updateFirstRun(newValue)
+    }
 }
