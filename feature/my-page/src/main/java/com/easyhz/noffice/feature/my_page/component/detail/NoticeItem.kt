@@ -3,7 +3,6 @@ package com.easyhz.noffice.feature.my_page.component.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,13 +20,12 @@ import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.SubBody12
 import com.easyhz.noffice.core.design_system.theme.SubBody14
 import com.easyhz.noffice.core.design_system.theme.White
+import com.easyhz.noffice.core.model.notice.Notice
 
 @Composable
 internal fun NoticeItem(
     modifier: Modifier = Modifier,
-    title: String,
-    content: String,
-    date: String,
+    item: Notice,
     onClick: () -> Unit
 ) {
     Column(
@@ -35,13 +33,13 @@ internal fun NoticeItem(
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(White)
-            .padding(16.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = title, style = SemiBold16, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(text = item.title, style = SemiBold16, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Text(
-            text = content,
+            text = item.content,
             style = SubBody14,
             color = Grey600,
             lineHeight = (14 * 1.4).sp,
@@ -49,7 +47,7 @@ internal fun NoticeItem(
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = date,
+            text = item.date,
             style = SubBody12,
             color = Grey400,
             maxLines = 1,

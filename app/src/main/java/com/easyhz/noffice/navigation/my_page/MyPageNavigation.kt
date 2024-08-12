@@ -19,7 +19,8 @@ internal fun NavGraphBuilder.myPageGraph(
 
     composable<Notice> {
         NoticeScreen(
-            navigateToUp = navigateToUp
+            navigateToUp = navigateToUp,
+            navigateToNoticeDetail = { }
         )
     }
 }

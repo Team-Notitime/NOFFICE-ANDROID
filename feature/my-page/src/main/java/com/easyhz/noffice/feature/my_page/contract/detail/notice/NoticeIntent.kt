@@ -4,4 +4,5 @@ import com.easyhz.noffice.core.common.base.UiIntent
 
 sealed class NoticeIntent: UiIntent() {
     data object ClickBackButton: NoticeIntent()
+    data class ClickNotice(val index: Int): NoticeIntent()
 }
