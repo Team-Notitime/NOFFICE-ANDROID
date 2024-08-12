@@ -66,7 +66,7 @@ enum class MyPageMenu(
         titleId = R.string.my_page_menu_consent_to_information
     ),
     WITHDRAWAL(
-        titleId = R.string.my_page_menu_delete_account,
+        titleId = R.string.my_page_menu_withdrawal,
         textColor = Red
     ),
     SIGN_OUT(
