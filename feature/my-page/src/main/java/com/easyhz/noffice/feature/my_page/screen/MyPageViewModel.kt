@@ -9,7 +9,6 @@ import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUse
 import com.easyhz.noffice.feature.my_page.contract.MyPageIntent
 import com.easyhz.noffice.feature.my_page.contract.MyPageSideEffect
 import com.easyhz.noffice.feature.my_page.contract.MyPageState
-import com.easyhz.noffice.feature.my_page.util.MyPageMenu
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ class MyPageViewModel @Inject constructor(
 
     override fun handleIntent(intent: MyPageIntent) {
         when(intent) {
-            is MyPageIntent.ClickBackButton -> { }
+            is MyPageIntent.ClickBackButton -> { navigateToUp() }
             is MyPageIntent.ClickUserName -> { onClickUserName() }
             is MyPageIntent.ChangeProfileImage -> { onChangeProfileImage() }
             is MyPageIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.item) }
@@ -115,5 +114,9 @@ class MyPageViewModel @Inject constructor(
 
     private fun clearUserNameText() {
         reduce { copy(userNameText = "") }
+    }
+
+    private fun navigateToUp() {
+        postSideEffect { MyPageSideEffect.NavigateToUp }
     }
 }
