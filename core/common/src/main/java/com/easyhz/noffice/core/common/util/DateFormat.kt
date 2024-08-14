@@ -38,4 +38,11 @@ object DateFormat {
         return formattedDate
     }
 
+    fun localDateToRequest(date: LocalDate?): String? {
+        if (date == null) return null
+        val dateTime = date.atStartOfDay()
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        return dateTime.format(formatter)
+    }
+
 }
