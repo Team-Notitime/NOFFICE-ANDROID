@@ -22,7 +22,7 @@ interface OrganizationService {
     ): PagingResult<OrganizationResponse>
 
     @POST("/api/v1/organizations")
-    suspend fun createOrganizations(
+    suspend fun createOrganization(
         @Query("memberId") memberId: Int,
         @Body body: OrganizationCreationRequest
     ): NofficeResult<OrganizationResponse>
