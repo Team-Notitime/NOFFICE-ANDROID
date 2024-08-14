@@ -2,6 +2,7 @@ package com.easyhz.noffice.core.network.api.organization
 
 import com.easyhz.noffice.core.network.model.request.organization.OrganizationCreationRequest
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementItem
+import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import com.easyhz.noffice.core.network.util.PagingResult
@@ -45,5 +46,5 @@ interface OrganizationService {
     suspend fun joinOrganization(
         @Path("organizationId") organizationId: Int,
         @Query("memberId") memberId: Int,
-    )
+    ): NofficeResult<OrganizationJoinResponse>
 }
