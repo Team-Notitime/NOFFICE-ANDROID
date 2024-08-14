@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
 import com.easyhz.noffice.core.datastore.di.UserDataStore
@@ -19,7 +19,7 @@ class UserLocalDataSourceImpl @Inject constructor(
     @UserDataStore private val dataStore: DataStore<Preferences>
 ) : UserLocalDataSource {
     private val isFirstRun = booleanPreferencesKey(UserKey.IS_FIRST_RUN.key)
-    private val memberId = stringPreferencesKey(UserKey.MEMBER_ID.key)
+    private val memberId = intPreferencesKey(UserKey.MEMBER_ID.key)
 
     override suspend fun getFirstRun(): Result<Boolean> = withContext(dispatcher) {
         runCatching {
@@ -35,7 +35,7 @@ class UserLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMemberId(): Result<String> = withContext(dispatcher) {
+    override suspend fun getMemberId(): Result<Int> = withContext(dispatcher) {
         runCatching {
             val preferences = dataStore.data.first()
             return@runCatching preferences[memberId]
@@ -43,7 +43,7 @@ class UserLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateMemberId(newValue: String): Unit = withContext(dispatcher) {
+    override suspend fun updateMemberId(newValue: Int): Unit = withContext(dispatcher) {
         dataStore.edit { preferences ->
             preferences[memberId] = newValue
         }

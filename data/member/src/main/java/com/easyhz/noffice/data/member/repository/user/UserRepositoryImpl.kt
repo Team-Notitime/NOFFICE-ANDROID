@@ -14,11 +14,11 @@ class UserRepositoryImpl @Inject constructor(
         return@runCatching userLocalDataSource.updateFirstRun(newValue)
     }
 
-    override suspend fun getMemberId(): Result<String> {
+    override suspend fun getMemberId(): Result<Int> {
         return userLocalDataSource.getMemberId()
     }
 
-    override suspend fun setMemberId(newValue: String): Result<Unit> = runCatching {
+    override suspend fun setMemberId(newValue: Int): Result<Unit> = runCatching {
         return@runCatching userLocalDataSource.updateMemberId(newValue)
     }
 }
