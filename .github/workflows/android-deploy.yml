@@ -44,6 +44,13 @@ jobs:
           exit 1
         fi
 
+    - name: Upload AAB
+      id: uploadArtifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: app
+        path: app/build/outputs/bundle/release/app-release.aab
+
     - name: Sign AAB
       id: sign
       uses: r0adkll/sign-android-release@v1
