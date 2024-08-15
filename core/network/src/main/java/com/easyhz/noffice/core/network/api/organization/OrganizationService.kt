@@ -2,6 +2,7 @@ package com.easyhz.noffice.core.network.api.organization
 
 import com.easyhz.noffice.core.network.model.request.organization.OrganizationCreationRequest
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementItem
+import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
@@ -31,7 +32,7 @@ interface OrganizationService {
     @GET("/api/v1/organizations/{organizationId}")
     suspend fun fetchOrganizationInfo(
         @Path("organizationId") organizationId: Int
-    ): NofficeResult<OrganizationResponse>
+    ): NofficeResult<OrganizationInformationResponse>
 
     @GET("/api/v1/organizations/{organizationId}/announcements")
     suspend fun fetchAnnouncementsByOrganization(
