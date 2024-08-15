@@ -8,11 +8,20 @@ import java.time.format.DateTimeParseException
 import java.util.Locale
 
 object DateFormat {
+    enum class PATTERN(
+        val value: String
+    ) {
+        FULL("yyyy.MM.dd(E) HH:mm"),
+        DATE_TEXT("yyyy년 MM월 dd일"),
+        DATE_DASH("yyyy-MM-dd"),
+        DAY("MM/dd"),
+        TIME("HH:mm")
+    }
     fun fullText(date: LocalDate): String =
-        DateTimeFormatter.ofPattern("yyyy년 MM월 dd일").format(date)
+        DateTimeFormatter.ofPattern(PATTERN.DATE_TEXT.value).format(date)
 
-    fun stringToLocalDate(date: String, pattern: String = "yyyy-MM-dd"): LocalDate = try {
-        val formatter = DateTimeFormatter.ofPattern(pattern)
+    fun stringToLocalDate(date: String, pattern: PATTERN = PATTERN.DATE_DASH): LocalDate = try {
+        val formatter = DateTimeFormatter.ofPattern(pattern.value)
         LocalDate.parse(date, formatter)
     } catch (e: DateTimeParseException) {
         e.printStackTrace()
@@ -20,18 +29,29 @@ object DateFormat {
     }
 
 
-    fun stringToLocalTime(time: String, pattern: String = "HH:mm"): LocalTime = try {
-        val formatter = DateTimeFormatter.ofPattern(pattern)
+    fun stringToLocalTime(time: String, pattern: PATTERN = PATTERN.TIME): LocalTime = try {
+        val formatter = DateTimeFormatter.ofPattern(pattern.value)
         LocalTime.parse(time, formatter)
     } catch (e: DateTimeParseException) {
         e.printStackTrace()
         LocalTime.now()
     }
 
-    fun formatDateTime(date: String): String {
+    fun formatDateTime(date: String, pattern: PATTERN = PATTERN.FULL): String {
         val dateTime = ZonedDateTime.parse(date)
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm")
+        val formatter = DateTimeFormatter.ofPattern(pattern.value)
+            .withLocale(Locale.KOREAN)
+        val formattedDate = dateTime.format(formatter)
+
+        return formattedDate
+    }
+
+    fun formatDateTimeNullable(date: String?, pattern: PATTERN = PATTERN.FULL): String? {
+        if (date.isNullOrBlank()) return null
+        val dateTime = ZonedDateTime.parse(date)
+
+        val formatter = DateTimeFormatter.ofPattern(pattern.value)
             .withLocale(Locale.KOREAN)
         val formattedDate = dateTime.format(formatter)
 
