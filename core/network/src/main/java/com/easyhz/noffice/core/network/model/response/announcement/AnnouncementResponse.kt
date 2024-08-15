@@ -14,6 +14,6 @@ data class AnnouncementItem(
     val placeLinkUrl: String,
     val profileImageUrl: String,
     val createdAt: String,
-    val endAt: String,
+    val endAt: String?,
     val updatedAt: String
 )
