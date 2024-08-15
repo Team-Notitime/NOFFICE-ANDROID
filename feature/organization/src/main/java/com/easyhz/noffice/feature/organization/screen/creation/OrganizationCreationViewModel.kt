@@ -7,6 +7,7 @@ import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.organization.param.OrganizationCreationParam
+import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUseCase
 import com.easyhz.noffice.domain.organization.usecase.creation.CreateOrganizationUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class OrganizationCreationViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
     private val createOrganizationUseCase: CreateOrganizationUseCase,
+    private val fetchCategoriesUseCase: FetchCategoriesUseCase,
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
@@ -44,6 +46,10 @@ class OrganizationCreationViewModel @Inject constructor(
             is CreationIntent.ChangePromotionTextValue -> { onChangePromotionTextValue(intent.text) }
             is CreationIntent.ClearPromotionCode -> { onClearPromotionCode() }
         }
+    }
+
+    init {
+        fetchCategories()
     }
 
     private fun onClickBackButton() {
@@ -150,6 +156,14 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun hideImageBottomSheet() {
         reduce { copy(isShowImageBottomSheet = false) }
+    }
+
+    private fun fetchCategories() = viewModelScope.launch {
+        fetchCategoriesUseCase.invoke(Unit).onSuccess {
+            println("성공 $it")
+        }.onFailure {
+            println("실패 $it")
+        }
     }
 
 
