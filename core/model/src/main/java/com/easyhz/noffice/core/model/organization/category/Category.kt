@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.model.organization.category
 
 data class Category(
+    val id: Int,
     val title: String,
     val isSelected: Boolean
 )
@@ -10,6 +11,7 @@ val CATEGORY = listOf("IT", "문화 생활", "어학", "예술", "음악 · 공�
 
 fun List<String>.toState(): List<Category> = map {
     Category(
+        0,
         it, false
     )
 }
