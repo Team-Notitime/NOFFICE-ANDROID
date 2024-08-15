@@ -12,11 +12,11 @@ annotation class TokenRetrofit
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class DefaultClient
+annotation class NofficeClient
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class TokenClient
+annotation class PureClient
 
 @Qualifier
 @MustBeDocumented
