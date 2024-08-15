@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
+import com.easyhz.noffice.core.model.organization.param.OrganizationCreationParam
+import com.easyhz.noffice.domain.organization.usecase.creation.CreateOrganizationUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationCreationViewModel @Inject constructor(
-    private val getTakePictureUriUseCase: GetTakePictureUriUseCase
+    private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
+    private val createOrganizationUseCase: CreateOrganizationUseCase,
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
@@ -151,12 +154,24 @@ class OrganizationCreationViewModel @Inject constructor(
 
 
     // TODO: 서버 통신 로직 추가
-    private fun onNavigateToInvitation() {
-        postSideEffect {
-            CreationSideEffect.NavigateToInvitation(
-                "www.noffice/dhedgyeqi3e83",
-                currentState.organizationImage.toString()
-            )
+    private fun onNavigateToInvitation() = viewModelScope.launch {
+        val param = OrganizationCreationParam(
+            name = currentState.organizationName,
+            categoryList = listOf(1), // FIXME
+            endAt = currentState.endDate,
+            profileImage = currentState.organizationImage.takeIf { it != Uri.EMPTY },
+            promotionCode = currentState.promotionCode.ifBlank { null }
+        )
+        createOrganizationUseCase.invoke(param).onSuccess {
+            postSideEffect {
+                CreationSideEffect.NavigateToInvitation(
+                    "www.noffice/${it.id}",
+                    it.profileImageUrl
+                )
+            }
+        }.onFailure {
+            // TODO fail 처리
+            println("create fail $it")
         }
     }
 }

@@ -12,7 +12,6 @@ data class ManagementState(
     val organizationInformation: OrganizationInformation,
     val selectedImage: String,
     val category: List<Category>,
-    val numberOfMembers: LinkedHashMap<MemberType, Int>,
     val isShowImageBottomSheet: Boolean
 ): UiState() {
     companion object {
@@ -23,10 +22,11 @@ data class ManagementState(
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
+                members = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
+                hasStandbyMember = false
             ),
             category = CATEGORY.toState(),
             selectedImage = "",
-            numberOfMembers = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
             isShowImageBottomSheet = false
         )
         fun ManagementState.updateCategoryItem(selectedIndex: Int): ManagementState {

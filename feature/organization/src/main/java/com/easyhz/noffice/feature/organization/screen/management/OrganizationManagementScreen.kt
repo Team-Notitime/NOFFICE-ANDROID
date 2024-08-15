@@ -44,7 +44,6 @@ fun OrganizationManagementScreen(
     modifier: Modifier = Modifier,
     viewModel: OrganizationManagementViewModel = hiltViewModel(),
     organizationInformation: OrganizationInformation,
-    numberOfMembers: LinkedHashMap<MemberType, Int>,
     navigateToUp: () -> Unit,
     navigateToMemberManagement: (Int) -> Unit
 ) {
@@ -60,7 +59,7 @@ fun OrganizationManagementScreen(
             onResult = { viewModel.postIntent(ManagementIntent.TakePicture(it)) }
         )
     LaunchedEffect(Unit) {
-        viewModel.postIntent(ManagementIntent.InitScreen(organizationInformation, numberOfMembers))
+        viewModel.postIntent(ManagementIntent.InitScreen(organizationInformation))
     }
     NofficeBasicScaffold(
         statusBarColor = White,
@@ -112,7 +111,7 @@ fun OrganizationManagementScreen(
                 modifier = Modifier
                     .padding(vertical = 16.dp)
                     .weight(1f),
-                numberOfMembers = uiState.numberOfMembers,
+                numberOfMembers = uiState.organizationInformation.members,
                 isLoading = uiState.isLoading
             )
             MemberButton(

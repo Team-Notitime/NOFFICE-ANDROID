@@ -4,7 +4,7 @@ import com.easyhz.noffice.core.common.base.UiIntent
 
 sealed class DetailIntent: UiIntent() {
     data class InitScreen(val organizationId: Int, val organizationName: String): DetailIntent()
-    data class ClickAnnouncement(val index: Int): DetailIntent()
+    data class ClickAnnouncement(val id: Int, val title: String): DetailIntent()
     data object NavigateToUp: DetailIntent()
     data object ClickEditButton: DetailIntent()
     data object ClickStandbyMemberButton: DetailIntent()

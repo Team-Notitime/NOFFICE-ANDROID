@@ -4,14 +4,9 @@ import android.net.Uri
 import com.easyhz.noffice.core.common.base.UiIntent
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.member.MemberType
 
 sealed class ManagementIntent : UiIntent() {
-    data class InitScreen(
-        val organizationInformation: OrganizationInformation,
-        val numberOfMembers: LinkedHashMap<MemberType, Int>,
-    ) : ManagementIntent()
-
+    data class InitScreen(val organizationInformation: OrganizationInformation, ) : ManagementIntent()
     data object NavigateToUp: ManagementIntent()
     data class ClickCategoryItem(val index: Int) : ManagementIntent()
     data object ClickProfileImage: ManagementIntent()

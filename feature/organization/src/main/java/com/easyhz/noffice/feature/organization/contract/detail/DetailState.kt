@@ -9,8 +9,6 @@ data class DetailState(
     val isLoading: Boolean,
     val isCardLoading: Boolean,
     val organizationInformation: OrganizationInformation,
-    val numberOfMembers: LinkedHashMap<MemberType, Int>,
-    val hasStandbyMember: Boolean,
     val announcementList: List<AnnouncementDetail>
 ): UiState() {
     companion object {
@@ -22,9 +20,9 @@ data class DetailState(
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
+                members = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
+                hasStandbyMember = false
             ),
-            numberOfMembers = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
-            hasStandbyMember = false,
             announcementList = emptyList()
         )
 

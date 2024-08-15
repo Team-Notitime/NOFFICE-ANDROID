@@ -1,25 +1,33 @@
 package com.easyhz.noffice.feature.organization.screen.detail
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
-import com.easyhz.noffice.core.model.organization.member.MemberType
+import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
+import com.easyhz.noffice.domain.organization.usecase.announcement.FetchAnnouncementsByOrganizationUseCase
+import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationInfoUseCase
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState.Companion.updateOrganizationName
-import com.easyhz.noffice.feature.organization.util.detail.DUMMY_LIST
-import com.easyhz.noffice.feature.organization.util.detail.DUMMY_ORGANIZATION_INFORMATION
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationDetailViewModel @Inject constructor(
-
+    private val fetchOrganizationInfoUseCase: FetchOrganizationInfoUseCase,
+    private val fetchAnnouncementsByOrganizationUseCase: FetchAnnouncementsByOrganizationUseCase
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
     initialState = DetailState.init()
 ) {
+    private val _announcementState : MutableStateFlow<PagingData<OrganizationAnnouncement>> = MutableStateFlow(value = PagingData.empty())
+    val announcementState: MutableStateFlow<PagingData<OrganizationAnnouncement>> get() = _announcementState
+
     override fun handleIntent(intent: DetailIntent) {
         when (intent) {
             is DetailIntent.InitScreen -> {
@@ -27,7 +35,7 @@ class OrganizationDetailViewModel @Inject constructor(
             }
 
             is DetailIntent.ClickAnnouncement -> {
-                onClickAnnouncement(intent.index)
+                onClickAnnouncement(intent.id, intent.title)
             }
 
             is DetailIntent.NavigateToUp -> {
@@ -37,6 +45,7 @@ class OrganizationDetailViewModel @Inject constructor(
             is DetailIntent.ClickEditButton -> {
                 onClickEditButton()
             }
+
             is DetailIntent.ClickStandbyMemberButton -> {
                 onClickStandbyMemberButton()
             }
@@ -50,27 +59,29 @@ class OrganizationDetailViewModel @Inject constructor(
 
     // FIXME
     private fun fetchData(id: Int) = viewModelScope.launch {
-        delay(2000)
-        currentState.numberOfMembers[MemberType.LEADER] = 11
-        currentState.numberOfMembers[MemberType.MEMBER] = 34
-        reduce {
-            copy(
-                organizationInformation = DUMMY_ORGANIZATION_INFORMATION,
-                hasStandbyMember = true,
-                isLoading = false
-            )
+        fetchOrganizationInfoUseCase.invoke(id).onSuccess {
+            reduce {
+                copy(
+                    organizationInformation = it,
+                    isLoading = false
+                )
+            }
+            fetchAnnouncements(it.id)
+        }.onFailure {
+
         }
-        delay(1000)
-        reduce { copy(announcementList = DUMMY_LIST, isCardLoading = false) }
     }
 
-    private fun onClickAnnouncement(index: Int) {
-        val announcement = currentState.announcementList[index]
+    private suspend fun fetchAnnouncements(organizationId: Int) {
+        fetchAnnouncementsByOrganizationUseCase(organizationId, 1).distinctUntilChanged()
+            .cachedIn(viewModelScope).collectLatest {
+                _announcementState.value = it
+            }
+    }
+
+    private fun onClickAnnouncement(id: Int, title: String) {
         postSideEffect {
-            DetailSideEffect.NavigateToAnnouncementDetail(
-                announcement.id,
-                announcement.title
-            )
+            DetailSideEffect.NavigateToAnnouncementDetail(id, title)
         }
     }
 
@@ -81,7 +92,7 @@ class OrganizationDetailViewModel @Inject constructor(
     private fun onClickEditButton() {
         postSideEffect {
             DetailSideEffect.NavigateToOrganizationManagement(
-                currentState.organizationInformation, currentState.numberOfMembers
+                currentState.organizationInformation
             )
         }
     }

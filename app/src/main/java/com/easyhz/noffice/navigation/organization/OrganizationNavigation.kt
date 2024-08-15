@@ -62,7 +62,6 @@ internal fun NavGraphBuilder.organizationGraph(
         val args = it.toRoute<OrganizationManagement>()
         OrganizationManagementScreen(
             organizationInformation = args.organizationInformation,
-            numberOfMembers = args.numberOfMembers,
             navigateToUp = navController::navigateUp,
             navigateToMemberManagement = navController::navigateToMemberManagement,
         )
@@ -115,9 +114,8 @@ internal fun NavController.navigateToOrganizationDetail(id: Int, name: String) {
 
 internal fun NavController.navigateToOrganizationManagement(
     information: OrganizationInformation,
-    number: LinkedHashMap<MemberType, Int>
 ) {
-    navigate(OrganizationManagement(organizationInformation = information, numberOfMembers = number))
+    navigate(OrganizationManagement(organizationInformation = information))
 }
 
 internal fun NavController.navigateToMemberManagement(id: Int) {

@@ -8,5 +8,5 @@ sealed class DetailSideEffect: UiSideEffect() {
     data object NavigateToUp: DetailSideEffect()
     data class NavigateToAnnouncementDetail(val id: Int, val title: String): DetailSideEffect()
     data class NavigateToStandbyMember(val id: Int): DetailSideEffect()
-    data class NavigateToOrganizationManagement(val information: OrganizationInformation, val numberOfMembers: LinkedHashMap<MemberType, Int>): DetailSideEffect()
+    data class NavigateToOrganizationManagement(val information: OrganizationInformation): DetailSideEffect()
 }

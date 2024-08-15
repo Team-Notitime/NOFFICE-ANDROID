@@ -27,7 +27,7 @@ class OrganizationManagementViewModel @Inject constructor(
     override fun handleIntent(intent: ManagementIntent) {
         when (intent) {
             is ManagementIntent.InitScreen -> {
-                initScreen(intent.organizationInformation, intent.numberOfMembers)
+                initScreen(intent.organizationInformation)
             }
             is ManagementIntent.NavigateToUp -> { navigateToUp() }
             is ManagementIntent.ClickCategoryItem -> { onClickCategoryItem(intent.index) }
@@ -41,11 +41,11 @@ class OrganizationManagementViewModel @Inject constructor(
     }
 
     private fun initScreen(
-        organizationInformation: OrganizationInformation,
-        numberOfMembers: LinkedHashMap<MemberType, Int>
+        organizationInformation: OrganizationInformation
     ) {
         val categoryList = currentState.category.map { item ->
             Category(
+                id = item.id,
                 title = item.title,
                 isSelected = organizationInformation.category.any { it == item.title }
             )
@@ -54,7 +54,6 @@ class OrganizationManagementViewModel @Inject constructor(
             copy(
                 organizationInformation = organizationInformation,
                 category = categoryList,
-                numberOfMembers = numberOfMembers,
                 selectedImage = organizationInformation.profileImageUrl,
                 isLoading = false
             )

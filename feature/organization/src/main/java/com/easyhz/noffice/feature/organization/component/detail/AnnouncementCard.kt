@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,13 +34,13 @@ import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.theme.Yellow100
 import com.easyhz.noffice.core.design_system.theme.Yellow500
 import com.easyhz.noffice.core.design_system.theme.Yellow900
-import com.easyhz.noffice.core.model.announcement.detail.AnnouncementDetail
+import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.feature.organization.util.detail.Options
 
 @Composable
 internal fun AnnouncementCard(
     modifier: Modifier = Modifier,
-    announcementDetail: AnnouncementDetail,
+    announcement: OrganizationAnnouncement,
     onClick: () -> Unit
 ) {
     Column(
@@ -54,7 +54,7 @@ internal fun AnnouncementCard(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = announcementDetail.title,
+            text = announcement.title,
             style = SemiBold18,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -62,11 +62,11 @@ internal fun AnnouncementCard(
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            announcementDetail.date.takeIf { it.isNotBlank() }?.run {
+            announcement.endAt.takeIf { !it.isNullOrBlank() }?.run {
                 Badge(modifier = Modifier, string = this, iconId = Options.DATE.iconId)
             }
 
-            announcementDetail.place.takeIf { it.isNotBlank() }?.run {
+            announcement.place.takeIf { !it.isNullOrBlank() }?.run {
                 Badge(
                     modifier = Modifier.weight(1f),
                     string = this,
@@ -74,26 +74,26 @@ internal fun AnnouncementCard(
                 )
             }
 
-            announcementDetail.taskList.takeIf { it.isNotEmpty() }?.run {
+            announcement.taskSize?.takeIf { it < 1 }?.run {
                 Badge(
                     modifier = Modifier,
                     string = stringResource(
                         id = R.string.organization_detail_badge_number_of_badges,
-                        this.size
+                        this
                     ),
                     iconId = Options.TASK.iconId
                 )
             }
         }
         Text(
-            text = announcementDetail.content,
+            text = announcement.content,
             style = SubBody14,
             color = Grey600,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = announcementDetail.creationDate,
+            text = announcement.createdAt,
             style = Caption12,
             color = Grey400,
             maxLines = 1,

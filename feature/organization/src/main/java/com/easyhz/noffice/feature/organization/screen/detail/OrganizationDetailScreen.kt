@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.divider.divider
@@ -28,7 +28,6 @@ import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.detail.AnnouncementCard
 import com.easyhz.noffice.feature.organization.component.detail.DetailHeader
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
@@ -46,10 +45,10 @@ fun OrganizationDetailScreen(
     navigateToUp: () -> Unit,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
     navigateToStandbyMember: (Int) -> Unit,
-    navigateToOrganizationManagement: (OrganizationInformation, LinkedHashMap<MemberType, Int>) -> Unit
+    navigateToOrganizationManagement: (OrganizationInformation) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
+    val announcementList = viewModel.announcementState.collectAsLazyPagingItems()
     LaunchedEffect(Unit) {
         viewModel.postIntent(DetailIntent.InitScreen(organizationId, organizationName))
     }
@@ -104,14 +103,14 @@ fun OrganizationDetailScreen(
             item {
                 NumberOfMembersView(
                     modifier = Modifier.padding(vertical = 8.dp),
-                    numberOfMembers = uiState.numberOfMembers,
+                    numberOfMembers = uiState.organizationInformation.members,
                     isLoading = uiState.isLoading
                 )
             }
             item {
                 StandbyMemberButton(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    hasStandbyMember = uiState.hasStandbyMember
+                    hasStandbyMember = uiState.organizationInformation.hasStandbyMember
                 ) {
                     viewModel.postIntent(DetailIntent.ClickStandbyMemberButton)
                 }
@@ -123,12 +122,14 @@ fun OrganizationDetailScreen(
                     }
                 }
             }
-            itemsIndexed(uiState.announcementList) { index, item ->
-                AnnouncementCard(
-                    modifier = Modifier.animateItem(),
-                    announcementDetail = item,
-                ) {
-                    viewModel.postIntent(DetailIntent.ClickAnnouncement(index))
+            items(announcementList.itemCount, key = { it }) {index ->
+                announcementList[index]?.let { item ->
+                    AnnouncementCard(
+                        modifier = Modifier.animateItem(),
+                        announcement = item,
+                    ) {
+                        viewModel.postIntent(DetailIntent.ClickAnnouncement(item.announcementId, item.title))
+                    }
                 }
             }
             item {
@@ -150,7 +151,7 @@ fun OrganizationDetailScreen(
                 navigateToAnnouncementDetail(sideEffect.id, sideEffect.title)
             }
             is DetailSideEffect.NavigateToOrganizationManagement -> {
-                navigateToOrganizationManagement(sideEffect.information, sideEffect.numberOfMembers)
+                navigateToOrganizationManagement(sideEffect.information)
             }
             is DetailSideEffect.NavigateToStandbyMember -> {
                 navigateToStandbyMember(sideEffect.id)
