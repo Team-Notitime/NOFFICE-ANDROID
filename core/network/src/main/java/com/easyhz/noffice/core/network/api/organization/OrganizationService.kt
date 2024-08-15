@@ -15,6 +15,7 @@ import retrofit2.http.Query
 
 interface OrganizationService {
 
+    /* 가입된 조직 페이징 조회 */
     @GET("/api/v1/organizations")
     suspend fun fetchOrganizations(
         @Query("memberId") memberId: Int,
@@ -23,17 +24,20 @@ interface OrganizationService {
         @Query("sort") sort: List<String>
     ): PagingResult<OrganizationResponse>
 
+    /* 조직 생성 */
     @POST("/api/v1/organizations")
     suspend fun createOrganization(
         @Query("memberId") memberId: Int,
         @Body body: OrganizationCreationRequest
     ): NofficeResult<OrganizationResponse>
 
+    /* 단일 조직 정보 조회 */
     @GET("/api/v1/organizations/{organizationId}")
     suspend fun fetchOrganizationInfo(
         @Path("organizationId") organizationId: Int
     ): NofficeResult<OrganizationInformationResponse>
 
+    /* 조직별 노티 페이징 조회 */
     @GET("/api/v1/organizations/{organizationId}/announcements")
     suspend fun fetchAnnouncementsByOrganization(
         @Path("organizationId") organizationId: Int,
@@ -43,6 +47,7 @@ interface OrganizationService {
         @Query("sort") sort: List<String>
     ): PagingResult<AnnouncementItem>
 
+    /* 조직 가입 */
     @POST("/api/v1/organizations/{organizationId}/join")
     suspend fun joinOrganization(
         @Path("organizationId") organizationId: Int,
