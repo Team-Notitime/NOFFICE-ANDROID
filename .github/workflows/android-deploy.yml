@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LOCAL_PROPERTIES_CONTENTS: ${{ secrets.LOCAL_PROPERTIES_CONTENTS }}
+      FLAVOR: "prod"  # 여기서 FLAVOR를 "prod"로 설정합니다.
 
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
@@ -35,13 +36,21 @@ jobs:
 
     - name: Build Release AAB
       id: buildRelease
-      run: ./gradlew bundleRelease
+      run: ./gradlew bundle${{ env.FLAVOR.capitalize() }}Release
+
+    - name: Verify AAB file exists
+      run: |
+        AAB_FILE=app/build/outputs/bundle/${{ env.FLAVOR }}Release/app-${{ env.FLAVOR }}-release.aab
+        if [ ! -f $AAB_FILE ]; then
+          echo "Error: AAB file not found at $AAB_FILE"
+          exit 1
+        fi
 
     - name: Sign AAB
       id: sign
       uses: r0adkll/sign-android-release@v1
       with:
-        releaseDirectory: app/build/outputs/bundle/release
+        releaseDirectory: app/build/outputs/bundle/${{ env.FLAVOR }}Release
         signingKeyBase64: ${{ secrets.SIGNING_KEY }}
         alias: ${{ secrets.ALIAS }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -57,6 +66,6 @@ jobs:
       with:
         serviceAccountJson: service_account.json
         packageName: com.easyhz.noffice
-        releaseFile: app/build/outputs/bundle/release/app-release.aab
+        releaseFile: app/build/outputs/bundle/${{ env.FLAVOR }}Release/app-${{ env.FLAVOR }}-release.aab
         track: beta
         whatsNewDirectory: whatsnew/
