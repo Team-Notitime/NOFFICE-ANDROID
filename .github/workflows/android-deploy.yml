@@ -66,4 +66,4 @@ jobs:
         packageName: com.easyhz.noffice
         releaseFiles: app/build/outputs/bundle/prodRelease/app-prod-release.aab
         track: beta
-        whatsNewDirectory: whatsnew/
+        # whatsNewDirectory: whatsnew/
