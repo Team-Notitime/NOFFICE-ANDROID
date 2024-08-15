@@ -10,6 +10,7 @@ import com.easyhz.noffice.core.model.organization.param.OrganizationCreationPara
 import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUseCase
 import com.easyhz.noffice.domain.organization.usecase.creation.CreateOrganizationUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
@@ -24,6 +25,7 @@ class OrganizationCreationViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
     private val createOrganizationUseCase: CreateOrganizationUseCase,
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
+    private val uploadImageUseCase: UploadImageUseCase
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
@@ -173,7 +175,7 @@ class OrganizationCreationViewModel @Inject constructor(
             name = currentState.organizationName,
             categoryList = listOf(1), // FIXME
             endAt = currentState.endDate,
-            profileImage = currentState.organizationImage.takeIf { it != Uri.EMPTY },
+            profileImage = currentState.organizationImage.takeIf { it != Uri.EMPTY }.toString(),
             promotionCode = currentState.promotionCode.ifBlank { null }
         )
         createOrganizationUseCase.invoke(param).onSuccess {
