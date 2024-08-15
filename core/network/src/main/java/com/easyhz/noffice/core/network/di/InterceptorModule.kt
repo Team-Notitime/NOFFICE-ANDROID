@@ -1,5 +1,7 @@
 package com.easyhz.noffice.core.network.di
 
+import com.easyhz.noffice.core.network.authenticator.TokenAuthenticator
+import com.easyhz.noffice.core.network.interceptor.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,9 +34,26 @@ internal object InterceptorModule {
         return HttpLoggingInterceptor().setLevel(level)
     }
 
+    @DefaultClient
     @Provides
     fun provideOkhttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        tokenAuthenticator: TokenAuthenticator,
+        authInterceptor: AuthInterceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(authInterceptor)
+        .addInterceptor(httpLoggingInterceptor)
+        .authenticator(tokenAuthenticator)
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
+        .build()
+
+    @TokenClient
+    @Provides
+    fun provideTokenOkhttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(httpLoggingInterceptor)
         .connectTimeout(20, TimeUnit.SECONDS)
