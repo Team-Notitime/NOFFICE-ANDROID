@@ -44,13 +44,6 @@ jobs:
           exit 1
         fi
 
-    - name: Upload AAB
-      id: uploadArtifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: app
-        path: app/build/outputs/bundle/release/app-release.aab
-
     - name: Sign AAB
       id: sign
       uses: r0adkll/sign-android-release@v1
@@ -71,6 +64,6 @@ jobs:
       with:
         serviceAccountJson: service_account.json
         packageName: com.easyhz.noffice
-        releaseFile: app/build/outputs/bundle/prodRelease/app-prod-release.aab
+        releaseFiles: app/build/outputs/bundle/prodRelease/app-prod-release.aab
         track: beta
         whatsNewDirectory: whatsnew/
