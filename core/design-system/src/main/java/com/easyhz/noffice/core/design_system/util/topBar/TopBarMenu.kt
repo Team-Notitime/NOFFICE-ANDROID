@@ -11,6 +11,6 @@ enum class TopBarIconMenu(
     @DrawableRes val iconId: Int,
     val label: String,
 ){
-    BELL(iconId = R.drawable.ic_bell, label = "notification"),
+    NOTIFICATION(iconId = R.drawable.ic_bell, label = "notification"),
     USER(iconId = R.drawable.ic_user, label = "user")
 }

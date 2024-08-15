@@ -2,6 +2,7 @@ package com.easyhz.noffice.navigation.util
 
 import com.easyhz.noffice.core.design_system.R
  import com.easyhz.noffice.core.design_system.util.bottomBar.BottomMenu
+import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.screen.Organization
 
@@ -14,7 +15,7 @@ enum class BottomMenuTabs(
         override val label: String
             get() = "home"
     },
-    ADD(qualifierName = Home::class.java.name) { // FIXME: ADD Screen 으로 변경
+    ADD(qualifierName = AnnouncementCreation::class.java.name) {
         override val iconId: Int
             get() = R.drawable.ic_add
         override val label: String

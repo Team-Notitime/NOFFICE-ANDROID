@@ -9,5 +9,15 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.common)
+    implementation(projects.core.model)
+
     implementation(libs.androidx.core.ktx)
+
+    // Glide
+    implementation(libs.glide)
+
+    // Calendar
+    implementation(libs.calendar.compose)
+    implementation(libs.androidx.webkit)
 }

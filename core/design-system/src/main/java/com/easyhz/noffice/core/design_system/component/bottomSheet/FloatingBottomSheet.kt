@@ -35,6 +35,7 @@ fun FloatingBottomSheet(
     backgroundColor: Color = White,
     onDismissRequest: () -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(12.dp),
     dragHandle: @Composable (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
@@ -47,9 +48,9 @@ fun FloatingBottomSheet(
         Box(
             modifier = Modifier
                 .navigationBarsPadding()
-                .padding(bottom = 10.dp)
+                .padding(bottom = 32.dp)
                 .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(24.dp))
+                .clip(roundedCornerShape)
                 .fillMaxWidth()
                 .background(backgroundColor)
         ) {

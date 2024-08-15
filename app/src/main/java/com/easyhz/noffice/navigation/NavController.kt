@@ -2,11 +2,13 @@ package com.easyhz.noffice.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.NavBackStackEntry
+import androidx.compose.ui.util.trace
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.organization.navigateToOrganization
@@ -20,42 +22,44 @@ internal fun rememberNofficeNavController(navController: NavHostController = rem
 internal class NofficeNavController(
     val navController: NavHostController
 ) {
-    private val navBackStackEntry: NavBackStackEntry?
-        @Composable get() = navController.currentBackStackEntryAsState().value
+    private val currentDestination: NavDestination?
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination
 
     private val routes: List<String>
         @Composable get() = remember { BottomMenuTabs.entries.map { it.qualifierName } }
 
     private val currentRoute: String?
-        @Composable get() = navBackStackEntry?.destination?.route
+        @Composable get() = currentDestination?.route
 
     @Composable
     fun isInBottomTabs(): Boolean = currentRoute in routes
 
     @Composable
-    fun mapRouteToTab(): BottomMenuTabs {
+    fun mapRouteToTab(): BottomMenuTabs? {
         return when (currentRoute) {
             Home::class.java.name -> BottomMenuTabs.HOME
-//            Add::class.java.name -> BottomMenuTabs.ADD // FIXME
             Organization::class.java.name -> BottomMenuTabs.ORGANIZATION
-            else -> BottomMenuTabs.HOME
+            else -> null
         }
     }
 
     fun navigate(route: BottomMenuTabs) {
         if (route.qualifierName == navController.currentDestination?.route) return
-        val navOptions = navOptions {
-            popUpTo(navController.graph.id) {
-                saveState = true
-                inclusive = false
+        trace("Navigation: ${route.name}") {
+            val navOptions = navOptions {
+                popUpTo(navController.graph.id) {
+                    saveState = true
+                    inclusive = true
+                }
+                launchSingleTop  = true
+                restoreState = true
             }
-            launchSingleTop  = true
-            restoreState = true
-        }
-        when (route) {
-            BottomMenuTabs.HOME -> navController.navigateToHome(navOptions)
-            BottomMenuTabs.ADD -> navController.navigateToHome(navOptions) // FIXME : 바꾸기
-            BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions) // FIXME : 바꾸기
+            when (route) {
+                BottomMenuTabs.HOME -> navController.navigateToHome(navOptions)
+                BottomMenuTabs.ADD -> navController.navigateToAnnouncementNofficeSelection()
+                BottomMenuTabs.ORGANIZATION -> navController.navigateToOrganization(navOptions)
+            }
         }
     }
 }

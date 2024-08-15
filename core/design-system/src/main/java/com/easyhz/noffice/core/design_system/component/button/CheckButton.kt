@@ -1,7 +1,9 @@
 package com.easyhz.noffice.core.design_system.component.button
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -17,18 +19,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Blue100
-import com.easyhz.noffice.core.design_system.theme.Blue500
+import com.easyhz.noffice.core.design_system.theme.Blue700
 import com.easyhz.noffice.core.design_system.theme.Body14
 import com.easyhz.noffice.core.design_system.theme.Green100
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey300
+import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey600
 
@@ -36,21 +41,24 @@ import com.easyhz.noffice.core.design_system.theme.Grey600
 @Composable
 fun CheckButton(
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
     text: String,
     isComplete: Boolean,
+    iconId: Int = R.drawable.ic_check,
+    verticalPadding: Dp = 14.dp,
     color: CheckButtonDefaults = CheckButtonDefaults.default(),
     onClick: () -> Unit
 ) {
 
     Row(
         modifier = modifier
-            .noRippleClickable {
-                onClick()
-            }
             .heightIn(min = 42.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(if (isComplete) color.completeContainerColor else color.incompleteContainerColor)
-            .padding(vertical = 10.dp)
+            .clickable {
+                onClick()
+            }
+            .padding(vertical = verticalPadding)
             .screenHorizonPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -59,14 +67,17 @@ fun CheckButton(
             modifier = Modifier.weight(1f),
             text = text,
             color = if(isComplete) color.completeContentColor else color.incompleteContentColor,
-            style = Body14
+            style = Body14,
+            textAlign = textAlign
         )
-        if (isComplete || color.incompleteIconColor != null) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_check),
-                contentDescription = "check",
-                tint = if (isComplete) color.completeIconColor else color.incompleteIconColor ?: color.completeIconColor
-            )
+        Box(modifier = Modifier.heightIn(min = 18.dp)) {
+            if ((isComplete && color.completeIconColor != null) || color.incompleteIconColor != null) {
+                Icon(
+                    painter = painterResource(id = iconId),
+                    contentDescription = "check",
+                    tint = (if (isComplete) color.completeIconColor else color.incompleteIconColor) ?: color.completeContentColor
+                )
+            }
         }
     }
 }
@@ -77,7 +88,7 @@ fun CheckButton(
 data class CheckButtonDefaults(
     val completeContainerColor: Color,
     val completeContentColor: Color,
-    val completeIconColor: Color,
+    val completeIconColor: Color?,
     val incompleteContainerColor: Color,
     val incompleteContentColor: Color,
     val incompleteIconColor: Color?,
@@ -85,10 +96,10 @@ data class CheckButtonDefaults(
     companion object {
         fun default() = CheckButtonDefaults(
             completeContainerColor = Grey100,
-            completeContentColor = Grey300,
+            completeContentColor = Grey400,
             completeIconColor = Grey300,
             incompleteContainerColor = Blue100,
-            incompleteContentColor = Blue500,
+            incompleteContentColor = Blue700,
             incompleteIconColor = null
         )
     }
@@ -152,8 +163,8 @@ private fun CheckButtonOrganizationIncompletePrev() {
         isComplete = true,
         color = CheckButtonDefaults(
             completeContainerColor = Green100,
-            completeContentColor = Green500,
-            completeIconColor = Green500,
+            completeContentColor = Green700,
+            completeIconColor = Green700,
             incompleteContainerColor = Grey50,
             incompleteContentColor = Grey600,
             incompleteIconColor = Grey300
@@ -178,6 +189,27 @@ private fun CheckButtonOrganizationCompletePrev() {
             incompleteContainerColor = Grey50,
             incompleteContentColor = Grey600,
             incompleteIconColor = Grey300
+        )
+    ) {
+
+    }
+}
+
+
+@Preview(group = "checkButton", name = "organization - complete")
+@Composable
+private fun CheckButtonOrganizationCompleteNullPrev() {
+    CheckButton(
+        modifier = Modifier.width(300.dp),
+        text = "CMC 15th",
+        isComplete = true,
+        color = CheckButtonDefaults(
+            completeContainerColor = Green100,
+            completeContentColor = Green700,
+            completeIconColor = null,
+            incompleteContainerColor = Grey50,
+            incompleteContentColor = Grey600,
+            incompleteIconColor = null
         )
     ) {
 

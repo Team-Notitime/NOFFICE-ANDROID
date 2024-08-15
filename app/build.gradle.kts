@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.noffice.android.application.firebase)
     alias(libs.plugins.noffice.android.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -15,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.easyhz.noffice"
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -48,12 +49,19 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.designSystem)
     implementation(projects.core.network)
+    implementation(projects.core.model)
+
+    implementation(projects.data.auth)
+    implementation(projects.data.organization)
 
     implementation(projects.domain.home)
+    implementation(projects.domain.sign)
 
+    implementation(projects.feature.announcement)
     implementation(projects.feature.home)
     implementation(projects.feature.myPage)
     implementation(projects.feature.organization)
+    implementation(projects.feature.sign)
 
     implementation(libs.kotlinx.serialization.json)
 }

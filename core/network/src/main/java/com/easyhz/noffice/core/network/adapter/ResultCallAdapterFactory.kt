@@ -28,6 +28,7 @@ class ResultCallAdapterFactory @Inject constructor(
         if (getRawType(wrapperType) != Result::class.java) return null
 
         val responseType = getParameterUpperBound(0, wrapperType as ParameterizedType)
+
         return ResultCallAdapter(responseType, gson)
     }
 }

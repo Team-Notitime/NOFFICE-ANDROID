@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_unexpected">알 수 없는 문제가 발생했어요.</string>
+    <string name="error_network_connection">네트워크 연결을 확인해주세요.</string>
+
+    <string name="error_bad_request">입력한 데이터를 확인해 주세요.</string>
+    <string name="error_unauthorized">로그인 후 다시 시도해 주세요.</string>
+    <string name="error_forbidden">권한을 확인해 주세요.</string>
+    <string name="error_not_found">요청한 페이지가 존재하지 않아요.</string>
+    <string name="error_internal_server">서버에 문제가 발생했어요. 잠시 후 다시 시도해 주세요.</string>
+</resources>

@@ -27,8 +27,9 @@ import com.easyhz.noffice.core.design_system.component.button.MediumButton
 import com.easyhz.noffice.core.design_system.component.textField.UnderBarTextField
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey100
-import com.easyhz.noffice.core.design_system.theme.Grey500
+import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.theme.InputDialogTitle
+import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.dialog.InputDialogButton
 
@@ -85,15 +86,19 @@ fun InputDialog(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 MediumButton(
+                    modifier = Modifier.fillMaxWidth(),
                     text = negativeButton.text,
                     enabled = true,
-                    contentColor = Grey500,
+                    contentColor = Grey600,
                     containerColor = Grey100,
+                    textStyle = SemiBold16,
                     onClick = negativeButton.onClick
                 )
                 MediumButton(
+                    modifier = Modifier.fillMaxWidth(),
                     text = positiveButton.text,
                     enabled = true,
+                    textStyle = SemiBold16,
                     onClick = positiveButton.onClick
                 )
             }

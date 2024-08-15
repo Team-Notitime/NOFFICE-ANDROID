@@ -95,17 +95,18 @@ fun ChipGroup(
 @Composable
 fun NofficeChip(
     modifier: Modifier = Modifier,
-    chipModifier: Modifier,
+    chipModifier: Modifier = Modifier,
     text: String,
     selectState: ChipState,
     chipStyles: ChipStyles,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(10.dp),
     onChipClicked: (String, ChipState) -> Unit,
 ) {
     val chipStyle = remember(selectState) { chipStyles.styleFor(selectState) }
 
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
+            .clip(roundedCornerShape)
             .noRippleClickable { onChipClicked(text, selectState) }
             .background(chipStyle.containerColor)
             .animateContentSize()
@@ -129,6 +130,11 @@ fun NofficeChip(
         }
     }
 }
+
+/** ====================
+ *      Preview
+ * ======================
+ */
 
 @Preview(group = "badge-on", name = "none")
 @Composable
