@@ -7,6 +7,18 @@ import javax.inject.Qualifier
 annotation class NofficeRetrofit
 
 @Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenClient
+
+@Qualifier
 @MustBeDocumented
 @Retention(AnnotationRetention.BINARY)
 annotation class Debug
@@ -15,3 +27,4 @@ annotation class Debug
 @MustBeDocumented
 @Retention(AnnotationRetention.BINARY)
 annotation class HttpLoggingLevel
+

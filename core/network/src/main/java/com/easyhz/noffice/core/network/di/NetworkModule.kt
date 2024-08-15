@@ -20,7 +20,21 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideNofficeClient(
-        client: OkHttpClient,
+        @DefaultClient client: OkHttpClient,
+        resultCallAdapterFactory: ResultCallAdapterFactory,
+        gson: Gson,
+    ): Retrofit = Retrofit.Builder().apply {
+        client(client)
+        baseUrl(BuildConfig.NOFFICE_BASE_URL)
+        addConverterFactory(GsonConverterFactory.create(gson))
+        addCallAdapterFactory(resultCallAdapterFactory)
+    }.build()
+
+    @TokenRetrofit
+    @Singleton
+    @Provides
+    fun provideTokenClient(
+        @TokenClient client: OkHttpClient,
         resultCallAdapterFactory: ResultCallAdapterFactory,
         gson: Gson,
     ): Retrofit = Retrofit.Builder().apply {
