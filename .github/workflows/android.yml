@@ -1,8 +1,8 @@
-name: Android CI
+name: Android dev CI
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "dev" ]
 
 jobs:
   build:

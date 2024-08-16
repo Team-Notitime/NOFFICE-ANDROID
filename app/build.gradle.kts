@@ -1,5 +1,4 @@
 import com.easyhz.noffice.build_logic.convention.NofficeBuildType
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.noffice.android.application)
