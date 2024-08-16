@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
+import com.easyhz.noffice.core.model.image.ImageParam
+import com.easyhz.noffice.core.model.image.ImagePurpose
+import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.core.model.organization.param.OrganizationCreationParam
 import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUseCase
 import com.easyhz.noffice.domain.organization.usecase.creation.CreateOrganizationUseCase
@@ -33,20 +36,61 @@ class OrganizationCreationViewModel @Inject constructor(
 
     override fun handleIntent(intent: CreationIntent) {
         when (intent) {
-            is CreationIntent.ClickBackButton -> { onClickBackButton() }
-            is CreationIntent.ClickNextButton -> { onClickNextButton() }
-            is CreationIntent.ChangeOrganizationNameTextValue -> { onChangeOrganizationNameTextValue(intent.text) }
-            is CreationIntent.ClearOrganizationName -> { onClearOrganizationName() }
-            is CreationIntent.ClearFocus -> { onClearFocus() }
-            is CreationIntent.ClickCategoryItem -> { onClickCategoryItem(intent.selectedIndex) }
-            is CreationIntent.ClickImageView -> { onClickImageView() }
-            is CreationIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.item) }
-            is CreationIntent.HideImageBottomSheet -> { hideImageBottomSheet() }
-            is CreationIntent.PickImage -> { onPickImage(intent.uri) }
-            is CreationIntent.TakePicture -> { onTakePicture(intent.isUsed) }
-            is CreationIntent.ChangeEndDate -> { onChangeEndDate(intent.date) }
-            is CreationIntent.ChangePromotionTextValue -> { onChangePromotionTextValue(intent.text) }
-            is CreationIntent.ClearPromotionCode -> { onClearPromotionCode() }
+            is CreationIntent.ClickBackButton -> {
+                onClickBackButton()
+            }
+
+            is CreationIntent.ClickNextButton -> {
+                onClickNextButton()
+            }
+
+            is CreationIntent.ChangeOrganizationNameTextValue -> {
+                onChangeOrganizationNameTextValue(intent.text)
+            }
+
+            is CreationIntent.ClearOrganizationName -> {
+                onClearOrganizationName()
+            }
+
+            is CreationIntent.ClearFocus -> {
+                onClearFocus()
+            }
+
+            is CreationIntent.ClickCategoryItem -> {
+                onClickCategoryItem(intent.selectedIndex)
+            }
+
+            is CreationIntent.ClickImageView -> {
+                onClickImageView()
+            }
+
+            is CreationIntent.ClickImageBottomSheetItem -> {
+                onClickImageBottomSheetItem(intent.item)
+            }
+
+            is CreationIntent.HideImageBottomSheet -> {
+                hideImageBottomSheet()
+            }
+
+            is CreationIntent.PickImage -> {
+                onPickImage(intent.uri)
+            }
+
+            is CreationIntent.TakePicture -> {
+                onTakePicture(intent.isUsed)
+            }
+
+            is CreationIntent.ChangeEndDate -> {
+                onChangeEndDate(intent.date)
+            }
+
+            is CreationIntent.ChangePromotionTextValue -> {
+                onChangePromotionTextValue(intent.text)
+            }
+
+            is CreationIntent.ClearPromotionCode -> {
+                onClearPromotionCode()
+            }
         }
     }
 
@@ -64,7 +108,7 @@ class OrganizationCreationViewModel @Inject constructor(
         currentState.step.currentStep.nextStep()?.let { nextStep ->
             reduce { updateStep(currentStep = nextStep) }
             postSideEffect { CreationSideEffect.ClearFocus }
-        } ?: onNavigateToInvitation()
+        } ?: createOrganization()
     }
 
     private fun onChangeOrganizationNameTextValue(newText: String) {
@@ -122,7 +166,6 @@ class OrganizationCreationViewModel @Inject constructor(
                 postSideEffect { CreationSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                // TODO fail 처리
                 println("fail: $it")
             }
     }
@@ -165,29 +208,55 @@ class OrganizationCreationViewModel @Inject constructor(
             println("성공 $it")
         }.onFailure {
             println("실패 $it")
+        }.also {
+            setIsLoading(false)
         }
     }
 
-
-    // TODO: 서버 통신 로직 추가
-    private fun onNavigateToInvitation() = viewModelScope.launch {
+    private fun createOrganization() = viewModelScope.launch {
+        setIsLoading(true)
+        val imageUrl = currentState.organizationImage.takeIf { it != Uri.EMPTY }?.let { uri ->
+            uploadImage(uri) ?: run {
+                setIsLoading(false)
+                return@launch
+            }
+        }
         val param = OrganizationCreationParam(
             name = currentState.organizationName,
             categoryList = listOf(1), // FIXME
             endAt = currentState.endDate,
-            profileImage = currentState.organizationImage.takeIf { it != Uri.EMPTY }.toString(),
+            profileImage = imageUrl,
             promotionCode = currentState.promotionCode.ifBlank { null }
         )
         createOrganizationUseCase.invoke(param).onSuccess {
-            postSideEffect {
-                CreationSideEffect.NavigateToInvitation(
-                    "www.noffice/${it.id}",
-                    it.profileImageUrl
-                )
-            }
+            onNavigateToInvitation(it)
         }.onFailure {
-            // TODO fail 처리
-            println("create fail $it")
+            println("create $it")
+            // FIXME 스낵바 처리
+        }.also {
+            setIsLoading(false)
         }
+    }
+
+    private suspend fun uploadImage(imageUri: Uri): String? {
+        val param = ImageParam(uri = imageUri, purpose = ImagePurpose.ORGANIZATION_LOGO)
+        return uploadImageUseCase.invoke(param).getOrElse {
+            // FIXME: 스낵바 처리
+            println("image: $it")
+            null
+        }
+    }
+
+    private fun onNavigateToInvitation(organization: Organization) = viewModelScope.launch {
+        postSideEffect {
+            CreationSideEffect.NavigateToInvitation(
+                "www.noffice/${organization.id}",
+                organization.profileImageUrl
+            )
+        }
+    }
+
+    private fun setIsLoading(isLoading: Boolean) {
+        reduce { copy(isLoading = isLoading) }
     }
 }

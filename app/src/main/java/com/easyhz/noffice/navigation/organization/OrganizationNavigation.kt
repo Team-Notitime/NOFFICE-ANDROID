@@ -88,7 +88,7 @@ internal fun NavGraphBuilder.organizationGraph(
         }
         OrganizationInvitationScreen(
             invitationUrl = args.invitationUrl,
-            imageUrl = args.imageUrl,
+            imageUrl = args.imageUrl ?: "",
             navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
@@ -126,7 +126,7 @@ internal fun NavController.navigateToOrganizationCreation() {
     navigate(OrganizationCreation)
 }
 
-internal fun NavController.navigateToOrganizationInvitation(invitationUrl: String, imageUrl: String) {
+internal fun NavController.navigateToOrganizationInvitation(invitationUrl: String, imageUrl: String?) {
     val navOptions = navOptions {
         popUpTo(OrganizationCreation) { inclusive = true }
     }

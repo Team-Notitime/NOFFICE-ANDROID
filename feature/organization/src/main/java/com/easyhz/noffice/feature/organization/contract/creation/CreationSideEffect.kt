@@ -7,6 +7,6 @@ sealed class CreationSideEffect: UiSideEffect() {
     data object ClearFocus: CreationSideEffect()
     data object NavigateToGallery: CreationSideEffect()
     data class NavigateToCamera(val uri: Uri): CreationSideEffect()
-    data class NavigateToInvitation(val invitationUrl: String, val imageUrl: String): CreationSideEffect()
+    data class NavigateToInvitation(val invitationUrl: String, val imageUrl: String?): CreationSideEffect()
     data object NavigateToUp: CreationSideEffect()
 }
