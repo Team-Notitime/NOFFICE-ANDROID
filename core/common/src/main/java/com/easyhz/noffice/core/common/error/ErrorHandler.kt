@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.easyhz.noffice.core.common.R
 
 @StringRes
-private fun Throwable.handleError(): Int {
+fun Throwable.handleError(): Int {
     return when(this) {
         is NofficeError.UnexpectedError -> R.string.error_unexpected
         is NofficeError.NetworkConnectionError -> R.string.error_network_connection
