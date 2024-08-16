@@ -64,6 +64,7 @@ internal fun NavGraphBuilder.organizationGraph(
         val args = it.toRoute<OrganizationManagement>()
         OrganizationManagementScreen(
             organizationInformation = args.organizationInformation,
+            snackBarHostState = snackBarHostState,
             navigateToUp = navController::navigateUp,
             navigateToMemberManagement = navController::navigateToMemberManagement,
         )
