@@ -8,13 +8,18 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.easyhz.noffice.core.design_system.component.bottomBar.HomeBottomBar
 import com.easyhz.noffice.core.design_system.component.button.HomeAddButton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
+import com.easyhz.noffice.core.design_system.component.snackBar.NofficeSnackBarHost
+import com.easyhz.noffice.core.design_system.util.snackBar.SnackBarType
+import com.easyhz.noffice.core.design_system.util.snackBar.snackBarPadding
 import com.easyhz.noffice.navigation.NofficeNavController
 import com.easyhz.noffice.navigation.announcement.announcementGraph
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
@@ -38,8 +43,10 @@ internal fun NofficeApp(
 ) {
     val navController = nofficeNavController.navController
     val isVisibleBottomBar = nofficeNavController.isInBottomTabs()
-
     val currentTab = nofficeNavController.mapRouteToTab()
+
+    val snackBarHostState = remember { SnackbarHostState() }
+
     NofficeScaffold(
         floatingActionButton = {
             AnimatedVisibility(
@@ -77,6 +84,12 @@ internal fun NofficeApp(
                     onClick = { nofficeNavController.navigate(it) }
                 )
             }
+        },
+        snackBarHost = {
+            NofficeSnackBarHost(
+                modifier = Modifier.snackBarPadding(SnackBarType.Default),
+                hostState = snackBarHostState
+            )
         }
     ) {
         NavHost(
