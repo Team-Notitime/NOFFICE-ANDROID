@@ -15,4 +15,5 @@ sealed class ManagementIntent : UiIntent() {
     data class PickImage(val uri: Uri?) : ManagementIntent()
     data class TakePicture(val isUsed: Boolean) : ManagementIntent()
     data object ClickMemberManagementButton: ManagementIntent()
+    data object ClickSaveButton: ManagementIntent()
 }

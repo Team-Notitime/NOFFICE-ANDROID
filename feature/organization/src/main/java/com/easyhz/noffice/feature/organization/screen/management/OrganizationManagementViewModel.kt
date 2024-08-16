@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.category.Category
-import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
@@ -19,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationManagementViewModel @Inject constructor(
-    private val getTakePictureUriUseCase: GetTakePictureUriUseCase
+    private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
     initialState = ManagementState.init()
 ) {
@@ -37,23 +35,16 @@ class OrganizationManagementViewModel @Inject constructor(
             is ManagementIntent.PickImage -> { onPickImage(intent.uri) }
             is ManagementIntent.TakePicture -> { onTakePicture(intent.isUsed) }
             is ManagementIntent.ClickMemberManagementButton -> { onClickMemberManagementButton() }
+            is ManagementIntent.ClickSaveButton -> { onClickSaveButton() }
         }
     }
 
     private fun initScreen(
         organizationInformation: OrganizationInformation
     ) {
-        val categoryList = currentState.category.map { item ->
-            Category(
-                id = item.id,
-                title = item.title,
-                isSelected = organizationInformation.category.any { it == item.title }
-            )
-        }
         reduce {
             copy(
                 organizationInformation = organizationInformation,
-                category = categoryList,
                 selectedImage = organizationInformation.profileImageUrl,
                 isLoading = false
             )
@@ -119,5 +110,9 @@ class OrganizationManagementViewModel @Inject constructor(
 
     private fun onClickMemberManagementButton() {
         postSideEffect { ManagementSideEffect.NavigateToMemberManagement(currentState.organizationInformation.id) }
+    }
+
+    private fun onClickSaveButton() {
+
     }
 }

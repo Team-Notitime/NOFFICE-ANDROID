@@ -36,6 +36,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.CheckButton
 import com.easyhz.noffice.core.design_system.component.button.CheckButtonDefaults
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
+import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
@@ -86,111 +87,112 @@ fun ContentScreen(
             scrollState.animateScrollTo(targetScroll)
         }
     }
-
-    NofficeBasicScaffold(
-        topBar = {
-            DetailTopBar(
-                leadingItem = DetailTopBarMenu(
-                    content = {
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "left",
-                            tint = Grey400
-                        )
-                    },
-                    onClick = { viewModel.postIntent(CreationIntent.ClickBackButton) }
-                ),
-                title = stringResource(id = R.string.announcement_creation_title),
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .height(LocalConfiguration.current.screenHeightDp.dp)
-                .screenHorizonPadding()
-        ) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(scrollState)
-                    .weight(1f)
-                    .pointerInput(Unit) {
-                        detectVerticalDragGestures(
-                            onDragStart = {
-                                focusManager.clearFocus()
-                            }
-                        ) { change, dragAmount -> // FIXME
-                            change.consume()
-                            coroutineScope.launch {
-                                scrollState.scrollBy(-dragAmount)
-                            }
-                        }
-                    },
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                TitleTextField(
-                    modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
-                    textFieldType = TextFieldType.SINGLE,
-                    value = uiState.title,
-                    onChangeValue = { viewModel.postIntent(CreationIntent.ChangeTitleTextValue(it)) },
-                    title = stringResource(id = R.string.announcement_creation_title_caption),
-                    placeholder = stringResource(id = R.string.announcement_creation_title_placeholder),
-                    singleLine = true,
-                )
-                ContentTextField(
-                    textFieldModifier = Modifier
-                        .onGloballyPositioned { _ ->
-                            viewModel.postIntent(CreationIntent.GloballyPositioned(view))
-                        }
-                        .onFocusEvent {
-                            viewModel.postIntent(CreationIntent.ChangedFocus(it.hasFocus))
+    LoadingScreenProvider(isLoading = false) {
+        NofficeBasicScaffold(
+            topBar = {
+                DetailTopBar(
+                    leadingItem = DetailTopBarMenu(
+                        content = {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = R.drawable.ic_chevron_left),
+                                contentDescription = "left",
+                                tint = Grey400
+                            )
                         },
-                    textFieldType = TextFieldType.MULTIPLE,
-                    value = uiState.content,
-                    onChangeValue = {
-                        viewModel.postIntent(CreationIntent.ChangeContentTextValue(it))
-                    },
-                    title = stringResource(id = R.string.announcement_creation_content_caption),
-                    placeholder = stringResource(id = R.string.announcement_creation_content_placeholder),
-                    onTextLayout = { result ->
-                        viewModel.postIntent(CreationIntent.SetLayoutResult(result))
-                    }
+                        onClick = { viewModel.postIntent(CreationIntent.ClickBackButton) }
+                    ),
+                    title = stringResource(id = R.string.announcement_creation_title),
                 )
-                Spacer(
-                    modifier = Modifier
-                        .height(12.dp)
-                        .fillMaxWidth()
-                )
-                uiState.optionState.forEach { (option, item) ->
-                    CheckButton(
-                        modifier = Modifier
-                            .height(42.dp)
-                            .fillMaxWidth(),
-                        text = stringResource(id = option.stringId),
-                        isComplete = item.selected,
-                        iconId = R.drawable.ic_chevron_right,
-                        verticalPadding = 8.dp,
-                        color = CheckButtonDefaults(
-                            completeContainerColor = Green100,
-                            completeContentColor = Green700,
-                            completeIconColor = Green700,
-                            incompleteContainerColor = Grey50,
-                            incompleteContentColor = Grey600,
-                            incompleteIconColor = Grey300
-                        )
-                    ) { viewModel.postIntent(CreationIntent.ClickOptionButton(option)) }
-                }
             }
-            MediumButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                text = stringResource(id = R.string.next_button),
-                enabled = uiState.enabledButton
+        ) { paddingValues ->
+            Column(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                    .height(LocalConfiguration.current.screenHeightDp.dp)
+                    .screenHorizonPadding()
             ) {
-                viewModel.postIntent(CreationIntent.ClickNextButton)
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(scrollState)
+                        .weight(1f)
+                        .pointerInput(Unit) {
+                            detectVerticalDragGestures(
+                                onDragStart = {
+                                    focusManager.clearFocus()
+                                }
+                            ) { change, dragAmount -> // FIXME
+                                change.consume()
+                                coroutineScope.launch {
+                                    scrollState.scrollBy(-dragAmount)
+                                }
+                            }
+                        },
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    TitleTextField(
+                        modifier = Modifier.padding(top = 16.dp, bottom = 4.dp),
+                        textFieldType = TextFieldType.SINGLE,
+                        value = uiState.title,
+                        onChangeValue = { viewModel.postIntent(CreationIntent.ChangeTitleTextValue(it)) },
+                        title = stringResource(id = R.string.announcement_creation_title_caption),
+                        placeholder = stringResource(id = R.string.announcement_creation_title_placeholder),
+                        singleLine = true,
+                    )
+                    ContentTextField(
+                        textFieldModifier = Modifier
+                            .onGloballyPositioned { _ ->
+                                viewModel.postIntent(CreationIntent.GloballyPositioned(view))
+                            }
+                            .onFocusEvent {
+                                viewModel.postIntent(CreationIntent.ChangedFocus(it.hasFocus))
+                            },
+                        textFieldType = TextFieldType.MULTIPLE,
+                        value = uiState.content,
+                        onChangeValue = {
+                            viewModel.postIntent(CreationIntent.ChangeContentTextValue(it))
+                        },
+                        title = stringResource(id = R.string.announcement_creation_content_caption),
+                        placeholder = stringResource(id = R.string.announcement_creation_content_placeholder),
+                        onTextLayout = { result ->
+                            viewModel.postIntent(CreationIntent.SetLayoutResult(result))
+                        }
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .height(12.dp)
+                            .fillMaxWidth()
+                    )
+                    uiState.optionState.forEach { (option, item) ->
+                        CheckButton(
+                            modifier = Modifier
+                                .height(42.dp)
+                                .fillMaxWidth(),
+                            text = stringResource(id = option.stringId),
+                            isComplete = item.selected,
+                            iconId = R.drawable.ic_chevron_right,
+                            verticalPadding = 8.dp,
+                            color = CheckButtonDefaults(
+                                completeContainerColor = Green100,
+                                completeContentColor = Green700,
+                                completeIconColor = Green700,
+                                incompleteContainerColor = Grey50,
+                                incompleteContentColor = Grey600,
+                                incompleteIconColor = Grey300
+                            )
+                        ) { viewModel.postIntent(CreationIntent.ClickOptionButton(option)) }
+                    }
+                }
+                MediumButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    text = stringResource(id = R.string.next_button),
+                    enabled = uiState.enabledButton
+                ) {
+                    viewModel.postIntent(CreationIntent.ClickNextButton)
+                }
             }
         }
     }

@@ -85,7 +85,7 @@ fun OrganizationManagementScreen(
                             color = Green700
                         )
                     },
-                    onClick = { /* 저장 */ }
+                    onClick = { viewModel.postIntent(ManagementIntent.ClickSaveButton) }
                 ),
             )
         }
@@ -103,7 +103,7 @@ fun OrganizationManagementScreen(
             }
             CategoryField(
                 modifier = Modifier.padding(vertical = 24.dp),
-                categoryList = uiState.category
+                categoryList = uiState.organizationInformation.category
             ) {
                 viewModel.postIntent(ManagementIntent.ClickCategoryItem(it))
             }
