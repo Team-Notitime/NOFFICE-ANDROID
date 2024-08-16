@@ -1,4 +1,5 @@
 import com.easyhz.noffice.build_logic.convention.NofficeBuildType
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.noffice.android.application)
@@ -11,12 +12,15 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
 }
 
+val keystoreProperties = Properties()
+keystoreProperties.load(project.rootProject.file("keystore.properties").inputStream())
+
 android {
     namespace = "com.easyhz.noffice"
 
     defaultConfig {
         applicationId = "com.easyhz.noffice"
-        versionCode = 3
+        versionCode = 5
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -25,6 +29,14 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
     buildTypes {
         debug {
             applicationIdSuffix = NofficeBuildType.DEBUG.applicationSuffix
@@ -36,6 +48,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     packaging {

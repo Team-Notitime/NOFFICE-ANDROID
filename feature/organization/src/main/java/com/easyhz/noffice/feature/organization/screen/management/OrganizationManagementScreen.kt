@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,7 +33,6 @@ import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.theme.semiBold
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
 import com.easyhz.noffice.feature.organization.component.management.ManagementHeader
 import com.easyhz.noffice.feature.organization.component.management.MemberButton
@@ -44,11 +45,12 @@ fun OrganizationManagementScreen(
     modifier: Modifier = Modifier,
     viewModel: OrganizationManagementViewModel = hiltViewModel(),
     organizationInformation: OrganizationInformation,
-    numberOfMembers: LinkedHashMap<MemberType, Int>,
+    snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
     navigateToMemberManagement: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val galleryLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia(),
@@ -60,7 +62,7 @@ fun OrganizationManagementScreen(
             onResult = { viewModel.postIntent(ManagementIntent.TakePicture(it)) }
         )
     LaunchedEffect(Unit) {
-        viewModel.postIntent(ManagementIntent.InitScreen(organizationInformation, numberOfMembers))
+        viewModel.postIntent(ManagementIntent.InitScreen(organizationInformation))
     }
     NofficeBasicScaffold(
         statusBarColor = White,
@@ -86,7 +88,7 @@ fun OrganizationManagementScreen(
                             color = Green700
                         )
                     },
-                    onClick = { /* 저장 */ }
+                    onClick = { viewModel.postIntent(ManagementIntent.ClickSaveButton) }
                 ),
             )
         }
@@ -104,7 +106,7 @@ fun OrganizationManagementScreen(
             }
             CategoryField(
                 modifier = Modifier.padding(vertical = 24.dp),
-                categoryList = uiState.category
+                categoryList = uiState.organizationInformation.category
             ) {
                 viewModel.postIntent(ManagementIntent.ClickCategoryItem(it))
             }
@@ -112,7 +114,7 @@ fun OrganizationManagementScreen(
                 modifier = Modifier
                     .padding(vertical = 16.dp)
                     .weight(1f),
-                numberOfMembers = uiState.numberOfMembers,
+                numberOfMembers = uiState.organizationInformation.members,
                 isLoading = uiState.isLoading
             )
             MemberButton(
@@ -142,6 +144,12 @@ fun OrganizationManagementScreen(
             }
             is ManagementSideEffect.NavigateToGallery -> {
                 galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+            is ManagementSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
             }
         }
     }

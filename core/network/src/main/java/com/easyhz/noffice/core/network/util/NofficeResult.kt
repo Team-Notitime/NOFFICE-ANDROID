@@ -19,7 +19,6 @@ fun <T> NofficeResult<T>.toResult() =
 private fun <T> handleBaseResponse(baseResponse: BaseResponse<T>): Result<T> =
     when(baseResponse.httpStatus) {
         in 200 .. 300 -> { Result.success(baseResponse.data)}
-        in 300 .. 600 -> { throw getErrorByStatusCode(baseResponse.httpStatus, baseResponse.message)
-        }
+        in 300 .. 600 -> { throw getErrorByStatusCode(baseResponse.httpStatus, baseResponse.message) }
         else -> { throw NofficeError.UnexpectedError }
     }

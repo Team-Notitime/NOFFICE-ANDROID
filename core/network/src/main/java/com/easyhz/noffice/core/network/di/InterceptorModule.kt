@@ -34,7 +34,7 @@ internal object InterceptorModule {
         return HttpLoggingInterceptor().setLevel(level)
     }
 
-    @DefaultClient
+    @NofficeClient
     @Provides
     fun provideOkhttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -50,7 +50,7 @@ internal object InterceptorModule {
         .retryOnConnectionFailure(true)
         .build()
 
-    @TokenClient
+    @PureClient
     @Provides
     fun provideTokenOkhttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,

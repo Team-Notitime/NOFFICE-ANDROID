@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AnnouncementModule {
+object AnnouncementServiceModule {
     @Provides
     fun provideAnnouncementService(@NofficeRetrofit retrofit: Retrofit): AnnouncementService =
         retrofit.create(AnnouncementService::class.java)

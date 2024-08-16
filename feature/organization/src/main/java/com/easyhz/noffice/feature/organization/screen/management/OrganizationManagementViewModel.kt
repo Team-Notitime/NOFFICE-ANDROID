@@ -1,13 +1,17 @@
 package com.easyhz.noffice.feature.organization.screen.management
 
 import android.net.Uri
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
+import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.category.Category
-import com.easyhz.noffice.core.model.organization.member.MemberType
+import com.easyhz.noffice.core.model.organization.param.CategoryParam
+import com.easyhz.noffice.domain.organization.usecase.category.UpdateOrganizationCategoryUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
@@ -19,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationManagementViewModel @Inject constructor(
-    private val getTakePictureUriUseCase: GetTakePictureUriUseCase
+    private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
+    private val updateOrganizationCategoryUseCase: UpdateOrganizationCategoryUseCase
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
     initialState = ManagementState.init()
 ) {
@@ -27,7 +32,7 @@ class OrganizationManagementViewModel @Inject constructor(
     override fun handleIntent(intent: ManagementIntent) {
         when (intent) {
             is ManagementIntent.InitScreen -> {
-                initScreen(intent.organizationInformation, intent.numberOfMembers)
+                initScreen(intent.organizationInformation)
             }
             is ManagementIntent.NavigateToUp -> { navigateToUp() }
             is ManagementIntent.ClickCategoryItem -> { onClickCategoryItem(intent.index) }
@@ -37,24 +42,16 @@ class OrganizationManagementViewModel @Inject constructor(
             is ManagementIntent.PickImage -> { onPickImage(intent.uri) }
             is ManagementIntent.TakePicture -> { onTakePicture(intent.isUsed) }
             is ManagementIntent.ClickMemberManagementButton -> { onClickMemberManagementButton() }
+            is ManagementIntent.ClickSaveButton -> { onClickSaveButton() }
         }
     }
 
     private fun initScreen(
-        organizationInformation: OrganizationInformation,
-        numberOfMembers: LinkedHashMap<MemberType, Int>
+        organizationInformation: OrganizationInformation
     ) {
-        val categoryList = currentState.category.map { item ->
-            Category(
-                title = item.title,
-                isSelected = organizationInformation.category.any { it == item.title }
-            )
-        }
         reduce {
             copy(
                 organizationInformation = organizationInformation,
-                category = categoryList,
-                numberOfMembers = numberOfMembers,
                 selectedImage = organizationInformation.profileImageUrl,
                 isLoading = false
             )
@@ -120,5 +117,30 @@ class OrganizationManagementViewModel @Inject constructor(
 
     private fun onClickMemberManagementButton() {
         postSideEffect { ManagementSideEffect.NavigateToMemberManagement(currentState.organizationInformation.id) }
+    }
+
+    private fun onClickSaveButton() = viewModelScope.launch {
+        val category = currentState.organizationInformation.category
+        if (category.isEmpty()) {
+            showSnackBar(R.string.organization_management_unselected_category)
+            return@launch
+        }
+        val param = CategoryParam(
+            organizationId = currentState.organizationInformation.id,
+            categoryList = category.filter { it.isSelected }.map { it.id }
+        )
+        updateOrganizationCategoryUseCase.invoke(param).onSuccess {
+            showSnackBar(R.string.organization_management_success_update_category)
+            navigateToUp()
+        }.onFailure {
+            Log.d(this.javaClass.name, "onClickSaveButton - ${it.message}")
+            showSnackBar(it.handleError())
+        }
+    }
+
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            ManagementSideEffect.ShowSnackBar(stringId)
+        }
     }
 }

@@ -31,6 +31,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.theme.SubTitle1
 import com.easyhz.noffice.core.design_system.theme.Title4
+import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.feature.organization.component.invitation.UrlView
 import com.easyhz.noffice.feature.organization.contract.invitation.InvitationIntent
 import com.easyhz.noffice.feature.organization.contract.invitation.InvitationSideEffect
@@ -50,7 +51,9 @@ fun OrganizationInvitationScreen(
         viewModel.postIntent(InvitationIntent.InitScreen(invitationUrl, imageUrl))
     }
 
-    NofficeBasicScaffold {
+    NofficeBasicScaffold(
+        statusBarColor = White
+    ) {
         Column(
             modifier = modifier
                 .screenHorizonPadding()

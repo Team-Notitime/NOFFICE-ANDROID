@@ -3,6 +3,7 @@ package com.easyhz.noffice.navigation.organization
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -11,7 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.toRoute
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationScreen
 import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailScreen
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
@@ -32,6 +32,7 @@ import com.easyhz.noffice.navigation.organization.screen.StandbyMember
 internal fun NavGraphBuilder.organizationGraph(
     modifier: Modifier,
     navController: NavController,
+    snackBarHostState: SnackbarHostState,
 ) {
     composable<Organization>(
         enterTransition = { fadeIn(animationSpec = tween(700)) },
@@ -50,6 +51,7 @@ internal fun NavGraphBuilder.organizationGraph(
         OrganizationDetailScreen(
             organizationId = args.organizationId,
             organizationName = args.organizationName,
+            snackBarHostState = snackBarHostState,
             navigateToUp = navController::navigateUp,
             navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
             navigateToStandbyMember = navController::navigateToStandbyMember,
@@ -62,7 +64,7 @@ internal fun NavGraphBuilder.organizationGraph(
         val args = it.toRoute<OrganizationManagement>()
         OrganizationManagementScreen(
             organizationInformation = args.organizationInformation,
-            numberOfMembers = args.numberOfMembers,
+            snackBarHostState = snackBarHostState,
             navigateToUp = navController::navigateUp,
             navigateToMemberManagement = navController::navigateToMemberManagement,
         )
@@ -76,6 +78,7 @@ internal fun NavGraphBuilder.organizationGraph(
     }
     composable<OrganizationCreation> {
         OrganizationCreationScreen(
+            snackBarHostState = snackBarHostState,
             navigateToInvitation = navController::navigateToOrganizationInvitation,
             navigateToUp = navController::navigateUp,
         )
@@ -89,7 +92,7 @@ internal fun NavGraphBuilder.organizationGraph(
         }
         OrganizationInvitationScreen(
             invitationUrl = args.invitationUrl,
-            imageUrl = args.imageUrl,
+            imageUrl = args.imageUrl ?: "",
             navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
@@ -115,9 +118,8 @@ internal fun NavController.navigateToOrganizationDetail(id: Int, name: String) {
 
 internal fun NavController.navigateToOrganizationManagement(
     information: OrganizationInformation,
-    number: LinkedHashMap<MemberType, Int>
 ) {
-    navigate(OrganizationManagement(organizationInformation = information, numberOfMembers = number))
+    navigate(OrganizationManagement(organizationInformation = information))
 }
 
 internal fun NavController.navigateToMemberManagement(id: Int) {
@@ -128,7 +130,7 @@ internal fun NavController.navigateToOrganizationCreation() {
     navigate(OrganizationCreation)
 }
 
-internal fun NavController.navigateToOrganizationInvitation(invitationUrl: String, imageUrl: String) {
+internal fun NavController.navigateToOrganizationInvitation(invitationUrl: String, imageUrl: String?) {
     val navOptions = navOptions {
         popUpTo(OrganizationCreation) { inclusive = true }
     }

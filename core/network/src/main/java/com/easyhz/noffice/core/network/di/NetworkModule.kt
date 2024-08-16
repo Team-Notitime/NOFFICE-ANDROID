@@ -20,7 +20,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideNofficeClient(
-        @DefaultClient client: OkHttpClient,
+        @NofficeClient client: OkHttpClient,
         resultCallAdapterFactory: ResultCallAdapterFactory,
         gson: Gson,
     ): Retrofit = Retrofit.Builder().apply {
@@ -34,7 +34,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideTokenClient(
-        @TokenClient client: OkHttpClient,
+        @PureClient client: OkHttpClient,
         resultCallAdapterFactory: ResultCallAdapterFactory,
         gson: Gson,
     ): Retrofit = Retrofit.Builder().apply {

@@ -20,4 +20,6 @@ dependencies {
     // Calendar
     implementation(libs.calendar.compose)
     implementation(libs.androidx.webkit)
+
+    implementation(libs.lottie)
 }

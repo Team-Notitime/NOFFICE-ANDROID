@@ -131,6 +131,7 @@ internal fun NofficeApp(
             organizationGraph(
                 modifier = Modifier.padding(it),
                 navController = navController,
+                snackBarHostState = snackBarHostState
             )
             signGraph(
                 navController = navController

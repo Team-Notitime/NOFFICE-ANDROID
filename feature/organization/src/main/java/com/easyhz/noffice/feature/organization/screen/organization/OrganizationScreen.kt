@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -13,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.IconMediumButton
@@ -34,7 +34,7 @@ fun OrganizationScreen(
     navigateToCreation: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
+    val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
     NofficeScaffold(
         topBar = {
             HomeTopBar(
@@ -44,8 +44,8 @@ fun OrganizationScreen(
 
             }
         }
-    ) {
-        if(uiState.organizationList.isEmpty()) {
+    ) { paddingValues ->
+        if(organizationList.itemCount == 0) {
             ExceptionView(
                 modifier = Modifier.fillMaxSize(),
                 type = ExceptionType.NO_ORGANIZATION
@@ -53,7 +53,7 @@ fun OrganizationScreen(
         }
         Column(
             modifier = modifier
-                .padding(top = it.calculateTopPadding())
+                .padding(top = paddingValues.calculateTopPadding())
                 .screenHorizonPadding()
         ) {
             IconMediumButton(
@@ -66,13 +66,18 @@ fun OrganizationScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                itemsIndexed(uiState.organizationList) { index, item ->
+                items(organizationList.itemCount, key = { organizationList[it]?.id ?: -1}) { index ->
                     OrganizationItem(
                         modifier = Modifier.fillMaxWidth(),
-                        organizationName = item,
-                        imageUrl = if(item.length == 2) "" else "https://picsum.photos/id/37/200/300"
+                        organizationName = organizationList[index]?.name!!,
+                        imageUrl = organizationList[index]?.profileImageUrl!!
                     ) {
-                        viewModel.postIntent(OrganizationIntent.ClickOrganization(index))
+                        viewModel.postIntent(
+                            OrganizationIntent.ClickOrganization(
+                                id = organizationList[index]?.id ?: -1,
+                                name = organizationList[index]?.name ?: ""
+                            )
+                        )
                     }
                 }
             }

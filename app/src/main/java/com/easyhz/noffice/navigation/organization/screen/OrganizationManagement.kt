@@ -11,12 +11,10 @@ import kotlin.reflect.typeOf
 @Serializable
 data class OrganizationManagement(
     val organizationInformation: OrganizationInformation,
-    val numberOfMembers: LinkedHashMap<MemberType, Int>,
 ) {
     companion object {
         val typeMap = mapOf(
             typeOf<OrganizationInformation>() to serializableType<OrganizationInformation>(),
-            typeOf<LinkedHashMap<MemberType, Int>>() to serializableType<LinkedHashMap<MemberType, Int>>()
         )
 
         fun from(savedStateHandle: SavedStateHandle) =

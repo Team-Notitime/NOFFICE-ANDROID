@@ -15,4 +15,7 @@ dependencies {
 
     implementation(libs.javax.inject)
     implementation(libs.kotlinx.coroutines.core)
+
+    // paging
+    implementation(libs.paging.common)
 }

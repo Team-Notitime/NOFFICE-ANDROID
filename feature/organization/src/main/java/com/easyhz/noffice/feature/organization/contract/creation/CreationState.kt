@@ -21,6 +21,7 @@ data class CreationState(
     val endDate: LocalDate?,
     val promotionCode: String,
     val isShowImageBottomSheet: Boolean,
+    val isLoading: Boolean
 ): UiState() {
     companion object {
         const val ORGANIZATION_NAME_MAX = 10
@@ -32,7 +33,8 @@ data class CreationState(
             organizationImage = Uri.EMPTY,
             endDate = null,
             promotionCode = "",
-            isShowImageBottomSheet = false
+            isShowImageBottomSheet = false,
+            isLoading = true
         )
     }
 

@@ -2,17 +2,12 @@ package com.easyhz.noffice.feature.organization.contract.management
 
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.category.CATEGORY
-import com.easyhz.noffice.core.model.organization.category.Category
-import com.easyhz.noffice.core.model.organization.category.toState
 import com.easyhz.noffice.core.model.organization.member.MemberType
 
 data class ManagementState(
     val isLoading: Boolean,
     val organizationInformation: OrganizationInformation,
     val selectedImage: String,
-    val category: List<Category>,
-    val numberOfMembers: LinkedHashMap<MemberType, Int>,
     val isShowImageBottomSheet: Boolean
 ): UiState() {
     companion object {
@@ -23,17 +18,17 @@ data class ManagementState(
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
+                members = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
+                hasStandbyMember = false
             ),
-            category = CATEGORY.toState(),
             selectedImage = "",
-            numberOfMembers = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
             isShowImageBottomSheet = false
         )
         fun ManagementState.updateCategoryItem(selectedIndex: Int): ManagementState {
-            val updatedCategory = category.mapIndexed { index, categoryState ->
+            val updatedCategory = organizationInformation.category.mapIndexed { index, categoryState ->
                 categoryState.copy(isSelected = categoryState.isSelected.xor(index == selectedIndex))
             }
-            return copy(category = updatedCategory)
+            return copy(organizationInformation = organizationInformation.copy(category = updatedCategory),)
         }
     }
 }

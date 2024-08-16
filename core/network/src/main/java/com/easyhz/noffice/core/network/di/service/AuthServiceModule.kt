@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthModule {
+object AuthServiceModule {
     @Provides
     fun provideAuthService(@NofficeRetrofit retrofit: Retrofit): AuthService =
         retrofit.create(AuthService::class.java)
