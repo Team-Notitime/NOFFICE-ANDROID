@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +44,7 @@ fun OrganizationDetailScreen(
     viewModel: OrganizationDetailViewModel = hiltViewModel(),
     organizationId: Int,
     organizationName: String,
+    snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
     navigateToStandbyMember: (Int) -> Unit,
@@ -49,6 +52,8 @@ fun OrganizationDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val announcementList = viewModel.announcementState.collectAsLazyPagingItems()
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.postIntent(DetailIntent.InitScreen(organizationId, organizationName))
     }
@@ -155,6 +160,12 @@ fun OrganizationDetailScreen(
             }
             is DetailSideEffect.NavigateToStandbyMember -> {
                 navigateToStandbyMember(sideEffect.id)
+            }
+            is DetailSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
             }
         }
     }

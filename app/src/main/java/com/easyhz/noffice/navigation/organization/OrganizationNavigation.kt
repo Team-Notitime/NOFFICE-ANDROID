@@ -3,6 +3,7 @@ package com.easyhz.noffice.navigation.organization
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -11,7 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import androidx.navigation.toRoute
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
-import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationScreen
 import com.easyhz.noffice.feature.organization.screen.detail.OrganizationDetailScreen
 import com.easyhz.noffice.feature.organization.screen.invitation.OrganizationInvitationScreen
@@ -32,6 +32,7 @@ import com.easyhz.noffice.navigation.organization.screen.StandbyMember
 internal fun NavGraphBuilder.organizationGraph(
     modifier: Modifier,
     navController: NavController,
+    snackBarHostState: SnackbarHostState,
 ) {
     composable<Organization>(
         enterTransition = { fadeIn(animationSpec = tween(700)) },
@@ -50,6 +51,7 @@ internal fun NavGraphBuilder.organizationGraph(
         OrganizationDetailScreen(
             organizationId = args.organizationId,
             organizationName = args.organizationName,
+            snackBarHostState = snackBarHostState,
             navigateToUp = navController::navigateUp,
             navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
             navigateToStandbyMember = navController::navigateToStandbyMember,

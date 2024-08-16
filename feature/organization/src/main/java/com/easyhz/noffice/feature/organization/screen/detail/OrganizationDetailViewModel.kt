@@ -1,9 +1,12 @@
 package com.easyhz.noffice.feature.organization.screen.detail
 
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.domain.organization.usecase.announcement.FetchAnnouncementsByOrganizationUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationInfoUseCase
@@ -68,7 +71,8 @@ class OrganizationDetailViewModel @Inject constructor(
             }
             fetchAnnouncements(it.id)
         }.onFailure {
-
+            Log.d(this.javaClass.name, "fetchData - ${it.message}")
+            showSnackBar(it.handleError())
         }
     }
 
@@ -99,5 +103,11 @@ class OrganizationDetailViewModel @Inject constructor(
 
     private fun onClickStandbyMemberButton() {
         postSideEffect { DetailSideEffect.NavigateToStandbyMember(currentState.organizationInformation.id) }
+    }
+
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            DetailSideEffect.ShowSnackBar(stringId)
+        }
     }
 }
