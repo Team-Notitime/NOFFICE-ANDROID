@@ -4,6 +4,7 @@ import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.core.model.organization.member.mapMemberCounts
+import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
 
@@ -20,4 +21,10 @@ internal fun OrganizationInformationResponse.toModel(): OrganizationInformation 
     profileImageUrl = this.profileImage,
     members = mapMemberCounts(MemberType.LEADER to leaderCount, MemberType.MEMBER to participantCount),
     hasStandbyMember = this.isPending
+)
+
+internal fun OrganizationCapsuleResponse.toModel(): Organization = Organization(
+    id = this.organizationId,
+    name = this.organizationName,
+    profileImageUrl = this.profileImage
 )

@@ -3,13 +3,13 @@ package com.easyhz.noffice.data.organization.pagingsource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.easyhz.noffice.core.network.api.organization.OrganizationService
-import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
+import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 
 class OrganizationPagingSource(
     private val organizationService: OrganizationService,
     private val memberId: Int?
-):PagingSource<Int, OrganizationResponse>() {
-    override fun getRefreshKey(state: PagingState<Int, OrganizationResponse>): Int? {
+):PagingSource<Int, OrganizationCapsuleResponse>() {
+    override fun getRefreshKey(state: PagingState<Int, OrganizationCapsuleResponse>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.run {
                 prevKey?.plus(1) ?: nextKey?.minus(1)
@@ -17,7 +17,7 @@ class OrganizationPagingSource(
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, OrganizationResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, OrganizationCapsuleResponse> {
         val page = params.key ?: START_PAGE
         val loadSize = params.loadSize
         return memberId?.let { id ->

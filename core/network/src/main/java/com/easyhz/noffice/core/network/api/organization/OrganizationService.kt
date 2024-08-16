@@ -2,6 +2,7 @@ package com.easyhz.noffice.core.network.api.organization
 
 import com.easyhz.noffice.core.network.model.request.organization.OrganizationCreationRequest
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementItem
+import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
@@ -22,7 +23,7 @@ interface OrganizationService {
         @Query("page") page: Int,
         @Query("size") size: Int = 10,
         @Query("sort") sort: List<String>
-    ): PagingResult<OrganizationResponse>
+    ): PagingResult<OrganizationCapsuleResponse>
 
     /* 조직 생성 */
     @POST("/api/v1/organizations")
