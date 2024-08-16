@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LOCAL_PROPERTIES_CONTENTS: ${{ secrets.LOCAL_PROPERTIES_CONTENTS }}
+      KEYSTORE_PROPERTIES_CONTENTS: ${{ secrets.KEYSTORE_PROPERTIES_CONTENTS }}
 
     steps:
     - uses: actions/checkout@v4
@@ -39,6 +40,10 @@ jobs:
     - name: Create local.properties
       run: |
         echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
+
+    - name: Create keystore.properties
+      run: |
+        echo "$KEYSTORE_PROPERTIES_CONTENTS" > keystore.properties
 
     - name: Build with Gradle
       run: ./gradlew build
