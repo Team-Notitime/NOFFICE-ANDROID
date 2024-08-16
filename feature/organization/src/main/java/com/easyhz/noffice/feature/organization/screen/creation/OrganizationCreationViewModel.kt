@@ -1,9 +1,12 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
 import android.net.Uri
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.image.ImageParam
@@ -166,7 +169,8 @@ class OrganizationCreationViewModel @Inject constructor(
                 postSideEffect { CreationSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                println("fail: $it")
+                Log.d(this.javaClass.name, "navigateToCamera - ${it.message}")
+                showSnackBar(it.handleError())
             }
     }
 
@@ -205,9 +209,10 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun fetchCategories() = viewModelScope.launch {
         fetchCategoriesUseCase.invoke(Unit).onSuccess {
-            println("성공 $it")
+            println("성공 $it") // TODO 카테고리 끼우기
         }.onFailure {
-            println("실패 $it")
+            Log.d(this.javaClass.name, "fetchCategories - ${it.message}")
+            showSnackBar(it.handleError())
         }.also {
             setIsLoading(false)
         }
@@ -231,8 +236,8 @@ class OrganizationCreationViewModel @Inject constructor(
         createOrganizationUseCase.invoke(param).onSuccess {
             onNavigateToInvitation(it)
         }.onFailure {
-            println("create $it")
-            // FIXME 스낵바 처리
+            Log.d(this.javaClass.name, "createOrganization - ${it.message}")
+            showSnackBar(it.handleError())
         }.also {
             setIsLoading(false)
         }
@@ -241,8 +246,8 @@ class OrganizationCreationViewModel @Inject constructor(
     private suspend fun uploadImage(imageUri: Uri): String? {
         val param = ImageParam(uri = imageUri, purpose = ImagePurpose.ORGANIZATION_LOGO)
         return uploadImageUseCase.invoke(param).getOrElse {
-            // FIXME: 스낵바 처리
-            println("image: $it")
+            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            showSnackBar(it.handleError())
             null
         }
     }
@@ -258,5 +263,11 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun setIsLoading(isLoading: Boolean) {
         reduce { copy(isLoading = isLoading) }
+    }
+
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            CreationSideEffect.ShowSnackBar(stringId)
+        }
     }
 }

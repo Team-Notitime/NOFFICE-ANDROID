@@ -77,6 +77,7 @@ internal fun NavGraphBuilder.organizationGraph(
     }
     composable<OrganizationCreation> {
         OrganizationCreationScreen(
+            snackBarHostState = snackBarHostState,
             navigateToInvitation = navController::navigateToOrganizationInvitation,
             navigateToUp = navController::navigateUp,
         )

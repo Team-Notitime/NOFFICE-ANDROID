@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -45,10 +47,12 @@ import com.easyhz.noffice.feature.organization.util.creation.CreationStep
 fun OrganizationCreationScreen(
     modifier: Modifier = Modifier,
     viewModel: OrganizationCreationViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     navigateToInvitation: (String, String?) -> Unit,
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val galleryLauncher =
         rememberLauncherForActivityResult(
@@ -125,6 +129,12 @@ fun OrganizationCreationScreen(
                 navigateToInvitation(sideEffect.invitationUrl, sideEffect.imageUrl)
             }
             is CreationSideEffect.NavigateToUp -> { navigateToUp() }
+            is CreationSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
+            }
         }
     }
 }
