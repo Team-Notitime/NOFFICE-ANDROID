@@ -26,15 +26,22 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun onClickToSocialLogin(type: SocialLoginType, context: Context) = viewModelScope.launch {
+        setIsLoading(true)
         loginUseCase.invoke(AuthParam(context, type.name)).onSuccess {
             // FIXME 가입 된 유저 네비게이션 처리
             navigateToHome()
         }.onFailure {
             it.printStackTrace()
+        }.also {
+            setIsLoading(false)
         }
     }
 
     private fun navigateToHome() {
         postSideEffect { LoginSideEffect.NavigateToHome }
+    }
+
+    private fun setIsLoading(value: Boolean) {
+        reduce { copy(isLoading = value) }
     }
 }
