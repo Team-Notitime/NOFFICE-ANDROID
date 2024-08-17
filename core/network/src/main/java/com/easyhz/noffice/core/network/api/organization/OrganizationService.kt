@@ -38,7 +38,8 @@ interface OrganizationService {
     /* 단일 조직 정보 조회 */
     @GET("/api/v1/organizations/{organizationId}")
     suspend fun fetchOrganizationInfo(
-        @Path("organizationId") organizationId: Int
+        @Path("organizationId") organizationId: Int,
+        @Query("memberId") memberId: Int = 2 /* FIXME */,
     ): NofficeResult<OrganizationInformationResponse>
 
     /* 조직별 노티 페이징 조회 */

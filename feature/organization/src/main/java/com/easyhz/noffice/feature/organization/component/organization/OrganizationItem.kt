@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.image.OrganizationImage
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.extension.skeletonEffect
 import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 
@@ -56,6 +58,45 @@ internal fun OrganizationItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+        Box(modifier = Modifier
+            .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
+            .fillMaxHeight()
+        ) {
+            Icon(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                painter = painterResource(id = R.drawable.ic_chevron_right),
+                contentDescription = "rightArrow",
+                tint = Grey800
+            )
+        }
+    }
+}
+
+@Composable
+internal fun SkeletonOrganizationItem(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .padding(vertical = 8.dp)
+            .height(64.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(48.dp)
+                .skeletonEffect(),
+        )
+        Box(
+            modifier = Modifier
+                .height(24.dp)
+                .fillMaxWidth(0.3f)
+                .skeletonEffect(),
+        )
+        Box(modifier = Modifier.weight(1f))
         Box(modifier = Modifier
             .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
             .fillMaxHeight()

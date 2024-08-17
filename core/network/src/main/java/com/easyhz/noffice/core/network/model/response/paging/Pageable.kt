@@ -5,6 +5,6 @@ data class Pageable(
     val pageNumber: Int,
     val pageSize: Int,
     val paged: Boolean,
-    val sort: SortX,
+//    val sort: List<SortX>,
     val unpaged: Boolean
 )
