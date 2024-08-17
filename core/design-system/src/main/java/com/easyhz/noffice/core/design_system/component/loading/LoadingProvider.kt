@@ -59,7 +59,7 @@ fun LoadingScreenProvider(
             onDismissRequest = { }
         )
         LottieAnimation(
-            modifier = Modifier.size((screenWidthDp / 3).dp).align(Alignment.Center),
+            modifier = Modifier.size((screenWidthDp / 5).dp).align(Alignment.Center),
             composition = composition,
             progress = { progress },
         )

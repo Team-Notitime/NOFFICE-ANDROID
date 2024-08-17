@@ -1,5 +1,6 @@
 package com.easyhz.noffice.navigation.sign
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -11,7 +12,8 @@ import com.easyhz.noffice.navigation.sign.screen.LogIn
 import com.easyhz.noffice.navigation.sign.screen.SignUp
 
 internal fun NavGraphBuilder.signGraph(
-    navController: NavController
+    navController: NavController,
+    snackBarHostState: SnackbarHostState
 ) {
     composable<LogIn> {
         val navOptions = navOptions {
@@ -21,6 +23,7 @@ internal fun NavGraphBuilder.signGraph(
             launchSingleTop = true
         }
         LoginScreen(
+            snackBarHostState = snackBarHostState,
             navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
