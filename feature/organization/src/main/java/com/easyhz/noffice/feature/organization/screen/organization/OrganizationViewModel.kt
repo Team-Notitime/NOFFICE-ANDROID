@@ -20,7 +20,7 @@ import javax.inject.Inject
 class OrganizationViewModel @Inject constructor(
     private val fetchOrganizationsUseCase: FetchOrganizationsUseCase
 ) : BaseViewModel<OrganizationState, OrganizationIntent, OrganizationSideEffect>(
-    initialState = OrganizationState.init()
+    initialState = OrganizationState
 ) {
     private val _organizationState: MutableStateFlow<PagingData<Organization>> =
         MutableStateFlow(value = PagingData.empty())

@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
@@ -22,6 +21,7 @@ import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
 import com.easyhz.noffice.feature.organization.component.organization.OrganizationItem
+import com.easyhz.noffice.feature.organization.component.organization.SkeletonOrganizationItem
 import com.easyhz.noffice.feature.organization.contract.organization.OrganizationIntent
 import com.easyhz.noffice.feature.organization.contract.organization.OrganizationSideEffect
 import com.easyhz.noffice.feature.organization.util.OrganizationTopBarMenu
@@ -33,7 +33,6 @@ fun OrganizationScreen(
     navigateToDetail: (Int, String) -> Unit,
     navigateToCreation: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
     NofficeScaffold(
         topBar = {
@@ -45,7 +44,7 @@ fun OrganizationScreen(
             }
         }
     ) { paddingValues ->
-        if(organizationList.itemCount == 0) {
+        if(organizationList.itemCount == 0 && organizationList.loadState.refresh != LoadState.Loading) {
             ExceptionView(
                 modifier = Modifier.fillMaxSize(),
                 type = ExceptionType.NO_ORGANIZATION
@@ -66,6 +65,13 @@ fun OrganizationScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
+                item {
+                    if (organizationList.loadState.refresh == LoadState.Loading) {
+                        repeat(3) {
+                            SkeletonOrganizationItem()
+                        }
+                    }
+                }
                 items(organizationList.itemCount, key = { organizationList[it]?.id ?: -1}) { index ->
                     OrganizationItem(
                         modifier = Modifier.fillMaxWidth(),
