@@ -3,13 +3,13 @@ package com.easyhz.noffice.data.organization.pagingsource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.easyhz.noffice.core.network.api.organization.OrganizationService
-import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementItem
+import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementResponse
 
 class OrganizationAnnouncementPagingSource(
     private val organizationService: OrganizationService,
     private val organizationId: Int,
-) : PagingSource<Int, AnnouncementItem>() {
-    override fun getRefreshKey(state: PagingState<Int, AnnouncementItem>): Int? {
+) : PagingSource<Int, AnnouncementResponse>() {
+    override fun getRefreshKey(state: PagingState<Int, AnnouncementResponse>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.run {
                 prevKey?.plus(1) ?: nextKey?.minus(1)
@@ -17,7 +17,7 @@ class OrganizationAnnouncementPagingSource(
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnnouncementItem> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnnouncementResponse> {
         val page = params.key ?: START_PAGE
         val loadSize = params.loadSize
         return organizationService.fetchAnnouncementsByOrganization(
@@ -42,6 +42,6 @@ class OrganizationAnnouncementPagingSource(
 
     companion object {
         const val PAGE_SIZE = 10
-        private const val START_PAGE = 0
+        private const val START_PAGE = 1
     }
 }

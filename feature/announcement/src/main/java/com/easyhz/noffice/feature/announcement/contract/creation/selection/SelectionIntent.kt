@@ -5,5 +5,5 @@ import com.easyhz.noffice.core.common.base.UiIntent
 sealed class SelectionIntent: UiIntent() {
     data object ClickBackButton: SelectionIntent()
     data object ClickNextButton: SelectionIntent()
-    data class SelectedOrganization(val organization: String): SelectionIntent()
+    data class SelectedOrganization(val id: Int): SelectionIntent()
 }
