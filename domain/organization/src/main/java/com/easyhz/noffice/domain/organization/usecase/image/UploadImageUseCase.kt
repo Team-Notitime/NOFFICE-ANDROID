@@ -4,7 +4,6 @@ import android.net.Uri
 import com.easyhz.noffice.core.common.base.BaseUseCase
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
-import com.easyhz.noffice.core.common.util.Generate
 import com.easyhz.noffice.core.model.image.ImageParam
 import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.image.ImageUrl
