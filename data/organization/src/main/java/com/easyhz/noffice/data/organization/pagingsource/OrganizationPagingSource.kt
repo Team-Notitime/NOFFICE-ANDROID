@@ -7,8 +7,7 @@ import com.easyhz.noffice.core.network.model.response.organization.OrganizationC
 
 class OrganizationPagingSource(
     private val organizationService: OrganizationService,
-    private val memberId: Int?
-):PagingSource<Int, OrganizationCapsuleResponse>() {
+): PagingSource<Int, OrganizationCapsuleResponse>() {
     override fun getRefreshKey(state: PagingState<Int, OrganizationCapsuleResponse>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.run {
@@ -20,26 +19,24 @@ class OrganizationPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, OrganizationCapsuleResponse> {
         val page = params.key ?: START_PAGE
         val loadSize = params.loadSize
-        return memberId?.let { id ->
-            organizationService.fetchOrganizations(
-                memberId = id,
-                page = page,
-                size = loadSize,
-                sort = emptyList() /* FIXME */
-            ).fold(
-                onSuccess = {
-                    LoadResult.Page(
-                        data = it.data.content,
-                        prevKey = null,
-                        nextKey = if (it.data.content.size < loadSize) null else page + 1
-                    )
-                },
-                onFailure = {
-                    LoadResult.Error(it)
-                }
-            )
-        } ?: LoadResult.Page(data = emptyList(), prevKey = null, nextKey = null)
+        return organizationService.fetchOrganizations(
+            page = page,
+            size = loadSize,
+            sort = emptyList() /* FIXME */
+        ).fold(
+            onSuccess = {
+                LoadResult.Page(
+                    data = it.data.content,
+                    prevKey = null,
+                    nextKey = if (it.data.content.size < loadSize) null else page + 1
+                )
+            },
+            onFailure = {
+                LoadResult.Error(it)
+            }
+        )
     }
+
     companion object {
         const val PAGE_SIZE = 10
         private const val START_PAGE = 0

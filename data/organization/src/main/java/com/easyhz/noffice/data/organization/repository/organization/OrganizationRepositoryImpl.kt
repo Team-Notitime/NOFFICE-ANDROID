@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
-import com.easyhz.noffice.core.datastore.datasource.user.UserLocalDataSource
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
@@ -29,18 +28,15 @@ import javax.inject.Inject
 
 class OrganizationRepositoryImpl @Inject constructor(
     @Dispatcher(NofficeDispatchers.IO) private val dispatcher: CoroutineDispatcher,
-    private val organizationService: OrganizationService,
-    private val userLocalDataSource: UserLocalDataSource
+    private val organizationService: OrganizationService
 ) : OrganizationRepository {
     override suspend fun fetchOrganizations(): Flow<PagingData<Organization>> =
         withContext(dispatcher) {
-            val memberId = userLocalDataSource.getMemberId().getOrNull()
             return@withContext Pager(
                 config = PagingConfig(pageSize = PAGE_SIZE, initialLoadSize = PAGE_SIZE),
                 pagingSourceFactory = {
                     OrganizationPagingSource(
-                        organizationService = organizationService,
-                        memberId = memberId
+                        organizationService = organizationService
                     )
                 }
             ).flow.map { pagingData ->
@@ -52,9 +48,7 @@ class OrganizationRepositoryImpl @Inject constructor(
 
     override suspend fun createOrganization(param: OrganizationCreationParam): Result<Organization> =
         withContext(dispatcher) {
-            val memberId = userLocalDataSource.getMemberId().getOrElse { -1 }
             return@withContext organizationService.createOrganization(
-                memberId = memberId,
                 body = param.toRequest()
             ).toResult().map { it.toModel() }
         }
@@ -65,14 +59,18 @@ class OrganizationRepositoryImpl @Inject constructor(
                 .map { it.toModel() }
         }
 
-    override suspend fun fetchAnnouncementsByOrganization(organizationId: Int, memberId: Int): Flow<PagingData<OrganizationAnnouncement>> =
+    override suspend fun fetchAnnouncementsByOrganization(
+        organizationId: Int,
+    ): Flow<PagingData<OrganizationAnnouncement>> =
         Pager(
-            config = PagingConfig(pageSize = OrganizationAnnouncementPagingSource.PAGE_SIZE, initialLoadSize = OrganizationAnnouncementPagingSource.PAGE_SIZE),
+            config = PagingConfig(
+                pageSize = OrganizationAnnouncementPagingSource.PAGE_SIZE,
+                initialLoadSize = OrganizationAnnouncementPagingSource.PAGE_SIZE
+            ),
             pagingSourceFactory = {
                 OrganizationAnnouncementPagingSource(
                     organizationService = organizationService,
                     organizationId = organizationId,
-                    memberId = memberId
                 )
             }
         ).flow.map { pagingData ->
@@ -85,7 +83,10 @@ class OrganizationRepositoryImpl @Inject constructor(
         organizationId: Int,
         category: List<Int>
     ): Result<Category> = withContext(dispatcher) {
-        return@withContext organizationService.updateOrganizationCategory(organizationId, CategoryRequest(category)).toResult().map { it.toModel() }
+        return@withContext organizationService.updateOrganizationCategory(
+            organizationId,
+            CategoryRequest(category)
+        ).toResult().map { it.toModel() }
     }
 
     override suspend fun joinOrganization(organizationId: Int): Result<Unit> {

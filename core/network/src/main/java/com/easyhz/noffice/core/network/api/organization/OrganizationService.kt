@@ -22,7 +22,6 @@ interface OrganizationService {
     /* 가입된 조직 페이징 조회 */
     @GET("/api/v1/organizations")
     suspend fun fetchOrganizations(
-        @Query("memberId") memberId: Int,
         @Query("page") page: Int,
         @Query("size") size: Int = 10,
         @Query("sort") sort: List<String>
@@ -31,7 +30,6 @@ interface OrganizationService {
     /* 조직 생성 */
     @POST("/api/v1/organizations")
     suspend fun createOrganization(
-        @Query("memberId") memberId: Int,
         @Body body: OrganizationCreationRequest
     ): NofficeResult<OrganizationResponse>
 
@@ -39,14 +37,12 @@ interface OrganizationService {
     @GET("/api/v1/organizations/{organizationId}")
     suspend fun fetchOrganizationInfo(
         @Path("organizationId") organizationId: Int,
-        @Query("memberId") memberId: Int = 2 /* FIXME */,
     ): NofficeResult<OrganizationInformationResponse>
 
     /* 조직별 노티 페이징 조회 */
     @GET("/api/v1/organizations/{organizationId}/announcements")
     suspend fun fetchAnnouncementsByOrganization(
         @Path("organizationId") organizationId: Int,
-        @Query("memberId") memberId: Int,
         @Query("page") page: Int,
         @Query("size") size: Int = 10,
         @Query("sort") sort: List<String>
@@ -62,6 +58,5 @@ interface OrganizationService {
     @POST("/api/v1/organizations/{organizationId}/join")
     suspend fun joinOrganization(
         @Path("organizationId") organizationId: Int,
-        @Query("memberId") memberId: Int,
     ): NofficeResult<OrganizationJoinResponse>
 }
