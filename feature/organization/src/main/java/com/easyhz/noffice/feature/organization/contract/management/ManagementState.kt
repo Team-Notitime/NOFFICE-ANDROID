@@ -5,6 +5,7 @@ import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.member.MemberType
 
 data class ManagementState(
+    val isSaveLoading: Boolean,
     val isLoading: Boolean,
     val organizationInformation: OrganizationInformation,
     val selectedImage: String,
@@ -22,7 +23,8 @@ data class ManagementState(
                 hasStandbyMember = false
             ),
             selectedImage = "",
-            isShowImageBottomSheet = false
+            isShowImageBottomSheet = false,
+            isSaveLoading = false
         )
         fun ManagementState.updateCategoryItem(selectedIndex: Int): ManagementState {
             val updatedCategory = organizationInformation.category.mapIndexed { index, categoryState ->
