@@ -1,8 +1,10 @@
 package com.easyhz.noffice.feature.sign.screen.login
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.model.auth.param.AuthParam
 import com.easyhz.noffice.domain.sign.usecase.LoginUseCase
 import com.easyhz.noffice.feature.sign.contract.login.LoginIntent
@@ -32,6 +34,7 @@ class LoginViewModel @Inject constructor(
             navigateToHome()
         }.onFailure {
             it.printStackTrace()
+            showSnackBar(it.handleError())
         }.also {
             setIsLoading(false)
         }
@@ -43,5 +46,11 @@ class LoginViewModel @Inject constructor(
 
     private fun setIsLoading(value: Boolean) {
         reduce { copy(isLoading = value) }
+    }
+
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            LoginSideEffect.ShowSnackBar(stringId)
+        }
     }
 }
