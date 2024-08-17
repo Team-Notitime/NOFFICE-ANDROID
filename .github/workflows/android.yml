@@ -39,7 +39,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Decode and create keystore.jks
-      run: echo SIGNING_KEY | base64 --decode > keystore.jks
+      run: echo SIGNING_KEY | base64 -d > keystore.jks
 
     - name: Create local.properties
       run: |
