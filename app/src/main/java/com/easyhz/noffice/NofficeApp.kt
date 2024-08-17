@@ -134,6 +134,7 @@ internal fun NofficeApp(
                 snackBarHostState = snackBarHostState
             )
             signGraph(
+                snackBarHostState = snackBarHostState,
                 navController = navController
             )
             announcementGraph(
