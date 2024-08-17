@@ -4,27 +4,33 @@ import android.net.Uri
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
-import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
+import com.easyhz.noffice.core.model.image.ImageParam
+import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.param.CategoryParam
 import com.easyhz.noffice.domain.organization.usecase.category.UpdateOrganizationCategoryUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
 import com.easyhz.noffice.feature.organization.contract.management.ManagementState
 import com.easyhz.noffice.feature.organization.contract.management.ManagementState.Companion.updateCategoryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationManagementViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
-    private val updateOrganizationCategoryUseCase: UpdateOrganizationCategoryUseCase
+    private val updateOrganizationCategoryUseCase: UpdateOrganizationCategoryUseCase,
+    private val uploadImageUseCase: UploadImageUseCase
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
     initialState = ManagementState.init()
 ) {
@@ -89,8 +95,8 @@ class OrganizationManagementViewModel @Inject constructor(
                 postSideEffect { ManagementSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                // TODO fail 처리
-                println("fail: $it")
+                Log.d(this.javaClass.name, "navigateToCamera - ${it.message}")
+                showSnackBar(it.handleError())
             }
     }
 
@@ -120,10 +126,23 @@ class OrganizationManagementViewModel @Inject constructor(
     }
 
     private fun onClickSaveButton() = viewModelScope.launch {
+        setIsSaveLoading(true)
+        val imageDeferred = async {
+            currentState.selectedImage.takeIf { it != currentState.organizationInformation.profileImageUrl }?.let {
+                onSaveImage()
+            }
+        }
+        val categoryDeferred = async { onSaveCategory() }
+        imageDeferred.await()
+        categoryDeferred.await()
+        setIsSaveLoading(false)
+    }
+
+    private suspend fun onSaveCategory() {
         val category = currentState.organizationInformation.category
         if (category.isEmpty()) {
             showSnackBar(R.string.organization_management_unselected_category)
-            return@launch
+            return
         }
         val param = CategoryParam(
             organizationId = currentState.organizationInformation.id,
@@ -138,9 +157,21 @@ class OrganizationManagementViewModel @Inject constructor(
         }
     }
 
+    private suspend fun onSaveImage(): String? {
+        val param = ImageParam(uri = currentState.selectedImage.toUri(), purpose = ImagePurpose.ORGANIZATION_LOGO)
+        return uploadImageUseCase.invoke(param).getOrElse {
+            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            showSnackBar(it.handleError())
+            null
+        }
+    }
     private fun showSnackBar(@StringRes stringId: Int) {
         postSideEffect {
             ManagementSideEffect.ShowSnackBar(stringId)
         }
+    }
+
+    private fun setIsSaveLoading(value: Boolean) {
+        reduce { copy(isSaveLoading = value) }
     }
 }

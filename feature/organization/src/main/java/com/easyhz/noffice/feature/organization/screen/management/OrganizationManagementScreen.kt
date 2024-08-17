@@ -24,6 +24,7 @@ import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.bottomSheet.ImageSelectionBottomSheet
 import com.easyhz.noffice.core.design_system.component.category.CategoryField
+import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
@@ -64,71 +65,75 @@ fun OrganizationManagementScreen(
     LaunchedEffect(Unit) {
         viewModel.postIntent(ManagementIntent.InitScreen(organizationInformation))
     }
-    NofficeBasicScaffold(
-        statusBarColor = White,
-        navigationBarColor = White,
-        topBar = {
-            DetailTopBar(
-                leadingItem = DetailTopBarMenu(
-                    content = {
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "left",
-                            tint = Grey400
-                        )
-                    },
-                    onClick = { viewModel.postIntent(ManagementIntent.NavigateToUp) }
-                ),
-                trailingItem = DetailTopBarMenu(
-                    content = {
-                        Text(
-                            text = stringResource(id = R.string.organization_management_top_bar_save_button),
-                            style = semiBold(18),
-                            color = Green700
-                        )
-                    },
-                    onClick = { viewModel.postIntent(ManagementIntent.ClickSaveButton) }
-                ),
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .padding(paddingValues)
-                .screenHorizonPadding(),
-        ) {
-            ManagementHeader(
-                organizationName = uiState.organizationInformation.name,
-                organizationProfileImage = uiState.selectedImage,
-            ) {
-                viewModel.postIntent(ManagementIntent.ClickProfileImage)
+    LoadingScreenProvider(
+        isLoading = uiState.isSaveLoading
+    ) {
+        NofficeBasicScaffold(
+            statusBarColor = White,
+            navigationBarColor = White,
+            topBar = {
+                DetailTopBar(
+                    leadingItem = DetailTopBarMenu(
+                        content = {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = R.drawable.ic_chevron_left),
+                                contentDescription = "left",
+                                tint = Grey400
+                            )
+                        },
+                        onClick = { viewModel.postIntent(ManagementIntent.NavigateToUp) }
+                    ),
+                    trailingItem = DetailTopBarMenu(
+                        content = {
+                            Text(
+                                text = stringResource(id = R.string.organization_management_top_bar_save_button),
+                                style = semiBold(18),
+                                color = Green700
+                            )
+                        },
+                        onClick = { viewModel.postIntent(ManagementIntent.ClickSaveButton) }
+                    ),
+                )
             }
-            CategoryField(
-                modifier = Modifier.padding(vertical = 24.dp),
-                categoryList = uiState.organizationInformation.category
+        ) { paddingValues ->
+            Column(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .screenHorizonPadding(),
             ) {
-                viewModel.postIntent(ManagementIntent.ClickCategoryItem(it))
+                ManagementHeader(
+                    organizationName = uiState.organizationInformation.name,
+                    organizationProfileImage = uiState.selectedImage,
+                ) {
+                    viewModel.postIntent(ManagementIntent.ClickProfileImage)
+                }
+                CategoryField(
+                    modifier = Modifier.padding(vertical = 24.dp),
+                    categoryList = uiState.organizationInformation.category
+                ) {
+                    viewModel.postIntent(ManagementIntent.ClickCategoryItem(it))
+                }
+                NumberOfMembersView(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
+                        .weight(1f),
+                    numberOfMembers = uiState.organizationInformation.members,
+                    isLoading = uiState.isLoading
+                )
+                MemberButton(
+                    modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
+                ) {
+                    viewModel.postIntent(ManagementIntent.ClickMemberManagementButton)
+                }
             }
-            NumberOfMembersView(
-                modifier = Modifier
-                    .padding(vertical = 16.dp)
-                    .weight(1f),
-                numberOfMembers = uiState.organizationInformation.members,
-                isLoading = uiState.isLoading
-            )
-            MemberButton(
-                modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
-            ) {
-                viewModel.postIntent(ManagementIntent.ClickMemberManagementButton)
-            }
-        }
-        if (uiState.isShowImageBottomSheet) {
-            ImageSelectionBottomSheet(
-                isEmptyProfile = uiState.selectedImage.isBlank(),
-                onDismissRequest = { viewModel.postIntent(ManagementIntent.HideImageBottomSheet) },
-            ) {
-                viewModel.postIntent(ManagementIntent.ClickImageBottomSheetItem(it))
+            if (uiState.isShowImageBottomSheet) {
+                ImageSelectionBottomSheet(
+                    isEmptyProfile = uiState.selectedImage.isBlank(),
+                    onDismissRequest = { viewModel.postIntent(ManagementIntent.HideImageBottomSheet) },
+                ) {
+                    viewModel.postIntent(ManagementIntent.ClickImageBottomSheetItem(it))
+                }
             }
         }
     }
