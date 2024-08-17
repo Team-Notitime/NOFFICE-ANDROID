@@ -8,8 +8,7 @@ import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementI
 class OrganizationAnnouncementPagingSource(
     private val organizationService: OrganizationService,
     private val organizationId: Int,
-    private val memberId: Int?,
-): PagingSource<Int, AnnouncementItem>() {
+) : PagingSource<Int, AnnouncementItem>() {
     override fun getRefreshKey(state: PagingState<Int, AnnouncementItem>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.run {
@@ -21,30 +20,27 @@ class OrganizationAnnouncementPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnnouncementItem> {
         val page = params.key ?: START_PAGE
         val loadSize = params.loadSize
-        return memberId?.let { id ->
-            organizationService.fetchAnnouncementsByOrganization(
-                organizationId = organizationId,
-                memberId = id,
-                page = page,
-                size = loadSize,
-                sort = emptyList() /* FIXME */
-            ).fold(
-                onSuccess = {
-                    LoadResult.Page(
-                        data = it.data.content,
-                        prevKey = null,
-                        nextKey = if (it.data.content.size < loadSize) null else page + 1
-                    )
-                },
-                onFailure = {
-                    LoadResult.Error(it)
-                }
-            )
-        } ?: LoadResult.Page(data = emptyList(), prevKey = null, nextKey = null)
+        return organizationService.fetchAnnouncementsByOrganization(
+            organizationId = organizationId,
+            page = page,
+            size = loadSize,
+            sort = emptyList() /* FIXME */
+        ).fold(
+            onSuccess = {
+                LoadResult.Page(
+                    data = it.data.content,
+                    prevKey = null,
+                    nextKey = if (it.data.content.size < loadSize) null else page + 1
+                )
+            },
+            onFailure = {
+                LoadResult.Error(it)
+            }
+        )
     }
 
 
-        companion object {
+    companion object {
         const val PAGE_SIZE = 10
         private const val START_PAGE = 0
     }

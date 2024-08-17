@@ -109,7 +109,7 @@ class OrganizationDetailViewModel @Inject constructor(
     }
 
     private suspend fun fetchAnnouncements(organizationId: Int) {
-        fetchAnnouncementsByOrganizationUseCase(organizationId, 1).distinctUntilChanged()
+        fetchAnnouncementsByOrganizationUseCase(organizationId).distinctUntilChanged()
             .cachedIn(viewModelScope).collectLatest {
                 _announcementState.value = it
             }

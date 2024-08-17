@@ -9,7 +9,7 @@ import javax.inject.Inject
 class FetchAnnouncementsByOrganizationUseCase @Inject constructor(
     private val organizationRepository: OrganizationRepository
 ) {
-    suspend operator fun invoke(organizationId: Int, memberId: Int): Flow<PagingData<OrganizationAnnouncement>> {
-        return organizationRepository.fetchAnnouncementsByOrganization(organizationId, memberId)
+    suspend operator fun invoke(organizationId: Int): Flow<PagingData<OrganizationAnnouncement>> {
+        return organizationRepository.fetchAnnouncementsByOrganization(organizationId)
     }
 }
