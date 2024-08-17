@@ -20,7 +20,7 @@ class UploadImageUseCase @Inject constructor(
     override suspend fun invoke(param: ImageParam): Result<String> = withContext(dispatcher) {
         runCatching {
             val fileType = getFileType(param.uri)
-            val fileName = Generate.randomUUID()
+            val fileName = param.uri.path + param.uri.port
             val imageUrl = fetchImageUrl(fileType, fileName, param.purpose)
             uploadImage(url = imageUrl.url, type = fileType, uri = param.uri)
             completeImageUpload(fileName)
