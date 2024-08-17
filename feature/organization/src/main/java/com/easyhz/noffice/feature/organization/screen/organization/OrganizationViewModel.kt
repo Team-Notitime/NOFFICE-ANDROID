@@ -24,7 +24,8 @@ class OrganizationViewModel @Inject constructor(
 ) {
     private val _organizationState: MutableStateFlow<PagingData<Organization>> =
         MutableStateFlow(value = PagingData.empty())
-    val organizationState: MutableStateFlow<PagingData<Organization>> get() = _organizationState
+    val organizationState: MutableStateFlow<PagingData<Organization>>
+        get() = _organizationState
     override fun handleIntent(intent: OrganizationIntent) {
         when (intent) {
             is OrganizationIntent.ClickOrganizationCreation -> {
@@ -45,7 +46,7 @@ class OrganizationViewModel @Inject constructor(
         fetchOrganizationsUseCase.invoke()
             .distinctUntilChanged()
             .cachedIn(viewModelScope).collectLatest {
-                organizationState.value = it
+                _organizationState.value = it
             }
     }
 

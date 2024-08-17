@@ -9,5 +9,5 @@ data class PagingResponse<out T>(
     val numberOfElements: Int,
     val pageable: Pageable,
     val size: Int,
-    val sort: SortX
+//    val sort: SortX
 )
