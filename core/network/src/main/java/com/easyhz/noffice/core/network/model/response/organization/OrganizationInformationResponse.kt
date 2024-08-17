@@ -6,6 +6,6 @@ data class OrganizationInformationResponse(
     val leaderCount: Int,
     val participantCount: Int,
     val profileImage: String,
-    val categories: List<String>,
+    val categories: List<Int>,
     val isPending: Boolean,
 )
