@@ -22,7 +22,7 @@ fun OrganizationImage(
     modifier: Modifier = Modifier,
     imageUrl: String
 ) {
-    if (imageUrl.isBlank()) {
+    if (imageUrl.isBlank() || imageUrl == "null") {
         Image(
             modifier = modifier.clip(CircleShape),
             painter = painterResource(id = R.drawable.ic_profile_group),
