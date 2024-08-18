@@ -73,6 +73,7 @@ class OrganizationDetailViewModel @Inject constructor(
 
         val categoriesResult = categoriesDeferred.await()
         val organizationInfoResult = organizationInfoDeferred.await()
+        launch { fetchAnnouncements(id) }
 
         categoriesResult.onSuccess { categories ->
             categoryList.value = categories
@@ -82,7 +83,6 @@ class OrganizationDetailViewModel @Inject constructor(
             navigateToUp()
             return@launch
         }
-
         organizationInfoResult.onSuccess { organizationInfo ->
             val info = organizationInfo.copy(
                 category = categoryList.value.filter { it.id == organizationInfo.id }
@@ -93,7 +93,6 @@ class OrganizationDetailViewModel @Inject constructor(
                     isLoading = false
                 )
             }
-            fetchAnnouncements(organizationInfo.id)
         }.onFailure {
             Log.d(this.javaClass.name, "fetchData - ${it.message}")
             showSnackBar(it.handleError())
@@ -112,6 +111,9 @@ class OrganizationDetailViewModel @Inject constructor(
         fetchAnnouncementsByOrganizationUseCase(organizationId).distinctUntilChanged()
             .cachedIn(viewModelScope).collectLatest {
                 _announcementState.value = it
+                if(currentState.isCardLoading) {
+                    reduce { copy(isCardLoading = false) }
+                }
             }
     }
 
