@@ -128,6 +128,7 @@
 
     <string name="organization_member_standby">가입을 대기 중인 멤버가 있어요!</string>
     <string name="organization_detail_badge_number_of_badges">%d개</string>
+    <string name="organization_detail_announcement_empty">등록된 공지가 없어요.</string>
 
     <string name="organization_management_top_bar_save_button">저장</string>
     <string name="organization_management_unselected_category">카테고리를 선택해 주세요.</string>

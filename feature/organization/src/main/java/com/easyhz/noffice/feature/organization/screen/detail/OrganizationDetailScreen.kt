@@ -2,23 +2,29 @@ package com.easyhz.noffice.feature.organization.screen.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
@@ -28,6 +34,8 @@ import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
+import com.easyhz.noffice.core.design_system.theme.Grey600
+import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.feature.organization.component.detail.AnnouncementCard
@@ -91,6 +99,15 @@ fun OrganizationDetailScreen(
             )
         }
     ) { paddingValues ->
+        if (!uiState.isCardLoading && announcementList.loadState.refresh != LoadState.Loading && announcementList.itemCount == 0) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text(
+                    text = stringResource(id = R.string.organization_detail_announcement_empty),
+                    style = SemiBold16,
+                    color = Grey600
+                )
+            }
+        }
         LazyColumn(
             modifier = modifier
                 .padding(paddingValues)
@@ -121,19 +138,24 @@ fun OrganizationDetailScreen(
                 }
             }
             item {
-                if (uiState.isCardLoading) {
+                if (uiState.isCardLoading || announcementList.loadState.refresh == LoadState.Loading) {
                     repeat(3) {
                         SkeletonCard(modifier = Modifier.padding(vertical = 6.dp))
                     }
                 }
             }
-            items(announcementList.itemCount, key = { it }) {index ->
+            items(announcementList.itemCount, key = { it }) { index ->
                 announcementList[index]?.let { item ->
                     AnnouncementCard(
                         modifier = Modifier.animateItem(),
                         announcement = item,
                     ) {
-                        viewModel.postIntent(DetailIntent.ClickAnnouncement(item.announcementId, item.title))
+                        viewModel.postIntent(
+                            DetailIntent.ClickAnnouncement(
+                                item.announcementId,
+                                item.title
+                            )
+                        )
                     }
                 }
             }
@@ -152,15 +174,19 @@ fun OrganizationDetailScreen(
             is DetailSideEffect.NavigateToUp -> {
                 navigateToUp()
             }
+
             is DetailSideEffect.NavigateToAnnouncementDetail -> {
                 navigateToAnnouncementDetail(sideEffect.id, sideEffect.title)
             }
+
             is DetailSideEffect.NavigateToOrganizationManagement -> {
                 navigateToOrganizationManagement(sideEffect.information)
             }
+
             is DetailSideEffect.NavigateToStandbyMember -> {
                 navigateToStandbyMember(sideEffect.id)
             }
+
             is DetailSideEffect.ShowSnackBar -> {
                 snackBarHostState.showSnackbar(
                     message = context.getString(sideEffect.stringId),
