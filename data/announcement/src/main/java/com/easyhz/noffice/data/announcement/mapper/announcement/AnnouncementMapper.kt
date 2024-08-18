@@ -42,6 +42,7 @@ fun AnnouncementResponse.toDetail(): OrganizationAnnouncement = OrganizationAnno
     announcementId = this.announcementId,
     title = this.title,
     content = this.content,
+    profileImage = this.profileImageUrl,
     place = this.placeLinkName,
     placeUrl = this.placeLinkUrl,
     taskSize = 0,  // FIXME
