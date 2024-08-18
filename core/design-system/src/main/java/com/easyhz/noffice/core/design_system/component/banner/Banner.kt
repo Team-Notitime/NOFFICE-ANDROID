@@ -33,7 +33,7 @@ fun Banner(
 ) {
     val bannerIntro = stringResource(id = R.string.banner_intro)
     val bannerOutro = stringResource(id = R.string.banner_outro)
-    val annotatedString = remember {
+    val annotatedString = remember(userName, date, bannerIntro, bannerOutro) {
         buildAnnotatedString {
             withStyle(style = ParagraphStyle(lineHeight = 32.sp)) {
                 withStyle(style = Title1.toSpanStyle()) {
@@ -49,7 +49,6 @@ fun Banner(
                     append(bannerOutro)
                 }
             }
-
         }
     }
     Box(

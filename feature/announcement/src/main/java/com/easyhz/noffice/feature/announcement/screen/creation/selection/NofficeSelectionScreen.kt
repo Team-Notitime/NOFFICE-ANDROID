@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.CheckButton
@@ -46,6 +46,7 @@ fun NofficeSelectionScreen(
     navigateToAnnouncementCreationContent: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
     NofficeBasicScaffold(
         topBar = {
             DetailTopBar(
@@ -81,11 +82,11 @@ fun NofficeSelectionScreen(
                 item {
                     Spacer(modifier = Modifier.width(4.dp))
                 }
-                items(uiState.organizationList) {
+                items(organizationList.itemCount, key = { organizationList[it]?.id ?: -1}) { index ->
                     CheckButton(
                         modifier = Modifier.fillMaxWidth(),
-                        text = it,
-                        isComplete = uiState.selectedOrganization == it,
+                        text = organizationList[index]?.name!!,
+                        isComplete = uiState.selectedOrganization == organizationList[index]?.id,
                         color = CheckButtonDefaults(
                             completeContainerColor = Green100,
                             completeContentColor = Green700,
@@ -95,7 +96,7 @@ fun NofficeSelectionScreen(
                             incompleteIconColor = Grey300
                         )
                     ) {
-                        viewModel.postIntent(SelectionIntent.SelectedOrganization(it))
+                        viewModel.postIntent(SelectionIntent.SelectedOrganization(organizationList[index]?.id ?: -1))
                     }
                 }
             }

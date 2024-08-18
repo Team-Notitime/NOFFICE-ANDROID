@@ -4,7 +4,6 @@ import android.net.Uri
 import com.easyhz.noffice.core.common.base.BaseUseCase
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
-import com.easyhz.noffice.core.common.util.Generate
 import com.easyhz.noffice.core.model.image.ImageParam
 import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.image.ImageUrl
@@ -20,7 +19,7 @@ class UploadImageUseCase @Inject constructor(
     override suspend fun invoke(param: ImageParam): Result<String> = withContext(dispatcher) {
         runCatching {
             val fileType = getFileType(param.uri)
-            val fileName = Generate.randomUUID()
+            val fileName = param.uri.path + param.uri.port
             val imageUrl = fetchImageUrl(fileType, fileName, param.purpose)
             uploadImage(url = imageUrl.url, type = fileType, uri = param.uri)
             completeImageUpload(fileName)

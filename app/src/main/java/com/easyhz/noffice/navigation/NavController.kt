@@ -50,7 +50,7 @@ internal class NofficeNavController(
             val navOptions = navOptions {
                 popUpTo(navController.graph.id) {
                     saveState = true
-                    inclusive = true
+                    inclusive = false
                 }
                 launchSingleTop  = true
                 restoreState = true

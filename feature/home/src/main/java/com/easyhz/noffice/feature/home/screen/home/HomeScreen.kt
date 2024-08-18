@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
@@ -26,6 +27,8 @@ fun HomeScreen(
     navigateToMyPage: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
+
     NofficeScaffold(
         modifier = modifier,
         topBar = {
@@ -48,6 +51,9 @@ fun HomeScreen(
                 HomeTopBarMenu.NOTICE -> {
                     NoticeView(
                         modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+                        dayOfWeek = uiState.dayOfWeek,
+                        name = uiState.name,
+                        organizationList = organizationList,
                         navigateToAnnouncementDetail = navigateToAnnouncementDetail
                     )
                 }

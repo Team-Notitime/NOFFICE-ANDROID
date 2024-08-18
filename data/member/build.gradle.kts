@@ -13,4 +13,6 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.network)
     implementation(projects.core.model)
+
+    implementation(projects.data.organization)
 }

@@ -12,7 +12,8 @@ import com.easyhz.noffice.core.network.model.response.organization.OrganizationR
 internal fun OrganizationResponse.toModel(): Organization = Organization(
     id = this.id,
     name = this.name,
-    profileImageUrl = this.profileImage
+    profileImageUrl = this.profileImage,
+    role = this.role
 )
 
 internal fun OrganizationInformationResponse.toModel(): OrganizationInformation = OrganizationInformation(
@@ -24,8 +25,9 @@ internal fun OrganizationInformationResponse.toModel(): OrganizationInformation 
     hasStandbyMember = this.isPending
 )
 
-internal fun OrganizationCapsuleResponse.toModel(): Organization = Organization(
+fun OrganizationCapsuleResponse.toModel(): Organization = Organization(
     id = this.organizationId,
     name = this.organizationName,
-    profileImageUrl = this.profileImage
+    profileImageUrl = this.profileImage,
+    role = this.role
 )

@@ -1,25 +1,51 @@
 package com.easyhz.noffice.feature.announcement.screen.creation.selection
 
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.organization.Organization
+import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationsUseCase
 import com.easyhz.noffice.feature.announcement.contract.creation.selection.SelectionIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.selection.SelectionSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.selection.SelectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SelectionViewModel @Inject constructor(
-
+    private val fetchOrganizationsUseCase: FetchOrganizationsUseCase
 ): BaseViewModel<SelectionState, SelectionIntent, SelectionSideEffect>(
     initialState = SelectionState.init()
 ) {
+    private val _organizationState: MutableStateFlow<PagingData<Organization>> =
+        MutableStateFlow(value = PagingData.empty())
+    val organizationState: MutableStateFlow<PagingData<Organization>>
+        get() = _organizationState
+
     override fun handleIntent(intent: SelectionIntent) {
         when(intent) {
             is SelectionIntent.ClickBackButton -> { onClickBackButton() }
             is SelectionIntent.ClickNextButton -> { onClickNextButton() }
-            is SelectionIntent.SelectedOrganization -> { onSelectedOrganization(organization = intent.organization) }
+            is SelectionIntent.SelectedOrganization -> { onSelectedOrganization(organizationId = intent.id) }
         }
     }
+    init {
+        fetchOrganizations()
+    }
+
+    private fun fetchOrganizations() = viewModelScope.launch {
+        fetchOrganizationsUseCase.invoke()
+            .distinctUntilChanged()
+            .cachedIn(viewModelScope).collectLatest {
+                _organizationState.value = it
+            }
+    }
+
     private fun onClickBackButton() {
         postSideEffect { SelectionSideEffect.NavigateToUp }
     }
@@ -28,8 +54,8 @@ class SelectionViewModel @Inject constructor(
         postSideEffect { SelectionSideEffect.NavigateToNext }
     }
 
-    private fun onSelectedOrganization(organization: String) {
-        reduce { copy(selectedOrganization = organization, enabledButton = true) }
+    private fun onSelectedOrganization(organizationId: Int) {
+        reduce { copy(selectedOrganization = organizationId, enabledButton = true) }
     }
 
 }

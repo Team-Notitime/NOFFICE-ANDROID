@@ -2,7 +2,7 @@ package com.easyhz.noffice.core.network.api.organization
 
 import com.easyhz.noffice.core.network.model.request.organization.CategoryRequest
 import com.easyhz.noffice.core.network.model.request.organization.OrganizationCreationRequest
-import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementItem
+import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementResponse
 import com.easyhz.noffice.core.network.model.response.category.CategoryResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
@@ -46,7 +46,7 @@ interface OrganizationService {
         @Query("page") page: Int,
         @Query("size") size: Int = 10,
         @Query("sort") sort: List<String>
-    ): PagingResult<AnnouncementItem>
+    ): PagingResult<AnnouncementResponse>
 
     @PUT("/api/v1/organizations/{organizationId}/categories")
     suspend fun updateOrganizationCategory(
