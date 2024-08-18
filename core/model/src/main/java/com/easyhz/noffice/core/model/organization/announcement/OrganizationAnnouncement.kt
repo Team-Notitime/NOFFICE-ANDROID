@@ -4,6 +4,7 @@ data class OrganizationAnnouncement(
     val announcementId: Int,
     val title: String,
     val content: String,
+    val profileImage: String?,
     val place: String?,
     val placeUrl: String?,
     val taskSize: Int?,

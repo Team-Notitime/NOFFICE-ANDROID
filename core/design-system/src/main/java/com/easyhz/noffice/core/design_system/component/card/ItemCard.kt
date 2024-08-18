@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.component.image.AnnouncementImage
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.CardExceptionSubTitle
@@ -44,6 +45,7 @@ import com.easyhz.noffice.core.design_system.util.card.CardExceptionType
 fun ItemCard(
     modifier: Modifier = Modifier,
     title: String,
+    imageUrl: String,
     detailItems: List<CardDetailInfo>,
     onClick: () -> Unit
 ) {
@@ -54,11 +56,9 @@ fun ItemCard(
         .border(1.dp, color = Grey200, RoundedCornerShape(16.dp))
         .noRippleClickable { onClick() }
     ) {
-        Image(
+        AnnouncementImage(
             modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = R.drawable.img_illust_1),
-            contentScale = ContentScale.Crop,
-            contentDescription = "image"
+            imageUrl = imageUrl
         )
         Box(modifier = Modifier
             .screenHorizonPadding()
@@ -180,6 +180,7 @@ fun ExceptionCard(
 private fun ItemCardPrev() {
     ItemCard(
         title = "5차 세션: 최종 팀빌딩",
+        imageUrl = "",
         detailItems = listOf(
             CardDetailInfo(
                 iconId = R.drawable.ic_calendar,

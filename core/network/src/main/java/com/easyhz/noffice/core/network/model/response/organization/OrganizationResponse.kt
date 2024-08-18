@@ -5,5 +5,6 @@ data class OrganizationResponse(
     val name: String,
     val endAt: String?,
     val profileImage: String?,
-    val promotion: Boolean
+    val promotion: Boolean,
+    val role: String
 )
