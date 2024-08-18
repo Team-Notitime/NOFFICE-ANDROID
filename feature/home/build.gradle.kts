@@ -13,7 +13,12 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.common)
     implementation(projects.domain.home)
+    implementation(projects.domain.organization)
 
     // splash
     api(libs.androidx.core.splashscreen)
+
+    // paging
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
 }
