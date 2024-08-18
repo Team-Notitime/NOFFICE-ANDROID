@@ -5,6 +5,7 @@ import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.time.format.TextStyle
 import java.util.Locale
 
 object DateFormat {
@@ -65,4 +66,9 @@ object DateFormat {
         return dateTime.format(formatter)
     }
 
+    fun getDayOfWeek(): String {
+        val currentDate = LocalDate.now()
+        val dayOfWeek = currentDate.dayOfWeek
+        return dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+    }
 }
