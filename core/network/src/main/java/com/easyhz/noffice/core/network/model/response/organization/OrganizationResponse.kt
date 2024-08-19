@@ -6,5 +6,5 @@ data class OrganizationResponse(
     val endAt: String?,
     val profileImage: String?,
     val promotion: Boolean,
-    val role: String
+    val role: String?
 )
