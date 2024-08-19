@@ -58,11 +58,13 @@ fun LoadingScreenProvider(
             navigationBarColor = navigationBarColor,
             onDismissRequest = { }
         )
-        LottieAnimation(
-            modifier = Modifier.size((screenWidthDp / 5).dp).align(Alignment.Center),
-            composition = composition,
-            progress = { progress },
-        )
+        if (isLoading) {
+            LottieAnimation(
+                modifier = Modifier.size((screenWidthDp / 5).dp).align(Alignment.Center),
+                composition = composition,
+                progress = { progress },
+            )
+        }
     }
 }
 
