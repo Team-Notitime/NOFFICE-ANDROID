@@ -2,17 +2,21 @@ package com.easyhz.noffice.feature.home.screen.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
+import com.easyhz.noffice.core.design_system.component.exception.ExceptionView
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
 import com.easyhz.noffice.feature.home.component.notice.NoticeView
 import com.easyhz.noffice.feature.home.component.task.TaskView
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
@@ -42,6 +46,12 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
+        if(organizationList.itemCount == 0 && organizationList.loadState.refresh != LoadState.Loading) {
+            ExceptionView(
+                modifier = Modifier.fillMaxSize(),
+                type = ExceptionType.NO_ORGANIZATION
+            )
+        }
         Crossfade(
             targetState = uiState.topBarMenu,
             animationSpec = tween(500),
