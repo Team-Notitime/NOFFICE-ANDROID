@@ -28,6 +28,7 @@ import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.util.chip.ChipState
 import com.easyhz.noffice.core.design_system.util.chip.ChipStyle
 import com.easyhz.noffice.core.design_system.util.chip.ChipStyles
+import com.easyhz.noffice.feature.announcement.contract.creation.remind.secondsToString
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -63,7 +64,7 @@ internal fun RemindField(
                     key(it) {
                             NofficeChip(
                                 chipModifier = Modifier,
-                                text = it,
+                                text = secondsToString(it),
                                 selectState = ChipState.Picked,
                                 chipStyles = ChipStyles(
                                     unSelected = ChipStyle(),

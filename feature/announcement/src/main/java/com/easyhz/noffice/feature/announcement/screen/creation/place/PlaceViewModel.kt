@@ -188,7 +188,6 @@ class PlaceViewModel @Inject constructor(
 
     private fun setAutoFillText() {
         if (currentState.contactState.title.isBlank()) {
-            println(">> ${currentState.openGraph}")
             reduce { updateContactState(title = openGraph.title, url = openGraph.url) }
         }
     }

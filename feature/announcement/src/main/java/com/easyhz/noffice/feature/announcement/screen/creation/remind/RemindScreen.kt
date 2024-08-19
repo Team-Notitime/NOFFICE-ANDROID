@@ -27,11 +27,13 @@ import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.announcement.component.creation.CreationTitle
+import com.easyhz.noffice.feature.announcement.component.creation.remind.CustomRemindButton
 import com.easyhz.noffice.feature.announcement.component.creation.remind.RemindField
 import com.easyhz.noffice.feature.announcement.component.creation.remind.RemindItem
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindSideEffect
+import com.easyhz.noffice.feature.announcement.contract.creation.remind.secondsToString
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 
 @Composable
@@ -40,12 +42,13 @@ fun RemindScreen(
     viewModel: RemindViewModel = hiltViewModel(),
     creationViewModel: CreationViewModel = hiltViewModel(),
     selectRemind: List<String>? = null,
+    isSelectedDateTime: Boolean,
+    navigateToCustomRemind: () -> Unit,
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     LaunchedEffect(key1 = Unit) {
-        viewModel.postIntent(RemindIntent.InitScreen(selectRemind))
+        viewModel.postIntent(RemindIntent.InitScreen(selectRemind, isSelectedDateTime))
     }
 
     NofficeBasicScaffold(
@@ -96,12 +99,19 @@ fun RemindScreen(
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
-                items(uiState.remindMap.toList(),) {(text, isSelected)->
+                items(uiState.remindMap.toList(), key = { it.first }) {(text, isSelected)->
                     RemindItem(
-                        text = text,
+                        text = secondsToString(text),
                         isSelected = isSelected
                     ) {
                         viewModel.postIntent(RemindIntent.ClickRemindItem(text))
+                    }
+                }
+                item {
+                    CustomRemindButton(
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    ) {
+                        viewModel.postIntent(RemindIntent.ClickCustomRemindButton)
                     }
                 }
             }
@@ -114,6 +124,9 @@ fun RemindScreen(
             is RemindSideEffect.NavigateToNext -> {
                 creationViewModel.postIntent(CreationIntent.SaveOptionData(sideEffect.data))
                 navigateToUp()
+            }
+            is RemindSideEffect.NavigateToCustomRemind -> {
+                navigateToCustomRemind()
             }
         }
     }
