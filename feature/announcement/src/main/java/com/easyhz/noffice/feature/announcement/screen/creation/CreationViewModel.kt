@@ -89,7 +89,8 @@ class CreationViewModel @Inject constructor(
 
     private fun navigateToRemind() {
         val remindListState = currentState.getOptionValue<List<String>>(Options.REMIND)
-        postSideEffect { CreationSideEffect.NavigateToRemind(remindListState.orEmpty()) }
+        val isSelectedDateTime = currentState.getOptionValue<SelectionDateTimeState>(Options.DATE_TIME) != null
+        postSideEffect { CreationSideEffect.NavigateToRemind(remindListState.orEmpty(), isSelectedDateTime) }
     }
 
     private fun <T> onSaveOptionData(data: OptionData<T>) {

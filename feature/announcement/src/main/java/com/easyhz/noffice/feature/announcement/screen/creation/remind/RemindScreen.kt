@@ -33,6 +33,7 @@ import com.easyhz.noffice.feature.announcement.component.creation.remind.RemindI
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindSideEffect
+import com.easyhz.noffice.feature.announcement.contract.creation.remind.secondsToString
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 
 @Composable
@@ -41,12 +42,13 @@ fun RemindScreen(
     viewModel: RemindViewModel = hiltViewModel(),
     creationViewModel: CreationViewModel = hiltViewModel(),
     selectRemind: List<String>? = null,
+    isSelectedDateTime: Boolean,
     navigateToCustomRemind: () -> Unit,
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(key1 = Unit) {
-        viewModel.postIntent(RemindIntent.InitScreen(selectRemind))
+        viewModel.postIntent(RemindIntent.InitScreen(selectRemind, isSelectedDateTime))
     }
 
     NofficeBasicScaffold(
@@ -99,7 +101,7 @@ fun RemindScreen(
             ) {
                 items(uiState.remindMap.toList(), key = { it.first }) {(text, isSelected)->
                     RemindItem(
-                        text = text,
+                        text = secondsToString(text),
                         isSelected = isSelected
                     ) {
                         viewModel.postIntent(RemindIntent.ClickRemindItem(text))

@@ -63,7 +63,7 @@ fun ContentScreen(
     navigateToDateTime: (String?, String?) -> Unit,
     navigateToPlace: (String?, String?, String?) -> Unit,
     navigateToTask: (List<String>?) -> Unit,
-    navigateToRemind: (List<String>?) -> Unit,
+    navigateToRemind: (List<String>?, Boolean) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -203,7 +203,7 @@ fun ContentScreen(
             is CreationSideEffect.NavigateToDateTime -> { navigateToDateTime(sideEffect.date, sideEffect.time) }
             is CreationSideEffect.NavigateToPlace -> { navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url) }
             is CreationSideEffect.NavigateToTask -> { navigateToTask(sideEffect.taskList ?: emptyList()) }
-            is CreationSideEffect.NavigateToRemind -> { navigateToRemind(sideEffect.remindList ?: emptyList()) }
+            is CreationSideEffect.NavigateToRemind -> { navigateToRemind(sideEffect.remindList ?: emptyList(), sideEffect.isSelectedDateTime) }
             is CreationSideEffect.ScrollToBottom -> { }
         }
     }

@@ -6,6 +6,8 @@ import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindSi
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindState
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindState.Companion.initRemindMap
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.RemindState.Companion.toggleMap
+import com.easyhz.noffice.feature.announcement.contract.creation.remind.timeList
+import com.easyhz.noffice.feature.announcement.contract.creation.remind.toRemindMap
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,20 +18,41 @@ class RemindViewModel @Inject constructor(
 ): BaseViewModel<RemindState, RemindIntent, RemindSideEffect>(
     initialState = RemindState.init()
 ) {
+    private var isAddedCustom = false
     override fun handleIntent(intent: RemindIntent) {
         when(intent) {
-            is RemindIntent.InitScreen -> { initScreen(intent.remindList) }
+            is RemindIntent.InitScreen -> { initScreen(intent.remindList, intent.isSelectedDateTime) }
             is RemindIntent.ClickBackButton -> { onClickBackButton() }
             is RemindIntent.ClickSaveButton -> { onClickSaveButton() }
             is RemindIntent.ClickRemindItem -> { onClickRemindItem(intent.key) }
             is RemindIntent.ClickCustomRemindButton -> { onClickCustomRemindButton() }
-            is RemindIntent.SaveCustomRemind -> { onClickRemindItem(intent.data) }
+            is RemindIntent.SaveCustomRemind -> { saveCustomRemind(intent.data) }
         }
     }
 
-    private fun initScreen(remindList: List<String>?) {
-        remindList?.let {
-            reduce { initRemindMap(remindList) }
+    private fun initScreen(remindList: List<String>?, isSelectedDateTime: Boolean) {
+        var updatedRemindList = remindList
+
+        when {
+            !isSelectedDateTime && !isAddedCustom -> {
+                reduce { copy(remindMap = LinkedHashMap()) }
+            }
+            isSelectedDateTime && !isAddedCustom -> {
+                reduce { copy(remindMap = currentState.originalMap) }
+            }
+            isSelectedDateTime -> {
+                val mergedMap = mergeMaps(timeList.toRemindMap(), currentState.remindMap)
+                reduce { copy(remindMap = mergedMap) }
+            }
+            remindList != null -> {
+                updatedRemindList = remindList.filter { it !in timeList }
+                val filteredMap = LinkedHashMap(currentState.remindMap.filter { it.key !in timeList })
+                reduce { copy(remindMap = filteredMap) }
+            }
+        }
+
+        updatedRemindList?.let {
+            reduce { initRemindMap(it) }
         }
     }
 
@@ -50,8 +73,20 @@ class RemindViewModel @Inject constructor(
         postSideEffect { RemindSideEffect.NavigateToCustomRemind }
     }
 
+    private fun saveCustomRemind(data: String) {
+        reduce { toggleMap(data) }
+        isAddedCustom = true
+    }
+
     private fun onClickRemindItem(key: String) {
         reduce { toggleMap(key) }
     }
 
+}
+
+private fun mergeMaps(map1: LinkedHashMap<String, Boolean>, map2: LinkedHashMap<String, Boolean>): LinkedHashMap<String, Boolean> {
+    val result = LinkedHashMap<String, Boolean>()
+    map1.forEach { (key, value) -> result[key] = value }
+    map2.forEach { (key, value) -> result[key] = value }
+    return result
 }

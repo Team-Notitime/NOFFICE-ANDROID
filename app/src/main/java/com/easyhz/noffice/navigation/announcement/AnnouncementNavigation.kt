@@ -94,6 +94,7 @@ internal fun NavGraphBuilder.announcementGraph(
                 viewModel = viewModel,
                 creationViewModel = creationViewModel,
                 selectRemind = args.remindList,
+                isSelectedDateTime = args.isSelectedDateTime,
                 navigateToCustomRemind = navController::navigateToCustomRemind,
                 navigateToUp = navController::navigateUp
             )
@@ -154,9 +155,9 @@ internal fun NavController.navigateToTask(taskList: List<String>?) {
     )
 }
 
-internal fun NavController.navigateToRemind(remindList: List<String>?) {
+internal fun NavController.navigateToRemind(remindList: List<String>?, isSelectedDateTime: Boolean) {
     navigate(
-        route = AnnouncementCreation.Remind(remindList = remindList)
+        route = AnnouncementCreation.Remind(remindList = remindList, isSelectedDateTime = isSelectedDateTime)
     )
 }
 
