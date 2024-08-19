@@ -45,10 +45,12 @@ class CreationViewModel @Inject constructor(
 
     private fun onChangeTitleTextValue(newText: String) {
         reduce { copy(title = newText) }
+        setEnabledButton()
     }
 
     private fun onChangeContentTextValue(newText: TextFieldValue) {
         reduce { copy(content = newText) }
+        setEnabledButton()
     }
 
     private fun onClickOptionButton(option: Options) {
@@ -125,6 +127,7 @@ class CreationViewModel @Inject constructor(
         val isContentNotBlank = currentState.content.text.isNotBlank()
 
         val buttonEnabled = isOptionSelected && isTitleNotBlank && isContentNotBlank
+        if (currentState.enabledButton == buttonEnabled) return
         reduce { copy(enabledButton = buttonEnabled) }
     }
 }
