@@ -27,6 +27,7 @@ import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.announcement.component.creation.CreationTitle
+import com.easyhz.noffice.feature.announcement.component.creation.remind.CustomRemindButton
 import com.easyhz.noffice.feature.announcement.component.creation.remind.RemindField
 import com.easyhz.noffice.feature.announcement.component.creation.remind.RemindItem
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
@@ -102,6 +103,13 @@ fun RemindScreen(
                         isSelected = isSelected
                     ) {
                         viewModel.postIntent(RemindIntent.ClickRemindItem(text))
+                    }
+                }
+                item {
+                    CustomRemindButton(
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    ) {
+
                     }
                 }
             }

@@ -117,6 +117,7 @@
     <string name="announcement_creation_option_remind_field_suffix">
         에 알림을 보낼래요.
     </string>
+    <string name="announcement_creation_option_custom_remind_button">직접 설정</string>
     <string name="announcement_creation_option_button">저장</string>
 
     <string name="delete">삭제</string>
