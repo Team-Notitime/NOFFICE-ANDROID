@@ -41,10 +41,10 @@ fun RemindScreen(
     viewModel: RemindViewModel = hiltViewModel(),
     creationViewModel: CreationViewModel = hiltViewModel(),
     selectRemind: List<String>? = null,
+    navigateToCustomRemind: () -> Unit,
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     LaunchedEffect(key1 = Unit) {
         viewModel.postIntent(RemindIntent.InitScreen(selectRemind))
     }
@@ -97,7 +97,7 @@ fun RemindScreen(
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
-                items(uiState.remindMap.toList(),) {(text, isSelected)->
+                items(uiState.remindMap.toList(), key = { it.first }) {(text, isSelected)->
                     RemindItem(
                         text = text,
                         isSelected = isSelected
@@ -109,7 +109,7 @@ fun RemindScreen(
                     CustomRemindButton(
                         modifier = Modifier.padding(bottom = 16.dp)
                     ) {
-
+                        viewModel.postIntent(RemindIntent.ClickCustomRemindButton)
                     }
                 }
             }
@@ -122,6 +122,9 @@ fun RemindScreen(
             is RemindSideEffect.NavigateToNext -> {
                 creationViewModel.postIntent(CreationIntent.SaveOptionData(sideEffect.data))
                 navigateToUp()
+            }
+            is RemindSideEffect.NavigateToCustomRemind -> {
+                navigateToCustomRemind()
             }
         }
     }

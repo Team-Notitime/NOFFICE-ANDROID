@@ -9,7 +9,9 @@ import com.easyhz.noffice.feature.announcement.screen.creation.ContentScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 import com.easyhz.noffice.feature.announcement.screen.creation.datetime.DateTimeScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.remind.CustomRemindScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindViewModel
 import com.easyhz.noffice.feature.announcement.screen.creation.selection.NofficeSelectionScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.task.TaskScreen
 import com.easyhz.noffice.feature.announcement.screen.detail.AnnouncementDetailScreen
@@ -85,11 +87,22 @@ internal fun NavGraphBuilder.announcementGraph(
         }
 
         composable<AnnouncementCreation.Remind> {
-            val viewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
+            val viewModel = it.sharedViewModel<RemindViewModel>(navController = navController)
+            val creationViewModel = it.sharedViewModel<CreationViewModel>(navController = navController)
             val args = it.toRoute<AnnouncementCreation.Remind>()
             RemindScreen(
-                creationViewModel = viewModel,
+                viewModel = viewModel,
+                creationViewModel = creationViewModel,
                 selectRemind = args.remindList,
+                navigateToCustomRemind = navController::navigateToCustomRemind,
+                navigateToUp = navController::navigateUp
+            )
+        }
+
+        composable<AnnouncementCreation.CustomRemind> {
+            val viewModel = it.sharedViewModel<RemindViewModel>(navController = navController)
+            CustomRemindScreen(
+                remindViewModel = viewModel,
                 navigateToUp = navController::navigateUp
             )
         }
@@ -144,5 +157,11 @@ internal fun NavController.navigateToTask(taskList: List<String>?) {
 internal fun NavController.navigateToRemind(remindList: List<String>?) {
     navigate(
         route = AnnouncementCreation.Remind(remindList = remindList)
+    )
+}
+
+internal fun NavController.navigateToCustomRemind() {
+    navigate(
+        route = AnnouncementCreation.CustomRemind
     )
 }

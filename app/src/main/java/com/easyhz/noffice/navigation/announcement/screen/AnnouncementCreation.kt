@@ -35,4 +35,7 @@ internal object AnnouncementCreation: Parcelable {
     data class Remind(
         val remindList: List<String>? = null
     )
+
+    @Serializable
+    data object CustomRemind
 }

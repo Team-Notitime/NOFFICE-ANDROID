@@ -7,4 +7,6 @@ sealed class RemindIntent: UiIntent() {
     data object ClickBackButton: RemindIntent()
     data object ClickSaveButton: RemindIntent()
     data class ClickRemindItem(val key: String): RemindIntent()
+    data object ClickCustomRemindButton: RemindIntent()
+    data class SaveCustomRemind(val data: String): RemindIntent()
 }

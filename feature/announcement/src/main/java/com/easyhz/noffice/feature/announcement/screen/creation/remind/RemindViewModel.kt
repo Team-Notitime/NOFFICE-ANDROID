@@ -22,6 +22,8 @@ class RemindViewModel @Inject constructor(
             is RemindIntent.ClickBackButton -> { onClickBackButton() }
             is RemindIntent.ClickSaveButton -> { onClickSaveButton() }
             is RemindIntent.ClickRemindItem -> { onClickRemindItem(intent.key) }
+            is RemindIntent.ClickCustomRemindButton -> { onClickCustomRemindButton() }
+            is RemindIntent.SaveCustomRemind -> { onClickRemindItem(intent.data) }
         }
     }
 
@@ -42,6 +44,10 @@ class RemindViewModel @Inject constructor(
                 OptionData.Remind(data = selectedRemindList, isSelected = selectedRemindList.isNotEmpty())
             )
         }
+    }
+
+    private fun onClickCustomRemindButton() {
+        postSideEffect { RemindSideEffect.NavigateToCustomRemind }
     }
 
     private fun onClickRemindItem(key: String) {

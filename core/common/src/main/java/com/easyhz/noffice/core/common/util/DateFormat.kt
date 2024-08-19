@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.common.util
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -15,6 +16,7 @@ object DateFormat {
         FULL("yyyy.MM.dd(E) HH:mm"),
         DATE_TEXT("yyyy년 MM월 dd일"),
         DATE_DASH("yyyy-MM-dd"),
+        CUSTOM_REMIND("MM월 dd일 E a h:mm"),
         DAY("MM/dd"),
         TIME("HH:mm")
     }
@@ -70,5 +72,9 @@ object DateFormat {
         val currentDate = LocalDate.now()
         val dayOfWeek = currentDate.dayOfWeek
         return dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+    }
+    fun localDateTimeToString(dateTime: LocalDateTime, pattern: PATTERN = PATTERN.FULL): String {
+        val formatter = DateTimeFormatter.ofPattern(pattern.value)
+        return dateTime.format(formatter)
     }
 }

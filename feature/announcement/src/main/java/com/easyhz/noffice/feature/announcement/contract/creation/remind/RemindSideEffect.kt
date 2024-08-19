@@ -5,5 +5,6 @@ import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 
 sealed class RemindSideEffect: UiSideEffect() {
     data object NavigateToUp: RemindSideEffect()
+    data object NavigateToCustomRemind: RemindSideEffect()
     data class NavigateToNext(val data: OptionData<List<String>>): RemindSideEffect()
 }
