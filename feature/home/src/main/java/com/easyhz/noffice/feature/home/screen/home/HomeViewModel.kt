@@ -40,7 +40,6 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        println("init: ${organizationState.value}")
         fetchUserInfo()
         fetchDayOfWeek()
         fetchOrganizations()
