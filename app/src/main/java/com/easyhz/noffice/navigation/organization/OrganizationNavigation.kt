@@ -27,6 +27,8 @@ import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationDetail
 import com.easyhz.noffice.navigation.organization.screen.OrganizationInvitation
 import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement
+import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement.Companion.decode
+import com.easyhz.noffice.navigation.organization.screen.OrganizationManagement.Companion.encode
 import com.easyhz.noffice.navigation.organization.screen.StandbyMember
 
 internal fun NavGraphBuilder.organizationGraph(
@@ -63,7 +65,7 @@ internal fun NavGraphBuilder.organizationGraph(
     ) {
         val args = it.toRoute<OrganizationManagement>()
         OrganizationManagementScreen(
-            organizationInformation = args.organizationInformation,
+            organizationInformation = args.organizationInformation.decode(),
             snackBarHostState = snackBarHostState,
             navigateToUp = navController::navigateUp,
             navigateToMemberManagement = navController::navigateToMemberManagement,
@@ -119,7 +121,7 @@ internal fun NavController.navigateToOrganizationDetail(id: Int, name: String) {
 internal fun NavController.navigateToOrganizationManagement(
     information: OrganizationInformation,
 ) {
-    navigate(OrganizationManagement(organizationInformation = information))
+    navigate(OrganizationManagement(organizationInformation = information.encode()))
 }
 
 internal fun NavController.navigateToMemberManagement(id: Int) {
