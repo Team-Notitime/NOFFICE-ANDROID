@@ -1,12 +1,16 @@
 package com.easyhz.noffice.feature.home.screen.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -21,6 +25,7 @@ import com.easyhz.noffice.feature.home.component.notice.NoticeView
 import com.easyhz.noffice.feature.home.component.task.TaskView
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
 import com.easyhz.noffice.feature.home.contract.home.HomeSideEffect
+import com.easyhz.noffice.feature.home.permission.checkNotificationPermission
 import com.easyhz.noffice.feature.home.util.HomeTopBarMenu
 
 @Composable
@@ -32,7 +37,22 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
+    val context = LocalContext.current
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                /* FIXME */
+            } else {
+                /* FIXME */
+            }
+        }
 
+    LaunchedEffect(key1 = Unit) {
+        checkNotificationPermission(
+            context = context,
+            launcher = requestPermissionLauncher
+        ) { }
+    }
     NofficeScaffold(
         modifier = modifier,
         topBar = {
