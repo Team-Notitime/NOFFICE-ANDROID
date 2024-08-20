@@ -65,6 +65,7 @@ dependencies {
     implementation(projects.core.model)
 
     implementation(projects.data.auth)
+    implementation(projects.data.notification)
     implementation(projects.data.organization)
 
     implementation(projects.domain.home)
