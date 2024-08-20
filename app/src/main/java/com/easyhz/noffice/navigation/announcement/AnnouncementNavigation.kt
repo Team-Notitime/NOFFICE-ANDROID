@@ -5,10 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
+import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 import com.easyhz.noffice.feature.announcement.screen.creation.ContentScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.CreationViewModel
 import com.easyhz.noffice.feature.announcement.screen.creation.datetime.DateTimeScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.place.PlaceScreen
+import com.easyhz.noffice.feature.announcement.screen.creation.promotion.PromotionScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.CustomRemindScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindScreen
 import com.easyhz.noffice.feature.announcement.screen.creation.remind.RemindViewModel
@@ -16,6 +18,8 @@ import com.easyhz.noffice.feature.announcement.screen.creation.selection.Noffice
 import com.easyhz.noffice.feature.announcement.screen.creation.task.TaskScreen
 import com.easyhz.noffice.feature.announcement.screen.detail.AnnouncementDetailScreen
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation
+import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation.Promotion.Companion.decode
+import com.easyhz.noffice.navigation.announcement.screen.AnnouncementCreation.Promotion.Companion.encode
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementDetail
 import com.easyhz.noffice.navigation.util.sharedViewModel
 
@@ -48,7 +52,8 @@ internal fun NavGraphBuilder.announcementGraph(
                 navigateToDateTime = navController::navigateToDateTime,
                 navigateToPlace = navController::navigateToPlace,
                 navigateToTask = navController::navigateToTask,
-                navigateToRemind = navController::navigateToRemind
+                navigateToRemind = navController::navigateToRemind,
+                navigateToPromotion = navController::navigateToPromotion
             )
         }
 
@@ -105,6 +110,14 @@ internal fun NavGraphBuilder.announcementGraph(
             CustomRemindScreen(
                 remindViewModel = viewModel,
                 navigateToUp = navController::navigateUp
+            )
+        }
+        composable<AnnouncementCreation.Promotion>(
+            typeMap = AnnouncementCreation.Promotion.typeMap
+        ) {
+            val args = it.toRoute<AnnouncementCreation.Promotion>()
+            PromotionScreen(
+                param = args.announcementParam.decode()
             )
         }
     }
@@ -165,4 +178,8 @@ internal fun NavController.navigateToCustomRemind() {
     navigate(
         route = AnnouncementCreation.CustomRemind
     )
+}
+
+internal fun NavController.navigateToPromotion(param: AnnouncementParam) {
+    navigate(route = AnnouncementCreation.Promotion(param.encode()))
 }

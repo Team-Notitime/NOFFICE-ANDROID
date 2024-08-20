@@ -48,6 +48,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.util.textField.TextFieldType
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
+import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 import com.easyhz.noffice.feature.announcement.component.creation.ContentTextField
 import com.easyhz.noffice.feature.announcement.component.creation.TitleTextField
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
@@ -64,6 +65,7 @@ fun ContentScreen(
     navigateToPlace: (String?, String?, String?) -> Unit,
     navigateToTask: (List<String>?) -> Unit,
     navigateToRemind: (List<String>?, Boolean) -> Unit,
+    navigateToPromotion: (AnnouncementParam) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -199,7 +201,7 @@ fun ContentScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when (sideEffect) {
             is CreationSideEffect.NavigateToUp -> { navigateToUp() }
-            is CreationSideEffect.NavigateToNext -> { /*TODO 성공 화면으*/ }
+            is CreationSideEffect.NavigateToNext -> { navigateToPromotion(sideEffect.param) }
             is CreationSideEffect.NavigateToDateTime -> { navigateToDateTime(sideEffect.date, sideEffect.time) }
             is CreationSideEffect.NavigateToPlace -> { navigateToPlace(sideEffect.contactType, sideEffect.title, sideEffect.url) }
             is CreationSideEffect.NavigateToTask -> { navigateToTask(sideEffect.taskList ?: emptyList()) }

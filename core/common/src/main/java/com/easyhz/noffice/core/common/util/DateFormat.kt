@@ -18,7 +18,8 @@ object DateFormat {
         DATE_DASH("yyyy-MM-dd"),
         CUSTOM_REMIND("MM월 dd일 E a h:mm"),
         DAY("MM/dd"),
-        TIME("HH:mm")
+        TIME("HH:mm"),
+        SERVER("yyyy-MM-dd'T'HH:mm:ss")
     }
     fun fullText(date: LocalDate): String =
         DateTimeFormatter.ofPattern(PATTERN.DATE_TEXT.value).format(date)
@@ -75,6 +76,13 @@ object DateFormat {
     }
     fun localDateTimeToString(dateTime: LocalDateTime, pattern: PATTERN = PATTERN.FULL): String {
         val formatter = DateTimeFormatter.ofPattern(pattern.value)
+        return dateTime.format(formatter)
+    }
+
+    fun dateTimeToRequestStringNullable(date: LocalDate?, time: LocalTime?): String? {
+        if (date == null || time == null) return null
+        val dateTime = LocalDateTime.of(date, time)
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
         return dateTime.format(formatter)
     }
 }

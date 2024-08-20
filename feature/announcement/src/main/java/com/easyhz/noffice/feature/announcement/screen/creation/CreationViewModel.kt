@@ -5,12 +5,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
+import com.easyhz.noffice.core.model.task.Task
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationState
 import com.easyhz.noffice.feature.announcement.contract.creation.Options
 import com.easyhz.noffice.feature.announcement.contract.creation.datetime.SelectionDateTimeState
 import com.easyhz.noffice.feature.announcement.contract.creation.place.ContactState
+import com.easyhz.noffice.feature.announcement.contract.creation.place.ContactType
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -40,7 +44,30 @@ class CreationViewModel @Inject constructor(
     }
 
     private fun onClickNextButton() {
-        postSideEffect { CreationSideEffect.NavigateToNext }
+        val dateTimeState = currentState.getOptionValue<SelectionDateTimeState>(Options.DATE_TIME)
+        val contactState = currentState.getOptionValue<ContactState>(Options.PLACE)
+        val taskListState = currentState.getOptionValue<List<String>>(Options.TASK)
+        val remindListState = currentState.getOptionValue<List<String>>(Options.REMIND)
+        val param = AnnouncementParam(
+            organizationId = 2, // FIXME
+            title = currentState.title,
+            content = currentState.content.text,
+            memberId = 2, // FIXME
+            endAt = DateFormat.dateTimeToRequestStringNullable(dateTimeState?.date, dateTimeState?.time),
+            isFaceToFace = contactState?.contactType == ContactType.CONTACT,
+            placeLinkName = contactState?.title,
+            placeLinkUrl = contactState?.url,
+            profileImageUrl = "",
+            tasks = taskListState?.map {
+                Task(
+                    content = it,
+                    isDone = true
+                )
+            },
+            noticeDate = null, // FIXME
+            noticeBefore = null // FIXME
+        )
+        postSideEffect { CreationSideEffect.NavigateToNext(param) }
     }
 
     private fun onChangeTitleTextValue(newText: String) {
