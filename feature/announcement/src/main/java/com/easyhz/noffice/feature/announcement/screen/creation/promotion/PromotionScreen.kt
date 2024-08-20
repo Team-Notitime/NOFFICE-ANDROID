@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -58,6 +59,7 @@ fun PromotionScreen(
     param: AnnouncementParam,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollState = rememberLazyListState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     LaunchedEffect(key1 = Unit) {
         viewModel.postIntent(PromotionIntent.InitScreen(param))
@@ -107,12 +109,14 @@ fun PromotionScreen(
             ) {
                 LazyRow(
                     modifier = Modifier.padding(vertical = 12.dp),
+                    state = scrollState,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(start = 16.dp, end = 44.dp)
                 ) {
                     items(CardImage.entries) {
                         PromotionCard(
                             isSelected = uiState.selectCard == it,
+                            hasPromotion = uiState.hasPromotion,
                             cardImage = it
                         ) {
                             viewModel.postIntent(PromotionIntent.ClickPromotionCard(it))
@@ -158,7 +162,7 @@ fun PromotionScreen(
             PromotionBottomSheet(
                 sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                 selectedCard = uiState.bottomSheetSelectCard,
-                hasPromotion = false,
+                hasPromotion = uiState.hasPromotion,
                 onDismissRequest = { viewModel.postIntent(PromotionIntent.HideUserNameBottomSheet) },
                 onClickJoinPromotion = { /* FIXME */ },
                 onClickItem = { viewModel.postIntent(PromotionIntent.ClickBottomSheetCard(it)) }
@@ -172,6 +176,9 @@ fun PromotionScreen(
             is PromotionSideEffect.HidePromotionBottomSheet -> {
                 sheetState.hide()
                 viewModel.postIntent(PromotionIntent.SetPromotionBottomSheet(false))
+            }
+            is PromotionSideEffect.ScrollToItem -> {
+                scrollState.animateScrollToItem(index = sideEffect.index)
             }
         }
     }

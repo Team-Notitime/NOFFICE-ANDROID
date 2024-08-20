@@ -38,10 +38,11 @@ class PromotionViewModel @Inject constructor(
 
     private fun onClickPromotionCard(cardImage: CardImage) {
         if (currentState.selectCard == cardImage) return
-        if (cardImage.isPromotion) {
+        if (!currentState.hasPromotion && cardImage.isPromotion) {
             setBottomSheet(true)
         } else {
             reduce { copy(selectCard = cardImage, bottomSheetSelectCard = cardImage) }
+            scrollToItem()
         }
     }
 
@@ -53,6 +54,7 @@ class PromotionViewModel @Inject constructor(
     private fun onClickBottomSheetSelectButton() {
         hideBottomSheet()
         reduce { copy(selectCard = bottomSheetSelectCard) }
+        scrollToItem()
     }
 
     private fun hideBottomSheet() {
@@ -61,6 +63,11 @@ class PromotionViewModel @Inject constructor(
 
     private fun setBottomSheet(isShow: Boolean) {
         reduce { copy(isShowPromotionBottomSheet = isShow) }
+    }
+
+    private fun scrollToItem() {
+        val index = CardImage.entries.indexOf(currentState.selectCard)
+        postSideEffect { PromotionSideEffect.ScrollToItem(index) }
     }
 
     private fun saveButton() {

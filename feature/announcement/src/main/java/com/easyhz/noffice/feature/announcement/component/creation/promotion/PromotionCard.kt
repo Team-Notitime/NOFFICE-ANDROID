@@ -25,6 +25,7 @@ import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardI
 internal fun PromotionCard(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
+    hasPromotion: Boolean,
     cardImage: CardImage,
     onClick: () -> Unit
 ) {
@@ -46,7 +47,7 @@ internal fun PromotionCard(
                 .then(
                     Modifier
                         .blur(16.dp)
-                        .takeIf { cardImage.isPromotion } ?: Modifier
+                        .takeIf { !hasPromotion && cardImage.isPromotion } ?: Modifier
                 )
                 .height(184.dp)
                 .clip(RoundedCornerShape(8.dp)),
@@ -54,7 +55,7 @@ internal fun PromotionCard(
             contentDescription = cardImage.imageId.toString(),
             contentScale = ContentScale.Crop,
         )
-        if (cardImage.isPromotion) {
+        if (!hasPromotion && cardImage.isPromotion) {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -73,7 +74,7 @@ internal fun PromotionCard(
 @Preview
 @Composable
 private fun PromotionCardPrev() {
-    PromotionCard(isSelected = true, cardImage = CardImage.CARD3) {
+    PromotionCard(isSelected = true, hasPromotion = false, cardImage = CardImage.CARD3) {
 
     }
 }
