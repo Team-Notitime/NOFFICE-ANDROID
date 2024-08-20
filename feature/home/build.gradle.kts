@@ -10,9 +10,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity.ktx)
+
     implementation(projects.core.designSystem)
     implementation(projects.core.common)
     implementation(projects.domain.home)
+    implementation(projects.domain.notification)
     implementation(projects.domain.organization)
 
     // splash

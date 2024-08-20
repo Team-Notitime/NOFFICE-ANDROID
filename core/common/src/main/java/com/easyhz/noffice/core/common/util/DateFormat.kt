@@ -24,6 +24,11 @@ object DateFormat {
     fun fullText(date: LocalDate): String =
         DateTimeFormatter.ofPattern(PATTERN.DATE_TEXT.value).format(date)
 
+    /**
+     * [String] 을 [LocalDate]로 변환
+     *
+     * 달력에서 날짜를 선택할 때 주로 쓰입니다
+     */
     fun stringToLocalDate(date: String, pattern: PATTERN = PATTERN.DATE_DASH): LocalDate = try {
         val formatter = DateTimeFormatter.ofPattern(pattern.value)
         LocalDate.parse(date, formatter)
@@ -32,7 +37,11 @@ object DateFormat {
         LocalDate.now()
     }
 
-
+    /**
+     * [String] 을 [LocalTime]로 변환
+     *
+     * 달력에서 시간을 선택할 때 주로 쓰입니다
+     */
     fun stringToLocalTime(time: String, pattern: PATTERN = PATTERN.TIME): LocalTime = try {
         val formatter = DateTimeFormatter.ofPattern(pattern.value)
         LocalTime.parse(time, formatter)
