@@ -3,12 +3,17 @@ package com.easyhz.noffice.feature.announcement.contract.creation.promotion
 import androidx.annotation.DrawableRes
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 
 data class PromotionState(
+    val announcementParam: AnnouncementParam?,
     val selectCard: CardImage
 ): UiState() {
     companion object {
-        fun init() = PromotionState(selectCard = CardImage.CARD1)
+        fun init() = PromotionState(
+            announcementParam = null,
+            selectCard = CardImage.CARD1
+        )
     }
 }
 

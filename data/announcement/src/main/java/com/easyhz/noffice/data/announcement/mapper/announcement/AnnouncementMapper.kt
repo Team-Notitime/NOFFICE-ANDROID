@@ -35,7 +35,7 @@ fun AnnouncementParam.toRequest(): AnnouncementRequest = AnnouncementRequest(
     endAt = this.endAt,
     noticeBefore = this.noticeBefore,
     noticeDate = this.noticeDate,
-    tasks = this.tasks.map { Task(content = it.content) }
+    tasks = this.tasks?.map { Task(content = it.content) }
 )
 
 fun AnnouncementResponse.toDetail(): OrganizationAnnouncement = OrganizationAnnouncement(

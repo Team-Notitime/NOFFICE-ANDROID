@@ -1,6 +1,7 @@
 package com.easyhz.noffice.feature.announcement.screen.creation.promotion
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardImage
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionSideEffect
@@ -16,10 +17,15 @@ class PromotionViewModel @Inject constructor(
 ) {
     override fun handleIntent(intent: PromotionIntent) {
         when(intent) {
+            is PromotionIntent.InitScreen -> { initScreen(intent.param) }
             is PromotionIntent.ClickBackButton -> { onClickBackButton() }
             is PromotionIntent.ClickSaveButton -> { saveButton() }
             is PromotionIntent.ClickPromotionCard -> { onClickPromotionCard(intent.cardImage) }
         }
+    }
+
+    private fun initScreen(param: AnnouncementParam) {
+        reduce { copy(announcementParam = param) }
     }
 
     private fun onClickBackButton() {

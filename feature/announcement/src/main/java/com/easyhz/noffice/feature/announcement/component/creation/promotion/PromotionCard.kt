@@ -30,13 +30,17 @@ internal fun PromotionCard(
             .height(52.dp)
             .clickable { onClick() }
             .then(
-                Modifier.border(2.dp, Grey800, RoundedCornerShape(8.dp)).takeIf { isSelected } ?: Modifier
+                Modifier
+                    .border(2.dp, Grey800, RoundedCornerShape(8.dp))
+                    .takeIf { isSelected } ?: Modifier
             )
             .clip(RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center
     ) {
         Image(
-            modifier = Modifier.height(184.dp).clip(RoundedCornerShape(8.dp)),
+            modifier = Modifier
+                .height(184.dp)
+                .clip(RoundedCornerShape(8.dp)),
             painter = painterResource(id = cardImage.imageId),
             contentDescription = cardImage.imageId.toString(),
             contentScale = ContentScale.Crop,

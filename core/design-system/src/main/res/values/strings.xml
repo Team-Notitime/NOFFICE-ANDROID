@@ -122,7 +122,7 @@
     <string name="announcement_creation_option_custom_remind_create_title">알림 직접 설정</string>
     <string name="announcement_creation_option_button">저장</string>
 
-    <string name="announcement_creation_option_promotion_button">다음</string>
+    <string name="announcement_creation_option_promotion_button">등록</string>
     <string name="announcement_creation_option_promotion_title">
         메인에서 보여줄
         \n노티 카드를 골라봐요
