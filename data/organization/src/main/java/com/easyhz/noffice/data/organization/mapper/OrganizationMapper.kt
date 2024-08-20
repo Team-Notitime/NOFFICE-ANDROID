@@ -22,7 +22,8 @@ internal fun OrganizationInformationResponse.toModel(): OrganizationInformation 
     category = this.categories.map { Category(id = it, title = "", isSelected = false ) },
     profileImageUrl = this.profileImage,
     members = mapMemberCounts(MemberType.LEADER to leaderCount, MemberType.MEMBER to participantCount),
-    hasStandbyMember = this.isPending
+    hasStandbyMember = this.isPending,
+    role = MemberType.valueOf(this.role)
 )
 
 fun OrganizationCapsuleResponse.toModel(): Organization = Organization(

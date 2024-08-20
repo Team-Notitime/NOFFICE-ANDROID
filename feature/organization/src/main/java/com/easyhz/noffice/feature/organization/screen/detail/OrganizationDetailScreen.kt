@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,6 +38,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.detail.AnnouncementCard
 import com.easyhz.noffice.feature.organization.component.detail.DetailHeader
 import com.easyhz.noffice.feature.organization.component.detail.NumberOfMembersView
@@ -83,19 +84,21 @@ fun OrganizationDetailScreen(
                     },
                     onClick = { viewModel.postIntent(DetailIntent.NavigateToUp) }
                 ),
-                trailingItem = DetailTopBarMenu(
-                    content = {
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = R.drawable.ic_edit),
-                            contentDescription = "edit",
-                            tint = Grey400
-                        )
-                    },
-                    onClick = {
-                        viewModel.postIntent(DetailIntent.ClickEditButton)
-                    }
-                ),
+                trailingItem = if (!uiState.isLoading && uiState.organizationInformation.role == MemberType.LEADER) {
+                    DetailTopBarMenu(
+                        content = {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = R.drawable.ic_edit),
+                                contentDescription = "edit",
+                                tint = Grey400
+                            )
+                        },
+                        onClick = {
+                            viewModel.postIntent(DetailIntent.ClickEditButton)
+                        }
+                    )
+                } else null,
             )
         }
     ) { paddingValues ->
