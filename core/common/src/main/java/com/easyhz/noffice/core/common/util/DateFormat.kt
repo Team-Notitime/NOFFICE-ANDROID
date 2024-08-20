@@ -3,7 +3,6 @@ package com.easyhz.noffice.core.common.util
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.format.TextStyle
@@ -19,8 +18,9 @@ object DateFormat {
         CUSTOM_REMIND("MM월 dd일 E a h:mm"),
         DAY("MM/dd"),
         TIME("HH:mm"),
-        SERVER("yyyy-MM-dd'T'HH:mm:ss")
+        REQUEST("yyyy-MM-dd'T'HH:mm:ss")
     }
+
     fun fullText(date: LocalDate): String =
         DateTimeFormatter.ofPattern(PATTERN.DATE_TEXT.value).format(date)
 
@@ -51,10 +51,9 @@ object DateFormat {
     }
 
     fun formatDateTime(date: String, pattern: PATTERN = PATTERN.FULL): String {
-        val dateTime = ZonedDateTime.parse(date)
+        val dateTime = LocalDateTime.parse(date)
 
         val formatter = DateTimeFormatter.ofPattern(pattern.value)
-            .withLocale(Locale.KOREAN)
         val formattedDate = dateTime.format(formatter)
 
         return formattedDate
@@ -62,10 +61,9 @@ object DateFormat {
 
     fun formatDateTimeNullable(date: String?, pattern: PATTERN = PATTERN.FULL): String? {
         if (date.isNullOrBlank()) return null
-        val dateTime = ZonedDateTime.parse(date)
+        val dateTime = LocalDateTime.parse(date)
 
         val formatter = DateTimeFormatter.ofPattern(pattern.value)
-            .withLocale(Locale.KOREAN)
         val formattedDate = dateTime.format(formatter)
 
         return formattedDate
@@ -83,9 +81,12 @@ object DateFormat {
         val dayOfWeek = currentDate.dayOfWeek
         return dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
     }
-    fun localDateTimeToString(dateTime: LocalDateTime, pattern: PATTERN = PATTERN.FULL): String {
-        val formatter = DateTimeFormatter.ofPattern(pattern.value)
-        return dateTime.format(formatter)
+
+    fun localDateTimeToString(dateTime: String, pattern: PATTERN = PATTERN.CUSTOM_REMIND): String {
+        val parsDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        val outputFormatter = DateTimeFormatter.ofPattern(pattern.value, Locale.KOREAN)
+        val formattedDate = parsDate.format(outputFormatter)
+        return formattedDate
     }
 
     fun dateTimeToRequestStringNullable(date: LocalDate?, time: LocalTime?): String? {
@@ -94,4 +95,12 @@ object DateFormat {
         val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
         return dateTime.format(formatter)
     }
+
+    fun localDateTimeToRequest(dateTime: LocalDateTime): String {
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        return dateTime.format(formatter)
+    }
+
+    fun parseLocalDateTime(input: String): LocalDateTime? =
+        LocalDateTime.parse(input, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 }
