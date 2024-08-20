@@ -18,12 +18,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.CheckButton
 import com.easyhz.noffice.core.design_system.component.button.CheckButtonDefaults
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
+import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
@@ -43,71 +45,75 @@ fun NofficeSelectionScreen(
     modifier: Modifier = Modifier,
     viewModel: SelectionViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
-    navigateToAnnouncementCreationContent: () -> Unit
+    navigateToAnnouncementCreationContent: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
-    NofficeBasicScaffold(
-        topBar = {
-            DetailTopBar(
-                leadingItem = DetailTopBarMenu(
-                    content = {
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "left",
-                            tint = Grey400
-                        )
-                    },
-                    onClick = { viewModel.postIntent(SelectionIntent.ClickBackButton) }
-                ),
-                title = stringResource(id = R.string.announcement_creation_title),
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-                .screenHorizonPadding(),
-        ) {
-            CreationTitle(
-                title = stringResource(id = R.string.announcement_creation_noffice_selection_title)
-            )
-
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+    LoadingScreenProvider(
+        isLoading = organizationList.loadState.refresh == LoadState.Loading
+    ) {
+        NofficeBasicScaffold(
+            topBar = {
+                DetailTopBar(
+                    leadingItem = DetailTopBarMenu(
+                        content = {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = R.drawable.ic_chevron_left),
+                                contentDescription = "left",
+                                tint = Grey400
+                            )
+                        },
+                        onClick = { viewModel.postIntent(SelectionIntent.ClickBackButton) }
+                    ),
+                    title = stringResource(id = R.string.announcement_creation_title),
+                )
+            }
+        ) { paddingValues ->
+            Column(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                    .screenHorizonPadding(),
             ) {
-                item {
-                    Spacer(modifier = Modifier.width(4.dp))
-                }
-                items(organizationList.itemCount, key = { organizationList[it]?.id ?: -1}) { index ->
-                    CheckButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = organizationList[index]?.name!!,
-                        isComplete = uiState.selectedOrganization == organizationList[index]?.id,
-                        color = CheckButtonDefaults(
-                            completeContainerColor = Green100,
-                            completeContentColor = Green700,
-                            completeIconColor = Green700,
-                            incompleteContainerColor = Grey50,
-                            incompleteContentColor = Grey600,
-                            incompleteIconColor = Grey300
-                        )
-                    ) {
-                        viewModel.postIntent(SelectionIntent.SelectedOrganization(organizationList[index]?.id ?: -1))
+                CreationTitle(
+                    title = stringResource(id = R.string.announcement_creation_noffice_selection_title)
+                )
+
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    item {
+                        Spacer(modifier = Modifier.width(4.dp))
+                    }
+                    items(organizationList.itemCount, key = { organizationList[it]?.id ?: -1}) { index ->
+                        CheckButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = organizationList[index]?.name!!,
+                            isComplete = uiState.selectedOrganization == organizationList[index]?.id,
+                            color = CheckButtonDefaults(
+                                completeContainerColor = Green100,
+                                completeContentColor = Green700,
+                                completeIconColor = Green700,
+                                incompleteContainerColor = Grey50,
+                                incompleteContentColor = Grey600,
+                                incompleteIconColor = Grey300
+                            )
+                        ) {
+                            viewModel.postIntent(SelectionIntent.SelectedOrganization(organizationList[index]?.id ?: -1))
+                        }
                     }
                 }
-            }
-            MediumButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                text = stringResource(id = R.string.next_button),
-                enabled = uiState.enabledButton
-            ) {
-                viewModel.postIntent(SelectionIntent.ClickNextButton)
+                MediumButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    text = stringResource(id = R.string.next_button),
+                    enabled = uiState.enabledButton
+                ) {
+                    viewModel.postIntent(SelectionIntent.ClickNextButton)
+                }
             }
         }
     }
@@ -115,7 +121,7 @@ fun NofficeSelectionScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
         when(sideEffect) {
             is SelectionSideEffect.NavigateToUp -> { navigateToUp() }
-            is SelectionSideEffect.NavigateToNext -> { navigateToAnnouncementCreationContent() }
+            is SelectionSideEffect.NavigateToNext -> { navigateToAnnouncementCreationContent(sideEffect.id) }
         }
     }
 }

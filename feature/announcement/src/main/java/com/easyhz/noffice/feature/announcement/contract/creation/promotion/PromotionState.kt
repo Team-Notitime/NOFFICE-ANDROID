@@ -10,7 +10,8 @@ data class PromotionState(
     val selectCard: CardImage,
     val bottomSheetSelectCard: CardImage,
     val isShowPromotionBottomSheet: Boolean,
-    val hasPromotion: Boolean
+    val hasPromotion: Boolean,
+    val isLoading: Boolean
 ): UiState() {
     companion object {
         fun init() = PromotionState(
@@ -18,7 +19,8 @@ data class PromotionState(
             selectCard = CardImage.CARD1,
             bottomSheetSelectCard = CardImage.CARD1,
             isShowPromotionBottomSheet = false,
-            hasPromotion = true
+            hasPromotion = false,
+            isLoading = false
         )
     }
 }

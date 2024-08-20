@@ -1,6 +1,7 @@
 package com.easyhz.noffice.feature.announcement.contract.creation.remind
 
 import com.easyhz.noffice.core.common.base.UiState
+import com.easyhz.noffice.core.common.util.DateFormat.localDateTimeToString
 
 data class RemindState(
     val remindMap: LinkedHashMap<String, Boolean>,
@@ -41,7 +42,7 @@ internal val timeList = listOf(
 )
 
 internal fun secondsToString(s: String): String {
-    val seconds = s.toIntOrNull() ?: return s
+    val seconds = s.toIntOrNull() ?: return localDateTimeToString(s)
 
     val weeks = seconds / (60 * 60 * 24 * 7)
     val days = (seconds % (60 * 60 * 24 * 7)) / (60 * 60 * 24)

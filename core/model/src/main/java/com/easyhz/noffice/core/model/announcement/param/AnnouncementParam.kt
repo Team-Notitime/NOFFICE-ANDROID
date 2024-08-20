@@ -10,7 +10,7 @@ data class AnnouncementParam(
     val isFaceToFace: Boolean?,
     val memberId: Int,
     val noticeBefore: List<String>?,
-    val noticeDate: String?,
+    val noticeDate: List<String>?,
     val organizationId: Int,
     val placeLinkName: String?,
     val placeLinkUrl: String?,

@@ -1,7 +1,7 @@
 package com.easyhz.noffice.feature.announcement.screen.creation.remind
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
-import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.common.util.DateFormat.localDateTimeToRequest
 import com.easyhz.noffice.core.common.util.TimeFormat
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.custom.CustomRemindIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.remind.custom.CustomRemindSideEffect
@@ -33,8 +33,7 @@ class CustomRemindViewModel @Inject constructor(
     private fun onClickSaveButton() {
         reduce { copy(selectionTime = TimeFormat.convertToLocalTime(hour, minute, isAm)) }
         val dateTime = LocalDateTime.of(currentState.selectionDate, currentState.selectionTime)
-
-        val data = DateFormat.localDateTimeToString(dateTime, pattern = DateFormat.PATTERN.CUSTOM_REMIND)
+        val data = localDateTimeToRequest(dateTime)
         postSideEffect { CustomRemindSideEffect.SaveToDateTime(data) }
     }
 

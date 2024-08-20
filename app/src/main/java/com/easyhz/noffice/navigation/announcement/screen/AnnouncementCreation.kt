@@ -17,7 +17,9 @@ internal object AnnouncementCreation: Parcelable {
     data object NofficeSelection
 
     @Serializable
-    data object Content
+    data class Content(
+        val organizationId: Int
+    )
 
     @Serializable
     data class DateTime(

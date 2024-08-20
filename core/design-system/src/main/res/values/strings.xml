@@ -133,6 +133,11 @@
     <string name="announcement_creation_option_promotion_promotion_button">프로모션 참여하러 가기</string>
     <string name="announcement_creation_option_promotion_select_button">선택 완료</string>
 
+    <string name="announcement_creation_success_to_home">노티 홈으로</string>
+    <string name="announcement_creation_success_to_detail">확인하러 가기</string>
+    <string name="announcement_creation_success_title">노티가 등록되었어요</string>
+    <string name="announcement_creation_success_content">등록된 노티를 확인하러 갈까요?</string>
+
     <string name="delete">삭제</string>
 
     <string name="announcement_detail_date_time">이벤트 일시</string>
