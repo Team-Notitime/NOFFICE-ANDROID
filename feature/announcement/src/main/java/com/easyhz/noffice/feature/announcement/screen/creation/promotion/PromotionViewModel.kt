@@ -1,17 +1,30 @@
 package com.easyhz.noffice.feature.announcement.screen.creation.promotion
 
+import android.net.Uri
+import android.util.Log
+import androidx.annotation.StringRes
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
+import com.easyhz.noffice.core.model.image.ImageParam
+import com.easyhz.noffice.core.model.image.ImagePurpose
+import com.easyhz.noffice.domain.announcement.usecase.announcement.CreateAnnouncementUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.GetDrawableUriUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardImage
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PromotionViewModel @Inject constructor(
-
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val getDrawableUriUseCase: GetDrawableUriUseCase,
+    private val createAnnouncementUseCase: CreateAnnouncementUseCase
 ): BaseViewModel<PromotionState, PromotionIntent, PromotionSideEffect>(
     initialState = PromotionState.init()
 ) {
@@ -70,7 +83,47 @@ class PromotionViewModel @Inject constructor(
         postSideEffect { PromotionSideEffect.ScrollToItem(index) }
     }
 
-    private fun saveButton() {
+    private fun saveButton() = viewModelScope.launch {
+        setIsLoading(true)
+        val imageUri = getDrawableUri() ?: return@launch
+        val imageUrl = uploadImage(imageUri) ?: return@launch
+        val param = currentState.announcementParam?.copy(
+            profileImageUrl = imageUrl
+        ) ?: return@launch
+        createAnnouncementUseCase.invoke(param).onSuccess {
+            postSideEffect { PromotionSideEffect.NavigateToSuccess(it.organizationId, it.title) }
+        }.onFailure {
+            showSnackBar(it.handleError())
+        }.also {
+            setIsLoading(false)
+        }
+    }
+    private suspend fun uploadImage(imageUri: Uri): String? {
+        val param = ImageParam(uri = imageUri, purpose = ImagePurpose.ANNOUNCEMENT_PROFILE)
+        return uploadImageUseCase.invoke(param).getOrElse {
+            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            setIsLoading(false)
+            showSnackBar(it.handleError())
+            null
+        }
+    }
 
+    private suspend fun getDrawableUri(): Uri? {
+        return getDrawableUriUseCase.invoke(currentState.selectCard.imageId).getOrElse {
+            Log.d(this.javaClass.name, "getDrawableUri - ${it.message}")
+            setIsLoading(false)
+            showSnackBar(it.handleError())
+            null
+        }
+    }
+    
+    private fun setIsLoading(value: Boolean) {
+        reduce { copy(isLoading = value) }
+    }
+
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            PromotionSideEffect.ShowSnackBar(stringId)
+        }
     }
 }

@@ -138,6 +138,7 @@ internal fun NofficeApp(
                 navController = navController
             )
             announcementGraph(
+                snackBarHostState = snackBarHostState,
                 navController = navController,
             )
             myPageGraph(

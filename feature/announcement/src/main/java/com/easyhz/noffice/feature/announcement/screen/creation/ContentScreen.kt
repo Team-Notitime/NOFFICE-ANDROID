@@ -60,6 +60,7 @@ import kotlinx.coroutines.launch
 fun ContentScreen(
     modifier: Modifier = Modifier,
     viewModel: CreationViewModel = hiltViewModel(),
+    organizationId: Int,
     navigateToUp: () -> Unit,
     navigateToDateTime: (String?, String?) -> Unit,
     navigateToPlace: (String?, String?, String?) -> Unit,
@@ -77,6 +78,9 @@ fun ContentScreen(
 
     val paddingHeight = remember(density) { with(density) { 32.dp.toPx().toInt() } }
 
+    LaunchedEffect(key1 = Unit) {
+        viewModel.postIntent(CreationIntent.InitScreen(organizationId))
+    }
 
     LaunchedEffect(key1 = uiState.absoluteCursorY, key2 = uiState.isFocused) {
         val targetScroll = uiState.absoluteCursorY - halfHeight - paddingHeight

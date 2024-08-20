@@ -18,7 +18,8 @@ class UploadImageUseCase @Inject constructor(
 ) : BaseUseCase<ImageParam, String>() {
     override suspend fun invoke(param: ImageParam): Result<String> = withContext(dispatcher) {
         runCatching {
-            val fileType = getFileType(param.uri)
+            val fileType = if(param.purpose == ImagePurpose.ANNOUNCEMENT_PROFILE) "png"
+                else getFileType(param.uri)
             val fileName = param.uri.path + param.uri.port
             val imageUrl = fetchImageUrl(fileType, fileName, param.purpose)
             uploadImage(url = imageUrl.url, type = fileType, uri = param.uri)
