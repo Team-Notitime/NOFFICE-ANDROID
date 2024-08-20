@@ -8,4 +8,5 @@ data class OrganizationInformationResponse(
     val profileImage: String,
     val categories: List<Int>,
     val isPending: Boolean,
+    val role: String
 )

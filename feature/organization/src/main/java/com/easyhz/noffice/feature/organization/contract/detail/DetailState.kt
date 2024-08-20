@@ -21,7 +21,8 @@ data class DetailState(
                 profileImageUrl = "",
                 category = emptyList(),
                 members = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
-                hasStandbyMember = false
+                hasStandbyMember = false,
+                role = MemberType.MEMBER
             ),
             announcementList = emptyList()
         )

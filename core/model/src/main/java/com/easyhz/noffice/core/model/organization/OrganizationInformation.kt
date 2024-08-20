@@ -11,5 +11,6 @@ data class OrganizationInformation(
     val profileImageUrl: String,
     val category: List<Category>,
     val members: LinkedHashMap<MemberType, Int>,
-    val hasStandbyMember: Boolean
+    val hasStandbyMember: Boolean,
+    val role: MemberType
 )
