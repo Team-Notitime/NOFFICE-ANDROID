@@ -127,6 +127,11 @@
         메인에서 보여줄
         \n노티 카드를 골라봐요
     </string>
+    <string name="announcement_creation_option_promotion_basic_title">노티 카드</string>
+    <string name="announcement_creation_option_promotion_promotion_title">프리미엄 카드</string>
+    <string name="announcement_creation_option_promotion_promotion_text">프로모션 결제 이후 이용할 수 있어요</string>
+    <string name="announcement_creation_option_promotion_promotion_button">프로모션 참여하러 가기</string>
+    <string name="announcement_creation_option_promotion_select_button">선택 완료</string>
 
     <string name="delete">삭제</string>
 

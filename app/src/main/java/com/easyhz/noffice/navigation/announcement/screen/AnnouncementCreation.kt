@@ -56,6 +56,7 @@ internal object AnnouncementCreation: Parcelable {
             )
 
             fun AnnouncementParam.encode(): AnnouncementParam {
+                if(this.placeLinkUrl.isNullOrBlank()) return this
                 val encodePlaceLinkUrl = URLEncoder.encode(
                     this.placeLinkUrl,
                     StandardCharsets.UTF_8.toString()
@@ -64,6 +65,7 @@ internal object AnnouncementCreation: Parcelable {
             }
 
             fun AnnouncementParam.decode(): AnnouncementParam {
+                if(this.placeLinkUrl.isNullOrBlank()) return this
                 val decodePlaceLinkUrl = URLDecoder.decode(
                     this.placeLinkUrl,
                     StandardCharsets.UTF_8.toString()

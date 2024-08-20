@@ -7,12 +7,18 @@ import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 
 data class PromotionState(
     val announcementParam: AnnouncementParam?,
-    val selectCard: CardImage
+    val selectCard: CardImage,
+    val bottomSheetSelectCard: CardImage,
+    val isShowPromotionBottomSheet: Boolean,
+    val hasPromotion: Boolean
 ): UiState() {
     companion object {
         fun init() = PromotionState(
             announcementParam = null,
-            selectCard = CardImage.CARD1
+            selectCard = CardImage.CARD1,
+            bottomSheetSelectCard = CardImage.CARD1,
+            isShowPromotionBottomSheet = false,
+            hasPromotion = true
         )
     }
 }
@@ -27,10 +33,10 @@ enum class CardImage(
     ), CARD2(
         imageId = R.drawable.illust2,
         isPromotion = false
-    ),CARD3(
+    ), CARD3(
         imageId = R.drawable.illust3,
         isPromotion = true
-    ),CARD4(
+    ), CARD4(
         imageId = R.drawable.illust4,
         isPromotion = true
     ),

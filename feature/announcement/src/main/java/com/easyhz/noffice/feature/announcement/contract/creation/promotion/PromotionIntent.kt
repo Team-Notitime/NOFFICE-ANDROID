@@ -8,4 +8,8 @@ sealed class PromotionIntent: UiIntent() {
     data object ClickBackButton: PromotionIntent()
     data object ClickSaveButton: PromotionIntent()
     data class ClickPromotionCard(val cardImage: CardImage): PromotionIntent()
+    data object HideUserNameBottomSheet: PromotionIntent()
+    data class SetPromotionBottomSheet(val isShow: Boolean): PromotionIntent()
+    data class ClickBottomSheetCard(val cardImage: CardImage): PromotionIntent()
+    data object ClickBottomSheetSelectButton: PromotionIntent()
 }

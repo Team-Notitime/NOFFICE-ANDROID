@@ -21,6 +21,10 @@ class PromotionViewModel @Inject constructor(
             is PromotionIntent.ClickBackButton -> { onClickBackButton() }
             is PromotionIntent.ClickSaveButton -> { saveButton() }
             is PromotionIntent.ClickPromotionCard -> { onClickPromotionCard(intent.cardImage) }
+            is PromotionIntent.HideUserNameBottomSheet -> { hideBottomSheet() }
+            is PromotionIntent.SetPromotionBottomSheet -> { setBottomSheet(intent.isShow) }
+            is PromotionIntent.ClickBottomSheetCard -> { onClickBottomSheetCard(intent.cardImage) }
+            is PromotionIntent.ClickBottomSheetSelectButton -> { onClickBottomSheetSelectButton() }
         }
     }
 
@@ -34,7 +38,36 @@ class PromotionViewModel @Inject constructor(
 
     private fun onClickPromotionCard(cardImage: CardImage) {
         if (currentState.selectCard == cardImage) return
-        reduce { copy(selectCard = cardImage) }
+        if (!currentState.hasPromotion && cardImage.isPromotion) {
+            setBottomSheet(true)
+        } else {
+            reduce { copy(selectCard = cardImage, bottomSheetSelectCard = cardImage) }
+            scrollToItem()
+        }
+    }
+
+    private fun onClickBottomSheetCard(cardImage: CardImage) {
+        if (currentState.bottomSheetSelectCard == cardImage) return
+        reduce { copy(bottomSheetSelectCard = cardImage) }
+    }
+
+    private fun onClickBottomSheetSelectButton() {
+        hideBottomSheet()
+        reduce { copy(selectCard = bottomSheetSelectCard) }
+        scrollToItem()
+    }
+
+    private fun hideBottomSheet() {
+        postSideEffect { PromotionSideEffect.HidePromotionBottomSheet }
+    }
+
+    private fun setBottomSheet(isShow: Boolean) {
+        reduce { copy(isShowPromotionBottomSheet = isShow) }
+    }
+
+    private fun scrollToItem() {
+        val index = CardImage.entries.indexOf(currentState.selectCard)
+        postSideEffect { PromotionSideEffect.ScrollToItem(index) }
     }
 
     private fun saveButton() {
