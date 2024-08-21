@@ -160,7 +160,7 @@ class AnnouncementDetailViewModel @Inject constructor(
 
     private fun fetchAllReaders() = viewModelScope.launch {
         if (currentState.organizationInformation.role != MemberType.LEADER) return@launch
-        val id = currentState.organizationInformation.id
+        val id = currentState.announcement.announcementId
         val readerDeferred = async { fetchAnnouncementReaders(id) }
         val nonReaderDeferred = async { fetchAnnouncementNonReaders(id) }
 

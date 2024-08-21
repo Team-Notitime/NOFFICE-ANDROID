@@ -139,9 +139,7 @@ fun TaskScreen(
                         onLongClick = {
                             viewModel.postIntent(TaskIntent.OpenDeleteBottomSheet(index))
                         }
-                    ) {
-                        /* TODO */
-                    }
+                    ) { }
                 }
             }
         }

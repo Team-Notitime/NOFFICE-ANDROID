@@ -210,7 +210,7 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun fetchCategories() = viewModelScope.launch {
         fetchCategoriesUseCase.invoke(Unit).onSuccess {
-            println("성공 $it") // TODO 카테고리 끼우기
+            reduce { copy(category = it) }
         }.onFailure {
             errorLogging(this.javaClass.name, "fetchCategories", it)
             showSnackBar(it.handleError())
@@ -229,7 +229,7 @@ class OrganizationCreationViewModel @Inject constructor(
         }
         val param = OrganizationCreationParam(
             name = currentState.organizationName,
-            categoryList = listOf(1), // FIXME
+            categoryList = currentState.category.filter { it.isSelected }.map { it.id },
             endAt = currentState.endDate,
             profileImage = imageUrl,
             promotionCode = currentState.promotionCode.ifBlank { null }

@@ -91,7 +91,7 @@ fun AnnouncementDetailScreen(
         sheetContainerColor = White,
         sheetContentColor = Color.Transparent,
         sheetDragHandle = null,
-        sheetPeekHeight = if(uiState.organizationInformation.role == MemberType.LEADER) 68.dp else 0.dp,
+        sheetPeekHeight = if (uiState.organizationInformation.role == MemberType.LEADER) 68.dp else 0.dp,
         scaffoldState = scaffoldState,
         sheetContent = {
             if (uiState.organizationInformation.role == MemberType.LEADER) {
@@ -99,7 +99,14 @@ fun AnnouncementDetailScreen(
                     readerList = uiState.readerList,
                     nonReaderList = uiState.nonReaderList,
                     selectedReaderType = uiState.selectedReaderType
-                ) { viewModel.postIntent(DetailIntent.ClickReaderType(it, scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded)) }
+                ) {
+                    viewModel.postIntent(
+                        DetailIntent.ClickReaderType(
+                            it,
+                            scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
+                        )
+                    )
+                }
             }
         },
         content = {
@@ -109,11 +116,13 @@ fun AnnouncementDetailScreen(
                 navigationBarColor = Grey50,
                 topBar = {
                     DetailTopBar(
-                        modifier = Modifier.background(Grey50).then(
-                            if(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) Modifier.noRippleClickable {
-                                viewModel.postIntent(DetailIntent.PartialExpandBottomSheet)
-                            } else Modifier
-                        ),
+                        modifier = Modifier
+                            .background(Grey50)
+                            .then(
+                                if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) Modifier.noRippleClickable {
+                                    viewModel.postIntent(DetailIntent.PartialExpandBottomSheet)
+                                } else Modifier
+                            ),
                         leadingItem = DetailTopBarMenu(
                             content = {
                                 Icon(
@@ -124,7 +133,7 @@ fun AnnouncementDetailScreen(
                                 )
                             },
                             onClick = {
-                                if(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+                                if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
                                     viewModel.postIntent(DetailIntent.PartialExpandBottomSheet)
                                 } else {
                                     viewModel.postIntent(DetailIntent.NavigateToUp)
@@ -155,7 +164,8 @@ fun AnnouncementDetailScreen(
                         modifier = Modifier.padding(vertical = 12.dp),
                         organizationName = uiState.organizationInformation.name,
                         profileImage = uiState.organizationInformation.profileImageUrl,
-                        category = uiState.organizationInformation.category.map { it.title }.joinToString { "·" },
+                        category = uiState.organizationInformation.category.map { it.title }
+                            .takeIf { it.isNotEmpty() }?.joinToString { "·" } ?: "",
                         isLoading = uiState.isLoading
                     )
 
@@ -272,9 +282,11 @@ fun AnnouncementDetailScreen(
             is DetailSideEffect.NavigateToUpInWebView -> {
                 webView.goBack()
             }
+
             is DetailSideEffect.PartialExpandBottomSheet -> {
                 scaffoldState.bottomSheetState.partialExpand()
             }
+
             is DetailSideEffect.ExpandBottomSheet -> {
                 scaffoldState.bottomSheetState.expand()
             }

@@ -17,22 +17,28 @@ class FetchOrganizationUseCase @Inject constructor(
     @Dispatcher(NofficeDispatchers.IO) private val dispatcher: CoroutineDispatcher,
     private val categoryRepository: CategoryRepository,
     private val organizationRepository: OrganizationRepository
-):BaseUseCase<Int, OrganizationInformation>() {
-    override suspend fun invoke(param: Int): Result<OrganizationInformation> = withContext(dispatcher) {
-        runCatching {
-            val (categoriesResult, organizationInfoResult) = coroutineScope {
-                val categoriesDeferred = async { fetchCategories() }
-                val organizationInfoDeferred = async { fetchOrganizationInfo(param) }
+) : BaseUseCase<Int, OrganizationInformation>() {
+    override suspend fun invoke(param: Int): Result<OrganizationInformation> =
+        withContext(dispatcher) {
+            runCatching {
+                val (categoriesResult, organizationInfoResult) = coroutineScope {
+                    val categoriesDeferred = async { fetchCategories() }
+                    val organizationInfoDeferred = async { fetchOrganizationInfo(param) }
 
-                categoriesDeferred.await() to organizationInfoDeferred.await()
+                    categoriesDeferred.await() to organizationInfoDeferred.await()
+                }
+
+                val categoryList = categoriesResult.getOrThrow()
+                val info = organizationInfoResult.getOrThrow()
+                val updatedCategories = info.category.map { item ->
+                    categoryList.find { it.id == item.id }?.let { matchedCategory ->
+                        item.copy(title = matchedCategory.title)
+                    } ?: item
+                }
+
+                info.copy(category = updatedCategories)
             }
-
-            val categoryList = categoriesResult.getOrThrow()
-            val info = organizationInfoResult.getOrThrow()
-
-            info.copy(category = categoryList.filter { it.id == info.id })
         }
-    }
 
 
     private suspend fun fetchCategories(): Result<List<Category>> {

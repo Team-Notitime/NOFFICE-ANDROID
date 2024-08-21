@@ -30,7 +30,7 @@ fun CategoryField(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp)
     ) {
-        itemsIndexed(categoryList, key = { index, _ -> index /* FIXME */ }) { index, item ->
+        itemsIndexed(categoryList, key = { _, item -> item.id }) { index, item ->
             CheckButton(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
