@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +27,7 @@ import com.easyhz.noffice.core.model.organization.member.MemberType
 fun MemberItem(
     modifier: Modifier = Modifier,
     name: String,
-    imageUrl: String,
+    imageUrl: String?,
     memberType: MemberType,
     isChecked: Boolean? = null,
     onClick: () -> Unit = { }

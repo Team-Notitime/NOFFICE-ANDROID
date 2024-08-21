@@ -3,6 +3,7 @@ package com.easyhz.noffice.core.design_system.component.tab
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +29,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -45,7 +48,7 @@ fun <T> SegmentedButton(
     selectedIndex: Int,
     items: Array<T>,
     onSelectionChange: (T) -> Unit
-) where T: Enum<T>, T: SegmentType {
+) where T : Enum<T>, T : SegmentType {
 
     BoxWithConstraints(
         modifier
@@ -103,11 +106,23 @@ fun <T> SegmentedButton(
                             },
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = stringResource(id = item.labelId),
-                            style = if(index == selectedIndex) SubHeading16 else SemiBold16,
-                            color = Grey500
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            item.iconId?.let {
+                                Icon(
+                                    painter = painterResource(id = it),
+                                    contentDescription = it.toString(),
+                                    tint = Grey500
+                                )
+                            }
+                            Text(
+                                text = stringResource(id = item.labelId),
+                                style = if (index == selectedIndex) SubHeading16 else SemiBold16,
+                                color = Grey500
+                            )
+                        }
                     }
                 }
             }
