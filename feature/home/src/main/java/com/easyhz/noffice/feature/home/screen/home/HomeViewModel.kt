@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.manager.DeepLinkManager
 import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.model.organization.Organization
@@ -36,6 +37,7 @@ class HomeViewModel @Inject constructor(
         when(intent) {
             is HomeIntent.ChangeTopBarMenu ->  { onChangeTopBarMenu(intent.topBarMenu) }
             is HomeIntent.ClickTopBarIconMenu -> { onClickTopBarIconMenu(intent.iconMenu) }
+            is HomeIntent.JoinToOrganization -> { joinToOrganization(intent.organizationId) }
         }
     }
 
@@ -81,5 +83,13 @@ class HomeViewModel @Inject constructor(
             .collectLatest { pagingData ->
                 _organizationState.value = pagingData
             }
+    }
+
+    /* 조직 가입 */
+    private fun joinToOrganization(id: Int) {
+        if (id == -1) return
+
+        DeepLinkManager.setOrganizationIdToJoin(-1)
+
     }
 }

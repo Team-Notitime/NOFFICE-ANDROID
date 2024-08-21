@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.easyhz.noffice.core.common.manager.DeepLinkManager
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.component.exception.ExceptionView
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
@@ -37,6 +39,7 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
+    val organizationIdToJoin = remember { DeepLinkManager.organizationIdToJoin }
     val context = LocalContext.current
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -52,6 +55,10 @@ fun HomeScreen(
             context = context,
             launcher = requestPermissionLauncher
         ) { }
+    }
+
+    LaunchedEffect(key1 = organizationIdToJoin) {
+        println("id >>>>>> $organizationIdToJoin")
     }
     NofficeScaffold(
         modifier = modifier,
