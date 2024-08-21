@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.model.auth.param.AuthParam
+import com.easyhz.noffice.domain.notification.usecase.RegisterMessagingTokenUseCase
 import com.easyhz.noffice.domain.sign.usecase.LoginUseCase
 import com.easyhz.noffice.feature.sign.contract.login.LoginIntent
 import com.easyhz.noffice.feature.sign.contract.login.LoginSideEffect
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val registerMessagingTokenUseCase: RegisterMessagingTokenUseCase,
 ): BaseViewModel<LoginState, LoginIntent, LoginSideEffect>(
     initialState = LoginState.init()
 ) {
@@ -31,6 +33,7 @@ class LoginViewModel @Inject constructor(
         setIsLoading(true)
         loginUseCase.invoke(AuthParam(context, type.name)).onSuccess {
             // FIXME 가입 된 유저 네비게이션 처리
+            registerMessagingTokenUseCase(Unit).getOrNull()
             navigateToHome()
         }.onFailure {
             it.printStackTrace()
