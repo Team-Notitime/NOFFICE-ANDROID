@@ -62,6 +62,7 @@ import com.easyhz.noffice.feature.announcement.util.detail.DetailType
 fun AnnouncementDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: AnnouncementDetailViewModel = hiltViewModel(),
+    organizationId: Int,
     id: Int,
     title: String,
     navigateToUp: () -> Unit
@@ -72,7 +73,7 @@ fun AnnouncementDetailScreen(
     val webView = remember { WebView(context) }
 
     LaunchedEffect(Unit) {
-        viewModel.postIntent(DetailIntent.InitScreen(id, title))
+        viewModel.postIntent(DetailIntent.InitScreen(organizationId, id, title))
     }
     NofficeBasicScaffold(
         containerColor = Grey50,
@@ -101,8 +102,8 @@ fun AnnouncementDetailScreen(
                 .padding(horizontal = 24.dp)
         ) {
             detailTitle(
-                title = uiState.detail.title,
-                date = uiState.detail.creationDate,
+                title = uiState.announcement.title,
+                date = uiState.announcement.createdAt,
                 isLoading = uiState.isLoading
             )
             item {
@@ -114,38 +115,42 @@ fun AnnouncementDetailScreen(
             }
             organizationField(
                 modifier = Modifier.padding(vertical = 12.dp),
-                organizationName = uiState.detail.organizationName,
-                profileImage = uiState.detail.organizationProfileImage,
-                category = uiState.detail.organizationCategory,
+                organizationName = uiState.organizationInformation.name,
+                profileImage = uiState.organizationInformation.profileImageUrl,
+                category = uiState.organizationInformation.category.map { it.title }.joinToString { "·" },
                 isLoading = uiState.isLoading
             )
 
-            detailField(
-                detailType = DetailType.DATE_TIME,
-                value = uiState.detail.date,
-                isLoading = uiState.isLoading
-            ) { }
-            item {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(12.dp)
-                )
+            uiState.announcement.endAt?.let {
+                detailField(
+                    detailType = DetailType.DATE_TIME,
+                    value = it,
+                    isLoading = uiState.isLoading
+                ) { }
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(12.dp)
+                    )
+                }
             }
-            detailField(
-                detailType = DetailType.PLACE,
-                value = uiState.detail.place,
-                isLoading = uiState.isLoading
-            ) { viewModel.postIntent(DetailIntent.ClickPlace) }
+            uiState.announcement.placeLinkName?.let {
+                detailField(
+                    detailType = DetailType.PLACE,
+                    value = it,
+                    isLoading = uiState.isLoading
+                ) { viewModel.postIntent(DetailIntent.ClickPlace) }
+            }
 
             contentField(
                 modifier = Modifier.padding(vertical = 16.dp),
-                content = uiState.detail.content,
+                content = uiState.announcement.content,
                 isLoading = uiState.isLoading
             )
 
             taskListField(
-                taskList = uiState.detail.taskList
+                taskList = emptyList() // FIXME
             ) {
                 viewModel.postIntent(DetailIntent.CheckTask(it))
             }
@@ -166,7 +171,7 @@ fun AnnouncementDetailScreen(
                 },
                 dragHandle = {
                     PlaceBottomSheetTopBar(
-                        placeUrl = uiState.detail.placeUrl,
+                        placeUrl = uiState.announcement.placeLinkUrl ?: "",
                         onClickUrl = { viewModel.postIntent(DetailIntent.CopyUrl) }
                     ) {
                         viewModel.postIntent(DetailIntent.ClickWebViewBack)
@@ -179,7 +184,7 @@ fun AnnouncementDetailScreen(
                 ) {
                     PlaceWebView(
                         modifier = Modifier.fillMaxSize(),
-                        url = uiState.detail.placeUrl,
+                        url = uiState.announcement.placeLinkUrl ?: "",
                         webView = webView,
                         onGoBack = {
                             viewModel.postIntent(DetailIntent.UpdateCanGoBack(it))

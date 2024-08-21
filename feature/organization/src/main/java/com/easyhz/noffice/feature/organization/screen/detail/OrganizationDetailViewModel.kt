@@ -120,7 +120,7 @@ class OrganizationDetailViewModel @Inject constructor(
 
     private fun onClickAnnouncement(id: Int, title: String) {
         postSideEffect {
-            DetailSideEffect.NavigateToAnnouncementDetail(id, title)
+            DetailSideEffect.NavigateToAnnouncementDetail(currentState.organizationInformation.id, id, title)
         }
     }
 

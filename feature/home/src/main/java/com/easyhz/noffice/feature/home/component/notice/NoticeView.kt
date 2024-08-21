@@ -32,7 +32,7 @@ fun NoticeView(
     name: String,
     dayOfWeek: String,
     organizationList: LazyPagingItems<Organization>,
-    navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -45,7 +45,7 @@ fun NoticeView(
             organizationList[index]?.let {
                 OrganizationSection(
                     organization = it,
-                    navigateToAnnouncementDetail = navigateToAnnouncementDetail
+                    navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
                 )
             }
         }
