@@ -8,6 +8,8 @@ import com.easyhz.noffice.core.model.organization.OrganizationSignUpInformation
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.core.model.organization.member.mapMemberCounts
+import com.easyhz.noffice.core.model.organization.param.RegisterMemberParam
+import com.easyhz.noffice.core.network.model.request.organization.RegisterMemberRequest
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
@@ -50,4 +52,9 @@ internal fun OrganizationSignUpInformationResponse.toModel(): OrganizationSignUp
     organizationId = this.organizationId,
     organizationName = this.organizationName,
     profileImage = this.profileImage
+)
+
+internal fun RegisterMemberParam.toRequest(): RegisterMemberRequest = RegisterMemberRequest(
+    role = this.role.name,
+    memberIds = this.memberIds
 )

@@ -10,6 +10,7 @@ import com.easyhz.noffice.core.model.organization.OrganizationSignUpInformation
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.param.OrganizationCreationParam
+import com.easyhz.noffice.core.model.organization.param.RegisterMemberParam
 import kotlinx.coroutines.flow.Flow
 
 interface OrganizationRepository {
@@ -21,4 +22,5 @@ interface OrganizationRepository {
     suspend fun joinOrganization(organizationId: Int): Result<OrganizationJoin>
     suspend fun fetchOrganizationSignUpInfo(organizationId: Int): Result<OrganizationSignUpInformation>
     suspend fun fetchOrganizationPendingMembers(organizationId: Int): Result<List<Member>>
+    suspend fun acceptRegisterMember(param: RegisterMemberParam): Result<Unit>
 }

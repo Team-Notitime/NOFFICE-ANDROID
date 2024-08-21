@@ -15,6 +15,7 @@ import com.easyhz.noffice.core.model.organization.OrganizationSignUpInformation
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.param.OrganizationCreationParam
+import com.easyhz.noffice.core.model.organization.param.RegisterMemberParam
 import com.easyhz.noffice.core.network.api.organization.OrganizationService
 import com.easyhz.noffice.core.network.model.request.organization.CategoryRequest
 import com.easyhz.noffice.core.network.util.toResult
@@ -111,5 +112,13 @@ class OrganizationRepositoryImpl @Inject constructor(
         withContext(dispatcher) {
             return@withContext organizationService.fetchOrganizationPendingMembers(organizationId)
                 .toResult().map { it.map { item -> item.toModel() } }
+        }
+
+    override suspend fun acceptRegisterMember(param: RegisterMemberParam): Result<Unit> =
+        withContext(dispatcher) {
+            return@withContext organizationService.acceptRegisterMember(
+                organizationId = param.organizationId,
+                body = param.toRequest()
+            ).toResult()
         }
 }

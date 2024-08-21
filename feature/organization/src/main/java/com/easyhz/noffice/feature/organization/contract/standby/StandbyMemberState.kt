@@ -5,11 +5,13 @@ import com.easyhz.noffice.core.model.common.Member
 
 data class StandbyMemberState(
     val isLoading: Boolean,
+    val organizationId: Int,
     val memberList: List<Member>,
 ) : UiState() {
     companion object {
         fun init() = StandbyMemberState(
             isLoading = false,
+            organizationId = -1,
             memberList = emptyList()
         )
 
