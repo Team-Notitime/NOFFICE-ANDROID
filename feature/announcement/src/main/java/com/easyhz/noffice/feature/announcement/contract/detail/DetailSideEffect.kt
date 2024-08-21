@@ -7,4 +7,6 @@ sealed class DetailSideEffect: UiSideEffect() {
     data class OpenBrowser(val url: String): DetailSideEffect()
     data class CopyUrl(val url: String): DetailSideEffect()
     data object NavigateToUpInWebView: DetailSideEffect()
+    data object PartialExpandBottomSheet: DetailSideEffect()
+    data object ExpandBottomSheet: DetailSideEffect()
 }

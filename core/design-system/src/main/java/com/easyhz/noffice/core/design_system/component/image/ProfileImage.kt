@@ -17,9 +17,9 @@ import com.easyhz.noffice.core.design_system.R
 @Composable
 fun ProfileImage(
     modifier: Modifier = Modifier,
-    imageUrl: String
+    imageUrl: String?
 ) {
-    if (imageUrl.isBlank()) {
+    if (imageUrl.isNullOrBlank() || imageUrl == "null") {
         Image(
             modifier = modifier.clip(CircleShape),
             painter = painterResource(id = R.drawable.ic_profile_user),

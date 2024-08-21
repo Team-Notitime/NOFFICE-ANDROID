@@ -3,14 +3,19 @@ package com.easyhz.noffice.feature.announcement.screen.detail
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.model.announcement.Announcement
+import com.easyhz.noffice.core.model.announcement.detail.AnnouncementReader
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.domain.announcement.usecase.announcement.FetchAnnouncementUseCase
+import com.easyhz.noffice.domain.announcement.usecase.reader.FetchAnnouncementNonReadersUseCase
+import com.easyhz.noffice.domain.announcement.usecase.reader.FetchAnnouncementReadersUseCase
 import com.easyhz.noffice.domain.announcement.usecase.task.FetchAnnouncementTaskUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationUseCase
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailState
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailState.Companion.updateDetailTitle
+import com.easyhz.noffice.feature.announcement.util.detail.ReaderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,6 +26,8 @@ class AnnouncementDetailViewModel @Inject constructor(
     private val fetchOrganizationUseCase: FetchOrganizationUseCase,
     private val fetchAnnouncementUseCase: FetchAnnouncementUseCase,
     private val fetchAnnouncementTaskUseCase: FetchAnnouncementTaskUseCase,
+    private val fetchAnnouncementReadersUseCase: FetchAnnouncementReadersUseCase,
+    private val fetchAnnouncementNonReadersUseCase: FetchAnnouncementNonReadersUseCase,
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
     initialState = DetailState.init()
 ) {
@@ -65,6 +72,8 @@ class AnnouncementDetailViewModel @Inject constructor(
             is DetailIntent.CheckTask -> {
                 onCheckTask(intent.index)
             }
+            is DetailIntent.ClickReaderType -> { onClickReaderType(intent.readerType, intent.isExpanded) }
+            is DetailIntent.PartialExpandBottomSheet -> { partialExpandBottomSheet() }
         }
     }
 
@@ -87,6 +96,7 @@ class AnnouncementDetailViewModel @Inject constructor(
                 isLoading = false
             )
         }
+        fetchAllReaders()
     }
 
     private suspend fun fetchOrganization(organizationId: Int): Result<OrganizationInformation> {
@@ -141,6 +151,46 @@ class AnnouncementDetailViewModel @Inject constructor(
     private fun updateCanGoBack(canGoBack: Boolean) {
         reduce { copy(canGoBack = canGoBack) }
     }
+
+    private fun onClickReaderType(readerType: ReaderType, isExpanded: Boolean) {
+        if (!isExpanded) expandBottomSheet()
+        if (currentState.selectedReaderType == readerType) return
+        reduce { copy(selectedReaderType = readerType) }
+    }
+
+    private fun fetchAllReaders() = viewModelScope.launch {
+        if (currentState.organizationInformation.role != MemberType.LEADER) return@launch
+        val id = currentState.organizationInformation.id
+        val readerDeferred = async { fetchAnnouncementReaders(id) }
+        val nonReaderDeferred = async { fetchAnnouncementNonReaders(id) }
+
+        val readerResult = readerDeferred.await()
+        val nonReaderResult = nonReaderDeferred.await()
+
+        reduce {
+            copy(
+                readerList = readerResult.getOrNull()?.memberList ?: emptyList(),
+                nonReaderList = nonReaderResult.getOrNull()?.memberList ?: emptyList()
+            )
+        }
+    }
+
+    private suspend fun fetchAnnouncementReaders(id: Int): Result<AnnouncementReader> {
+        return fetchAnnouncementReadersUseCase.invoke(id)
+    }
+
+    private suspend fun fetchAnnouncementNonReaders(id: Int): Result<AnnouncementReader> {
+        return fetchAnnouncementNonReadersUseCase.invoke(id)
+    }
+
+    private fun partialExpandBottomSheet() {
+        postSideEffect { DetailSideEffect.PartialExpandBottomSheet }
+    }
+
+    private fun expandBottomSheet() {
+        postSideEffect { DetailSideEffect.ExpandBottomSheet }
+    }
+
 
     private fun onCheckTask(index: Int) {
 //        val updatedTaskList = currentState.detail.taskList.mapIndexed { i, task ->

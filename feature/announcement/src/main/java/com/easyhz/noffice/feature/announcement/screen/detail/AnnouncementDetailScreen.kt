@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,9 +54,9 @@ import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.member.MemberType
-import com.easyhz.noffice.feature.announcement.component.detail.InspectionBottomSheet
 import com.easyhz.noffice.feature.announcement.component.detail.PlaceBottomSheetTopBar
 import com.easyhz.noffice.feature.announcement.component.detail.PlaceWebView
+import com.easyhz.noffice.feature.announcement.component.detail.ReaderBottomSheet
 import com.easyhz.noffice.feature.announcement.component.detail.contentField
 import com.easyhz.noffice.feature.announcement.component.detail.detailField
 import com.easyhz.noffice.feature.announcement.component.detail.detailTitle
@@ -66,12 +65,8 @@ import com.easyhz.noffice.feature.announcement.component.detail.taskListField
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.announcement.util.detail.DetailType
-import com.easyhz.noffice.feature.announcement.util.detail.InspectionType
-import kotlinx.coroutines.launch
 
-enum class SheetValue { Collapsed, PartiallyExpanded, Expanded }
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnnouncementDetailScreen(
     modifier: Modifier = Modifier,
@@ -88,7 +83,7 @@ fun AnnouncementDetailScreen(
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState()
     )
-    val scope = rememberCoroutineScope()
+
     LaunchedEffect(Unit) {
         viewModel.postIntent(DetailIntent.InitScreen(organizationId, id, title))
     }
@@ -99,10 +94,12 @@ fun AnnouncementDetailScreen(
         sheetPeekHeight = if(uiState.organizationInformation.role == MemberType.LEADER) 68.dp else 0.dp,
         scaffoldState = scaffoldState,
         sheetContent = {
-            InspectionBottomSheet(
-                selectedInspectionType = InspectionType.INSPECTION
-            ) {
-
+            if (uiState.organizationInformation.role == MemberType.LEADER) {
+                ReaderBottomSheet(
+                    readerList = uiState.readerList,
+                    nonReaderList = uiState.nonReaderList,
+                    selectedReaderType = uiState.selectedReaderType
+                ) { viewModel.postIntent(DetailIntent.ClickReaderType(it, scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded)) }
             }
         },
         content = {
@@ -114,9 +111,7 @@ fun AnnouncementDetailScreen(
                     DetailTopBar(
                         modifier = Modifier.background(Grey50).then(
                             if(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) Modifier.noRippleClickable {
-                                scope.launch {
-                                    scaffoldState.bottomSheetState.partialExpand()
-                                }
+                                viewModel.postIntent(DetailIntent.PartialExpandBottomSheet)
                             } else Modifier
                         ),
                         leadingItem = DetailTopBarMenu(
@@ -130,13 +125,10 @@ fun AnnouncementDetailScreen(
                             },
                             onClick = {
                                 if(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
-                                    scope.launch {
-                                        scaffoldState.bottomSheetState.partialExpand()
-                                    }
+                                    viewModel.postIntent(DetailIntent.PartialExpandBottomSheet)
                                 } else {
                                     viewModel.postIntent(DetailIntent.NavigateToUp)
                                 }
-
                             }
                         ),
                     )
@@ -279,6 +271,12 @@ fun AnnouncementDetailScreen(
 
             is DetailSideEffect.NavigateToUpInWebView -> {
                 webView.goBack()
+            }
+            is DetailSideEffect.PartialExpandBottomSheet -> {
+                scaffoldState.bottomSheetState.partialExpand()
+            }
+            is DetailSideEffect.ExpandBottomSheet -> {
+                scaffoldState.bottomSheetState.expand()
             }
         }
     }

@@ -2,9 +2,11 @@ package com.easyhz.noffice.feature.announcement.contract.detail
 
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.model.announcement.Announcement
+import com.easyhz.noffice.core.model.common.Member
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.core.model.task.Task
+import com.easyhz.noffice.feature.announcement.util.detail.ReaderType
 
 data class DetailState(
     val isLoading: Boolean,
@@ -13,7 +15,10 @@ data class DetailState(
     val canGoBack: Boolean,
     val announcement: Announcement,
     val organizationInformation: OrganizationInformation,
-    val taskList: List<Task>
+    val taskList: List<Task>,
+    val selectedReaderType: ReaderType,
+    val readerList: List<Member>,
+    val nonReaderList: List<Member>
 ): UiState() {
     companion object {
         fun init() = DetailState(
@@ -44,7 +49,10 @@ data class DetailState(
                 hasStandbyMember = false,
                 role = MemberType.PARTICIPANT
             ),
-            taskList = emptyList()
+            taskList = emptyList(),
+            selectedReaderType = ReaderType.READER,
+            readerList = emptyList(),
+            nonReaderList = emptyList()
         )
 
         fun DetailState.updateDetailTitle(
