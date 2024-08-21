@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.member.MemberItem
+import com.easyhz.noffice.core.design_system.component.member.MemberItemSkeleton
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
@@ -33,10 +36,12 @@ import com.easyhz.noffice.feature.organization.util.member.MemberViewType
 fun StandbyMemberScreen(
     modifier: Modifier = Modifier,
     viewModel: StandbyMemberViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     organizationId: Int,
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
         viewModel.postIntent(StandbyMemberIntent.InitScreen(organizationId))
@@ -81,6 +86,11 @@ fun StandbyMemberScreen(
                 .screenHorizonPadding()
                 .padding(horizontal = 8.dp),
         ) {
+            if (uiState.isLoading) {
+                items(3) {
+                    MemberItemSkeleton(Modifier.padding(vertical = 4.dp))
+                }
+            }
             itemsIndexed(uiState.memberList, key = { _, item -> item.id }) {index, item ->
                 MemberItem(
                     modifier = Modifier.padding(vertical = 4.dp),
@@ -98,6 +108,12 @@ fun StandbyMemberScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
             is StandbyMemberSideEffect.NavigateToUp -> { navigateToUp() }
+            is StandbyMemberSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
+            }
         }
     }
 }

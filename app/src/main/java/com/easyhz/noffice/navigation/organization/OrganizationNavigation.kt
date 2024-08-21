@@ -107,6 +107,7 @@ internal fun NavGraphBuilder.organizationGraph(
         val args = it.toRoute<StandbyMember>()
         StandbyMemberScreen(
             organizationId = args.organizationId,
+            snackBarHostState = snackBarHostState,
             navigateToUp = navController::navigateUp
         )
     }

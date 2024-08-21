@@ -10,7 +10,7 @@ data class StandbyMemberState(
 ) : UiState() {
     companion object {
         fun init() = StandbyMemberState(
-            isLoading = false,
+            isLoading = true,
             organizationId = -1,
             memberList = emptyList()
         )

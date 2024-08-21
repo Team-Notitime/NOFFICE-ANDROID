@@ -1,12 +1,16 @@
 package com.easyhz.noffice.feature.organization.screen.standby
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.HttpError
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.core.model.organization.param.RegisterMemberParam
 import com.easyhz.noffice.domain.organization.usecase.organization.AcceptRegisterMemberUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationPendingMembersUseCase
+import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberIntent
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberSideEffect
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberState
@@ -37,6 +41,7 @@ class StandbyMemberViewModel @Inject constructor(
             reduce { copy(memberList = it, organizationId = id) }
         }.onFailure {
             errorLogging(this.javaClass.name, "fetchPendingMember", it)
+            showSnackBar(it.handleError())
         }.also {
             reduce { copy(isLoading = false) }
         }
@@ -51,8 +56,9 @@ class StandbyMemberViewModel @Inject constructor(
     }
 
     private fun onClickRightButton() = viewModelScope.launch {
-        reduce { copy(isLoading = true) }
         val idList = currentState.memberList.filter { it.isSelected }.map { it.id }
+        if(idList.isEmpty()) return@launch
+        reduce { copy(isLoading = true) }
         val param = RegisterMemberParam(
             organizationId = currentState.organizationId,
             role = MemberType.PARTICIPANT,
@@ -60,11 +66,23 @@ class StandbyMemberViewModel @Inject constructor(
         )
         acceptRegisterMemberUseCase.invoke(param).onSuccess {
             initScreen(param.organizationId)
+            showSnackBar(R.string.organization_pending_member_success)
         }.onFailure {
             errorLogging(this.javaClass.name, "acceptRegisterMember", it)
+            val message = when(it) {
+                is HttpError.ForbiddenError -> R.string.organization_pending_member_forbidden
+                is HttpError.NotFoundError -> R.string.organization_pending_member_not_found
+                else -> it.handleError()
+            }
+            showSnackBar(message)
             reduce { copy(isLoading = false) }
         }
+    }
 
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            StandbyMemberSideEffect.ShowSnackBar(stringId)
+        }
     }
 
     private fun onClickMember(index: Int) {
