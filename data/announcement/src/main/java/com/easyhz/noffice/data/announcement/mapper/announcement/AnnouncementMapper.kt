@@ -38,7 +38,7 @@ fun AnnouncementParam.toRequest(): AnnouncementRequest = AnnouncementRequest(
     tasks = this.tasks?.map { Task(content = it.content) }
 )
 
-fun AnnouncementResponse.toDetail(): OrganizationAnnouncement = OrganizationAnnouncement(
+fun AnnouncementResponse.toDetail(pattern: DateFormat.PATTERN): OrganizationAnnouncement = OrganizationAnnouncement(
     announcementId = this.announcementId,
     title = this.title,
     content = this.content,
@@ -47,6 +47,6 @@ fun AnnouncementResponse.toDetail(): OrganizationAnnouncement = OrganizationAnno
     placeUrl = this.placeLinkUrl,
     taskSize = 0,  // FIXME
     createdAt = DateFormat.formatDateTime(this.createdAt),
-    endAt = DateFormat.formatDateTimeNullable(this.endAt, pattern = DateFormat.PATTERN.DAY),
+    endAt = DateFormat.formatDateTimeNullable(this.endAt, pattern = pattern),
     updatedAt = DateFormat.formatDateTime(this.createdAt)
 )

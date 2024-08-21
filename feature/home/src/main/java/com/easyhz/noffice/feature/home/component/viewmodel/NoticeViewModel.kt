@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.domain.organization.usecase.announcement.FetchAnnouncementsByOrganizationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ class NoticeViewModel @Inject constructor(
         if (_isDataLoaded[id] == true) {
             return@launch
         }
-        fetchAnnouncementsByOrganizationUseCase(id)
+        fetchAnnouncementsByOrganizationUseCase(id, pattern = DateFormat.PATTERN.FULL)
             .distinctUntilChanged()
             .cachedIn(viewModelScope)
             .collectLatest {

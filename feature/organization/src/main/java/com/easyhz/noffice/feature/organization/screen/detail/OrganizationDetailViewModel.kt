@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.core.model.organization.category.Category
@@ -108,7 +109,7 @@ class OrganizationDetailViewModel @Inject constructor(
     }
 
     private suspend fun fetchAnnouncements(organizationId: Int) {
-        fetchAnnouncementsByOrganizationUseCase(organizationId).distinctUntilChanged()
+        fetchAnnouncementsByOrganizationUseCase(organizationId, DateFormat.PATTERN.DAY).distinctUntilChanged()
             .cachedIn(viewModelScope).collectLatest {
                 _announcementState.value = it
                 if(currentState.isCardLoading) {
