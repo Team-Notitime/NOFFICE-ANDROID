@@ -1,11 +1,11 @@
 package com.easyhz.noffice.feature.announcement.screen.creation.promotion
 
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 import com.easyhz.noffice.core.model.image.ImageParam
 import com.easyhz.noffice.core.model.image.ImagePurpose
@@ -101,7 +101,7 @@ class PromotionViewModel @Inject constructor(
     private suspend fun uploadImage(imageUri: Uri): String? {
         val param = ImageParam(uri = imageUri, purpose = ImagePurpose.ANNOUNCEMENT_PROFILE)
         return uploadImageUseCase.invoke(param).getOrElse {
-            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            errorLogging(this.javaClass.name, "uploadImage", it)
             setIsLoading(false)
             showSnackBar(it.handleError())
             null
@@ -110,7 +110,7 @@ class PromotionViewModel @Inject constructor(
 
     private suspend fun getDrawableUri(): Uri? {
         return getDrawableUriUseCase.invoke(currentState.selectCard.imageId).getOrElse {
-            Log.d(this.javaClass.name, "getDrawableUri - ${it.message}")
+            errorLogging(this.javaClass.name, "getDrawableUri", it)
             setIsLoading(false)
             showSnackBar(it.handleError())
             null

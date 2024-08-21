@@ -1,13 +1,13 @@
 package com.easyhz.noffice.feature.organization.screen.management
 
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.image.ImageParam
@@ -95,7 +95,7 @@ class OrganizationManagementViewModel @Inject constructor(
                 postSideEffect { ManagementSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                Log.d(this.javaClass.name, "navigateToCamera - ${it.message}")
+                errorLogging(this.javaClass.name, "navigateToCamera", it)
                 showSnackBar(it.handleError())
             }
     }
@@ -152,7 +152,7 @@ class OrganizationManagementViewModel @Inject constructor(
             showSnackBar(R.string.organization_management_success_update_category)
             navigateToUp()
         }.onFailure {
-            Log.d(this.javaClass.name, "onClickSaveButton - ${it.message}")
+            errorLogging(this.javaClass.name, "onSaveCategory", it)
             showSnackBar(it.handleError())
         }
     }
@@ -160,7 +160,7 @@ class OrganizationManagementViewModel @Inject constructor(
     private suspend fun onSaveImage(): String? {
         val param = ImageParam(uri = currentState.selectedImage.toUri(), purpose = ImagePurpose.ORGANIZATION_LOGO)
         return uploadImageUseCase.invoke(param).getOrElse {
-            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            errorLogging(this.javaClass.name, "uploadImage", it)
             showSnackBar(it.handleError())
             null
         }
