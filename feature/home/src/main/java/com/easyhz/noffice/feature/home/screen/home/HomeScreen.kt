@@ -63,7 +63,6 @@ fun HomeScreen(
     }
 
     LaunchedEffect(key1 = organizationIdToJoin) {
-        println("id >>>>>> $organizationIdToJoin")
         viewModel.postIntent(HomeIntent.JoinToOrganization(organizationIdToJoin))
     }
     LoadingScreenProvider(

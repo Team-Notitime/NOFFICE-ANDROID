@@ -144,6 +144,8 @@
     <string name="announcement_detail_place">이벤트 장소</string>
     <string name="announcement_detail_task_list_header">TO DO LIST</string>
     <string name="announcement_detail_web_view_browser_button">기본 브라우저로 연결</string>
+    <string name="announcement_detail_inspection">확인했어요</string>
+    <string name="announcement_detail_non_inspection">아직이에요</string>
 
     <string name="organization_member_standby">가입을 대기 중인 멤버가 있어요!</string>
     <string name="organization_detail_badge_number_of_badges">%d개</string>
