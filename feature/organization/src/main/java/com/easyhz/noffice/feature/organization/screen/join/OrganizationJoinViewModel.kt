@@ -1,13 +1,13 @@
 package com.easyhz.noffice.feature.organization.screen.join
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
-import com.easyhz.noffice.domain.organization.usecase.organization.JoinOrganizationUseCase
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.model.organization.OrganizationSignUpInformation
+import com.easyhz.noffice.domain.organization.usecase.organization.JoinOrganizationUseCase
 import com.easyhz.noffice.feature.organization.contract.join.JoinIntent
 import com.easyhz.noffice.feature.organization.contract.join.JoinSideEffect
 import com.easyhz.noffice.feature.organization.contract.join.JoinState
@@ -39,7 +39,7 @@ class OrganizationJoinViewModel @Inject constructor(
             showSnackBar(R.string.organization_join_success_request)
             postSideEffect { JoinSideEffect.NavigateToUp }
         }.onFailure {
-            Log.d(this.javaClass.name, "onClickJoinButton - $it")
+            errorLogging(this.javaClass.name, "onClickJoinButton", it)
             showSnackBar(it.handleError())
         }
     }

@@ -1,6 +1,5 @@
 package com.easyhz.noffice.feature.organization.screen.detail
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -8,6 +7,7 @@ import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.core.model.organization.category.Category
@@ -79,7 +79,7 @@ class OrganizationDetailViewModel @Inject constructor(
         categoriesResult.onSuccess { categories ->
             categoryList.value = categories
         }.onFailure {
-            Log.d(this.javaClass.name, "fetchCategories - ${it.message}")
+            errorLogging(this.javaClass.name, "fetchCategories", it)
             showSnackBar(it.handleError())
             navigateToUp()
             return@launch
@@ -95,7 +95,7 @@ class OrganizationDetailViewModel @Inject constructor(
                 )
             }
         }.onFailure {
-            Log.d(this.javaClass.name, "fetchData - ${it.message}")
+            errorLogging(this.javaClass.name, "fetchData", it)
             showSnackBar(it.handleError())
         }
     }

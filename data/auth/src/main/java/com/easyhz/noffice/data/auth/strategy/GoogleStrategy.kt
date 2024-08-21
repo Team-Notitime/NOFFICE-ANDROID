@@ -53,10 +53,10 @@ class GoogleStrategy @Inject constructor(
             authorizeGoogleSignIn(context).serverAuthCode
                 ?: throw NofficeError.UnexpectedError
         } catch (e: GoogleIdTokenParsingException) {
-            Log.d(tag, "GoogleIdTokenParsingException - ${e.message}")
+            Log.e(tag, "GoogleIdTokenParsingException - $e")
             throw e
         } catch (e: Exception) {
-            Log.d(tag, "Exception - ${e.message}")
+            Log.e(tag, "Exception - $e")
             throw e
         }
     }
