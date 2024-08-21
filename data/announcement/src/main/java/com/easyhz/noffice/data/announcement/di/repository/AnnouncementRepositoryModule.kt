@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface AnnouncementRepositoryModule {
     @Binds
-    fun bindPlaceRepository(
+    fun bindAnnouncementRepository(
         announceRepositoryImpl: AnnounceRepositoryImpl
     ): AnnounceRepository
 }

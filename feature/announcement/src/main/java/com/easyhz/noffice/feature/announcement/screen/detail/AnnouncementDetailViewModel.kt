@@ -5,6 +5,7 @@ import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.model.announcement.Announcement
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.domain.announcement.usecase.announcement.FetchAnnouncementUseCase
+import com.easyhz.noffice.domain.announcement.usecase.task.FetchAnnouncementTaskUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationUseCase
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AnnouncementDetailViewModel @Inject constructor(
     private val fetchOrganizationUseCase: FetchOrganizationUseCase,
-    private val fetchAnnouncementUseCase: FetchAnnouncementUseCase
+    private val fetchAnnouncementUseCase: FetchAnnouncementUseCase,
+    private val fetchAnnouncementTaskUseCase: FetchAnnouncementTaskUseCase,
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
     initialState = DetailState.init()
 ) {
@@ -74,11 +76,10 @@ class AnnouncementDetailViewModel @Inject constructor(
     private fun fetchData(organizationId: Int, id: Int) = viewModelScope.launch {
         val organizationDeferred = async { fetchOrganization(organizationId) }
         val announcementDeferred = async { fetchAnnouncement(id) }
-
+        fetchAnnouncementTask(id)
         val organizationResult = organizationDeferred.await()
         val announcementResult = announcementDeferred.await()
 
-        // 상태 변경을 한 번에 모아서 처리
         reduce {
             copy(
                 organizationInformation = organizationResult.getOrNull() ?: organizationInformation,
@@ -93,6 +94,12 @@ class AnnouncementDetailViewModel @Inject constructor(
     }
     private suspend fun fetchAnnouncement(id: Int): Result<Announcement> {
         return fetchAnnouncementUseCase(id)
+    }
+
+    private fun fetchAnnouncementTask(id: Int) = viewModelScope.launch {
+        fetchAnnouncementTaskUseCase.invoke(id).onSuccess {
+            reduce { copy(taskList = it) }
+        }
     }
 
     private fun navigateToUp() {

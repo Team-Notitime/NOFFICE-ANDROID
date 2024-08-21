@@ -86,6 +86,7 @@ class CreationViewModel @Inject constructor(
             profileImageUrl = "",
             tasks = taskListState?.map {
                 Task(
+                    id = -1,
                     content = it,
                     isDone = true
                 )
