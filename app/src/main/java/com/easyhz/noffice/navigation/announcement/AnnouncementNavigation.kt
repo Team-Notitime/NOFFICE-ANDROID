@@ -37,6 +37,7 @@ internal fun NavGraphBuilder.announcementGraph(
     composable<AnnouncementDetail> {
         val args = it.toRoute<AnnouncementDetail>()
         AnnouncementDetailScreen(
+            organizationId = args.organizationId,
             id = args.id,
             title = args.title,
             navigateToUp = navController::navigateUp
@@ -136,8 +137,9 @@ internal fun NavGraphBuilder.announcementGraph(
                 param = args.announcementParam.decode(),
                 snackBarHostState = snackBarHostState,
                 navigateToUp = navController::navigateUp,
-                navigateToSuccess = { id, title ->
+                navigateToSuccess = { organizationId, id, title ->
                     navController.navigateToSuccess(
+                        organizationId,
                         id,
                         title,
                         navOptions
@@ -154,20 +156,22 @@ internal fun NavGraphBuilder.announcementGraph(
             }
         }
         SuccessScreen(
+            organizationId = args.organizationId,
             id = args.announcementId,
             title = args.title,
             navigateToHome = { navController.navigateToHome(navOptions) },
-            navigateToAnnouncementDetail = { id, title -> navController.navigateToAnnouncementDetail(id, title, navOptions)}
+            navigateToAnnouncementDetail = { organizationId, id, title -> navController.navigateToAnnouncementDetail(organizationId, id, title, navOptions)}
         )
     }
 }
 
 internal fun NavController.navigateToAnnouncementDetail(
+    organizationId: Int,
     id: Int,
     title: String,
     navOptions: NavOptions? = null
 ) {
-    navigate(route = AnnouncementDetail(id, title), navOptions)
+    navigate(route = AnnouncementDetail(organizationId = organizationId, id, title), navOptions)
 }
 
 internal fun NavController.navigateToAnnouncementNofficeSelection() {
@@ -231,9 +235,10 @@ internal fun NavController.navigateToPromotion(param: AnnouncementParam) {
 }
 
 internal fun NavController.navigateToSuccess(
+    organizationId: Int,
     id: Int,
     title: String,
     navOptions: NavOptions? = null
 ) {
-    navigate(route = AnnouncementSuccess(id, title), navOptions)
+    navigate(route = AnnouncementSuccess(organizationId, id, title), navOptions)
 }

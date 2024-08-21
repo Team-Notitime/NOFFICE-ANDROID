@@ -62,7 +62,7 @@ fun PromotionScreen(
     param: AnnouncementParam,
     snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
-    navigateToSuccess: (Int, String) -> Unit,
+    navigateToSuccess: (Int, Int, String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberLazyListState()
@@ -204,7 +204,7 @@ fun PromotionScreen(
                 )
             }
             is PromotionSideEffect.NavigateToSuccess -> {
-                navigateToSuccess(sideEffect.id, sideEffect.title)
+                navigateToSuccess(sideEffect.organizationId, sideEffect.id, sideEffect.title)
             }
         }
     }

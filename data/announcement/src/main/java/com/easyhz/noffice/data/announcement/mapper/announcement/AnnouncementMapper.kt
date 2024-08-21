@@ -1,6 +1,7 @@
 package com.easyhz.noffice.data.announcement.mapper.announcement
 
 import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.common.util.DateFormat.formatDateTime
 import com.easyhz.noffice.core.model.announcement.Announcement
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
@@ -11,7 +12,7 @@ import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementR
 fun AnnouncementResponse.toModel(): Announcement = Announcement(
     announcementId = this.announcementId,
     content = this.content,
-    createdAt = this.createdAt,
+    createdAt = formatDateTime(this.createdAt, DateFormat.PATTERN.DATE_TIME_TEXT),
     endAt = DateFormat.formatDateTimeNullable(this.endAt),
     memberId = this.memberId,
     noticeAt = this.noticeAt,
@@ -38,7 +39,7 @@ fun AnnouncementParam.toRequest(): AnnouncementRequest = AnnouncementRequest(
     tasks = this.tasks?.map { Task(content = it.content) }
 )
 
-fun AnnouncementResponse.toDetail(): OrganizationAnnouncement = OrganizationAnnouncement(
+fun AnnouncementResponse.toDetail(pattern: DateFormat.PATTERN): OrganizationAnnouncement = OrganizationAnnouncement(
     announcementId = this.announcementId,
     title = this.title,
     content = this.content,
@@ -46,7 +47,7 @@ fun AnnouncementResponse.toDetail(): OrganizationAnnouncement = OrganizationAnno
     place = this.placeLinkName,
     placeUrl = this.placeLinkUrl,
     taskSize = 0,  // FIXME
-    createdAt = DateFormat.formatDateTime(this.createdAt),
-    endAt = DateFormat.formatDateTimeNullable(this.endAt, pattern = DateFormat.PATTERN.DAY),
-    updatedAt = DateFormat.formatDateTime(this.createdAt)
+    createdAt = formatDateTime(this.createdAt),
+    endAt = DateFormat.formatDateTimeNullable(this.endAt, pattern = pattern),
+    updatedAt = formatDateTime(this.createdAt)
 )

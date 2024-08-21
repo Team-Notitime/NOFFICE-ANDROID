@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
+import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
@@ -61,6 +62,7 @@ class OrganizationRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAnnouncementsByOrganization(
         organizationId: Int,
+        endAtDatePattern: DateFormat.PATTERN,
     ): Flow<PagingData<OrganizationAnnouncement>> =
         Pager(
             config = PagingConfig(
@@ -75,7 +77,7 @@ class OrganizationRepositoryImpl @Inject constructor(
             }
         ).flow.map { pagingData ->
             pagingData.map { response ->
-                response.toDetail()
+                response.toDetail(endAtDatePattern)
             }
         }
 

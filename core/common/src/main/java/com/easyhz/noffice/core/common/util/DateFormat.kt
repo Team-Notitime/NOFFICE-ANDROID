@@ -13,6 +13,7 @@ object DateFormat {
         val value: String
     ) {
         FULL("yyyy.MM.dd(E) HH:mm"),
+        DATE_TIME_TEXT("yyyy.MM.dd HH:mm"),
         DATE_TEXT("yyyy년 MM월 dd일"),
         DATE_DASH("yyyy-MM-dd"),
         CUSTOM_REMIND("MM월 dd일 E a h:mm"),

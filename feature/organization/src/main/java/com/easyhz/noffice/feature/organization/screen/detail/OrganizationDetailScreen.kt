@@ -55,7 +55,7 @@ fun OrganizationDetailScreen(
     organizationName: String,
     snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
-    navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
     navigateToStandbyMember: (Int) -> Unit,
     navigateToOrganizationManagement: (OrganizationInformation) -> Unit
 ) {
@@ -179,7 +179,7 @@ fun OrganizationDetailScreen(
             }
 
             is DetailSideEffect.NavigateToAnnouncementDetail -> {
-                navigateToAnnouncementDetail(sideEffect.id, sideEffect.title)
+                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.id, sideEffect.title)
             }
 
             is DetailSideEffect.NavigateToOrganizationManagement -> {

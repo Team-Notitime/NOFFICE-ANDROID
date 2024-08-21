@@ -32,7 +32,7 @@ import com.easyhz.noffice.feature.home.util.HomeTopBarMenu
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToAnnouncementDetail: (Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
     navigateToMyPage: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

@@ -91,7 +91,7 @@ class PromotionViewModel @Inject constructor(
             profileImageUrl = imageUrl
         ) ?: return@launch
         createAnnouncementUseCase.invoke(param).onSuccess {
-            postSideEffect { PromotionSideEffect.NavigateToSuccess(it.organizationId, it.title) }
+            postSideEffect { PromotionSideEffect.NavigateToSuccess(it.organizationId, it.announcementId, it.title) }
         }.onFailure {
             showSnackBar(it.handleError())
         }.also {
