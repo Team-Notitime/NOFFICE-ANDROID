@@ -12,6 +12,7 @@ dependencies {
     api(projects.core.model)
     implementation(projects.core.common)
     implementation(projects.data.auth)
+    implementation(projects.data.notification)
     implementation(libs.googleid)
     implementation(libs.gms.play.services.auth)
 }

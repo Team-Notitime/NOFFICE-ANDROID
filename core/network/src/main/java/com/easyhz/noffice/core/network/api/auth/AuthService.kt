@@ -19,4 +19,10 @@ interface AuthService {
     /* 단일 회원 정보 조회 */
     @GET("/api/v1/member")
     suspend fun fetchUserInfo(): NofficeResult<UserInfoResponse>
+
+    /* fcm 토큰 저장 */
+    @POST("/api/v1/notifications/fcm-token")
+    suspend fun registerMessagingToken(
+        @Body fcmToken: String
+    ): NofficeResult<Unit>
 }
