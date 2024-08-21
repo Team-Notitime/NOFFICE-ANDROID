@@ -39,12 +39,16 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Create google-services.json
-      run: echo "$GOOGLE_SERVICES_JSON" > app/dev/google-services.json
-      
-    - name: Create google-services.json
-      run: echo "$GOOGLE_SERVICES_JSON" > app/prod/google-services.json
+    - name: Create dev directory and copy google-services.json
+      run: |
+        mkdir -p app/dev
+        cp ${{ secrets.GOOGLE_SERVICES_JSON }} app/dev/google-services.json
 
+    - name: Create prod directory and copy google-services.json
+      run: |
+        mkdir -p app/dev
+        cp ${{ secrets.GOOGLE_SERVICES_JSON }} app/prod/google-services.json  
+    
     - name: Decode and create keystore.jks
       run: echo $SIGNING_KEY | base64 --decode > app/keystore.jks
 
