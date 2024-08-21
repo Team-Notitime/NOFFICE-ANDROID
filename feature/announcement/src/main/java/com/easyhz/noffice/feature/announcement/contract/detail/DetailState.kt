@@ -14,6 +14,7 @@ data class DetailState(
     val canGoBack: Boolean,
     val announcement: Announcement,
     val organizationInformation: OrganizationInformation,
+    val taskList: List<Task>
 ): UiState() {
     companion object {
         fun init() = DetailState(
@@ -44,6 +45,7 @@ data class DetailState(
                 hasStandbyMember = false,
                 role = MemberType.MEMBER
             ),
+            taskList = emptyList()
         )
 
         fun DetailState.updateDetailTitle(

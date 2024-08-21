@@ -150,7 +150,7 @@ fun AnnouncementDetailScreen(
             )
 
             taskListField(
-                taskList = emptyList() // FIXME
+                taskList = uiState.taskList
             ) {
                 viewModel.postIntent(DetailIntent.CheckTask(it))
             }

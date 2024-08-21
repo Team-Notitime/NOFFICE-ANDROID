@@ -2,10 +2,12 @@ package com.easyhz.noffice.data.announcement.repository.announcement
 
 import com.easyhz.noffice.core.model.announcement.Announcement
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
+import com.easyhz.noffice.core.model.task.Task
 import com.easyhz.noffice.core.network.api.announcement.AnnouncementService
 import com.easyhz.noffice.core.network.util.toResult
 import com.easyhz.noffice.data.announcement.mapper.announcement.toModel
 import com.easyhz.noffice.data.announcement.mapper.announcement.toRequest
+import com.easyhz.noffice.data.announcement.mapper.task.toModel
 import javax.inject.Inject
 
 class AnnounceRepositoryImpl @Inject constructor(
@@ -18,4 +20,9 @@ class AnnounceRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAnnouncement(announcementId: Int): Result<Announcement> =
         announceService.fetchAnnouncement(announcementId).toResult().map { it.toModel() }
+
+    override suspend fun fetchAnnouncementTask(announcementId: Int): Result<List<Task>> {
+        return announceService.fetchAnnouncementTask(announcementId).toResult()
+            .map { it.tasks.map { item -> item.toModel() } }
+    }
 }
