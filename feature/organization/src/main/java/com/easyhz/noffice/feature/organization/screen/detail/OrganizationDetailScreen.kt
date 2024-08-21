@@ -132,12 +132,14 @@ fun OrganizationDetailScreen(
                     isLoading = uiState.isLoading
                 )
             }
-            item {
-                StandbyMemberButton(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    hasStandbyMember = uiState.organizationInformation.hasStandbyMember
-                ) {
-                    viewModel.postIntent(DetailIntent.ClickStandbyMemberButton)
+            if (uiState.organizationInformation.role == MemberType.LEADER) {
+                item {
+                    StandbyMemberButton(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        hasStandbyMember = uiState.organizationInformation.hasStandbyMember
+                    ) {
+                        viewModel.postIntent(DetailIntent.ClickStandbyMemberButton)
+                    }
                 }
             }
             item {

@@ -3,13 +3,17 @@ package com.easyhz.noffice.feature.organization.screen.standby
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.member.MemberItem
@@ -32,6 +36,11 @@ fun StandbyMemberScreen(
     organizationId: Int,
     navigateToUp: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.postIntent(StandbyMemberIntent.InitScreen(organizationId))
+    }
     NofficeBasicScaffold(
         statusBarColor = White,
         navigationBarColor = White,
@@ -69,16 +78,19 @@ fun StandbyMemberScreen(
         LazyColumn(
             modifier = modifier
                 .padding(paddingValues)
-                .screenHorizonPadding(),
+                .screenHorizonPadding()
+                .padding(horizontal = 8.dp),
         ) {
-            items(7) {
+            itemsIndexed(uiState.memberList, key = { _, item -> item.id }) {index, item ->
                 MemberItem(
                     modifier = Modifier.padding(vertical = 4.dp),
-                    name = "멤버${it + 1}",
-                    imageUrl = if (it % 3 != 0) "" else "https://picsum.photos/id/${30 + it}/200/300",
+                    name = item.name,
+                    imageUrl = item.profileImage,
                     memberType = MemberType.PARTICIPANT,
-                    isChecked = false
-                )
+                    isChecked = item.isSelected
+                ) {
+                    viewModel.postIntent(StandbyMemberIntent.ClickMember(index))
+                }
             }
         }
     }

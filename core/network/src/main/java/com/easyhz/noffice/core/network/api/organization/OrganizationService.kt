@@ -3,6 +3,7 @@ package com.easyhz.noffice.core.network.api.organization
 import com.easyhz.noffice.core.network.model.request.organization.CategoryRequest
 import com.easyhz.noffice.core.network.model.request.organization.OrganizationCreationRequest
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementResponse
+import com.easyhz.noffice.core.network.model.response.announcement.MemberResponse
 import com.easyhz.noffice.core.network.model.response.category.CategoryResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
@@ -66,4 +67,10 @@ interface OrganizationService {
     suspend fun fetchOrganizationSignUpInfo(
         @Path("organizationId") organizationId: Int
     ): NofficeResult<OrganizationSignUpInformationResponse>
+
+    /* 조직 가입 대기자 조회 */
+    @GET("/api/v1/organizations/{organizationId}/pending-members")
+    suspend fun fetchOrganizationPendingMembers(
+        @Path("organizationId") organizationId: Int
+    ): NofficeResult<List<MemberResponse>>
 }
