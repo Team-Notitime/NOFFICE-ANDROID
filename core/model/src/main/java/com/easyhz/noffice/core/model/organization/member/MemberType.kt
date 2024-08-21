@@ -11,7 +11,7 @@ enum class MemberType(
         stringId = R.string.organization_member_type_leader,
         subStringId = R.string.organization_member_type_leader_sub
     ),
-    MEMBER(
+    PARTICIPANT(
         stringId = R.string.organization_member_type_member,
         subStringId = R.string.organization_member_type_member_sub,
     );

@@ -1,20 +1,26 @@
 package com.easyhz.noffice.feature.home.screen.home
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.HttpError
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.manager.DeepLinkManager
 import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.domain.home.usecase.member.FetchUserInfoUseCase
+import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationSignUpInfoUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationsUseCase
+import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
 import com.easyhz.noffice.feature.home.contract.home.HomeSideEffect
 import com.easyhz.noffice.feature.home.contract.home.HomeState
 import com.easyhz.noffice.feature.home.util.HomeTopBarMenu
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -25,6 +31,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val fetchUserInfoUseCase: FetchUserInfoUseCase,
     private val fetchOrganizationsUseCase: FetchOrganizationsUseCase,
+    private val fetchOrganizationSignUpInfoUseCase: FetchOrganizationSignUpInfoUseCase,
 ): BaseViewModel<HomeState, HomeIntent, HomeSideEffect>(
     initialState = HomeState.init()
 ) {
@@ -86,10 +93,27 @@ class HomeViewModel @Inject constructor(
     }
 
     /* 조직 가입 */
-    private fun joinToOrganization(id: Int) {
-        if (id == -1) return
+    private fun joinToOrganization(id: Int) = viewModelScope.launch {
+        if (id == -1) return@launch
+        reduce { copy(isLoading = true) }
+        fetchOrganizationSignUpInfoUseCase.invoke(id).onSuccess {
+            delay(500)
+            postSideEffect { HomeSideEffect.NavigateToOrganizationJoin(it) }
+        }.onFailure { error ->
+            val messageResId = when (error) {
+                is HttpError.ForbiddenError -> R.string.organization_join_already
+                else -> error.handleError()
+            }
+            showSnackBar(messageResId)
+        }.also {
+            DeepLinkManager.setOrganizationIdToJoin(-1)
+            reduce { copy(isLoading = false) }
+        }
+    }
 
-        DeepLinkManager.setOrganizationIdToJoin(-1)
-
+    private fun showSnackBar(@StringRes stringId: Int) {
+        postSideEffect {
+            HomeSideEffect.ShowSnackBar(stringId)
+        }
     }
 }

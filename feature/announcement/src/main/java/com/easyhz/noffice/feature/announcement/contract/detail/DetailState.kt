@@ -2,7 +2,6 @@ package com.easyhz.noffice.feature.announcement.contract.detail
 
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.model.announcement.Announcement
-import com.easyhz.noffice.core.model.announcement.detail.AnnouncementDetail
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.core.model.task.Task
@@ -41,9 +40,9 @@ data class DetailState(
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
-                members = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
+                members = linkedMapOf(MemberType.LEADER to 0, MemberType.PARTICIPANT to 0),
                 hasStandbyMember = false,
-                role = MemberType.MEMBER
+                role = MemberType.PARTICIPANT
             ),
             taskList = emptyList()
         )

@@ -168,7 +168,10 @@
     <string name="organization_standby_member_left_button">전체 선택</string>
     <string name="organization_standby_member_right_button">수락하기</string>
 
-
+    <string name="organization_join_button">멤버로 참여하기</string>
+    <string name="organization_join_success_request">성공적으로 요청을 보냈어요.</string>
+    <string name="organization_join_title">그룹에 참여할까요?</string>
+    <string name="organization_join_already">이미 가입한 조직이에요</string>
 
 
     <string name="my_page_menu_user_name">님</string>
