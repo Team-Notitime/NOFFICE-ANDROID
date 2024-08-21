@@ -4,5 +4,6 @@ data class Member(
     val alias: String,
     val id: Int,
     val name: String,
-    val profileImage: String?
+    val profileImage: String?,
+    val isSelected: Boolean,
 )

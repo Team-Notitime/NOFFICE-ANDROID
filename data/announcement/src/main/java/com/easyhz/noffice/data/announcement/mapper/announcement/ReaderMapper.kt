@@ -10,9 +10,10 @@ internal fun AnnouncementReaderResponse.toModel(): AnnouncementReader = Announce
     memberList = this.memberList.map { it.toModel() }
 )
 
-internal fun MemberResponse.toModel(): Member = Member(
+fun MemberResponse.toModel(): Member = Member(
     id = this.id,
     name = this.name,
     alias = this.alias,
-    profileImage = this.profileImage
+    profileImage = this.profileImage,
+    isSelected = false
 )

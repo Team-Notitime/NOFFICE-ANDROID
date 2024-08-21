@@ -172,6 +172,9 @@
     <string name="organization_standby_member_title">가입 대기 멤버</string>
     <string name="organization_standby_member_left_button">전체 선택</string>
     <string name="organization_standby_member_right_button">수락하기</string>
+    <string name="organization_pending_member_success">선택한 그룹원들이 참여했어요.</string>
+    <string name="organization_pending_member_forbidden">권한이 없어요.</string>
+    <string name="organization_pending_member_not_found">선택한 그룹원이 존재하지 않아요.</string>
 
     <string name="organization_join_button">멤버로 참여하기</string>
     <string name="organization_join_success_request">성공적으로 요청을 보냈어요.</string>
