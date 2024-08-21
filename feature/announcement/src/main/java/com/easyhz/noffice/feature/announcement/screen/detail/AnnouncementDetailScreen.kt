@@ -127,6 +127,8 @@ fun AnnouncementDetailScreen(
                     value = it,
                     isLoading = uiState.isLoading
                 ) { }
+            }
+            uiState.announcement.placeLinkName?.let {
                 item {
                     Spacer(
                         modifier = Modifier
@@ -134,8 +136,6 @@ fun AnnouncementDetailScreen(
                             .height(12.dp)
                     )
                 }
-            }
-            uiState.announcement.placeLinkName?.let {
                 detailField(
                     detailType = DetailType.PLACE,
                     value = it,
