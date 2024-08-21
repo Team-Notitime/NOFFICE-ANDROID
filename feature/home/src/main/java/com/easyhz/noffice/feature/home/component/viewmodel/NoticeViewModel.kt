@@ -18,20 +18,24 @@ import javax.inject.Inject
 class NoticeViewModel @Inject constructor(
     private val fetchAnnouncementsByOrganizationUseCase: FetchAnnouncementsByOrganizationUseCase
 ) : ViewModel() {
-    private val _announcementState =
-        MutableStateFlow<PagingData<OrganizationAnnouncement>>(PagingData.empty())
-    val announcementState: StateFlow<PagingData<OrganizationAnnouncement>> = _announcementState
+    private val _announcementStates = mutableMapOf<Int, MutableStateFlow<PagingData<OrganizationAnnouncement>>>()
+    private val _isDataLoaded = mutableMapOf<Int, Boolean>()
 
-    private var isLoaded = false
-
+    fun getAnnouncementStateByOrganization(organizationId: Int): StateFlow<PagingData<OrganizationAnnouncement>> {
+        return _announcementStates.getOrPut(organizationId) {
+            MutableStateFlow(PagingData.empty())
+        }
+    }
     fun fetchAnnouncementByOrganization(id: Int) = viewModelScope.launch {
-        if (isLoaded) return@launch
+        if (_isDataLoaded[id] == true) {
+            return@launch
+        }
         fetchAnnouncementsByOrganizationUseCase(id)
             .distinctUntilChanged()
             .cachedIn(viewModelScope)
             .collectLatest {
-                _announcementState.value = it
-                isLoaded = true
+                _announcementStates[id]?.value = it
+                _isDataLoaded[id] = true
             }
     }
 

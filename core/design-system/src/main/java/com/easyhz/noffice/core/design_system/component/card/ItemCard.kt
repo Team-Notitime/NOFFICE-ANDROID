@@ -57,7 +57,7 @@ fun ItemCard(
         .noRippleClickable { onClick() }
     ) {
         AnnouncementImage(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(160.dp),
             imageUrl = imageUrl
         )
         Box(modifier = Modifier

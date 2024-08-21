@@ -59,7 +59,7 @@ private fun OrganizationSection(
     organization: Organization,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
 ) {
-    val announcementList = noticeViewModel.announcementState.collectAsLazyPagingItems()
+    val announcementList = noticeViewModel.getAnnouncementStateByOrganization(organizationId = organization.id).collectAsLazyPagingItems()
     LaunchedEffect(organization.id) {
         noticeViewModel.fetchAnnouncementByOrganization(organization.id)
     }
@@ -79,7 +79,7 @@ private fun OrganizationSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            items(announcementList.itemCount) {index ->
+            items(announcementList.itemCount, key = { announcementList[it]?.announcementId ?: -1 }) {index ->
                 announcementList[index]?.let {
                     ItemCard(
                         title = it.title,
