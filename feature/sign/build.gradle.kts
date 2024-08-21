@@ -13,4 +13,5 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.common)
     implementation(projects.domain.sign)
+    implementation(projects.domain.notification)
 }
