@@ -40,7 +40,10 @@ jobs:
       run: chmod +x gradlew
 
     - name: Create google-services.json
-      run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+      run: echo "$GOOGLE_SERVICES_JSON" > app/dev/google-services.json
+      
+    - name: Create google-services.json
+      run: echo "$GOOGLE_SERVICES_JSON" > app/prod/google-services.json
 
     - name: Decode and create keystore.jks
       run: echo $SIGNING_KEY | base64 --decode > app/keystore.jks
