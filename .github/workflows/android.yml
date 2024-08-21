@@ -13,6 +13,7 @@ jobs:
       KEYSTORE_PROPERTIES_CONTENTS: ${{ secrets.KEYSTORE_PROPERTIES_CONTENTS }}
       SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      GOOGLE_SERVICES_JSON_PROD: ${{ secrets.GOOGLE_SERVICES_JSON_PROD }}
 
     steps:
     - uses: actions/checkout@v4
@@ -55,13 +56,13 @@ jobs:
       run: mkdir -p app/src/prod
 
     - name: Create google-services.json for prod
-      run: echo "$GOOGLE_SERVICES_JSON" > app/src/prod/google-services.json
+      run: echo "$GOOGLE_SERVICES_JSON_PROD" > app/src/prod/google-services.json
 
     - name: Create google-services.json directory for prodDebug
       run: mkdir -p app/src/prodDebug
 
     - name: Create google-services.json for prodDebug
-      run: echo "$GOOGLE_SERVICES_JSON" > app/src/prodDebug/google-services.json
+      run: echo "$GOOGLE_SERVICES_JSON_PROD" > app/src/prodDebug/google-services.json
     
     - name: Decode and create keystore.jks
       run: echo $SIGNING_KEY | base64 --decode > app/keystore.jks
