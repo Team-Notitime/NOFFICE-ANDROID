@@ -3,6 +3,7 @@ package com.easyhz.noffice.core.design_system.component.card
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.image.AnnouncementImage
-import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.CardExceptionSubTitle
 import com.easyhz.noffice.core.design_system.theme.CardExceptionTitle
@@ -52,9 +52,9 @@ fun ItemCard(
     Column(modifier = modifier
         .width(283.dp)
         .height(296.dp)
+        .clickable { onClick() }
         .clip(RoundedCornerShape(16.dp))
         .border(1.dp, color = Grey200, RoundedCornerShape(16.dp))
-        .noRippleClickable { onClick() }
     ) {
         AnnouncementImage(
             modifier = Modifier.fillMaxWidth().height(160.dp),
