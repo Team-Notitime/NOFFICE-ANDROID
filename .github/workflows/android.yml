@@ -12,6 +12,7 @@ jobs:
       LOCAL_PROPERTIES_CONTENTS: ${{ secrets.LOCAL_PROPERTIES_CONTENTS }}
       KEYSTORE_PROPERTIES_CONTENTS: ${{ secrets.KEYSTORE_PROPERTIES_CONTENTS }}
       SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
     steps:
     - uses: actions/checkout@v4
@@ -37,6 +38,9 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Create google-services.json
+      run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
 
     - name: Decode and create keystore.jks
       run: echo $SIGNING_KEY | base64 --decode > app/keystore.jks
