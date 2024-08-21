@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.Encryption
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.image.ImageParam
@@ -255,7 +256,7 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onNavigateToInvitation(organization: Organization) = viewModelScope.launch {
         postSideEffect {
             CreationSideEffect.NavigateToInvitation(
-                "www.noffice/${organization.id}",
+                organization.id.toNofficeDeepLink(),
                 organization.profileImageUrl
             )
         }
@@ -269,5 +270,10 @@ class OrganizationCreationViewModel @Inject constructor(
         postSideEffect {
             CreationSideEffect.ShowSnackBar(stringId)
         }
+    }
+
+    private fun Int.toNofficeDeepLink(): String {
+        val id = Encryption.encrypt(this.toString())
+        return "noffice://join?organizationId=$id"
     }
 }

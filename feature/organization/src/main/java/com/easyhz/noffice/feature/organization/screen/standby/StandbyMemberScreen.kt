@@ -76,7 +76,7 @@ fun StandbyMemberScreen(
                     modifier = Modifier.padding(vertical = 4.dp),
                     name = "멤버${it + 1}",
                     imageUrl = if (it % 3 != 0) "" else "https://picsum.photos/id/${30 + it}/200/300",
-                    memberType = MemberType.MEMBER,
+                    memberType = MemberType.PARTICIPANT,
                     isChecked = false
                 )
             }

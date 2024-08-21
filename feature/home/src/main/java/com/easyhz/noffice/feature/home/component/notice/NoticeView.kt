@@ -22,6 +22,7 @@ import com.easyhz.noffice.core.design_system.component.card.ItemCard
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.util.card.CardDetailInfo
 import com.easyhz.noffice.core.design_system.util.card.CardExceptionType
+import com.easyhz.noffice.core.model.organization.JoinStatus
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.feature.home.component.common.OrganizationHeader
 import com.easyhz.noffice.feature.home.component.viewmodel.NoticeViewModel
@@ -75,36 +76,43 @@ private fun OrganizationSection(
 
         }
         LazyRow(
-            userScrollEnabled = announcementList.itemCount != 0,
+            userScrollEnabled = (organization.joinStatus != JoinStatus.PENDING) && (announcementList.itemCount != 0),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            items(announcementList.itemCount, key = { announcementList[it]?.announcementId ?: -1 }) {index ->
-                announcementList[index]?.let {
-                    ItemCard(
-                        title = it.title,
-                        imageUrl = it.profileImage ?: "",
-                        detailItems = listOf(
-                            CardDetailInfo(
-                                iconId = R.drawable.ic_calendar,
-                                text = it.endAt ?: stringResource(id = R.string.home_date_empty),
-                                description = "date"
-                            ),
-                            CardDetailInfo(
-                                iconId = R.drawable.ic_mappin,
-                                text = it.place ?: stringResource(id = R.string.home_place_empty),
-                                description = "place"
-                            )
-                        )
-                    ) {
-                        navigateToAnnouncementDetail(it.announcementId, it.title)
+            when(organization.joinStatus) {
+                JoinStatus.ACTIVE -> {
+                    items(announcementList.itemCount, key = { announcementList[it]?.announcementId ?: -1 }) {index ->
+                        announcementList[index]?.let {
+                            ItemCard(
+                                title = it.title,
+                                imageUrl = it.profileImage ?: "",
+                                detailItems = listOf(
+                                    CardDetailInfo(
+                                        iconId = R.drawable.ic_calendar,
+                                        text = it.endAt ?: stringResource(id = R.string.home_date_empty),
+                                        description = "date"
+                                    ),
+                                    CardDetailInfo(
+                                        iconId = R.drawable.ic_mappin,
+                                        text = it.place ?: stringResource(id = R.string.home_place_empty),
+                                        description = "place"
+                                    )
+                                )
+                            ) {
+                                navigateToAnnouncementDetail(it.announcementId, it.title)
+                            }
+                        }
+                    }
+                    if (announcementList.itemCount == 0) {
+                        exceptionItem(CardExceptionType.NO_RESULT)
                     }
                 }
+                JoinStatus.PENDING -> {
+                    exceptionItem(CardExceptionType.ACCEPT_WAIT)
+                }
+                else -> { }
             }
-            if (announcementList.itemCount == 0) {
-                exceptionItem(CardExceptionType.NO_RESULT)
-            }
-//            exceptionItem(CardExceptionType.ACCEPT_WAIT) // FIXME isPending 일 때
         }
     }
 }

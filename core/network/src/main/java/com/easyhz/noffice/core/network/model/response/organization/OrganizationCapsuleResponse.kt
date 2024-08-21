@@ -5,4 +5,5 @@ data class OrganizationCapsuleResponse(
     val organizationName: String,
     val profileImage: String?,
     val role: String,
+    val joinStatus: String,
 )

@@ -8,6 +8,7 @@ import com.easyhz.noffice.core.network.model.response.organization.OrganizationC
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
+import com.easyhz.noffice.core.network.model.response.organization.OrganizationSignUpInformationResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import com.easyhz.noffice.core.network.util.PagingResult
 import retrofit2.http.Body
@@ -59,4 +60,10 @@ interface OrganizationService {
     suspend fun joinOrganization(
         @Path("organizationId") organizationId: Int,
     ): NofficeResult<OrganizationJoinResponse>
+
+    /* 조직 가입 정보 조회 */
+    @GET("/api/v1/organizations/{organizationId}/signup-info")
+    suspend fun fetchOrganizationSignUpInfo(
+        @Path("organizationId") organizationId: Int
+    ): NofficeResult<OrganizationSignUpInformationResponse>
 }

@@ -1,7 +1,7 @@
 package com.easyhz.noffice.core.network.model.response.organization
 
-data class OrganizationJoinResponse(
+data class OrganizationSignUpInformationResponse(
     val organizationId: Int,
     val organizationName: String,
-    val memberId: Int
+    val profileImage: String,
 )
