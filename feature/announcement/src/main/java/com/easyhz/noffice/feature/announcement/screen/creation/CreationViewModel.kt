@@ -87,6 +87,7 @@ class CreationViewModel @Inject constructor(
             tasks = taskListState?.map {
                 Task(
                     id = -1,
+                    announcementId = -1,
                     content = it,
                     isDone = true
                 )
