@@ -30,9 +30,9 @@ class MainActivity : ComponentActivity() {
     private fun handleDeepLink(intent: Intent?) {
         val action: String? = intent?.action
         val data: Uri? = intent?.data
-
+        if (data?.host != "join") return
         if (action == Intent.ACTION_VIEW) {
-            val organizationId = data?.getQueryParameter("organizationId") ?: return
+            val organizationId = data.getQueryParameter("organizationId") ?: return
             val id = Encryption.decrypt(organizationId).toIntOrNull() ?: return
             DeepLinkManager.setOrganizationIdToJoin(id)
         }
