@@ -5,7 +5,7 @@ import com.easyhz.noffice.core.network.model.request.organization.OrganizationCr
 import com.easyhz.noffice.core.network.model.request.organization.RegisterMemberRequest
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementResponse
 import com.easyhz.noffice.core.network.model.response.announcement.MemberResponse
-import com.easyhz.noffice.core.network.model.response.category.CategoryResponse
+import com.easyhz.noffice.core.network.model.response.category.CategoryUpdateResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationCapsuleResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationInformationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
@@ -52,11 +52,12 @@ interface OrganizationService {
         @Query("sort") sort: List<String>
     ): PagingResult<AnnouncementResponse>
 
+    /* 카테고리 수정 */
     @PUT("/api/v1/organizations/{organizationId}/categories")
     suspend fun updateOrganizationCategory(
         @Path("organizationId") organizationId: Int,
         @Body request: CategoryRequest
-    ): NofficeResult<CategoryResponse>
+    ): NofficeResult<CategoryUpdateResponse>
 
     /* 조직 가입 */
     @POST("/api/v1/organizations/{organizationId}/join")

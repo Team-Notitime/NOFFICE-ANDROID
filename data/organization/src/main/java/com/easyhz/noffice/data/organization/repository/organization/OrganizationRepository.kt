@@ -18,7 +18,7 @@ interface OrganizationRepository {
     suspend fun createOrganization(param: OrganizationCreationParam): Result<Organization>
     suspend fun fetchOrganizationInfo(organizationId: Int): Result<OrganizationInformation>
     suspend fun fetchAnnouncementsByOrganization(organizationId: Int, endAtDatePattern: DateFormat.PATTERN): Flow<PagingData<OrganizationAnnouncement>>
-    suspend fun updateOrganizationCategory(organizationId: Int, category: List<Int>): Result<Category>
+    suspend fun updateOrganizationCategory(organizationId: Int, category: List<Int>): Result<List<Category>>
     suspend fun joinOrganization(organizationId: Int): Result<OrganizationJoin>
     suspend fun fetchOrganizationSignUpInfo(organizationId: Int): Result<OrganizationSignUpInformation>
     suspend fun fetchOrganizationPendingMembers(organizationId: Int): Result<List<Member>>
