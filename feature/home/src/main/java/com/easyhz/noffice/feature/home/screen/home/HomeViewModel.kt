@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         fetchUserInfo()
-        fetchDayOfWeek()
+        getDateNow()
         fetchOrganizations()
     }
 
@@ -69,9 +69,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun fetchDayOfWeek() {
-       val dayOfWeek = DateFormat.getDayOfWeek()
-        reduce { copy(dayOfWeek = dayOfWeek) }
+    private fun getDateNow() {
+       val date = DateFormat.getDateNow()
+        if (currentState.date == date) return
+        reduce { copy(date = date) }
     }
 
     private fun onChangeTopBarMenu(topBarMenu: HomeTopBarMenu) {
