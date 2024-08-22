@@ -18,7 +18,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.banner.Banner
+import com.easyhz.noffice.core.design_system.component.banner.SkeletonBanner
 import com.easyhz.noffice.core.design_system.component.card.ItemCard
+import com.easyhz.noffice.core.design_system.component.skeleton.SkeletonProvider
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.util.card.CardDetailInfo
 import com.easyhz.noffice.core.design_system.util.card.CardExceptionType
@@ -33,6 +35,8 @@ fun NoticeView(
     name: String,
     dayOfWeek: String,
     organizationList: LazyPagingItems<Organization>,
+    isLoading: Boolean,
+    isRefreshing: Boolean,
     navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
 ) {
     LazyColumn(
@@ -40,12 +44,15 @@ fun NoticeView(
         contentPadding = PaddingValues(bottom = 48.dp)
     ) {
         item {
-            Banner(userName = name, date = dayOfWeek)
+            SkeletonProvider(isLoading = isLoading, skeletonContent = { SkeletonBanner() }) {
+                Banner(userName = name, date = dayOfWeek)
+            }
         }
         items(organizationList.itemCount) { index ->
             organizationList[index]?.let {
                 OrganizationSection(
                     organization = it,
+                    isRefreshing = isRefreshing,
                     navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
                 )
             }
@@ -58,12 +65,19 @@ private fun OrganizationSection(
     modifier: Modifier = Modifier,
     noticeViewModel: NoticeViewModel = hiltViewModel(),
     organization: Organization,
+    isRefreshing: Boolean,
     navigateToAnnouncementDetail: (Int, String) -> Unit,
 ) {
     val announcementList = noticeViewModel.getAnnouncementStateByOrganization(organizationId = organization.id).collectAsLazyPagingItems()
     LaunchedEffect(organization.id) {
         noticeViewModel.fetchAnnouncementByOrganization(organization.id)
     }
+
+    LaunchedEffect(key1 = isRefreshing) {
+        if(!isRefreshing) return@LaunchedEffect
+        noticeViewModel.refreshAnnouncementByOrganization(organization.id)
+    }
+
     Column(modifier) {
         OrganizationHeader(
             modifier = Modifier

@@ -9,6 +9,7 @@ import com.easyhz.noffice.core.common.error.HttpError
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.manager.DeepLinkManager
 import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.domain.home.usecase.member.FetchUserInfoUseCase
@@ -45,6 +46,7 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.ChangeTopBarMenu ->  { onChangeTopBarMenu(intent.topBarMenu) }
             is HomeIntent.ClickTopBarIconMenu -> { onClickTopBarIconMenu(intent.iconMenu) }
             is HomeIntent.JoinToOrganization -> { joinToOrganization(intent.organizationId) }
+            is HomeIntent.Refresh -> { refresh() }
         }
     }
 
@@ -58,7 +60,9 @@ class HomeViewModel @Inject constructor(
         fetchUserInfoUseCase.invoke(Unit).onSuccess {
             reduce { copy(userInfo = it, name = it.alias) }
         }.onFailure {
-            // TODO FAIL 처리
+            errorLogging(this.javaClass.name, "fetchUserInfo", it)
+        }.also {
+            reduce { copy(isInitLoading = false)}
         }
     }
 
@@ -95,7 +99,7 @@ class HomeViewModel @Inject constructor(
     /* 조직 가입 */
     private fun joinToOrganization(id: Int) = viewModelScope.launch {
         if (id == -1) return@launch
-        reduce { copy(isLoading = true) }
+        reduce { copy(isJoinLoading = true) }
         fetchOrganizationSignUpInfoUseCase.invoke(id).onSuccess {
             delay(500)
             postSideEffect { HomeSideEffect.NavigateToOrganizationJoin(it) }
@@ -107,8 +111,12 @@ class HomeViewModel @Inject constructor(
             showSnackBar(messageResId)
         }.also {
             DeepLinkManager.setOrganizationIdToJoin(-1)
-            reduce { copy(isLoading = false) }
+            reduce { copy(isJoinLoading = false) }
         }
+    }
+
+    private fun refresh() {
+        postSideEffect { HomeSideEffect.Refresh }
     }
 
     private fun showSnackBar(@StringRes stringId: Int) {

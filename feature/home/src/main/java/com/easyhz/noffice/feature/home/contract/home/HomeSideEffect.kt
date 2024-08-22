@@ -8,4 +8,5 @@ sealed class HomeSideEffect: UiSideEffect() {
     data object NavigateToMyPage: HomeSideEffect()
     data class NavigateToOrganizationJoin(val organizationSignUpInformation: OrganizationSignUpInformation): HomeSideEffect()
     data class ShowSnackBar(@StringRes val stringId: Int): HomeSideEffect()
+    data object Refresh: HomeSideEffect()
 }
