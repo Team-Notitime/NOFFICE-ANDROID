@@ -55,11 +55,12 @@ class HomeViewModel @Inject constructor(
 
     init {
         fetchUserInfo()
-        fetchDayOfWeek()
+        getDateNow()
         fetchOrganizations()
     }
 
     private fun fetchUserInfo() = viewModelScope.launch {
+        if (currentState.userInfo.id != -1) return@launch
         fetchUserInfoUseCase.invoke(Unit).onSuccess {
             reduce { copy(userInfo = it, name = it.alias) }
         }.onFailure {
@@ -69,9 +70,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun fetchDayOfWeek() {
-       val dayOfWeek = DateFormat.getDayOfWeek()
-        reduce { copy(dayOfWeek = dayOfWeek) }
+    private fun getDateNow() {
+       val date = DateFormat.getDateNow()
+        if (currentState.date == date) return
+        reduce { copy(date = date) }
     }
 
     private fun onChangeTopBarMenu(topBarMenu: HomeTopBarMenu) {
@@ -129,6 +131,8 @@ class HomeViewModel @Inject constructor(
     private fun refresh() {
         if (currentState.isInitLoading) return
         postSideEffect { HomeSideEffect.Refresh }
+        fetchUserInfo()
+        getDateNow()
     }
 
     private fun showSnackBar(@StringRes stringId: Int) {

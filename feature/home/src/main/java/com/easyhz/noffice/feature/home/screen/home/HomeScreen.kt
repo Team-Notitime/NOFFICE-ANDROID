@@ -32,6 +32,7 @@ import com.easyhz.noffice.core.design_system.component.scaffold.NofficeScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.HomeTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Green500
+import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
 import com.easyhz.noffice.core.model.organization.OrganizationSignUpInformation
 import com.easyhz.noffice.feature.home.component.notice.NoticeView
@@ -88,7 +89,8 @@ fun HomeScreen(
         }
     }
     LoadingScreenProvider(
-        isLoading = uiState.isJoinLoading
+        isLoading = uiState.isJoinLoading,
+        navigationBarColor = Grey50
     ) {
         NofficeScaffold(
             modifier = modifier,
@@ -122,7 +124,7 @@ fun HomeScreen(
                     when (screen) {
                         HomeTopBarMenu.NOTICE -> {
                             NoticeView(
-                                dayOfWeek = uiState.dayOfWeek,
+                                dayOfWeek = uiState.date,
                                 name = uiState.name,
                                 organizationList = organizationList,
                                 isLoading = uiState.isInitLoading,

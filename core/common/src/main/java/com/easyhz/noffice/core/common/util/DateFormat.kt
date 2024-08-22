@@ -19,6 +19,7 @@ object DateFormat {
         CUSTOM_REMIND("MM월 dd일 E a h:mm"),
         DAY("MM/dd"),
         TIME("HH:mm"),
+        BANNER_DATE("M월 d일 EEEE"),
         REQUEST("yyyy-MM-dd'T'HH:mm:ss")
     }
 
@@ -81,6 +82,11 @@ object DateFormat {
         val currentDate = LocalDate.now()
         val dayOfWeek = currentDate.dayOfWeek
         return dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+    }
+
+    fun getDateNow(pattern: PATTERN = PATTERN.BANNER_DATE): String {
+        val formatter = DateTimeFormatter.ofPattern(pattern.value, Locale.getDefault())
+        return LocalDate.now().format(formatter)
     }
 
     fun localDateTimeToString(dateTime: String, pattern: PATTERN = PATTERN.CUSTOM_REMIND): String {
