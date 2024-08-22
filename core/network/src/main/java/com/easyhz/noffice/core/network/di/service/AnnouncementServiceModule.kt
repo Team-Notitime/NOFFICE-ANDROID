@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.network.di.service
 
 import com.easyhz.noffice.core.network.api.announcement.AnnouncementService
+import com.easyhz.noffice.core.network.api.task.TaskService
 import com.easyhz.noffice.core.network.di.NofficeRetrofit
 import dagger.Module
 import dagger.Provides
@@ -14,4 +15,8 @@ object AnnouncementServiceModule {
     @Provides
     fun provideAnnouncementService(@NofficeRetrofit retrofit: Retrofit): AnnouncementService =
         retrofit.create(AnnouncementService::class.java)
+
+    @Provides
+    fun provideTaskService(@NofficeRetrofit retrofit: Retrofit): TaskService =
+        retrofit.create(TaskService::class.java)
 }

@@ -58,8 +58,9 @@ fun HomeScreen(
     val isRefreshing = remember(organizationList.loadState.refresh) {
         organizationList.loadState.refresh == LoadState.Loading
     }
+
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = !uiState.isInitLoading && isRefreshing,
+        refreshing = isRefreshing,
         onRefresh = { viewModel.postIntent(HomeIntent.Refresh) }
     )
     val requestPermissionLauncher =
@@ -79,6 +80,9 @@ fun HomeScreen(
     }
     LaunchedEffect(key1 = organizationIdToJoin) {
         viewModel.postIntent(HomeIntent.JoinToOrganization(organizationIdToJoin))
+    }
+    LaunchedEffect(key1 = organizationList.loadState) {
+        if (organizationList.loadState.prepend.endOfPaginationReached) { viewModel.postIntent(HomeIntent.SetInitLoading) }
     }
     LoadingScreenProvider(
         isLoading = uiState.isJoinLoading
@@ -132,14 +136,16 @@ fun HomeScreen(
                         }
                     }
                 }
-                PullRefreshIndicator(
-                    refreshing = isRefreshing,
-                    contentColor = Green500,
-                    state = pullRefreshState,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(top = 20.dp)
-                )
+                if(!uiState.isInitLoading) {
+                    PullRefreshIndicator(
+                        refreshing = isRefreshing,
+                        contentColor = Green500,
+                        state = pullRefreshState,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(top = 20.dp)
+                    )
+                }
             }
         }
     }

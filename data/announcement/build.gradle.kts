@@ -14,4 +14,7 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.model)
     implementation(libs.jsoup)
+
+    // paging
+    implementation(libs.paging.runtime)
 }

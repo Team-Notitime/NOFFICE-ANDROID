@@ -1,59 +1,70 @@
 package com.easyhz.noffice.feature.home.component.task
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.easyhz.noffice.core.design_system.component.button.CheckButton
-import com.easyhz.noffice.feature.home.component.common.OrganizationHeader
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.easyhz.noffice.core.design_system.component.button.TaskItem
+import com.easyhz.noffice.core.design_system.component.exception.ExceptionView
+import com.easyhz.noffice.core.design_system.theme.White
+import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
+import com.easyhz.noffice.feature.home.component.common.OrganizationTaskHeader
+import com.easyhz.noffice.feature.home.component.viewmodel.TaskViewModel
 
 // TODO 체크하면 밑으로 내려가는 로직 추가 필요
 @Composable
 internal fun TaskView(
     modifier: Modifier = Modifier,
+    viewModel: TaskViewModel = hiltViewModel()
 ) {
-    val check = remember { mutableStateOf(false) }
-    val check2 = remember { mutableStateOf(false) }
-    Column(modifier = modifier) {
-//        ExceptionView(
-//            modifier = Modifier.fillMaxSize(),
-//            type = ExceptionType.NO_ORGANIZATION
-//        )
-        OrganizationHeader( // FIXME 고칠 필요가 있음
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(72.dp)
-                .padding(vertical = 8.dp),
-            organizationName = "CMC 15th"
-        ) { }
+    val taskList = viewModel.taskListState.collectAsLazyPagingItems()
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(top = 28.dp, bottom = 48.dp),
+        verticalArrangement = Arrangement.spacedBy(28.dp)
+    ) {
+        items(taskList.itemCount) { index ->
+            taskList[index]?.let { item ->
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OrganizationTaskHeader(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        organizationName = item.organizationName
+                    ) { }
+                    item.tasks.forEach { task ->
+                        TaskItem(
+                            modifier = Modifier
+                                .background(White),
+                            text = task.content, isComplete = task.isDone
+                        ) {
 
-//        ExceptionView(
-//            modifier = Modifier.fillMaxSize(),
-//            type = ExceptionType.NO_TASK
-//        )
-        Column( // FIXME 고칠 필요가 있음
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            CheckButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "할 일",
-                isComplete = check.value,
-            ) {
-                check.value = !check.value
-            }
-            CheckButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "할 일2",
-                isComplete = check2.value,
-            ) {
-                check2.value = !check2.value
+                        }
+                    }
+                    if(item.tasks.isEmpty()) {
+                        ExceptionView(
+                            modifier = Modifier.height(300.dp).fillMaxWidth(),
+                            type = ExceptionType.NO_TASK
+                        )
+                    }
+                }
             }
         }
+    }
+    if (taskList.itemCount == 0) {
+        ExceptionView(
+            modifier = Modifier.fillMaxSize(),
+            type = ExceptionType.NO_ORGANIZATION
+        )
     }
 }

@@ -47,6 +47,7 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.ClickTopBarIconMenu -> { onClickTopBarIconMenu(intent.iconMenu) }
             is HomeIntent.JoinToOrganization -> { joinToOrganization(intent.organizationId) }
             is HomeIntent.Refresh -> { refresh() }
+            is HomeIntent.SetInitLoading -> { reduce { copy(isInitLoading = false) }}
         }
     }
 
@@ -61,7 +62,7 @@ class HomeViewModel @Inject constructor(
             reduce { copy(userInfo = it, name = it.alias) }
         }.onFailure {
             errorLogging(this.javaClass.name, "fetchUserInfo", it)
-        }.also {
+            showSnackBar(it.handleError())
             reduce { copy(isInitLoading = false)}
         }
     }
@@ -116,6 +117,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun refresh() {
+        if (currentState.isInitLoading) return
         postSideEffect { HomeSideEffect.Refresh }
     }
 

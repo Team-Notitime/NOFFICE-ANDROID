@@ -50,6 +50,11 @@ fun NoticeView(
                 Banner(userName = name, date = dayOfWeek)
             }
         }
+        if (isLoading && !organizationList.loadState.hasError) {
+            item {
+                SkeletonOrganizationSection()
+            }
+        }
         items(organizationList.itemCount) { index ->
             organizationList[index]?.let {
                 OrganizationSection(

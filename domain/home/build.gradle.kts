@@ -12,9 +12,13 @@ dependencies {
     api(projects.core.model)
 
     implementation(projects.core.common)
+    implementation(projects.data.announcement)
     implementation(projects.data.auth)
     implementation(projects.data.member)
 
     implementation(libs.javax.inject)
     implementation(libs.kotlinx.coroutines.core)
+
+    // paging
+    implementation(libs.paging.common)
 }

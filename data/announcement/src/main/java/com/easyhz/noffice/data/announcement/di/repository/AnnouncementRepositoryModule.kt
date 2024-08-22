@@ -2,6 +2,8 @@ package com.easyhz.noffice.data.announcement.di.repository
 
 import com.easyhz.noffice.data.announcement.repository.announcement.AnnounceRepository
 import com.easyhz.noffice.data.announcement.repository.announcement.AnnounceRepositoryImpl
+import com.easyhz.noffice.data.announcement.repository.task.TaskRepository
+import com.easyhz.noffice.data.announcement.repository.task.TaskRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,4 +16,9 @@ interface AnnouncementRepositoryModule {
     fun bindAnnouncementRepository(
         announceRepositoryImpl: AnnounceRepositoryImpl
     ): AnnounceRepository
+
+    @Binds
+    fun bindTaskRepository(
+        taskRepositoryImpl: TaskRepositoryImpl
+    ): TaskRepository
 }
