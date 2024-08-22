@@ -60,6 +60,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchUserInfo() = viewModelScope.launch {
+        if (currentState.userInfo.id != -1) return@launch
         fetchUserInfoUseCase.invoke(Unit).onSuccess {
             reduce { copy(userInfo = it, name = it.alias) }
         }.onFailure {
@@ -130,6 +131,8 @@ class HomeViewModel @Inject constructor(
     private fun refresh() {
         if (currentState.isInitLoading) return
         postSideEffect { HomeSideEffect.Refresh }
+        fetchUserInfo()
+        getDateNow()
     }
 
     private fun showSnackBar(@StringRes stringId: Int) {
