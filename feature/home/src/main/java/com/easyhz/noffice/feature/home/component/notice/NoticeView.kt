@@ -123,7 +123,7 @@ private fun OrganizationSection(
                     }
                     if (announcementList.itemCount == 0 && !isRefreshingAnnouncement) {
                         exceptionItem(CardExceptionType.NO_RESULT)
-                    } else {
+                    } else if (announcementList.itemCount == 0){
                         items(2) {
                             SkeletonItemCard()
                         }
