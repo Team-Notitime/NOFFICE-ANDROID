@@ -10,7 +10,7 @@ import com.easyhz.noffice.domain.announcement.usecase.announcement.FetchAnnounce
 import com.easyhz.noffice.domain.announcement.usecase.reader.FetchAnnouncementNonReadersUseCase
 import com.easyhz.noffice.domain.announcement.usecase.reader.FetchAnnouncementReadersUseCase
 import com.easyhz.noffice.domain.announcement.usecase.task.FetchAnnouncementTaskUseCase
-import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationUseCase
+import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationInfoUseCase
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailState
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnnouncementDetailViewModel @Inject constructor(
-    private val fetchOrganizationUseCase: FetchOrganizationUseCase,
+    private val fetchOrganizationInfoUseCase: FetchOrganizationInfoUseCase,
     private val fetchAnnouncementUseCase: FetchAnnouncementUseCase,
     private val fetchAnnouncementTaskUseCase: FetchAnnouncementTaskUseCase,
     private val fetchAnnouncementReadersUseCase: FetchAnnouncementReadersUseCase,
@@ -100,7 +100,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     }
 
     private suspend fun fetchOrganization(organizationId: Int): Result<OrganizationInformation> {
-        return fetchOrganizationUseCase(organizationId)
+        return fetchOrganizationInfoUseCase(organizationId)
     }
     private suspend fun fetchAnnouncement(id: Int): Result<Announcement> {
         return fetchAnnouncementUseCase(id)

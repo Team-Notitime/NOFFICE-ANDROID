@@ -79,7 +79,7 @@ internal fun DetailHeader(
                 ) {
                     organizationInformation.category.forEach {
                         NofficeChip(
-                            text = it.title,
+                            text = it,
                             selectState = ChipState.Picked,
                             chipStyles = ChipStyles(
                                 unSelected = OrganizationChipStyle,

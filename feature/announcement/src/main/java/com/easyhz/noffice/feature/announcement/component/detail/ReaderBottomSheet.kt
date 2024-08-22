@@ -36,12 +36,12 @@ internal fun ReaderBottomSheet(
     onClickSegmentedButton: (ReaderType) -> Unit
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val currentList = remember(selectedReaderType) {
+    val currentList =
         when (selectedReaderType) {
             ReaderType.READER -> readerList
             ReaderType.NON_READER -> nonReaderList
         }
-    }
+
     LazyColumn(
         modifier = modifier
             .padding(top = 16.dp)

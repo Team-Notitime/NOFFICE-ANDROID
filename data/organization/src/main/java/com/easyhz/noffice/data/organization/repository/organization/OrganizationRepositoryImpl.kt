@@ -89,7 +89,7 @@ class OrganizationRepositoryImpl @Inject constructor(
     override suspend fun updateOrganizationCategory(
         organizationId: Int,
         category: List<Int>
-    ): Result<Category> = withContext(dispatcher) {
+    ): Result<List<Category>> = withContext(dispatcher) {
         return@withContext organizationService.updateOrganizationCategory(
             organizationId,
             CategoryRequest(category)

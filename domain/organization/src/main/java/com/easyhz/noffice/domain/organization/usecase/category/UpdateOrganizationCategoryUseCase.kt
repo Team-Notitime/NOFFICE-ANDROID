@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class UpdateOrganizationCategoryUseCase @Inject constructor(
     private val organizationRepository: OrganizationRepository
-): BaseUseCase<CategoryParam, Category>() {
-    override suspend fun invoke(param: CategoryParam): Result<Category> {
+): BaseUseCase<CategoryParam, List<Category>>() {
+    override suspend fun invoke(param: CategoryParam): Result<List<Category>> {
         return organizationRepository.updateOrganizationCategory(param.organizationId, param.categoryList)
     }
 }

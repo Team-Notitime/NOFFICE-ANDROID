@@ -10,7 +10,7 @@ import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.domain.organization.usecase.announcement.FetchAnnouncementsByOrganizationUseCase
-import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationUseCase
+import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationInfoUseCase
 import com.easyhz.noffice.feature.organization.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.organization.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.organization.contract.detail.DetailState
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrganizationDetailViewModel @Inject constructor(
-    private val fetchOrganizationUseCase: FetchOrganizationUseCase,
+    private val fetchOrganizationInfoUseCase: FetchOrganizationInfoUseCase,
     private val fetchAnnouncementsByOrganizationUseCase: FetchAnnouncementsByOrganizationUseCase
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
     initialState = DetailState.init()
@@ -64,7 +64,7 @@ class OrganizationDetailViewModel @Inject constructor(
 
     private fun initData(id: Int) = viewModelScope.launch {
         launch { fetchAnnouncements(id) }
-        fetchOrganizationUseCase.invoke(id).onSuccess {
+        fetchOrganizationInfoUseCase.invoke(id).onSuccess {
             reduce { copy(organizationInformation = it, isLoading = false) }
         }.onFailure {
             errorLogging(this.javaClass.name, "fetchData", it)
