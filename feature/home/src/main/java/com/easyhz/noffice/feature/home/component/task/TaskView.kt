@@ -24,7 +24,8 @@ import com.easyhz.noffice.feature.home.component.viewmodel.TaskViewModel
 @Composable
 internal fun TaskView(
     modifier: Modifier = Modifier,
-    viewModel: TaskViewModel = hiltViewModel()
+    viewModel: TaskViewModel = hiltViewModel(),
+    onClickOrganizationHeader: (organizationId: Int, organizationTitle: String) -> Unit,
 ) {
     val taskList = viewModel.taskListState.collectAsLazyPagingItems()
     LazyColumn(
@@ -41,7 +42,7 @@ internal fun TaskView(
                         modifier = Modifier
                             .fillMaxWidth(),
                         organizationName = item.organizationName
-                    ) { }
+                    ) { onClickOrganizationHeader(item.organizationId, item.organizationName) }
                     item.tasks.forEach { task ->
                         TaskItem(
                             modifier = Modifier

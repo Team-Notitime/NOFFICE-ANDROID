@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.JoinToOrganization -> { joinToOrganization(intent.organizationId) }
             is HomeIntent.Refresh -> { refresh() }
             is HomeIntent.SetInitLoading -> { reduce { copy(isInitLoading = false) }}
-            is HomeIntent.ClickOrganizationHeader -> { navigateToOrganizationDetail(intent.organization) }
+            is HomeIntent.ClickOrganizationHeader -> { navigateToOrganizationDetail(intent.organizationId, intent.organizationName) }
             is HomeIntent.ClickAnnouncementCard -> { navigateToAnnouncementDetail(intent.organizationId, intent.announcementId, intent.announcementTitle) }
         }
     }
@@ -89,8 +89,8 @@ class HomeViewModel @Inject constructor(
         postSideEffect { HomeSideEffect.NavigateToMyPage }
     }
 
-    private fun navigateToOrganizationDetail(organization: Organization) {
-        postSideEffect { HomeSideEffect.NavigateToOrganizationDetail(organizationId = organization.id, organizationName = organization.name) }
+    private fun navigateToOrganizationDetail(id: Int, name: String) {
+        postSideEffect { HomeSideEffect.NavigateToOrganizationDetail(organizationId = id, organizationName = name) }
     }
 
     private fun navigateToAnnouncementDetail(organizationId: Int, id: Int, title: String) {

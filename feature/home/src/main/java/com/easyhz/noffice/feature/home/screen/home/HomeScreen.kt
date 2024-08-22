@@ -128,11 +128,7 @@ fun HomeScreen(
                                 isLoading = uiState.isInitLoading,
                                 isRefreshing = isRefreshing,
                                 onClickOrganizationHeader = {
-                                    viewModel.postIntent(
-                                        HomeIntent.ClickOrganizationHeader(
-                                            it
-                                        )
-                                    )
+                                    viewModel.postIntent(HomeIntent.ClickOrganizationHeader(it.id, it.name))
                                 },
                                 onClickAnnouncementCard = { organizationId, announcementId, announcementTitle ->
                                     viewModel.postIntent(
@@ -150,7 +146,9 @@ fun HomeScreen(
                             TaskView(
                                 modifier = Modifier
                                     .screenHorizonPadding()
-                            )
+                            ) { organizationId, organizationName ->
+                                viewModel.postIntent(HomeIntent.ClickOrganizationHeader(organizationId, organizationName))
+                            }
                         }
                     }
                 }
