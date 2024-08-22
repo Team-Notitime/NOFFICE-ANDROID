@@ -25,7 +25,7 @@ data class HomeState(
             name = "",
             dayOfWeek = "",
             isJoinLoading = false,
-            isInitLoading = true
+            isInitLoading = true,
         )
     }
 }

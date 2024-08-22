@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.banner.Banner
 import com.easyhz.noffice.core.design_system.component.banner.SkeletonBanner
 import com.easyhz.noffice.core.design_system.component.card.ItemCard
+import com.easyhz.noffice.core.design_system.component.card.SkeletonItemCard
 import com.easyhz.noffice.core.design_system.component.skeleton.SkeletonProvider
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.util.card.CardDetailInfo
@@ -48,19 +50,13 @@ fun NoticeView(
                 Banner(userName = name, date = dayOfWeek)
             }
         }
-        if(isLoading) {
-            items(2) {
-                SkeletonOrganizationSection()
-            }
-        } else {
-            items(organizationList.itemCount) { index ->
-                organizationList[index]?.let {
-                    OrganizationSection(
-                        organization = it,
-                        isRefreshing = isRefreshing,
-                        navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
-                    )
-                }
+        items(organizationList.itemCount) { index ->
+            organizationList[index]?.let {
+                OrganizationSection(
+                    organization = it,
+                    isRefreshing = isRefreshing,
+                    navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
+                )
             }
         }
     }
@@ -75,6 +71,7 @@ private fun OrganizationSection(
     navigateToAnnouncementDetail: (Int, String) -> Unit,
 ) {
     val announcementList = noticeViewModel.getAnnouncementStateByOrganization(organizationId = organization.id).collectAsLazyPagingItems()
+    val isRefreshingAnnouncement = announcementList.loadState.refresh == LoadState.Loading
     LaunchedEffect(organization.id) {
         noticeViewModel.fetchAnnouncementByOrganization(organization.id)
     }
@@ -124,8 +121,12 @@ private fun OrganizationSection(
                             }
                         }
                     }
-                    if (announcementList.itemCount == 0) {
+                    if (announcementList.itemCount == 0 && !isRefreshingAnnouncement) {
                         exceptionItem(CardExceptionType.NO_RESULT)
+                    } else {
+                        items(2) {
+                            SkeletonItemCard()
+                        }
                     }
                 }
                 JoinStatus.PENDING -> {
