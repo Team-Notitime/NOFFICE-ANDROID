@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationsUseCase
 import com.easyhz.noffice.feature.organization.contract.organization.OrganizationIntent
@@ -35,6 +36,8 @@ class OrganizationViewModel @Inject constructor(
             is OrganizationIntent.ClickOrganization -> {
                 onClickOrganization(intent.id, intent.name)
             }
+
+            is OrganizationIntent.ClickTopBarIconMenu -> { onClickTopBarIconMenu(intent.iconMenu) }
         }
     }
 
@@ -50,6 +53,13 @@ class OrganizationViewModel @Inject constructor(
             }
     }
 
+    private fun onClickTopBarIconMenu(iconMenu: TopBarIconMenu) {
+        when(iconMenu) {
+            TopBarIconMenu.NOTIFICATION -> { /* TODO 네비게이션 처리 */ }
+            TopBarIconMenu.USER -> { navigateToMyPage() }
+        }
+    }
+
     private fun onClickOrganizationCreation() {
         postSideEffect { OrganizationSideEffect.NavigateToCreation }
     }
@@ -59,5 +69,9 @@ class OrganizationViewModel @Inject constructor(
         postSideEffect {
             OrganizationSideEffect.NavigateToDetail(id, name)
         }
+    }
+
+    private fun navigateToMyPage() {
+        postSideEffect { OrganizationSideEffect.NavigateToMyPage }
     }
 }

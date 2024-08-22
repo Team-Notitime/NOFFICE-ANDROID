@@ -30,6 +30,7 @@ import com.easyhz.noffice.feature.organization.util.OrganizationTopBarMenu
 fun OrganizationScreen(
     modifier: Modifier = Modifier,
     viewModel: OrganizationViewModel = hiltViewModel(),
+    navigateToMyPage: () -> Unit,
     navigateToDetail: (Int, String) -> Unit,
     navigateToCreation: () -> Unit
 ) {
@@ -38,10 +39,8 @@ fun OrganizationScreen(
         topBar = {
             HomeTopBar(
                 tabs = enumValues<OrganizationTopBarMenu>(),
-                onClickIconMenu = { }
-            ) {
-
-            }
+                onClickIconMenu = { viewModel.postIntent(OrganizationIntent.ClickTopBarIconMenu(it)) }
+            ) { }
         }
     ) { paddingValues ->
         if(organizationList.itemCount == 0 && organizationList.loadState.refresh != LoadState.Loading) {
@@ -95,6 +94,7 @@ fun OrganizationScreen(
         when(sideEffect) {
             is OrganizationSideEffect.NavigateToCreation -> { navigateToCreation() }
             is OrganizationSideEffect.NavigateToDetail -> { navigateToDetail(sideEffect.id, sideEffect.name) }
+            is OrganizationSideEffect.NavigateToMyPage -> { navigateToMyPage() }
         }
     }
 }
