@@ -10,12 +10,12 @@ import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.manager.DeepLinkManager
 import com.easyhz.noffice.core.common.util.DateFormat
 import com.easyhz.noffice.core.common.util.errorLogging
+import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.domain.home.usecase.member.FetchUserInfoUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationSignUpInfoUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationsUseCase
-import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
 import com.easyhz.noffice.feature.home.contract.home.HomeSideEffect
 import com.easyhz.noffice.feature.home.contract.home.HomeState
@@ -48,6 +48,8 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.JoinToOrganization -> { joinToOrganization(intent.organizationId) }
             is HomeIntent.Refresh -> { refresh() }
             is HomeIntent.SetInitLoading -> { reduce { copy(isInitLoading = false) }}
+            is HomeIntent.ClickOrganizationHeader -> { navigateToOrganizationDetail(intent.organization) }
+            is HomeIntent.ClickAnnouncementCard -> { navigateToAnnouncementDetail(intent.organizationId, intent.announcementId, intent.announcementTitle) }
         }
     }
 
@@ -85,6 +87,14 @@ class HomeViewModel @Inject constructor(
 
     private fun navigateToMyPageScreen() {
         postSideEffect { HomeSideEffect.NavigateToMyPage }
+    }
+
+    private fun navigateToOrganizationDetail(organization: Organization) {
+        postSideEffect { HomeSideEffect.NavigateToOrganizationDetail(organizationId = organization.id, organizationName = organization.name) }
+    }
+
+    private fun navigateToAnnouncementDetail(organizationId: Int, id: Int, title: String) {
+        postSideEffect { HomeSideEffect.NavigateToAnnouncementDetail(organizationId, id, title) }
     }
 
 

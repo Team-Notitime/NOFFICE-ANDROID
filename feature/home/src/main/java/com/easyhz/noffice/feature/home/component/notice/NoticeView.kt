@@ -39,7 +39,8 @@ fun NoticeView(
     organizationList: LazyPagingItems<Organization>,
     isLoading: Boolean,
     isRefreshing: Boolean,
-    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
+    onClickOrganizationHeader: (Organization) -> Unit,
+    onClickAnnouncementCard: (organizationId: Int, announcementId: Int, announcementTitle: String) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -60,7 +61,8 @@ fun NoticeView(
                 OrganizationSection(
                     organization = it,
                     isRefreshing = isRefreshing,
-                    navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
+                    onClickOrganizationHeader = { onClickOrganizationHeader(it) },
+                    onClickItemCard = { id, title -> onClickAnnouncementCard(it.id, id, title) }
                 )
             }
         }
@@ -73,7 +75,8 @@ private fun OrganizationSection(
     noticeViewModel: NoticeViewModel = hiltViewModel(),
     organization: Organization,
     isRefreshing: Boolean,
-    navigateToAnnouncementDetail: (Int, String) -> Unit,
+    onClickOrganizationHeader: () -> Unit,
+    onClickItemCard: (announcementId: Int, announcementTitle: String) -> Unit,
 ) {
     val announcementList = noticeViewModel.getAnnouncementStateByOrganization(organizationId = organization.id).collectAsLazyPagingItems()
     val isRefreshingAnnouncement = announcementList.loadState.refresh == LoadState.Loading
@@ -94,9 +97,7 @@ private fun OrganizationSection(
                 .screenHorizonPadding()
                 .padding(vertical = 8.dp),
             organizationName = organization.name
-        ) {
-
-        }
+        ) { onClickOrganizationHeader() }
         LazyRow(
             userScrollEnabled = (organization.joinStatus != JoinStatus.PENDING) && (announcementList.itemCount != 0),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -122,7 +123,7 @@ private fun OrganizationSection(
                                     )
                                 )
                             ) {
-                                navigateToAnnouncementDetail(it.announcementId, it.title)
+                                onClickItemCard(it.announcementId, it.title)
                             }
                         }
                     }
