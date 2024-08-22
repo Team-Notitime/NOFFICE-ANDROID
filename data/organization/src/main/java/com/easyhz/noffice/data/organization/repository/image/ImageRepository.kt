@@ -1,6 +1,5 @@
 package com.easyhz.noffice.data.organization.repository.image
 
-import android.content.Context
 import android.net.Uri
 import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.image.ImageUrl

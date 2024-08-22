@@ -14,6 +14,7 @@ import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.easyhz.noffice.core.design_system.R
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -39,7 +40,12 @@ fun OrganizationImage(
             failure = placeholder(R.drawable.ic_profile_group),
             contentScale = ContentScale.Crop,
             transition = CrossFade,
-        )
+        ) { requestBuilder ->
+            requestBuilder
+                .thumbnail()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+        }
     }
 }
 

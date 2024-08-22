@@ -10,14 +10,15 @@ import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
-import com.easyhz.noffice.core.model.image.ImageParam
 import com.easyhz.noffice.core.model.image.ImagePurpose
+import com.easyhz.noffice.core.model.image.UpdateImageParam
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.param.CategoryParam
 import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUseCase
 import com.easyhz.noffice.domain.organization.usecase.category.UpdateOrganizationCategoryUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.UpdateImageUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
@@ -33,6 +34,7 @@ import javax.inject.Inject
 class OrganizationManagementViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
     private val updateOrganizationCategoryUseCase: UpdateOrganizationCategoryUseCase,
+    private val updateImageUseCase: UpdateImageUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
@@ -182,10 +184,10 @@ class OrganizationManagementViewModel @Inject constructor(
         val categoryDeferred = async { onSaveCategory() }
         imageDeferred.await()
         categoryDeferred.await()
-        showSnackBar(R.string.organization_management_success_update_category)
         delay(300)
-        navigateToUp()
         setIsSaveLoading(false)
+        navigateToUp()
+        showSnackBar(R.string.organization_management_success_update_category)
     }
 
     private suspend fun onSaveCategory() {
@@ -211,11 +213,12 @@ class OrganizationManagementViewModel @Inject constructor(
     }
 
     private suspend fun onSaveImage(): String? {
-        val param = ImageParam(
+        val param = UpdateImageParam(
             uri = currentState.selectedImage.toUri(),
+            url = currentState.organizationInformation.profileImageUrl,
             purpose = ImagePurpose.ORGANIZATION_LOGO
         )
-        return uploadImageUseCase.invoke(param).getOrElse {
+        return updateImageUseCase.invoke(param).getOrElse {
             errorLogging(this.javaClass.name, "uploadImage", it)
             showSnackBar(it.handleError())
             null
