@@ -110,7 +110,7 @@ fun OrganizationManagementScreen(
                 }
                 CategoryField(
                     modifier = Modifier.padding(vertical = 24.dp),
-                    categoryList = uiState.organizationInformation.category
+                    categoryList = uiState.categoryList
                 ) {
                     viewModel.postIntent(ManagementIntent.ClickCategoryItem(it))
                 }

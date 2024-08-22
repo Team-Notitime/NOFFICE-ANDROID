@@ -1,12 +1,13 @@
 package com.easyhz.noffice.feature.organization.screen.creation
 
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.Encryption
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.image.ImageParam
@@ -169,7 +170,7 @@ class OrganizationCreationViewModel @Inject constructor(
                 postSideEffect { CreationSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                Log.d(this.javaClass.name, "navigateToCamera - ${it.message}")
+                errorLogging(this.javaClass.name, "navigateToCamera", it)
                 showSnackBar(it.handleError())
             }
     }
@@ -209,9 +210,9 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun fetchCategories() = viewModelScope.launch {
         fetchCategoriesUseCase.invoke(Unit).onSuccess {
-            println("성공 $it") // TODO 카테고리 끼우기
+            reduce { copy(category = it) }
         }.onFailure {
-            Log.d(this.javaClass.name, "fetchCategories - ${it.message}")
+            errorLogging(this.javaClass.name, "fetchCategories", it)
             showSnackBar(it.handleError())
         }.also {
             setIsLoading(false)
@@ -228,7 +229,7 @@ class OrganizationCreationViewModel @Inject constructor(
         }
         val param = OrganizationCreationParam(
             name = currentState.organizationName,
-            categoryList = listOf(1), // FIXME
+            categoryList = currentState.category.filter { it.isSelected }.map { it.id },
             endAt = currentState.endDate,
             profileImage = imageUrl,
             promotionCode = currentState.promotionCode.ifBlank { null }
@@ -236,7 +237,7 @@ class OrganizationCreationViewModel @Inject constructor(
         createOrganizationUseCase.invoke(param).onSuccess {
             onNavigateToInvitation(it)
         }.onFailure {
-            Log.d(this.javaClass.name, "createOrganization - ${it.message}")
+            errorLogging(this.javaClass.name, "createOrganization", it)
             showSnackBar(it.handleError())
         }.also {
             setIsLoading(false)
@@ -246,7 +247,7 @@ class OrganizationCreationViewModel @Inject constructor(
     private suspend fun uploadImage(imageUri: Uri): String? {
         val param = ImageParam(uri = imageUri, purpose = ImagePurpose.ORGANIZATION_LOGO)
         return uploadImageUseCase.invoke(param).getOrElse {
-            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            errorLogging(this.javaClass.name, "uploadImage", it)
             showSnackBar(it.handleError())
             null
         }
@@ -255,7 +256,7 @@ class OrganizationCreationViewModel @Inject constructor(
     private fun onNavigateToInvitation(organization: Organization) = viewModelScope.launch {
         postSideEffect {
             CreationSideEffect.NavigateToInvitation(
-                "www.noffice/${organization.id}",
+                organization.id.toNofficeDeepLink(),
                 organization.profileImageUrl
             )
         }
@@ -269,5 +270,10 @@ class OrganizationCreationViewModel @Inject constructor(
         postSideEffect {
             CreationSideEffect.ShowSnackBar(stringId)
         }
+    }
+
+    private fun Int.toNofficeDeepLink(): String {
+        val id = Encryption.encrypt(this.toString())
+        return "noffice://join?organizationId=$id"
     }
 }

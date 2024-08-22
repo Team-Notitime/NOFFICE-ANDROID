@@ -126,6 +126,7 @@ internal fun NofficeApp(
         ) {
             homeGraph(
                 modifier = Modifier.padding(it),
+                snackBarHostState = snackBarHostState,
                 navController = navController
             )
             organizationGraph(
@@ -138,6 +139,7 @@ internal fun NofficeApp(
                 navController = navController
             )
             announcementGraph(
+                snackBarHostState = snackBarHostState,
                 navController = navController,
             )
             myPageGraph(

@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.network.api.announcement
 
 import com.easyhz.noffice.core.network.model.request.announcement.AnnouncementRequest
+import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementReaderResponse
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementResponse
 import com.easyhz.noffice.core.network.model.response.announcement.AnnouncementTaskResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
@@ -41,4 +42,16 @@ interface AnnouncementService {
     suspend fun fetchAnnouncementTask(
         @Path("announcementId") announcementId: Int,
     ): NofficeResult<AnnouncementTaskResponse>
+
+    /* 공지 열람 사용자 조회 */
+    @GET("/api/v1/announcement/{announcementId}/readers")
+    suspend fun fetchAnnouncementReaders(
+        @Path("announcementId") announcementId: Int,
+    ): NofficeResult<AnnouncementReaderResponse>
+
+    /* 공지 미열람 사용자 조회 */
+    @GET("/api/v1/announcement/{announcementId}/unreaders")
+    suspend fun fetchAnnouncementNonReaders(
+        @Path("announcementId") announcementId: Int,
+    ): NofficeResult<AnnouncementReaderResponse>
 }

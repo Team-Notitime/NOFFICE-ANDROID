@@ -20,8 +20,9 @@ data class DetailState(
                 name = "",
                 profileImageUrl = "",
                 category = emptyList(),
-                members = linkedMapOf(MemberType.LEADER to 0, MemberType.MEMBER to 0),
-                hasStandbyMember = false
+                members = linkedMapOf(MemberType.LEADER to 0, MemberType.PARTICIPANT to 0),
+                hasStandbyMember = false,
+                role = MemberType.PARTICIPANT
             ),
             announcementList = emptyList()
         )

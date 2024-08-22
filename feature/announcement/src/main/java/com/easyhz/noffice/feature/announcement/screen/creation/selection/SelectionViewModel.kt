@@ -51,7 +51,7 @@ class SelectionViewModel @Inject constructor(
     }
 
     private fun onClickNextButton() {
-        postSideEffect { SelectionSideEffect.NavigateToNext }
+        postSideEffect { SelectionSideEffect.NavigateToNext(currentState.selectedOrganization) }
     }
 
     private fun onSelectedOrganization(organizationId: Int) {

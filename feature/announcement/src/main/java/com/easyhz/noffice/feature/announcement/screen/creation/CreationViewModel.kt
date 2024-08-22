@@ -4,25 +4,34 @@ import android.view.View
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.util.DateFormat
+import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
+import com.easyhz.noffice.core.model.task.Task
+import com.easyhz.noffice.domain.my_page.usecase.GetMemberIdUseCase
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.CreationState
 import com.easyhz.noffice.feature.announcement.contract.creation.Options
 import com.easyhz.noffice.feature.announcement.contract.creation.datetime.SelectionDateTimeState
 import com.easyhz.noffice.feature.announcement.contract.creation.place.ContactState
+import com.easyhz.noffice.feature.announcement.contract.creation.place.ContactType
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
+import com.easyhz.noffice.feature.announcement.util.creation.calculateRemind
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CreationViewModel @Inject constructor(
-
+    private val getMemberIdUseCase: GetMemberIdUseCase
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
     override fun handleIntent(intent: CreationIntent) {
         when(intent) {
+            is CreationIntent.InitScreen -> { initScreen(intent.organizationId) }
             is CreationIntent.ClickBackButton -> { onClickBackButton() }
             is CreationIntent.ClickNextButton -> { onClickNextButton() }
             is CreationIntent.ChangeTitleTextValue -> { onChangeTitleTextValue(intent.newText) }
@@ -35,12 +44,58 @@ class CreationViewModel @Inject constructor(
         }
     }
 
+    init {
+        getMemberId()
+    }
+
+    private fun getMemberId() = viewModelScope.launch {
+        getMemberIdUseCase.invoke(Unit).onSuccess {
+            reduce { copy(memberId = it) }
+        }.onFailure {
+            onClickBackButton()
+        }
+    }
+
+    private fun initScreen(organizationId: Int) {
+        reduce { copy(organizationId = organizationId) }
+    }
+
     private fun onClickBackButton() {
         postSideEffect { CreationSideEffect.NavigateToUp }
     }
 
     private fun onClickNextButton() {
-        postSideEffect { CreationSideEffect.NavigateToNext }
+        val dateTimeState = currentState.getOptionValue<SelectionDateTimeState>(Options.DATE_TIME)
+        val endAt = DateFormat.dateTimeToRequestStringNullable(dateTimeState?.date, dateTimeState?.time)
+        val contactState = currentState.getOptionValue<ContactState>(Options.PLACE)
+        val taskListState = currentState.getOptionValue<List<String>>(Options.TASK)
+        val remindListState = currentState.getOptionValue<List<String>>(Options.REMIND)
+        val (timeList, noticeBefore, noticeDate) = remindListState?.let {
+            calculateRemind(it, endAt)
+        } ?: Triple(null, null, null)
+
+        val param = AnnouncementParam(
+            organizationId = currentState.organizationId,
+            title = currentState.title,
+            content = currentState.content.text,
+            memberId = currentState.memberId,
+            endAt = endAt,
+            isFaceToFace = contactState?.contactType == ContactType.CONTACT,
+            placeLinkName = contactState?.title,
+            placeLinkUrl = contactState?.url,
+            profileImageUrl = "",
+            tasks = taskListState?.map {
+                Task(
+                    id = -1,
+                    announcementId = -1,
+                    content = it,
+                    isDone = true
+                )
+            },
+            noticeDate = noticeDate,
+            noticeBefore = noticeBefore
+        )
+        postSideEffect { CreationSideEffect.NavigateToNext(param) }
     }
 
     private fun onChangeTitleTextValue(newText: String) {

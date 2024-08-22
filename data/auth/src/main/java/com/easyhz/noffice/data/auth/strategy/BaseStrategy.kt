@@ -11,7 +11,7 @@ abstract class BaseStrategy {
     abstract suspend fun logout(context: Context): Result<Unit>
 
     fun throwUnexpectedError(tag: String = "BaseStrategy", message: String) {
-        Log.d(tag, message)
+        Log.e(tag, message)
         throw NofficeError.UnexpectedError
     }
 }

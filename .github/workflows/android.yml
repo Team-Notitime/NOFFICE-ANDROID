@@ -12,6 +12,8 @@ jobs:
       LOCAL_PROPERTIES_CONTENTS: ${{ secrets.LOCAL_PROPERTIES_CONTENTS }}
       KEYSTORE_PROPERTIES_CONTENTS: ${{ secrets.KEYSTORE_PROPERTIES_CONTENTS }}
       SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      GOOGLE_SERVICES_JSON_PROD: ${{ secrets.GOOGLE_SERVICES_JSON_PROD }}
 
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +39,22 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
+    - name: Create google-services.json directory for dev
+      run: mkdir -p app/src/dev
+    
+    - name: Create google-services.json directory for debug
+      run: mkdir -p app/src/debug
 
+    - name: Create google-services.json for debug
+      run: echo "$GOOGLE_SERVICES_JSON" > app/src/debug/google-services.json
+    
+    - name: Create google-services.json directory for devDebug
+      run: mkdir -p app/src/devDebug
+
+    - name: Create google-services.json for devDebug
+      run: echo "$GOOGLE_SERVICES_JSON" > app/src/devDebug/google-services.json
+    
     - name: Decode and create keystore.jks
       run: echo $SIGNING_KEY | base64 --decode > app/keystore.jks
 
@@ -49,8 +66,8 @@ jobs:
       run: |
         echo "$KEYSTORE_PROPERTIES_CONTENTS" > keystore.properties
 
-    - name: Build with Gradle
-      run: ./gradlew build
+    # - name: Build with Gradle
+    #   run: ./gradlew build
       
-    # - name: Build debug 
-    #   run: ./gradlew assembleDebug
+    - name: Build debug with Gradle
+      run: ./gradlew assembleDevDebug

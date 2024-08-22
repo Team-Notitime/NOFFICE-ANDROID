@@ -1,19 +1,21 @@
 package com.easyhz.noffice.feature.organization.screen.management
 
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.core.model.image.ImageParam
 import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
+import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.param.CategoryParam
+import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUseCase
 import com.easyhz.noffice.domain.organization.usecase.category.UpdateOrganizationCategoryUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
@@ -23,6 +25,7 @@ import com.easyhz.noffice.feature.organization.contract.management.ManagementSta
 import com.easyhz.noffice.feature.organization.contract.management.ManagementState.Companion.updateCategoryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +33,8 @@ import javax.inject.Inject
 class OrganizationManagementViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
     private val updateOrganizationCategoryUseCase: UpdateOrganizationCategoryUseCase,
-    private val uploadImageUseCase: UploadImageUseCase
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val fetchCategoriesUseCase: FetchCategoriesUseCase,
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
     initialState = ManagementState.init()
 ) {
@@ -40,36 +44,78 @@ class OrganizationManagementViewModel @Inject constructor(
             is ManagementIntent.InitScreen -> {
                 initScreen(intent.organizationInformation)
             }
-            is ManagementIntent.NavigateToUp -> { navigateToUp() }
-            is ManagementIntent.ClickCategoryItem -> { onClickCategoryItem(intent.index) }
-            is ManagementIntent.ClickProfileImage -> { onClickProfileImage() }
-            is ManagementIntent.ClickImageBottomSheetItem -> { onClickImageBottomSheetItem(intent.bottomSheetItem) }
-            is ManagementIntent.HideImageBottomSheet -> { hideImageBottomSheet() }
-            is ManagementIntent.PickImage -> { onPickImage(intent.uri) }
-            is ManagementIntent.TakePicture -> { onTakePicture(intent.isUsed) }
-            is ManagementIntent.ClickMemberManagementButton -> { onClickMemberManagementButton() }
-            is ManagementIntent.ClickSaveButton -> { onClickSaveButton() }
+
+            is ManagementIntent.NavigateToUp -> {
+                navigateToUp()
+            }
+
+            is ManagementIntent.ClickCategoryItem -> {
+                onClickCategoryItem(intent.index)
+            }
+
+            is ManagementIntent.ClickProfileImage -> {
+                onClickProfileImage()
+            }
+
+            is ManagementIntent.ClickImageBottomSheetItem -> {
+                onClickImageBottomSheetItem(intent.bottomSheetItem)
+            }
+
+            is ManagementIntent.HideImageBottomSheet -> {
+                hideImageBottomSheet()
+            }
+
+            is ManagementIntent.PickImage -> {
+                onPickImage(intent.uri)
+            }
+
+            is ManagementIntent.TakePicture -> {
+                onTakePicture(intent.isUsed)
+            }
+
+            is ManagementIntent.ClickMemberManagementButton -> {
+                onClickMemberManagementButton()
+            }
+
+            is ManagementIntent.ClickSaveButton -> {
+                onClickSaveButton()
+            }
         }
     }
 
     private fun initScreen(
         organizationInformation: OrganizationInformation
-    ) {
-        reduce {
-            copy(
-                organizationInformation = organizationInformation,
-                selectedImage = organizationInformation.profileImageUrl,
-                isLoading = false
-            )
+    ) = viewModelScope.launch {
+        fetchCategoriesUseCase.invoke(Unit).onSuccess {
+            val updatedCategories = it.map { item ->
+                organizationInformation.category.find { it == item.title }?.let {
+                    Category(item.id, item.title, true)
+                } ?: item
+            }
+            reduce {
+                copy(
+                    organizationInformation = organizationInformation,
+                    selectedImage = organizationInformation.profileImageUrl,
+                    categoryList = updatedCategories,
+                    isLoading = false
+                )
+            }
+        }.onFailure {
+            errorLogging(this.javaClass.name, "initScreen", it)
+            showSnackBar(it.handleError())
+        }.also {
+            reduce { copy(isSaveLoading = false) }
         }
     }
 
     private fun onClickCategoryItem(index: Int) {
         reduce { updateCategoryItem(index) }
     }
+
     private fun onClickProfileImage() {
         showImageBottomSheet()
     }
+
     private fun onClickImageBottomSheetItem(item: ImageSelectionBottomSheetItem) {
         when (item) {
             ImageSelectionBottomSheetItem.GALLERY -> {
@@ -95,7 +141,7 @@ class OrganizationManagementViewModel @Inject constructor(
                 postSideEffect { ManagementSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                Log.d(this.javaClass.name, "navigateToCamera - ${it.message}")
+                errorLogging(this.javaClass.name, "navigateToCamera", it)
                 showSnackBar(it.handleError())
             }
     }
@@ -128,43 +174,54 @@ class OrganizationManagementViewModel @Inject constructor(
     private fun onClickSaveButton() = viewModelScope.launch {
         setIsSaveLoading(true)
         val imageDeferred = async {
-            currentState.selectedImage.takeIf { it != currentState.organizationInformation.profileImageUrl }?.let {
-                onSaveImage()
-            }
+            currentState.selectedImage.takeIf { it != currentState.organizationInformation.profileImageUrl }
+                ?.let {
+                    onSaveImage()
+                }
         }
         val categoryDeferred = async { onSaveCategory() }
         imageDeferred.await()
         categoryDeferred.await()
+        showSnackBar(R.string.organization_management_success_update_category)
+        delay(300)
+        navigateToUp()
         setIsSaveLoading(false)
     }
 
     private suspend fun onSaveCategory() {
-        val category = currentState.organizationInformation.category
+        val category = currentState.categoryList.filter { it.isSelected }
+        val originList = currentState.organizationInformation.category
+
         if (category.isEmpty()) {
             showSnackBar(R.string.organization_management_unselected_category)
             return
         }
+        if (category.map { it.title }.toSet() == originList.toSet()) return
+
         val param = CategoryParam(
             organizationId = currentState.organizationInformation.id,
-            categoryList = category.filter { it.isSelected }.map { it.id }
+            categoryList = category.map { it.id }
         )
         updateOrganizationCategoryUseCase.invoke(param).onSuccess {
-            showSnackBar(R.string.organization_management_success_update_category)
-            navigateToUp()
+
         }.onFailure {
-            Log.d(this.javaClass.name, "onClickSaveButton - ${it.message}")
+            errorLogging(this.javaClass.name, "onSaveCategory", it)
             showSnackBar(it.handleError())
         }
     }
 
     private suspend fun onSaveImage(): String? {
-        val param = ImageParam(uri = currentState.selectedImage.toUri(), purpose = ImagePurpose.ORGANIZATION_LOGO)
+        val param = ImageParam(
+            uri = currentState.selectedImage.toUri(),
+            purpose = ImagePurpose.ORGANIZATION_LOGO
+        )
         return uploadImageUseCase.invoke(param).getOrElse {
-            Log.d(this.javaClass.name, "uploadImage - ${it.message}")
+            errorLogging(this.javaClass.name, "uploadImage", it)
             showSnackBar(it.handleError())
             null
         }
     }
+
     private fun showSnackBar(@StringRes stringId: Int) {
         postSideEffect {
             ManagementSideEffect.ShowSnackBar(stringId)

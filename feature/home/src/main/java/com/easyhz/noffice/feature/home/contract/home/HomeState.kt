@@ -8,7 +8,9 @@ data class HomeState(
     val topBarMenu: HomeTopBarMenu,
     val userInfo: UserInfo,
     val name: String,
-    val dayOfWeek: String,
+    val date: String,
+    val isJoinLoading: Boolean,
+    val isInitLoading: Boolean,
 ): UiState() {
     companion object {
         fun init() = HomeState(
@@ -21,7 +23,9 @@ data class HomeState(
                 profileImage = ""
             ),
             name = "",
-            dayOfWeek = ""
+            date = "",
+            isJoinLoading = false,
+            isInitLoading = true,
         )
     }
 }

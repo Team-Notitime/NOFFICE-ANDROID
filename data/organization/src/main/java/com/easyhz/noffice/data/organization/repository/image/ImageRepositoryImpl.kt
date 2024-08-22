@@ -1,5 +1,6 @@
 package com.easyhz.noffice.data.organization.repository.image
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import com.easyhz.noffice.core.common.di.Dispatcher
@@ -41,11 +42,30 @@ class ImageRepositoryImpl @Inject constructor(
         return NofficeFileProvider.getMimeType(context, uri)
     }
 
-    override suspend fun uploadImage(url: String, fileType: String, uri: Uri): Result<Unit> = withContext(dispatcher) {
-        return@withContext imageUploader.uploadImage(context, url, fileType, uri)
+    override suspend fun uploadImage(url: String, fileType: String, uri: Uri): Result<Unit> =
+        withContext(dispatcher) {
+            return@withContext imageUploader.uploadImage(context, url, fileType, uri)
+        }
+
+    override suspend fun completeImageUpload(fileName: String): Result<Unit> =
+        withContext(dispatcher) {
+            return@withContext imageService.completeImageUpload(ImageRequest(fileName))
+        }
+
+    override suspend fun getDrawableUri(drawableId: Int): Result<Uri> {
+       return kotlin.runCatching {
+           drawableId.getResourceUri(context)
+       }
     }
 
-    override suspend fun completeImageUpload(fileName: String): Result<Unit> = withContext(dispatcher) {
-        return@withContext imageService.completeImageUpload(ImageRequest(fileName))
+    private fun Int.getResourceUri(context: Context): Uri {
+        return context.resources.let {
+            Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(it.getResourcePackageName(this))
+                .appendPath(it.getResourceTypeName(this))
+                .appendPath(it.getResourceEntryName(this))
+                .build()
+        }
     }
 }

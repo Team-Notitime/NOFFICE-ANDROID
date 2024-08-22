@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -19,11 +20,14 @@ import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.home.screen.Onboarding
 import com.easyhz.noffice.navigation.home.screen.Splash
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
+import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
+import com.easyhz.noffice.navigation.organization.navigateToOrganizationJoin
 import com.easyhz.noffice.navigation.sign.navigateToLogIn
 import com.easyhz.noffice.navigation.sign.screen.LogIn
 
 internal fun NavGraphBuilder.homeGraph(
     modifier: Modifier,
+    snackBarHostState: SnackbarHostState,
     navController: NavController,
 ) {
     composable<Splash> {
@@ -52,8 +56,11 @@ internal fun NavGraphBuilder.homeGraph(
     ) {
         HomeScreen(
             modifier = modifier,
+            snackBarHostState = snackBarHostState,
             navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
-            navigateToMyPage = navController::navigateToMyPage
+            navigateToOrganizationDetail = navController::navigateToOrganizationDetail,
+            navigateToMyPage = navController::navigateToMyPage,
+            navigateToOrganizationJoin = navController::navigateToOrganizationJoin
         )
     }
 }

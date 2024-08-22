@@ -56,7 +56,7 @@ internal fun LazyListScope.taskListField(
             )
         }
     }
-    itemsIndexed(taskList, key = { _, task -> task.content }) { index, task ->
+    itemsIndexed(taskList, key = { _, task -> task.id }) { index, task ->
         TaskItem(
             modifier = Modifier
                 .background(White),

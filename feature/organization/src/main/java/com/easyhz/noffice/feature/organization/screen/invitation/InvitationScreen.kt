@@ -28,6 +28,7 @@ import com.easyhz.noffice.core.design_system.component.image.OrganizationImage
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey100
+import com.easyhz.noffice.core.design_system.theme.Grey500
 import com.easyhz.noffice.core.design_system.theme.Grey600
 import com.easyhz.noffice.core.design_system.theme.SubTitle1
 import com.easyhz.noffice.core.design_system.theme.Title4
@@ -76,7 +77,7 @@ fun OrganizationInvitationScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(text = stringResource(id = R.string.organization_creation_success_title), style = Title4)
-                    Text(text = stringResource(id = R.string.organization_creation_success_sub_title), style = SubTitle1)
+                    Text(text = stringResource(id = R.string.organization_creation_success_sub_title), style = SubTitle1, color = Grey500)
                 }
                 Spacer(modifier = Modifier.height(18.dp))
                 UrlView(

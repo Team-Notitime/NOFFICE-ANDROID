@@ -7,6 +7,7 @@ import com.easyhz.noffice.core.common.base.UiIntent
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 
 sealed class CreationIntent: UiIntent() {
+    data class InitScreen(val organizationId: Int) :CreationIntent()
     data object ClickBackButton: CreationIntent()
     data object ClickNextButton: CreationIntent()
     data class ChangeTitleTextValue(val newText: String): CreationIntent()

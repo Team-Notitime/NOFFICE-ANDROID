@@ -9,6 +9,8 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.announcement.util.creation.OptionData
 
 data class CreationState(
+    val organizationId: Int,
+    val memberId: Int,
     val title: String,
     val content: TextFieldValue,
     val taskList: List<String>,
@@ -22,6 +24,8 @@ data class CreationState(
 ) : UiState() {
     companion object {
         fun init() = CreationState(
+            organizationId = -1,
+            memberId = -1,
             title = "",
             content = TextFieldValue(""),
             taskList = emptyList(),

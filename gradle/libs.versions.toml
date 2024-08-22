@@ -1,4 +1,5 @@
 [versions]
+activityKtx = "1.9.1"
 agp = "8.4.0"
 credentialsPlayServicesAuth = "1.2.0-rc1"
 kotlin = "1.9.23"
@@ -38,8 +39,10 @@ androidxDataStore = "1.0.0"
 coreSplashscreen = "1.0.1"
 paging = "3.3.2"
 lottie = "6.4.0"
+fcm = "23.2.1"
 
 [libraries]
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -91,6 +94,7 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "fcm" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
