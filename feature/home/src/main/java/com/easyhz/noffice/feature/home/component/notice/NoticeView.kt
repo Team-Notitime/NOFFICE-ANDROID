@@ -48,13 +48,19 @@ fun NoticeView(
                 Banner(userName = name, date = dayOfWeek)
             }
         }
-        items(organizationList.itemCount) { index ->
-            organizationList[index]?.let {
-                OrganizationSection(
-                    organization = it,
-                    isRefreshing = isRefreshing,
-                    navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
-                )
+        if(isLoading) {
+            items(2) {
+                SkeletonOrganizationSection()
+            }
+        } else {
+            items(organizationList.itemCount) { index ->
+                organizationList[index]?.let {
+                    OrganizationSection(
+                        organization = it,
+                        isRefreshing = isRefreshing,
+                        navigateToAnnouncementDetail = {id, title -> navigateToAnnouncementDetail(it.id, id, title) }
+                    )
+                }
             }
         }
     }

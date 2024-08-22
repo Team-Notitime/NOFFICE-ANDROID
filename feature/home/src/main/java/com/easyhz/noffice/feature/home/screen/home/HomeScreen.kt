@@ -55,7 +55,7 @@ fun HomeScreen(
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
     val organizationIdToJoin = remember { DeepLinkManager.organizationIdToJoin }
     val context = LocalContext.current
-    val isRefreshing  = remember(organizationList.loadState.refresh) {
+    val isRefreshing = remember(organizationList.loadState.refresh) {
         organizationList.loadState.refresh == LoadState.Loading
     }
     val pullRefreshState = rememberPullRefreshState(
@@ -96,10 +96,12 @@ fun HomeScreen(
                 }
             }
         ) { paddingValues ->
-            Box(modifier = Modifier
-                .pullRefresh(pullRefreshState)
-                .padding(top = paddingValues.calculateTopPadding())) {
-                if(organizationList.itemCount == 0 && !isRefreshing) {
+            Box(
+                modifier = Modifier
+                    .pullRefresh(pullRefreshState)
+                    .padding(top = paddingValues.calculateTopPadding())
+            ) {
+                if (organizationList.itemCount == 0 && !isRefreshing) {
                     ExceptionView(
                         modifier = Modifier.fillMaxSize(),
                         type = ExceptionType.NO_ORGANIZATION
@@ -123,8 +125,10 @@ fun HomeScreen(
                         }
 
                         HomeTopBarMenu.TASK -> {
-                            TaskView(modifier = Modifier
-                                .screenHorizonPadding())
+                            TaskView(
+                                modifier = Modifier
+                                    .screenHorizonPadding()
+                            )
                         }
                     }
                 }
@@ -141,17 +145,22 @@ fun HomeScreen(
     }
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
-        when(sideEffect) {
-            is HomeSideEffect.NavigateToMyPage -> { navigateToMyPage() }
+        when (sideEffect) {
+            is HomeSideEffect.NavigateToMyPage -> {
+                navigateToMyPage()
+            }
+
             is HomeSideEffect.NavigateToOrganizationJoin -> {
                 navigateToOrganizationJoin(sideEffect.organizationSignUpInformation)
             }
+
             is HomeSideEffect.ShowSnackBar -> {
                 snackBarHostState.showSnackbar(
                     message = context.getString(sideEffect.stringId),
                     withDismissAction = true
                 )
             }
+
             is HomeSideEffect.Refresh -> {
                 organizationList.refresh()
             }
