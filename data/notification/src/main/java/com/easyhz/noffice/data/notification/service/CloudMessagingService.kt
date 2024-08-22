@@ -14,6 +14,10 @@ import javax.inject.Inject
 class CloudMessagingService: FirebaseMessagingService() {
     @Inject
     lateinit var authService: AuthService
+
+    @Inject
+    lateinit var notificationService: NotificationService
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d("FCM SERVICE ", "Refreshed token: $token")
@@ -23,8 +27,7 @@ class CloudMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         Log.d("FCM SERVICE ", "message data: ${message.data}")
-        val service = NotificationService(applicationContext)
-        service.showNotification(message)
+        notificationService.showNotification(message)
     }
 
     private fun registerToken(token: String) {

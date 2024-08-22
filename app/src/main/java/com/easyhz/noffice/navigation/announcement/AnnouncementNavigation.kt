@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import androidx.navigation.navOptions
 import androidx.navigation.toRoute
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
@@ -34,7 +35,11 @@ internal fun NavGraphBuilder.announcementGraph(
     snackBarHostState: SnackbarHostState,
     navController: NavController,
 ) {
-    composable<AnnouncementDetail> {
+    composable<AnnouncementDetail>(
+        deepLinks =  listOf(navDeepLink {
+            uriPattern = "noffice://announcement?id={id}&organizationId={organizationId}&title={title}"
+        })
+    ) {
         val args = it.toRoute<AnnouncementDetail>()
         AnnouncementDetailScreen(
             organizationId = args.organizationId,
