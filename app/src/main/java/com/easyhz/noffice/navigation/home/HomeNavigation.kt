@@ -20,6 +20,7 @@ import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.home.screen.Onboarding
 import com.easyhz.noffice.navigation.home.screen.Splash
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
+import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationJoin
 import com.easyhz.noffice.navigation.sign.navigateToLogIn
 import com.easyhz.noffice.navigation.sign.screen.LogIn
@@ -57,6 +58,7 @@ internal fun NavGraphBuilder.homeGraph(
             modifier = modifier,
             snackBarHostState = snackBarHostState,
             navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
+            navigateToOrganizationDetail = navController::navigateToOrganizationDetail,
             navigateToMyPage = navController::navigateToMyPage,
             navigateToOrganizationJoin = navController::navigateToOrganizationJoin
         )

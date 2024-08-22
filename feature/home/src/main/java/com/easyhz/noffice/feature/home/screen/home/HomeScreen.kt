@@ -48,6 +48,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     snackBarHostState: SnackbarHostState,
     navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
+    navigateToOrganizationDetail: (Int, String) -> Unit,
     navigateToMyPage: () -> Unit,
     navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit
 ) {
@@ -82,7 +83,9 @@ fun HomeScreen(
         viewModel.postIntent(HomeIntent.JoinToOrganization(organizationIdToJoin))
     }
     LaunchedEffect(key1 = organizationList.loadState) {
-        if (organizationList.loadState.prepend.endOfPaginationReached) { viewModel.postIntent(HomeIntent.SetInitLoading) }
+        if (organizationList.loadState.prepend.endOfPaginationReached) {
+            viewModel.postIntent(HomeIntent.SetInitLoading)
+        }
     }
     LoadingScreenProvider(
         isLoading = uiState.isJoinLoading
@@ -124,7 +127,18 @@ fun HomeScreen(
                                 organizationList = organizationList,
                                 isLoading = uiState.isInitLoading,
                                 isRefreshing = isRefreshing,
-                                navigateToAnnouncementDetail = navigateToAnnouncementDetail
+                                onClickOrganizationHeader = {
+                                    viewModel.postIntent(HomeIntent.ClickOrganizationHeader(it.id, it.name))
+                                },
+                                onClickAnnouncementCard = { organizationId, announcementId, announcementTitle ->
+                                    viewModel.postIntent(
+                                        HomeIntent.ClickAnnouncementCard(
+                                            organizationId,
+                                            announcementId,
+                                            announcementTitle
+                                        )
+                                    )
+                                }
                             )
                         }
 
@@ -132,11 +146,13 @@ fun HomeScreen(
                             TaskView(
                                 modifier = Modifier
                                     .screenHorizonPadding()
-                            )
+                            ) { organizationId, organizationName ->
+                                viewModel.postIntent(HomeIntent.ClickOrganizationHeader(organizationId, organizationName))
+                            }
                         }
                     }
                 }
-                if(!uiState.isInitLoading) {
+                if (!uiState.isInitLoading) {
                     PullRefreshIndicator(
                         refreshing = isRefreshing,
                         contentColor = Green500,
@@ -156,6 +172,12 @@ fun HomeScreen(
                 navigateToMyPage()
             }
 
+            is HomeSideEffect.NavigateToOrganizationDetail -> {
+                navigateToOrganizationDetail(sideEffect.organizationId, sideEffect.organizationName)
+            }
+            is HomeSideEffect.NavigateToAnnouncementDetail -> {
+                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.announcementId, sideEffect.announcementTitle)
+            }
             is HomeSideEffect.NavigateToOrganizationJoin -> {
                 navigateToOrganizationJoin(sideEffect.organizationSignUpInformation)
             }

@@ -27,7 +27,7 @@ fun OpenGraphImage(
             model = image,
             contentDescription = image,
             loading = placeholder(ColorPainter(Yellow300)),
-            failure = placeholder(ColorPainter(Yellow300)), // TODO 이 부분 색깔 랜덤으로 나오면 좋을듯 해서 3개 정도만 색깔 뽑아 달라 하자
+            failure = placeholder(ColorPainter(Yellow300)),
             contentScale = ContentScale.Crop,
             transition = CrossFade
         )
