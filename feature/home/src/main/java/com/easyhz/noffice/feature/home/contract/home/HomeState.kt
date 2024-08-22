@@ -9,7 +9,8 @@ data class HomeState(
     val userInfo: UserInfo,
     val name: String,
     val dayOfWeek: String,
-    val isLoading: Boolean
+    val isJoinLoading: Boolean,
+    val isInitLoading: Boolean,
 ): UiState() {
     companion object {
         fun init() = HomeState(
@@ -23,7 +24,8 @@ data class HomeState(
             ),
             name = "",
             dayOfWeek = "",
-            isLoading = false
+            isJoinLoading = false,
+            isInitLoading = true,
         )
     }
 }

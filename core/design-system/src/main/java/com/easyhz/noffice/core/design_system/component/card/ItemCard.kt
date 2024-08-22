@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.image.AnnouncementImage
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.extension.skeletonEffect
 import com.easyhz.noffice.core.design_system.theme.CardExceptionSubTitle
 import com.easyhz.noffice.core.design_system.theme.CardExceptionTitle
 import com.easyhz.noffice.core.design_system.theme.Grey200
@@ -57,14 +58,17 @@ fun ItemCard(
         .border(1.dp, color = Grey200, RoundedCornerShape(16.dp))
     ) {
         AnnouncementImage(
-            modifier = Modifier.fillMaxWidth().height(160.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(160.dp),
             imageUrl = imageUrl
         )
-        Box(modifier = Modifier
-            .screenHorizonPadding()
-            .padding(start = 4.dp)
-            .fillMaxWidth()
-            .heightIn(min = 52.dp)
+        Box(
+            modifier = Modifier
+                .screenHorizonPadding()
+                .padding(start = 4.dp)
+                .fillMaxWidth()
+                .heightIn(min = 52.dp)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.CenterStart),
@@ -74,17 +78,85 @@ fun ItemCard(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        Spacer(modifier = Modifier
-            .screenHorizonPadding()
-            .height(1.dp)
-            .fillMaxWidth()
-            .border(1.dp, color = Grey200))
+        Spacer(
+            modifier = Modifier
+                .screenHorizonPadding()
+                .height(1.dp)
+                .fillMaxWidth()
+                .border(1.dp, color = Grey200)
+        )
         DetailFields(
             modifier = Modifier
                 .screenHorizonPadding()
                 .padding(top = 15.dp),
             items = detailItems
         )
+    }
+}
+
+@Composable
+fun SkeletonItemCard(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .width(283.dp)
+            .height(296.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, color = Grey200, RoundedCornerShape(16.dp))
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(160.dp)
+                .skeletonEffect(),
+        )
+        /* 타이틀 */
+        Box(
+            modifier = Modifier
+                .screenHorizonPadding()
+                .padding(start = 4.dp)
+                .fillMaxWidth()
+                .heightIn(min = 52.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .height(20.dp)
+                    .fillMaxWidth(0.7f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .skeletonEffect(),
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .screenHorizonPadding()
+                .height(1.dp)
+                .fillMaxWidth()
+                .border(1.dp, color = Grey200)
+        )
+        /* DetailFields */
+        Column(
+            modifier = modifier
+                .screenHorizonPadding()
+                .padding(top = 15.dp, start = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .height(18.dp)
+                    .fillMaxWidth(0.5f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .skeletonEffect()
+            )
+            Box(
+                modifier = Modifier
+                    .height(18.dp)
+                    .fillMaxWidth(0.7f)
+                    .clip(RoundedCornerShape(8.dp))
+                    .skeletonEffect()
+            )
+        }
     }
 }
 
@@ -138,14 +210,19 @@ fun ExceptionCard(
     modifier: Modifier = Modifier,
     type: CardExceptionType
 ) {
-    Column(modifier = modifier
-        .width(283.dp)
-        .height(296.dp)
-        .clip(RoundedCornerShape(16.dp))
-        .border(1.dp, color = Grey200, RoundedCornerShape(16.dp)),
+    Column(
+        modifier = modifier
+            .width(283.dp)
+            .height(296.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, color = Grey200, RoundedCornerShape(16.dp)),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
             Image(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 painter = painterResource(id = type.resId),
@@ -153,9 +230,10 @@ fun ExceptionCard(
                 contentDescription = type.name
             )
         }
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .weight(0.8f),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.8f),
             verticalArrangement = Arrangement.spacedBy(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

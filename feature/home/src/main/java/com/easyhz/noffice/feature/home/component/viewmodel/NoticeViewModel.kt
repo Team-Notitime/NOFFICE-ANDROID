@@ -40,4 +40,10 @@ class NoticeViewModel @Inject constructor(
             }
     }
 
+    fun refreshAnnouncementByOrganization(id: Int) {
+        if (_isDataLoaded[id] == false) return
+        _isDataLoaded[id] = false
+        fetchAnnouncementByOrganization(id)
+    }
+
 }
