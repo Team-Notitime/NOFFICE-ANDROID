@@ -68,7 +68,7 @@ internal fun AnnouncementCard(
 
             announcement.place.takeIf { !it.isNullOrBlank() }?.run {
                 Badge(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f, false),
                     string = this,
                     iconId = Options.PLACE.iconId
                 )
