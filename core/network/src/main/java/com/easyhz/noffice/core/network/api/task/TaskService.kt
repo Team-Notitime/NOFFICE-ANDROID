@@ -11,6 +11,6 @@ interface TaskService {
     suspend fun fetchAssignedTasks(
         @Query("page") page: Int,
         @Query("size") size: Int = 10,
-        @Query("sort") sort: List<String>
+        @Query("sort") sort: List<String>? = null
     ): PagingResult<AssignedTaskResponse>
 }

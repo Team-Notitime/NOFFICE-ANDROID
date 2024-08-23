@@ -22,7 +22,6 @@ class AssignedTaskPagingSource(
         return taskService.fetchAssignedTasks(
             page = page,
             size = loadSize,
-            sort = emptyList() /* FIXME */
         ).fold(
             onSuccess = {
                 LoadResult.Page(
