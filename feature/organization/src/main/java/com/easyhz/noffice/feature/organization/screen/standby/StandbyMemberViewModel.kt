@@ -9,8 +9,8 @@ import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.core.model.organization.param.RegisterMemberParam
-import com.easyhz.noffice.domain.organization.usecase.organization.AcceptRegisterMemberUseCase
-import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationPendingMembersUseCase
+import com.easyhz.noffice.domain.organization.usecase.member.AcceptRegisterMemberUseCase
+import com.easyhz.noffice.domain.organization.usecase.member.FetchOrganizationPendingMembersUseCase
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberIntent
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberSideEffect

@@ -107,18 +107,4 @@ class OrganizationRepositoryImpl @Inject constructor(
             return@withContext organizationService.fetchOrganizationSignUpInfo(organizationId)
                 .toResult().map { it.toModel() }
         }
-
-    override suspend fun fetchOrganizationPendingMembers(organizationId: Int): Result<List<Member>> =
-        withContext(dispatcher) {
-            return@withContext organizationService.fetchOrganizationPendingMembers(organizationId)
-                .toResult().map { it.map { item -> item.toModel() } }
-        }
-
-    override suspend fun acceptRegisterMember(param: RegisterMemberParam): Result<Unit> =
-        withContext(dispatcher) {
-            return@withContext organizationService.acceptRegisterMember(
-                organizationId = param.organizationId,
-                body = param.toRequest()
-            ).toResult()
-        }
 }
