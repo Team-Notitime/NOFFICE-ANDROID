@@ -72,7 +72,8 @@ fun AnnouncementDetailScreen(
     viewModel: AnnouncementDetailViewModel = hiltViewModel(),
     organizationId: Int,
     id: Int,
-    title: String,
+    isDeepLinkIn: Boolean,
+    navigateToHome: () -> Unit,
     navigateToUp: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -84,7 +85,7 @@ fun AnnouncementDetailScreen(
     )
 
     LaunchedEffect(Unit) {
-        viewModel.postIntent(DetailIntent.InitScreen(organizationId, id, title))
+        viewModel.postIntent(DetailIntent.InitScreen(organizationId, id))
     }
     BottomSheetScaffold(
         sheetContainerColor = White,
@@ -266,7 +267,10 @@ fun AnnouncementDetailScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when (sideEffect) {
             is DetailSideEffect.NavigateToUp -> {
-                navigateToUp()
+                when(isDeepLinkIn) {
+                    true -> navigateToHome()
+                    false -> navigateToUp()
+                }
             }
 
             is DetailSideEffect.OpenBrowser -> {

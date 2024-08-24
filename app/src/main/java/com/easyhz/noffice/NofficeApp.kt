@@ -94,7 +94,7 @@ internal fun NofficeApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = Splash,
+            startDestination = Splash(-1, -1),
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Start, tween(

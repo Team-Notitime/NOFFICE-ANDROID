@@ -40,7 +40,7 @@ class OrganizationDetailViewModel @Inject constructor(
             }
 
             is DetailIntent.ClickAnnouncement -> {
-                onClickAnnouncement(intent.id, intent.title)
+                onClickAnnouncement(intent.id)
             }
 
             is DetailIntent.NavigateToUp -> {
@@ -82,9 +82,9 @@ class OrganizationDetailViewModel @Inject constructor(
             }
     }
 
-    private fun onClickAnnouncement(id: Int, title: String) {
+    private fun onClickAnnouncement(id: Int) {
         postSideEffect {
-            DetailSideEffect.NavigateToAnnouncementDetail(currentState.organizationInformation.id, id, title)
+            DetailSideEffect.NavigateToAnnouncementDetail(currentState.organizationInformation.id, id)
         }
     }
 

@@ -40,7 +40,7 @@ fun NoticeView(
     isLoading: Boolean,
     isRefreshing: Boolean,
     onClickOrganizationHeader: (Organization) -> Unit,
-    onClickAnnouncementCard: (organizationId: Int, announcementId: Int, announcementTitle: String) -> Unit,
+    onClickAnnouncementCard: (organizationId: Int, announcementId: Int) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -62,7 +62,7 @@ fun NoticeView(
                     organization = it,
                     isRefreshing = isRefreshing,
                     onClickOrganizationHeader = { onClickOrganizationHeader(it) },
-                    onClickItemCard = { id, title -> onClickAnnouncementCard(it.id, id, title) }
+                    onClickItemCard = { id, _ -> onClickAnnouncementCard(it.id, id) }
                 )
             }
         }

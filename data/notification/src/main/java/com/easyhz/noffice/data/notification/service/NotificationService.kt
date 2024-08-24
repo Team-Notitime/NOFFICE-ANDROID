@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
+import com.easyhz.noffice.core.common.deepLink.DeepLinkPatterns
 import com.easyhz.noffice.data.notification.R
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,9 +23,8 @@ class NotificationService
         val body = message.data["body"]
         val announcementId = message.data["announcementId"]?.toIntOrNull()
         val organizationId = message.data["organizationId"]?.toIntOrNull()
-        val announcementTitle = message.data["announcementTitle"]
 
-        val pendingIntent = setIntent(announcementId = announcementId, organizationId = organizationId, announcementTitle = announcementTitle)
+        val pendingIntent = setIntent(announcementId = announcementId, organizationId = organizationId)
         val notification = NotificationCompat.Builder(context, context.getString(CHANNEL_ID))
             .setSmallIcon(R.drawable.ic_splash_logo)
             .setContentTitle(title)
@@ -37,11 +37,11 @@ class NotificationService
         notificationManager.notify(0, notification)
     }
 
-    private fun setIntent(announcementId: Int?, organizationId: Int?, announcementTitle: String?): PendingIntent? {
+    private fun setIntent(announcementId: Int?, organizationId: Int?): PendingIntent? {
         if (announcementId == null || organizationId == null) return PendingIntent.getActivity(context, 0, Intent(), PendingIntent.FLAG_IMMUTABLE)
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
-            data = "noffice://announcement?id=${announcementId}&organizationId=${organizationId}&title=${announcementTitle}".toUri()
+            data = DeepLinkPatterns.announcement(announcementId.toString(), organizationId.toString()).toUri()
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
