@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MemberManagement(
-    val organizationId: Int
+    val organizationId: Int,
+    val imageUrl: String?,
 )

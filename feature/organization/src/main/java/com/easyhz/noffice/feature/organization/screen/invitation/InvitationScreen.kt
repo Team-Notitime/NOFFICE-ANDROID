@@ -43,6 +43,7 @@ fun OrganizationInvitationScreen(
     viewModel: InvitationViewModel = hiltViewModel(),
     invitationUrl: String,
     imageUrl: String,
+    isCreation: Boolean,
     navigateToHome: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -76,8 +77,15 @@ fun OrganizationInvitationScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.organization_creation_success_title), style = Title4)
-                    Text(text = stringResource(id = R.string.organization_creation_success_sub_title), style = SubTitle1, color = Grey500)
+                    Text(
+                        text = stringResource(id = if (isCreation) R.string.organization_creation_success_title else R.string.organization_invitation_title),
+                        style = Title4
+                    )
+                    Text(
+                        text = stringResource(id = R.string.organization_creation_success_sub_title),
+                        style = SubTitle1,
+                        color = Grey500
+                    )
                 }
                 Spacer(modifier = Modifier.height(18.dp))
                 UrlView(
@@ -90,33 +98,47 @@ fun OrganizationInvitationScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }
-            Row(
-                modifier = Modifier
-                    .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
+            if (isCreation) {
+                Row(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    MediumButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(id = R.string.organization_creation_success_home_button),
+                        contentColor = Grey600,
+                        containerColor = Grey100
+                    ) {
+                        viewModel.postIntent(InvitationIntent.ClickHomeButton)
+                    }
+                    MediumButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(id = R.string.organization_creation_success_copy_button)
+                    ) {
+                        viewModel.postIntent(InvitationIntent.ClickCopyUrl)
+                    }
+                }
+            } else {
                 MediumButton(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.organization_creation_success_home_button),
-                    contentColor = Grey600,
-                    containerColor = Grey100
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.organization_management_member_authority_button)
                 ) {
                     viewModel.postIntent(InvitationIntent.ClickHomeButton)
-                }
-                MediumButton(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.organization_creation_success_copy_button)
-                ) {
-                    viewModel.postIntent(InvitationIntent.ClickCopyUrl)
                 }
             }
         }
     }
 
-    viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
-        when(sideEffect) {
-            is InvitationSideEffect.NavigateToHome -> { navigateToHome() }
-            is InvitationSideEffect.CopyUrl -> { clipboardManager.setText(AnnotatedString(sideEffect.url)) }
+    viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
+        when (sideEffect) {
+            is InvitationSideEffect.NavigateToHome -> {
+                navigateToHome()
+            }
+
+            is InvitationSideEffect.CopyUrl -> {
+                clipboardManager.setText(AnnotatedString(sideEffect.url))
+            }
         }
     }
 }
