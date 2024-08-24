@@ -33,10 +33,7 @@ internal fun NavGraphBuilder.homeGraph(
     navController: NavController,
 ) {
     composable<Splash>(
-        deepLinks = listOf(
-            NofficeDeepLink.announcement,
-            NofficeDeepLink.join
-        )
+        deepLinks = listOf(NofficeDeepLink.announcement,)
     ) {
         val args = it.toRoute<Splash>()
         val navOptions = navOptions {
