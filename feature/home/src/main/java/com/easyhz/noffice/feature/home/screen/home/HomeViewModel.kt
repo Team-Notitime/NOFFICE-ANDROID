@@ -123,7 +123,7 @@ class HomeViewModel @Inject constructor(
             }
             showSnackBar(messageResId)
         }.also {
-            DeepLinkManager.setOrganizationIdToJoin(-1)
+            DeepLinkManager.clearOrganizationIdToJoin()
             reduce { copy(isJoinLoading = false) }
         }
     }

@@ -9,4 +9,8 @@ object DeepLinkManager {
     fun setOrganizationIdToJoin(value: Int) {
         organizationIdToJoin = value
     }
+
+    fun clearOrganizationIdToJoin() {
+        organizationIdToJoin = -1
+    }
 }
