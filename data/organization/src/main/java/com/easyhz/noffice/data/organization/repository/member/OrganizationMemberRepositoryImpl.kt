@@ -29,4 +29,12 @@ class OrganizationMemberRepositoryImpl @Inject constructor(
                 body = param.toRequest()
             ).toResult()
         }
+
+    override suspend fun changeMemberRole(param: RegisterMemberParam): Result<Unit> =
+        withContext(dispatcher) {
+            return@withContext organizationMemberService.changeMemberRole(
+                organizationId = param.organizationId,
+                body = param.toRequest()
+            ).toResult()
+        }
 }
