@@ -94,7 +94,7 @@ fun StandbyMemberScreen(
             itemsIndexed(uiState.memberList, key = { _, item -> item.id }) {index, item ->
                 MemberItem(
                     modifier = Modifier.padding(vertical = 4.dp),
-                    name = item.name,
+                    name = item.alias,
                     imageUrl = item.profileImage,
                     memberType = MemberType.PARTICIPANT,
                     isChecked = item.isSelected
