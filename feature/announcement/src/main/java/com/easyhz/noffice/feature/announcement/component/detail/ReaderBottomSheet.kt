@@ -72,7 +72,7 @@ internal fun ReaderBottomSheet(
         items(currentList, key = { it.id }) {
             MemberItem(
                 modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-                name = it.name,
+                name = it.alias,
                 imageUrl = it.profileImage,
                 memberType = MemberType.PARTICIPANT,
                 isChecked = null

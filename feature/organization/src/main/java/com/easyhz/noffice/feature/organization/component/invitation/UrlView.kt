@@ -2,7 +2,7 @@ package com.easyhz.noffice.feature.organization.component.invitation
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -24,7 +24,7 @@ internal fun UrlView(
 ) {
     Box(
         modifier = modifier
-            .height(48.dp)
+            .heightIn(min = 52.dp)
             .border(width = 1.dp, color = Grey100, shape = RoundedCornerShape(8.dp))
             .padding(horizontal = 12.dp)
             .noRippleClickable { onClick() }

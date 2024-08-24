@@ -6,14 +6,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.navOptions
 import com.easyhz.noffice.core.common.manager.DeepLinkManager
 import com.easyhz.noffice.core.common.util.Encryption
 import com.easyhz.noffice.core.design_system.theme.NofficeTheme
+import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.rememberNofficeNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    var navController: NavHostController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -21,6 +25,7 @@ class MainActivity : ComponentActivity() {
         handleDeepLink(intent)
         setContent {
             val nofficeNavController = rememberNofficeNavController()
+            navController = nofficeNavController.navController
             NofficeTheme {
                 NofficeApp(nofficeNavController)
             }
@@ -33,8 +38,21 @@ class MainActivity : ComponentActivity() {
         if (data?.host != "join") return
         if (action == Intent.ACTION_VIEW) {
             val organizationId = data.getQueryParameter("organizationId") ?: return
-            val id = Encryption.decrypt(organizationId).toIntOrNull() ?: return
+            val id = Encryption.decrypt(organizationId)?.toIntOrNull() ?: return
             DeepLinkManager.setOrganizationIdToJoin(id)
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleDeepLink(intent)
+        val navOptions = navOptions {
+            navController?.graph?.id?.let {
+                popUpTo(it) {
+                    inclusive = true
+                }
+            }
+        }
+        navController?.navigateToHome(navOptions)
     }
 }

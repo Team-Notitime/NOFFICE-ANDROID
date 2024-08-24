@@ -14,6 +14,8 @@ fun <T> Response<T>.toResult(
     if (this.isSuccessful) {
         return if (body != null) {
             Result.success(body)
+        } else if (this.code() == 204) {
+            Result.failure(NofficeError.NoContent)
         } else {
             Result.failure(NofficeError.UnexpectedError)
         }

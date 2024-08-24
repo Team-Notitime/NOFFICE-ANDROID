@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.HttpError
+import com.easyhz.noffice.core.common.error.NofficeError
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.organization.member.MemberType
@@ -69,6 +70,11 @@ class StandbyMemberViewModel @Inject constructor(
             showSnackBar(R.string.organization_pending_member_success)
         }.onFailure {
             errorLogging(this.javaClass.name, "acceptRegisterMember", it)
+            if(it is NofficeError.NoContent) {
+                initScreen(param.organizationId)
+                showSnackBar(R.string.organization_pending_member_success)
+                return@onFailure
+            }
             val message = when(it) {
                 is HttpError.ForbiddenError -> R.string.organization_pending_member_forbidden
                 is HttpError.NotFoundError -> R.string.organization_pending_member_not_found

@@ -24,11 +24,20 @@ internal fun NavGraphBuilder.signGraph(
         }
         LoginScreen(
             snackBarHostState = snackBarHostState,
-            navigateToHome = { navController.navigateToHome(navOptions) }
+            navigateToHome = { navController.navigateToHome(navOptions) },
+            navigateToSignUp = navController::navigateToSignUp
         )
     }
     composable<SignUp> {
-        SignUpScreen()
+        val navOptions = navOptions {
+            popUpTo(navController.graph.startDestinationId) {
+                inclusive = true
+            }
+            launchSingleTop = true
+        }
+        SignUpScreen(
+            navigateToHome = { navController.navigateToHome(navOptions) }
+        )
     }
 }
 
@@ -40,4 +49,14 @@ internal fun NavController.navigateToLogIn() {
         launchSingleTop = true
     }
     navigate(LogIn, navOptions)
+}
+
+internal fun NavController.navigateToSignUp() {
+    val navOptions = navOptions {
+        popUpTo(this@navigateToSignUp.graph.id) {
+            inclusive = true
+        }
+        launchSingleTop = true
+    }
+    navigate(SignUp, navOptions)
 }
