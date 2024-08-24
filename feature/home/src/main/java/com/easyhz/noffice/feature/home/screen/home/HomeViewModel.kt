@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.Refresh -> { refresh() }
             is HomeIntent.SetInitLoading -> { reduce { copy(isInitLoading = false) }}
             is HomeIntent.ClickOrganizationHeader -> { navigateToOrganizationDetail(intent.organizationId, intent.organizationName) }
-            is HomeIntent.ClickAnnouncementCard -> { navigateToAnnouncementDetail(intent.organizationId, intent.announcementId, intent.announcementTitle) }
+            is HomeIntent.ClickAnnouncementCard -> { navigateToAnnouncementDetail(intent.organizationId, intent.announcementId) }
         }
     }
 
@@ -95,8 +95,8 @@ class HomeViewModel @Inject constructor(
         postSideEffect { HomeSideEffect.NavigateToOrganizationDetail(organizationId = id, organizationName = name) }
     }
 
-    private fun navigateToAnnouncementDetail(organizationId: Int, id: Int, title: String) {
-        postSideEffect { HomeSideEffect.NavigateToAnnouncementDetail(organizationId, id, title) }
+    private fun navigateToAnnouncementDetail(organizationId: Int, id: Int) {
+        postSideEffect { HomeSideEffect.NavigateToAnnouncementDetail(organizationId, id) }
     }
 
 

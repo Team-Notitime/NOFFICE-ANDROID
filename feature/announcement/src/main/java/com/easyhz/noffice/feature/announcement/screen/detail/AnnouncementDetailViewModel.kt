@@ -14,7 +14,6 @@ import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganiza
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailState
-import com.easyhz.noffice.feature.announcement.contract.detail.DetailState.Companion.updateDetailTitle
 import com.easyhz.noffice.feature.announcement.util.detail.ReaderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -34,7 +33,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     override fun handleIntent(intent: DetailIntent) {
         when (intent) {
             is DetailIntent.InitScreen -> {
-                initScreen(intent.organizationId, intent.id, intent.title)
+                initScreen(intent.organizationId, intent.id)
             }
 
             is DetailIntent.NavigateToUp -> {
@@ -77,8 +76,7 @@ class AnnouncementDetailViewModel @Inject constructor(
         }
     }
 
-    private fun initScreen(organizationId: Int, id: Int, title: String) {
-        reduce { updateDetailTitle(title = title) }
+    private fun initScreen(organizationId: Int, id: Int) {
         fetchData(organizationId, id)
     }
 

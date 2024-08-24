@@ -4,7 +4,7 @@ import com.easyhz.noffice.core.common.base.UiIntent
 import com.easyhz.noffice.feature.announcement.util.detail.ReaderType
 
 sealed class DetailIntent: UiIntent() {
-    data class InitScreen(val organizationId: Int, val id: Int, val title: String): DetailIntent()
+    data class InitScreen(val organizationId: Int, val id: Int): DetailIntent()
     data object NavigateToUp: DetailIntent()
     data object ClickPlace: DetailIntent()
     data object HideBottomSheet: DetailIntent()

@@ -48,7 +48,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     snackBarHostState: SnackbarHostState,
-    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int) -> Unit,
     navigateToOrganizationDetail: (Int, String) -> Unit,
     navigateToMyPage: () -> Unit,
     navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit
@@ -132,12 +132,11 @@ fun HomeScreen(
                                 onClickOrganizationHeader = {
                                     viewModel.postIntent(HomeIntent.ClickOrganizationHeader(it.id, it.name))
                                 },
-                                onClickAnnouncementCard = { organizationId, announcementId, announcementTitle ->
+                                onClickAnnouncementCard = { organizationId, announcementId ->
                                     viewModel.postIntent(
                                         HomeIntent.ClickAnnouncementCard(
                                             organizationId,
-                                            announcementId,
-                                            announcementTitle
+                                            announcementId
                                         )
                                     )
                                 }
@@ -178,7 +177,7 @@ fun HomeScreen(
                 navigateToOrganizationDetail(sideEffect.organizationId, sideEffect.organizationName)
             }
             is HomeSideEffect.NavigateToAnnouncementDetail -> {
-                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.announcementId, sideEffect.announcementTitle)
+                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.announcementId)
             }
             is HomeSideEffect.NavigateToOrganizationJoin -> {
                 navigateToOrganizationJoin(sideEffect.organizationSignUpInformation)

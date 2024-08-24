@@ -165,6 +165,9 @@ internal fun NavController.navigateToStandbyMember(id: Int) {
     navigate(StandbyMember(id))
 }
 
-internal fun NavController.navigateToOrganizationJoin(organizationSignUpInformation: OrganizationSignUpInformation) {
-    navigate(OrganizationJoin(organizationSignUpInformation.encode()))
+internal fun NavController.navigateToOrganizationJoin(
+    organizationSignUpInformation: OrganizationSignUpInformation,
+    navOptions: NavOptions? = null
+) {
+    navigate(OrganizationJoin(organizationSignUpInformation.encode()), navOptions)
 }

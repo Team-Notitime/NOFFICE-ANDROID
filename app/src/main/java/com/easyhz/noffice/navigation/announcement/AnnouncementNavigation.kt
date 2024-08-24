@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navDeepLink
 import androidx.navigation.navOptions
 import androidx.navigation.toRoute
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
@@ -35,17 +34,17 @@ internal fun NavGraphBuilder.announcementGraph(
     snackBarHostState: SnackbarHostState,
     navController: NavController,
 ) {
-    composable<AnnouncementDetail>(
-        deepLinks =  listOf(navDeepLink {
-            uriPattern = "noffice://announcement?id={id}&organizationId={organizationId}&title={title}"
-        })
-    ) {
+    composable<AnnouncementDetail> {
         val args = it.toRoute<AnnouncementDetail>()
+        val navOptions = navOptions {
+            popUpTo(navController.graph.id) { inclusive = true }
+        }
         AnnouncementDetailScreen(
             organizationId = args.organizationId,
             id = args.id,
-            title = args.title,
-            navigateToUp = navController::navigateUp
+            isDeepLinkIn = args.isDeepLinkIn,
+            navigateToUp = navController::navigateUp,
+            navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
     navigation<AnnouncementCreation>(
@@ -163,9 +162,8 @@ internal fun NavGraphBuilder.announcementGraph(
         SuccessScreen(
             organizationId = args.organizationId,
             id = args.announcementId,
-            title = args.title,
             navigateToHome = { navController.navigateToHome(navOptions) },
-            navigateToAnnouncementDetail = { organizationId, id, title -> navController.navigateToAnnouncementDetail(organizationId, id, title, navOptions)}
+            navigateToAnnouncementDetail = { organizationId, id -> navController.navigateToAnnouncementDetail(organizationId, id, navOptions = navOptions)}
         )
     }
 }
@@ -173,10 +171,10 @@ internal fun NavGraphBuilder.announcementGraph(
 internal fun NavController.navigateToAnnouncementDetail(
     organizationId: Int,
     id: Int,
-    title: String,
+    isDeepLinkIn: Boolean = false,
     navOptions: NavOptions? = null
 ) {
-    navigate(route = AnnouncementDetail(organizationId = organizationId, id, title), navOptions)
+    navigate(route = AnnouncementDetail(organizationId = organizationId, id = id, isDeepLinkIn = isDeepLinkIn), navOptions)
 }
 
 internal fun NavController.navigateToAnnouncementNofficeSelection() {

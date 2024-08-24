@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.deepLink.DeepLinkPatterns
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.Encryption
 import com.easyhz.noffice.core.common.util.errorLogging
@@ -274,6 +275,6 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun Int.toNofficeDeepLink(): String {
         val id = Encryption.encrypt(this.toString())
-        return "noffice://join?organizationId=$id"
+        return DeepLinkPatterns.join(id)
     }
 }
