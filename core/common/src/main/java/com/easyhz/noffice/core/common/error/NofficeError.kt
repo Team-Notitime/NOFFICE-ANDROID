@@ -12,6 +12,15 @@ sealed class NofficeError: Throwable() {
         }
     }
 
+    /* 204 에 따른 응답 */
+    data object NoContent : NofficeError() {
+        @JvmStatic
+        private fun readResolve(): Any = UnexpectedError
+        override fun printStackTrace() {
+            Log.e("AppError", "204")
+        }
+    }
+
     /* network 에러 */
     data object NetworkConnectionError : NofficeError() {
         @JvmStatic
