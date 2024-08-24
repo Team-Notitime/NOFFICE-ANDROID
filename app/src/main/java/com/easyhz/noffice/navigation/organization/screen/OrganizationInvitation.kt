@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class OrganizationInvitation(
     val invitationUrl: String,
     val imageUrl: String? = null,
+    val isCreation: Boolean = true
 )

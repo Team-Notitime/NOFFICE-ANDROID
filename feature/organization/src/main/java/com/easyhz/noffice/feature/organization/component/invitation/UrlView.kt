@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
 import com.easyhz.noffice.core.design_system.theme.Grey100
 import com.easyhz.noffice.core.design_system.theme.Grey600
@@ -35,6 +36,7 @@ internal fun UrlView(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = SubBody14,
+            lineHeight = 20.sp,
             color = Grey600
         )
     }

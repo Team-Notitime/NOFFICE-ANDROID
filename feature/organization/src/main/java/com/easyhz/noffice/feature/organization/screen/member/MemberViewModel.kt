@@ -1,6 +1,7 @@
 package com.easyhz.noffice.feature.organization.screen.member
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.deepLink.toNofficeDeepLink
 import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.contract.member.MemberIntent
 import com.easyhz.noffice.feature.organization.contract.member.MemberSideEffect
@@ -17,6 +18,7 @@ class MemberViewModel @Inject constructor(
 ) {
     override fun handleIntent(intent: MemberIntent) {
         when (intent) {
+            is MemberIntent.InitScreen -> { initScreen(intent.organizationId, intent.imageUrl) }
             is MemberIntent.ClickBackButton -> { onClickBackButton() }
             is MemberIntent.ClickLeftButton -> { onClickLeftButton() }
             is MemberIntent.ClickRightButton -> { onClickRightButton() }
@@ -27,8 +29,8 @@ class MemberViewModel @Inject constructor(
         }
     }
 
-    private fun initScreen() {
-
+    private fun initScreen(id: Int, imageUrl: String?) {
+        reduce { copy(organizationId = id, imageUrl = imageUrl) }
     }
 
     private fun onClickBackButton() {
@@ -43,7 +45,7 @@ class MemberViewModel @Inject constructor(
 
     private fun onClickLeftButton() {
         when (currentState.viewType) {
-            MemberViewType.MANAGEMENT -> { }
+            MemberViewType.MANAGEMENT -> { navigateToInvitation()  }
             MemberViewType.EDIT -> { }
             MemberViewType.STANDBY -> { }
         }
@@ -75,6 +77,11 @@ class MemberViewModel @Inject constructor(
 
     private fun completeHideBottomSheet() {
         reduce { copy(isOpenBottomSheet = false) }
+    }
+
+    private fun navigateToInvitation() {
+        val url = currentState.organizationId.toNofficeDeepLink()
+        postSideEffect { MemberSideEffect.NavigateToInitiation(url, currentState.imageUrl.toString()) }
     }
 
     private fun onClickAuthorityButton() {

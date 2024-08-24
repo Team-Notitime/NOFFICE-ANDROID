@@ -48,7 +48,7 @@ fun OrganizationManagementScreen(
     organizationInformation: OrganizationInformation,
     snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
-    navigateToMemberManagement: (Int) -> Unit
+    navigateToMemberManagement: (Int, String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -143,7 +143,7 @@ fun OrganizationManagementScreen(
             is ManagementSideEffect.NavigateToUp -> {
                 navigateToUp()
             }
-            is ManagementSideEffect.NavigateToMemberManagement -> { navigateToMemberManagement(sideEffect.id) }
+            is ManagementSideEffect.NavigateToMemberManagement -> { navigateToMemberManagement(sideEffect.id, uiState.organizationInformation.profileImageUrl) }
             is ManagementSideEffect.NavigateToCamera -> {
                 cameraLauncher.launch(sideEffect.uri)
             }

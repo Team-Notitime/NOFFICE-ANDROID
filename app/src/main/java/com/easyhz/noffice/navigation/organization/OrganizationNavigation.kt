@@ -82,7 +82,9 @@ internal fun NavGraphBuilder.organizationGraph(
         val args = it.toRoute<MemberManagement>()
         MemberScreen(
             organizationId = args.organizationId,
-            navigateToUp = navController::navigateUp
+            imageUrl = args.imageUrl,
+            navigateToUp = navController::navigateUp,
+            navigateToInvitation = navController::navigateToOrganizationInvitation
         )
     }
     composable<OrganizationCreation> {
@@ -102,6 +104,7 @@ internal fun NavGraphBuilder.organizationGraph(
         OrganizationInvitationScreen(
             invitationUrl = args.invitationUrl,
             imageUrl = args.imageUrl ?: "",
+            isCreation = args.isCreation,
             navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
@@ -143,8 +146,8 @@ internal fun NavController.navigateToOrganizationManagement(
     navigate(OrganizationManagement(organizationInformation = information.encode()))
 }
 
-internal fun NavController.navigateToMemberManagement(id: Int) {
-    navigate(MemberManagement(id))
+internal fun NavController.navigateToMemberManagement(id: Int, imageUrl: String?) {
+    navigate(MemberManagement(id, imageUrl))
 }
 
 internal fun NavController.navigateToOrganizationCreation() {
@@ -153,12 +156,13 @@ internal fun NavController.navigateToOrganizationCreation() {
 
 internal fun NavController.navigateToOrganizationInvitation(
     invitationUrl: String,
-    imageUrl: String?
+    imageUrl: String?,
+    isCreation: Boolean = true,
 ) {
     val navOptions = navOptions {
         popUpTo(OrganizationCreation) { inclusive = true }
     }
-    navigate(OrganizationInvitation(invitationUrl = invitationUrl, imageUrl = imageUrl), navOptions)
+    navigate(OrganizationInvitation(invitationUrl = invitationUrl, imageUrl = imageUrl, isCreation = isCreation), navOptions)
 }
 
 internal fun NavController.navigateToStandbyMember(id: Int) {
