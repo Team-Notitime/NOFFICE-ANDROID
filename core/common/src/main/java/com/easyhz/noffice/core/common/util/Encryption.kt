@@ -13,7 +13,7 @@ object Encryption {
         val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
         val encryptedBytes = cipher.doFinal(text.toByteArray(Charsets.UTF_8))
-        return Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
+        return Base64.encodeToString(encryptedBytes, Base64.URL_SAFE)
     }
 
     fun decrypt(encryptedText: String): String {
