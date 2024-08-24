@@ -26,6 +26,7 @@ import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaf
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
+import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.sign.component.signUp.NameView
 import com.easyhz.noffice.feature.sign.component.signUp.TermsView
@@ -35,7 +36,8 @@ import com.easyhz.noffice.feature.sign.util.signUp.SignUpStep
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    navigateToHome: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -45,6 +47,7 @@ fun SignUpScreen(
     })
 
     NofficeBasicScaffold(
+        statusBarColor = White,
         topBar = {
             DetailTopBar(
                 leadingItem = DetailTopBarMenu(
@@ -92,6 +95,7 @@ fun SignUpScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
         when(sideEffect) {
             is SignUpSideEffect.ClearFocus -> { focusManager.clearFocus() }
+            is SignUpSideEffect.NavigateToHome -> { navigateToHome() }
         }
     }
 }

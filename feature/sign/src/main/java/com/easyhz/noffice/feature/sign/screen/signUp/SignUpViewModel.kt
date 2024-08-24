@@ -37,7 +37,7 @@ class SignUpViewModel @Inject constructor(
         currentState.step.currentStep.nextStep()?.let { nextStep ->
             reduce { updateStep(currentStep = nextStep) }
         } ?: run {
-          /* TODO NEXT */
+           postSideEffect { SignUpSideEffect.NavigateToHome }
         }
     }
 
