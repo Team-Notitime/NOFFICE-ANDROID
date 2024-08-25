@@ -20,14 +20,16 @@ import javax.inject.Inject
 class TaskViewModel @Inject constructor(
     private val fetchAssignedTasksUseCase: FetchAssignedTasksUseCase
 ): BaseViewModel<TaskState, TaskIntent, TaskSideEffect>(
-    initialState = TaskState
+    initialState = TaskState.init()
 ) {
     private val _taskListState: MutableStateFlow<PagingData<AssignedTask>> =
         MutableStateFlow(value = PagingData.empty())
     val taskListState: MutableStateFlow<PagingData<AssignedTask>>
         get() = _taskListState
     override fun handleIntent(intent: TaskIntent) {
-        TODO("Not yet implemented")
+        when(intent) {
+            is TaskIntent.Refresh -> { refresh() }
+        }
     }
 
     init {
@@ -41,5 +43,11 @@ class TaskViewModel @Inject constructor(
             .collectLatest { pagingData ->
                 _taskListState.value = pagingData
             }
+    }
+
+    private fun refresh() {
+        reduce { copy(isRefreshing = true) }
+        postSideEffect { TaskSideEffect.Refresh }
+        reduce { copy(isRefreshing = false) }
     }
 }
