@@ -4,11 +4,13 @@ import androidx.annotation.DrawableRes
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
+import com.easyhz.noffice.core.model.organization.CoverImage
 
 data class PromotionState(
     val announcementParam: AnnouncementParam?,
-    val selectCard: CardImage,
-    val bottomSheetSelectCard: CardImage,
+    val coverList: List<CoverImage>,
+    val selectCardIndex: Int,
+    val bottomSheetSelectCardIndex: Int,
     val isShowPromotionBottomSheet: Boolean,
     val hasPromotion: Boolean,
     val isLoading: Boolean
@@ -16,11 +18,12 @@ data class PromotionState(
     companion object {
         fun init() = PromotionState(
             announcementParam = null,
-            selectCard = CardImage.CARD1,
-            bottomSheetSelectCard = CardImage.CARD1,
+            coverList = emptyList(),
+            selectCardIndex = 0,
+            bottomSheetSelectCardIndex = 0,
             isShowPromotionBottomSheet = false,
             hasPromotion = false,
-            isLoading = false
+            isLoading = true
         )
     }
 }
