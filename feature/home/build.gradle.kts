@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.common)
     implementation(projects.domain.home)
+    implementation(projects.domain.announcement)
     implementation(projects.domain.notification)
     implementation(projects.domain.organization)
 
