@@ -55,12 +55,13 @@ internal fun TaskView(
 
     Box(modifier = modifier.pullRefresh(pullRefreshState)) {
         LazyColumn(
-            contentPadding = PaddingValues(top = 28.dp, bottom = 48.dp),
-            verticalArrangement = Arrangement.spacedBy(28.dp)
+            contentPadding = PaddingValues(bottom = 28.dp),
         ) {
             items(taskList.itemCount) { index ->
                 taskList[index]?.let { item ->
+                    if(item.tasks.isEmpty()) return@items
                     Column(
+                        modifier = Modifier.padding(vertical = 14.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         OrganizationTaskHeader(
@@ -74,7 +75,7 @@ internal fun TaskView(
                                     .background(White),
                                 text = task.content, isComplete = task.isDone
                             ) {
-
+                                viewModel.postIntent(TaskIntent.UpdateTaskStatus(task))
                             }
                         }
     //                    if(item.tasks.isEmpty()) {
