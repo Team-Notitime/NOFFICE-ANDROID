@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.organization.screen.member
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.deepLink.toNofficeDeepLink
@@ -30,6 +31,7 @@ class MemberViewModel @Inject constructor(
             is MemberIntent.CompleteHideBottomSheet -> { completeHideBottomSheet() }
             is MemberIntent.ClickAuthorityMemberType -> { onClickAuthorityMemberType(intent.type) }
             is MemberIntent.ClickAuthorityButton -> { onClickAuthorityButton() }
+            is MemberIntent.ClickMember -> { onClickMember(intent.index) }
         }
     }
 
@@ -40,7 +42,7 @@ class MemberViewModel @Inject constructor(
 
     private fun fetchOrganizationMembers(id:Int) = viewModelScope.launch {
         fetchOrganizationMembersUseCase.invoke(id).onSuccess {
-            reduce { copy(memberList = it) }
+            reduce { copy(memberList = mutableStateListOf(*it.toTypedArray())) }
         }.onFailure {
             errorLogging(this.javaClass.name, "fetchOrganizationMembers", it)
         }.also {
@@ -76,6 +78,10 @@ class MemberViewModel @Inject constructor(
             }
             MemberViewType.STANDBY -> { }
         }
+    }
+
+    private fun onClickMember(index: Int) {
+        currentState.memberList[index] = currentState.memberList[index].copy(isSelected = !currentState.memberList[index].isSelected)
     }
 
     private fun navigateToUp() {

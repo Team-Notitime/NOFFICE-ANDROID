@@ -12,4 +12,5 @@ sealed class MemberIntent: UiIntent() {
     data object CompleteHideBottomSheet: MemberIntent()
     data class ClickAuthorityMemberType(val type: MemberType): MemberIntent()
     data object ClickAuthorityButton: MemberIntent()
+    data class ClickMember(val index: Int): MemberIntent()
 }

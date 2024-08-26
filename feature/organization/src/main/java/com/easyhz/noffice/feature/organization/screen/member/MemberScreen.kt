@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -61,7 +61,7 @@ fun MemberScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val clipboardManager = LocalClipboardManager.current
 
-    val isEditMode = remember(uiState) { uiState.viewType == MemberViewType.EDIT }
+    val isEditMode = remember(uiState.viewType) { uiState.viewType == MemberViewType.EDIT }
     LaunchedEffect(key1 = Unit) {
         viewModel.postIntent(MemberIntent.InitScreen(organizationId, imageUrl))
     }
@@ -137,14 +137,12 @@ fun MemberScreen(
                     .padding(paddingValues)
                     .screenHorizonPadding(),
             ) {
-                items(uiState.memberList) {
+                itemsIndexed(uiState.memberList, key = { _, item -> item.id }) { index, item ->
                     MemberItem(
                         modifier = Modifier.padding(vertical = 4.dp),
-                        name = it.alias,
-                        imageUrl = it.profileImage,
-                        memberType = it.role,
-                        isChecked = if (isEditMode) false else null
-                    )
+                        member = item,
+                        isEditMode = isEditMode,
+                    ) { viewModel.postIntent(MemberIntent.ClickMember(index)) }
                 }
             }
             if (uiState.isOpenBottomSheet) {

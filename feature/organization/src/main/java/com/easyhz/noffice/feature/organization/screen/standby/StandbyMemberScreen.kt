@@ -26,7 +26,6 @@ import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
-import com.easyhz.noffice.core.model.organization.member.MemberType
 import com.easyhz.noffice.feature.organization.component.member.MemberBottomBar
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberIntent
 import com.easyhz.noffice.feature.organization.contract.standby.StandbyMemberSideEffect
@@ -94,10 +93,8 @@ fun StandbyMemberScreen(
             itemsIndexed(uiState.memberList, key = { _, item -> item.id }) {index, item ->
                 MemberItem(
                     modifier = Modifier.padding(vertical = 4.dp),
-                    name = item.alias,
-                    imageUrl = item.profileImage,
-                    memberType = MemberType.PARTICIPANT,
-                    isChecked = item.isSelected
+                    member = item,
+                    isEditMode = true
                 ) {
                     viewModel.postIntent(StandbyMemberIntent.ClickMember(index))
                 }
