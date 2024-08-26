@@ -6,8 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.bottomSheet.BottomSheet
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
+import com.easyhz.noffice.core.design_system.component.image.AnnouncementImage
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
 import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey800
@@ -38,7 +38,8 @@ import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.SemiBold18
 import com.easyhz.noffice.core.design_system.theme.SubBody12
 import com.easyhz.noffice.core.design_system.theme.White
-import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardImage
+import com.easyhz.noffice.core.model.image.ImagePurpose
+import com.easyhz.noffice.core.model.organization.CoverImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,10 +47,11 @@ internal fun PromotionBottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState,
     hasPromotion: Boolean,
-    selectedCard: CardImage,
+    selectedCard: Int,
+    coverImages: List<CoverImage>,
     onDismissRequest: () -> Unit,
     onClickJoinPromotion: () -> Unit,
-    onClickItem: (CardImage) -> Unit,
+    onClickItem: (Int) -> Unit,
     onClickButton: () -> Unit
 ) {
     BottomSheet(
@@ -66,18 +68,18 @@ internal fun PromotionBottomSheet(
         ) {
             Card(
                 cardTitle = stringResource(id = R.string.announcement_creation_option_promotion_basic_title),
-                selectedCard = selectedCard,
+                selectedCard = coverImages[selectedCard],
                 hasPromotion = true,
-                cardItems = CardImage.entries.filter { !it.isPromotion },
+                cardItems = coverImages.filter { it.type != ImagePurpose.PROMOTION_COVER },
                 onClickJoinPromotion = onClickJoinPromotion
-            ) { onClickItem(it) }
+            ) { onClickItem(coverImages.indexOf(it)) }
             Card(
                 cardTitle = stringResource(id = R.string.announcement_creation_option_promotion_promotion_title),
-                selectedCard = selectedCard,
+                selectedCard = coverImages[selectedCard],
                 hasPromotion = hasPromotion,
-                cardItems = CardImage.entries.filter { it.isPromotion },
+                cardItems = coverImages.filter { it.type == ImagePurpose.PROMOTION_COVER },
                 onClickJoinPromotion = onClickJoinPromotion
-            ) { onClickItem(it) }
+            ) { onClickItem(coverImages.indexOf(it)) }
             MediumButton(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
                 text = stringResource(id = R.string.announcement_creation_option_promotion_select_button),
@@ -93,11 +95,11 @@ internal fun PromotionBottomSheet(
 private fun Card(
     modifier: Modifier = Modifier,
     cardTitle: String,
-    selectedCard: CardImage,
+    selectedCard: CoverImage,
     hasPromotion: Boolean,
-    cardItems: List<CardImage>,
+    cardItems: List<CoverImage>,
     onClickJoinPromotion: () -> Unit,
-    onClick: (CardImage) -> Unit,
+    onClick: (CoverImage) -> Unit,
 ) {
     Column {
         Text(
@@ -152,13 +154,11 @@ private fun Card(
                             .clip(RoundedCornerShape(8.dp)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Image(
+                        AnnouncementImage(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .heightIn(max = 100.dp)
                                 .clip(RoundedCornerShape(8.dp)),
-                            painter = painterResource(id = cardImage.imageId),
-                            contentDescription = cardImage.imageId.toString(),
-                            contentScale = ContentScale.Crop,
+                            imageUrl = cardImage.url
                         )
                         androidx.compose.animation.AnimatedVisibility(
                             visible = selectedCard == cardImage,
@@ -181,9 +181,14 @@ private fun Card(
 private fun CardPrev() {
     Card(
         cardTitle = stringResource(id = R.string.announcement_creation_option_promotion_promotion_title),
-        selectedCard = CardImage.CARD1,
+        selectedCard = CoverImage(1, ImagePurpose.PROMOTION_COVER, ""),
         hasPromotion = true,
-        cardItems = CardImage.entries.filter { !it.isPromotion },
+        cardItems = listOf(
+            CoverImage(1, ImagePurpose.PROMOTION_COVER, ""),
+            CoverImage(2, ImagePurpose.PROMOTION_COVER, ""),
+            CoverImage(3, ImagePurpose.PROMOTION_COVER, ""),
+            CoverImage(4, ImagePurpose.PROMOTION_COVER, "")
+        ),
         onClickJoinPromotion = { }
     ) { }
 }

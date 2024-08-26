@@ -1,7 +1,6 @@
 package com.easyhz.noffice.feature.announcement.screen.creation.promotion
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,10 +10,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
+import com.easyhz.noffice.core.design_system.component.image.AnnouncementImage
 import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
@@ -47,10 +47,10 @@ import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.announcement.param.AnnouncementParam
+import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.feature.announcement.component.creation.CreationTitle
 import com.easyhz.noffice.feature.announcement.component.creation.promotion.PromotionBottomSheet
 import com.easyhz.noffice.feature.announcement.component.creation.promotion.PromotionCard
-import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardImage
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionSideEffect
 
@@ -123,13 +123,13 @@ fun PromotionScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         contentPadding = PaddingValues(start = 16.dp, end = 44.dp)
                     ) {
-                        items(CardImage.entries) {
+                        itemsIndexed(uiState.coverList) {index, item ->
                             PromotionCard(
-                                isSelected = uiState.selectCard == it,
-                                hasPromotion = uiState.hasPromotion,
-                                cardImage = it
+                                isSelected = uiState.selectCardIndex == index,
+                                isPromotion = !uiState.hasPromotion && item.type == ImagePurpose.PROMOTION_COVER ,
+                                cardImage = item
                             ) {
-                                viewModel.postIntent(PromotionIntent.ClickPromotionCard(it))
+                                viewModel.postIntent(PromotionIntent.ClickPromotionCard(index))
                             }
                         }
                     }
@@ -160,24 +160,24 @@ fun PromotionScreen(
                 }
                 Crossfade(
                     modifier = Modifier.padding(vertical = 12.dp),
-                    targetState = uiState.selectCard,
+                    targetState = uiState.selectCardIndex,
                     label = "Check"
                 ) { selectedCard ->
-                    Image(
+                    AnnouncementImage(
                         modifier = Modifier
                             .screenHorizonPadding()
                             .fillMaxWidth()
+                            .heightIn(max = 200.dp)
                             .clip(RoundedCornerShape(16.dp)),
-                        painter = painterResource(id = selectedCard.imageId),
-                        contentDescription = selectedCard.imageId.toString(),
-                        contentScale = ContentScale.Crop,
+                        imageUrl = uiState.coverList.getOrNull(selectedCard)?.url ?: "",
                     )
                 }
             }
             if(uiState.isShowPromotionBottomSheet) {
                 PromotionBottomSheet(
                     sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-                    selectedCard = uiState.bottomSheetSelectCard,
+                    selectedCard = uiState.bottomSheetSelectCardIndex,
+                    coverImages = uiState.coverList,
                     hasPromotion = uiState.hasPromotion,
                     onDismissRequest = { viewModel.postIntent(PromotionIntent.HideUserNameBottomSheet) },
                     onClickJoinPromotion = { /* FIXME */ },
