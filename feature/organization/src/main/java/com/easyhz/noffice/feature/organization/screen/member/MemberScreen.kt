@@ -4,14 +4,18 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -21,25 +25,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
+import com.easyhz.noffice.core.design_system.component.dialog.MainDialog
 import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.member.MemberItem
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
 import com.easyhz.noffice.core.design_system.extension.screenHorizonPadding
+import com.easyhz.noffice.core.design_system.theme.CardExceptionSubTitle
+import com.easyhz.noffice.core.design_system.theme.CardExceptionTitle
 import com.easyhz.noffice.core.design_system.theme.Green700
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey600
+import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.SemiBold16
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.theme.semiBold
+import com.easyhz.noffice.core.design_system.util.dialog.InputDialogButton
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.organization.component.member.AuthorityBottomSheet
 import com.easyhz.noffice.feature.organization.component.member.MemberBottomBar
@@ -52,6 +63,7 @@ import com.easyhz.noffice.feature.organization.util.member.MemberViewType
 fun MemberScreen(
     modifier: Modifier = Modifier,
     viewModel: MemberViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     organizationId: Int,
     imageUrl: String?,
     navigateToUp: () -> Unit,
@@ -60,7 +72,7 @@ fun MemberScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val clipboardManager = LocalClipboardManager.current
-
+    val context = LocalContext.current
     val isEditMode = remember(uiState.viewType) { uiState.viewType == MemberViewType.EDIT }
     LaunchedEffect(key1 = Unit) {
         viewModel.postIntent(MemberIntent.InitScreen(organizationId, imageUrl))
@@ -104,7 +116,7 @@ fun MemberScreen(
                                 )
                             }
                         },
-                        onClick = { /* 저장 */ }
+                        onClick = { viewModel.postIntent(MemberIntent.ClickSaveButton) }
                     ),
                 )
             },
@@ -141,7 +153,7 @@ fun MemberScreen(
                     MemberItem(
                         modifier = Modifier.padding(vertical = 4.dp),
                         member = item,
-                        isEditMode = isEditMode,
+                        isEditMode = if(index == 0) false else isEditMode,
                     ) { viewModel.postIntent(MemberIntent.ClickMember(index)) }
                 }
             }
@@ -160,6 +172,38 @@ fun MemberScreen(
                     }
                 ) {
                     viewModel.postIntent(MemberIntent.ClickAuthorityButton)
+                }
+            }
+        }
+        if (uiState.isShowDialog) {
+            MainDialog(
+                negativeButton = InputDialogButton(
+                    stringResource(id = R.string.organization_management_member_dialog_negative_button)
+                ) { viewModel.postIntent(MemberIntent.ClickDialogNegativeButton) },
+                positiveButton = InputDialogButton(
+                    stringResource(id = R.string.organization_management_member_dialog_positive_button)
+                ) { viewModel.postIntent(MemberIntent.ClickSaveButton) }
+            ) {
+                Column(
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = stringResource(id = R.string.organization_management_member_dialog_title),
+                        style = CardExceptionTitle,
+                        fontSize = 18.sp,
+                        color = Grey800
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = stringResource(id = R.string.organization_management_member_dialog_content),
+                        style = CardExceptionSubTitle,
+                        fontSize = 14.sp,
+                    )
                 }
             }
         }
@@ -183,6 +227,12 @@ fun MemberScreen(
             is MemberSideEffect.HideBottomSheet -> {
                 sheetState.hide()
                 viewModel.postIntent(MemberIntent.CompleteHideBottomSheet)
+            }
+            is MemberSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    actionLabel = null
+                )
             }
         }
     }

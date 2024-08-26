@@ -14,7 +14,8 @@ data class MemberState(
     val viewType: MemberViewType,
     val isOpenBottomSheet: Boolean,
     val authorityType: MemberType,
-    val isLoading: Boolean
+    val isLoading: Boolean,
+    val isShowDialog: Boolean,
 ): UiState() {
     companion object {
         fun init() = MemberState(
@@ -24,7 +25,8 @@ data class MemberState(
             viewType = MemberViewType.MANAGEMENT,
             isOpenBottomSheet = false,
             authorityType = MemberType.LEADER,
-            isLoading = true
+            isLoading = true,
+            isShowDialog = false
         )
     }
 }
