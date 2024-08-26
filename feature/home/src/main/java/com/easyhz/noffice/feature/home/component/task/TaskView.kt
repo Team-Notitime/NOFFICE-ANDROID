@@ -29,6 +29,8 @@ import com.easyhz.noffice.core.design_system.component.exception.ExceptionView
 import com.easyhz.noffice.core.design_system.theme.Green500
 import com.easyhz.noffice.core.design_system.theme.White
 import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
+import com.easyhz.noffice.core.model.task.AssignedTask
+import com.easyhz.noffice.core.model.task.Task
 import com.easyhz.noffice.feature.home.component.common.OrganizationTaskHeader
 import com.easyhz.noffice.feature.home.component.viewmodel.TaskViewModel
 import com.easyhz.noffice.feature.home.contract.task.TaskIntent
@@ -60,30 +62,11 @@ internal fun TaskView(
             items(taskList.itemCount) { index ->
                 taskList[index]?.let { item ->
                     if(item.tasks.isEmpty()) return@items
-                    Column(
-                        modifier = Modifier.padding(vertical = 14.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        OrganizationTaskHeader(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            organizationName = item.organizationName
-                        ) { onClickOrganizationHeader(item.organizationId, item.organizationName) }
-                        item.tasks.forEach { task ->
-                            TaskItem(
-                                modifier = Modifier
-                                    .background(White),
-                                text = task.content, isComplete = task.isDone
-                            ) {
-                                viewModel.postIntent(TaskIntent.UpdateTaskStatus(task))
-                            }
-                        }
-    //                    if(item.tasks.isEmpty()) {
-    //                        ExceptionView(
-    //                            modifier = Modifier.height(300.dp).fillMaxWidth(),
-    //                            type = ExceptionType.NO_TASK
-    //                        )
-    //                    }
+                    TaskContent(
+                        item = item,
+                        onClickOrganizationHeader = onClickOrganizationHeader
+                    ) { task ->
+                        viewModel.postIntent(TaskIntent.UpdateTaskStatus(task))
                     }
                 }
             }
@@ -105,11 +88,45 @@ internal fun TaskView(
             type = ExceptionType.NO_ORGANIZATION
         )
     }
+    if (taskList.itemSnapshotList.items.all { it.tasks.isEmpty() }) {
+        ExceptionView(
+            modifier = Modifier
+                .fillMaxSize(),
+            type = ExceptionType.NO_TASK
+        )
+    }
 
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
             is TaskSideEffect.Refresh -> {
                 taskList.refresh()
+            }
+        }
+    }
+}
+
+@Composable
+private fun TaskContent(
+    item: AssignedTask,
+    onClickOrganizationHeader: (organizationId: Int, organizationTitle: String) -> Unit,
+    onClickTask: (Task) -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        OrganizationTaskHeader(
+            modifier = Modifier
+                .fillMaxWidth(),
+            organizationName = item.organizationName
+        ) { onClickOrganizationHeader(item.organizationId, item.organizationName) }
+        item.tasks.forEach { task ->
+            TaskItem(
+                modifier = Modifier
+                    .background(White),
+                text = task.content, isComplete = task.isDone
+            ) {
+                onClickTask(task)
             }
         }
     }
