@@ -51,6 +51,7 @@ class PromotionViewModel @Inject constructor(
         }.onFailure {
             showSnackBar(it.handleError())
             reduce { copy(isLoading = false) }
+            errorLogging(this.javaClass.name, "fetchSelectableCover", it)
         }
     }
 
@@ -101,6 +102,7 @@ class PromotionViewModel @Inject constructor(
             postSideEffect { PromotionSideEffect.NavigateToSuccess(it.organizationId, it.announcementId, it.title) }
         }.onFailure {
             showSnackBar(it.handleError())
+            errorLogging(this.javaClass.name, "saveButton", it)
         }.also {
             setIsLoading(false)
         }
