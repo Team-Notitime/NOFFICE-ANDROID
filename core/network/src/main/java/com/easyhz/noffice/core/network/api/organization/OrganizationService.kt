@@ -9,6 +9,7 @@ import com.easyhz.noffice.core.network.model.response.organization.OrganizationI
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationJoinResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationResponse
 import com.easyhz.noffice.core.network.model.response.organization.OrganizationSignUpInformationResponse
+import com.easyhz.noffice.core.network.model.response.organization.SelectableCoverResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import com.easyhz.noffice.core.network.util.PagingResult
 import retrofit2.http.Body
@@ -67,4 +68,10 @@ interface OrganizationService {
     suspend fun fetchOrganizationSignUpInfo(
         @Path("organizationId") organizationId: Int
     ): NofficeResult<OrganizationSignUpInformationResponse>
+
+    /* 조직이 선택할 수 있는 커버 조회 */
+    @GET("/api/v1/organizations/{organizationId}/selectable-cover")
+    suspend fun fetchSelectableCover(
+        @Path("organizationId") organizationId: Int
+    ): NofficeResult<SelectableCoverResponse>
 }

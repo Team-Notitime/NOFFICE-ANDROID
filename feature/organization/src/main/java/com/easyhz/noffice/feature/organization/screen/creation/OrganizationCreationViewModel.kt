@@ -18,11 +18,14 @@ import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUs
 import com.easyhz.noffice.domain.organization.usecase.creation.CreateOrganizationUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
+import com.easyhz.noffice.domain.organization.usecase.promotion.VerifyPromotionUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState
 import com.easyhz.noffice.feature.organization.contract.creation.CreationState.Companion.ORGANIZATION_NAME_MAX
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -32,11 +35,13 @@ class OrganizationCreationViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
     private val createOrganizationUseCase: CreateOrganizationUseCase,
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
-    private val uploadImageUseCase: UploadImageUseCase
+    private val uploadImageUseCase: UploadImageUseCase,
+    private val verifyPromotionUseCase: VerifyPromotionUseCase
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
     private var takePictureUri = mutableStateOf(Uri.EMPTY)
+    private var debounceJob: Job? = null
 
     override fun handleIntent(intent: CreationIntent) {
         when (intent) {
@@ -73,7 +78,7 @@ class OrganizationCreationViewModel @Inject constructor(
             }
 
             is CreationIntent.HideImageBottomSheet -> {
-                hideImageBottomSheet()
+                setImageBottomSheet(false)
             }
 
             is CreationIntent.PickImage -> {
@@ -142,7 +147,7 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onClickImageView() {
-        showImageBottomSheet()
+        setImageBottomSheet(true)
     }
 
     private fun onClickImageBottomSheetItem(item: ImageSelectionBottomSheetItem) {
@@ -190,22 +195,72 @@ class OrganizationCreationViewModel @Inject constructor(
 
     private fun onChangePromotionTextValue(newText: String) {
         reduce { copy(promotionCode = newText) }
+
+        debounceJob?.cancel()
+        if (newText.isBlank()) {
+            setEnabledStepButton()
+        } else {
+            handlePromotionCodeVerification()
+        }
+    }
+
+    private fun handlePromotionCodeVerification() {
+        reduce {
+            copy(
+                enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, false),
+                isLoadingPromotionVerification = true
+            )
+        }
+        debounceJob = viewModelScope.launch {
+            delay(1500)
+            verifyPromotionCode()
+        }
+    }
+
+    private suspend fun verifyPromotionCode() {
+        if (currentState.promotionCode.isBlank()) {
+            reduce { copy(isPromotionCodeValid = true) }
+            return
+        }
+
+        verifyPromotionUseCase.invoke(currentState.promotionCode).onSuccess { isValid ->
+            handleVerificationSuccess(isValid)
+        }.onFailure { throwable ->
+            handleVerificationFailure(throwable)
+        }
+    }
+
+    private fun handleVerificationSuccess(isValid: Boolean) {
+        reduce {
+            copy(
+                isPromotionCodeValid = isValid,
+                enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, true),
+                isLoadingPromotionVerification = false
+            )
+        }
+    }
+
+    private fun handleVerificationFailure(throwable: Throwable) {
+        errorLogging(this.javaClass.name, "verifyPromotionCode", throwable)
+        reduce {
+            copy(
+                isLoadingPromotionVerification = false,
+                isPromotionCodeValid = false
+            )
+        }
     }
 
     private fun onClearPromotionCode() {
         reduce { copy(promotionCode = "") }
+        setEnabledStepButton()
     }
 
     private fun onNavigateToUp() {
         postSideEffect { CreationSideEffect.NavigateToUp }
     }
 
-    private fun showImageBottomSheet() {
-        reduce { copy(isShowImageBottomSheet = true) }
-    }
-
-    private fun hideImageBottomSheet() {
-        reduce { copy(isShowImageBottomSheet = false) }
+    private fun setImageBottomSheet(value: Boolean) {
+        reduce { copy(isShowImageBottomSheet = value) }
     }
 
     private fun fetchCategories() = viewModelScope.launch {
@@ -260,6 +315,10 @@ class OrganizationCreationViewModel @Inject constructor(
                 organization.profileImageUrl
             )
         }
+    }
+
+    private fun setEnabledStepButton() {
+        reduce { copy(enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, true)) }
     }
 
     private fun setIsLoading(isLoading: Boolean) {

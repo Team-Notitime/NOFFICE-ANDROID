@@ -15,6 +15,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
 import com.easyhz.noffice.core.design_system.component.textField.MainTextField
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
+import com.easyhz.noffice.feature.organization.component.PromotionCaption
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.screen.creation.OrganizationCreationViewModel
 import com.easyhz.noffice.feature.organization.util.creation.CreationStep
@@ -46,6 +47,12 @@ internal fun PromotionView(
             singleLine = true,
             onClickIcon =  { viewModel.postIntent(CreationIntent.ClearPromotionCode) }
         )
+        if (uiState.promotionCode.isNotBlank()) {
+            PromotionCaption(
+                isLoading = uiState.isLoadingPromotionVerification,
+                isValid = uiState.isPromotionCodeValid
+            )
+        }
         Spacer(modifier = Modifier
             .fillMaxWidth()
             .weight(1f)

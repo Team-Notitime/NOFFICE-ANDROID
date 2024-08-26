@@ -71,6 +71,9 @@
     <string name="organization_creation_end_date_null_caption">활동을 종료할 예정된 날짜가 없어요.</string>
     <string name="organization_creation_promotion_title">프로모션 코드를 입력해 주세요</string>
     <string name="organization_creation_promotion_placeholder">코드를 입력해 주세요.</string>
+    <string name="organization_creation_promotion_caption_valid">유효한 프로모션 코드입니다.</string>
+    <string name="organization_creation_promotion_caption_invalid">유효하지 않은 프로모션 코드입니다.</string>
+    <string name="organization_creation_promotion_caption_loading">프로모션 코드를 확인 중입니다.</string>
 
     <string name="organization_creation_success_title">그룹을 만들었어요!</string>
     <string name="organization_invitation_title">링크를 복사했습니다!</string>
