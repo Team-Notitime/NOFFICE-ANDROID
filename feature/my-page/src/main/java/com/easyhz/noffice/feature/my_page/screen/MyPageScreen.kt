@@ -44,6 +44,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey800
 import com.easyhz.noffice.core.design_system.theme.InputDialogTitle
 import com.easyhz.noffice.core.design_system.util.dialog.InputDialogButton
+import com.easyhz.noffice.core.design_system.util.terms.TermsType
 import com.easyhz.noffice.core.design_system.util.textField.TextFieldIcon
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.feature.my_page.component.ProfileField
@@ -61,6 +62,7 @@ fun MyPageScreen(
     viewModel: MyPageViewModel = hiltViewModel(),
     menuViewModel: MyPageMenuViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
+    navigateToTerms: (TermsType) -> Unit,
     navigateToNotice: () -> Unit,
     navigateToConsent: () -> Unit,
     navigateToWithdrawal: () -> Unit,
@@ -213,8 +215,8 @@ fun MyPageScreen(
     menuViewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
             is MenuSideEffect.NavigateToNotice -> { navigateToNotice() }
-            is MenuSideEffect.NavigateToServiceOfTerms -> { }
-            is MenuSideEffect.NavigateToPrivacyPolicy -> { }
+            is MenuSideEffect.NavigateToServiceOfTerms -> { navigateToTerms(TermsType.SERVICE_OF_TERMS) }
+            is MenuSideEffect.NavigateToPrivacyPolicy -> { navigateToTerms(TermsType.PRIVACY_POLICY) }
             is MenuSideEffect.NavigateToConsentToInformation -> { navigateToConsent() }
             is MenuSideEffect.NavigateToWithdrawal -> { navigateToWithdrawal() }
         }
