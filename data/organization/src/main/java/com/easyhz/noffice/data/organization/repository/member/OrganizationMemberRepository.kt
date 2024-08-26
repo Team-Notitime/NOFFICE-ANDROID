@@ -7,4 +7,5 @@ interface OrganizationMemberRepository {
     suspend fun fetchOrganizationPendingMembers(organizationId: Int): Result<List<Member>>
     suspend fun acceptRegisterMember(param: RegisterMemberParam): Result<Unit>
     suspend fun changeMemberRole(param: RegisterMemberParam): Result<Unit>
+    suspend fun fetchOrganizationMembers(organizationId: Int): Result<List<Member>>
 }
