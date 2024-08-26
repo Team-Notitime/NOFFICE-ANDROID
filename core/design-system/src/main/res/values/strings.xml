@@ -168,6 +168,7 @@
     <string name="organization_management_member_management_title">그룹원 관리</string>
     <string name="organization_management_member_management_left_button">멤버 추가하기</string>
     <string name="organization_management_member_management_right_button">권한 설정</string>
+    <string name="organization_management_member_empty">조직원을 찾지 못했어요.</string>
     <string name="organization_management_member_edit_title">권한 설정</string>
     <string name="organization_management_member_edit_left_button">내보내기</string>
     <string name="organization_management_member_edit_right_button">권한 변경하기</string>

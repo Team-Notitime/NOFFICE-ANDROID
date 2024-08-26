@@ -1,18 +1,22 @@
 package com.easyhz.noffice.feature.organization.screen.member
 
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.deepLink.toNofficeDeepLink
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.organization.member.MemberType
+import com.easyhz.noffice.domain.organization.usecase.member.FetchOrganizationMembersUseCase
 import com.easyhz.noffice.feature.organization.contract.member.MemberIntent
 import com.easyhz.noffice.feature.organization.contract.member.MemberSideEffect
 import com.easyhz.noffice.feature.organization.contract.member.MemberState
 import com.easyhz.noffice.feature.organization.util.member.MemberViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MemberViewModel @Inject constructor(
-
+    private val fetchOrganizationMembersUseCase: FetchOrganizationMembersUseCase
 ) : BaseViewModel<MemberState, MemberIntent, MemberSideEffect>(
     initialState = MemberState.init()
 ) {
@@ -30,7 +34,18 @@ class MemberViewModel @Inject constructor(
     }
 
     private fun initScreen(id: Int, imageUrl: String?) {
+        fetchOrganizationMembers(id)
         reduce { copy(organizationId = id, imageUrl = imageUrl) }
+    }
+
+    private fun fetchOrganizationMembers(id:Int) = viewModelScope.launch {
+        fetchOrganizationMembersUseCase.invoke(id).onSuccess {
+            reduce { copy(memberList = it) }
+        }.onFailure {
+            errorLogging(this.javaClass.name, "fetchOrganizationMembers", it)
+        }.also {
+            reduce { copy(isLoading = false) }
+        }
     }
 
     private fun onClickBackButton() {
