@@ -168,10 +168,17 @@
     <string name="organization_management_member_management_title">그룹원 관리</string>
     <string name="organization_management_member_management_left_button">멤버 추가하기</string>
     <string name="organization_management_member_management_right_button">권한 설정</string>
+    <string name="organization_management_member_empty">조직원을 찾지 못했어요.</string>
     <string name="organization_management_member_edit_title">권한 설정</string>
     <string name="organization_management_member_edit_left_button">내보내기</string>
     <string name="organization_management_member_edit_right_button">권한 변경하기</string>
     <string name="organization_management_member_authority_button">확인</string>
+    <string name="organization_management_member_dialog_title">수정을 취소하고 나가시겠습니까?</string>
+    <string name="organization_management_member_dialog_content">저장되지 않은 변경사항이 있어요.</string>
+    <string name="organization_management_member_dialog_positive_button">저장하고 나가기</string>
+    <string name="organization_management_member_dialog_negative_button">나가기</string>
+    <string name="organization_management_member_message">변경사항이 저장되었어요.</string>
+    <string name="organization_management_member_select_message">멤버를 선택해 주세요.</string>
 
     <string name="organization_standby_member_title">가입 대기 멤버</string>
     <string name="organization_standby_member_left_button">전체 선택</string>

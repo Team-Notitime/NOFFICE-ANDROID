@@ -1,7 +1,8 @@
 package com.easyhz.noffice.core.network.api.organization
 
 import com.easyhz.noffice.core.network.model.request.organization.RegisterMemberRequest
-import com.easyhz.noffice.core.network.model.response.announcement.MemberResponse
+import com.easyhz.noffice.core.network.model.response.member.MemberResponse
+import com.easyhz.noffice.core.network.model.response.member.OrganizationMemberResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -29,4 +30,10 @@ interface OrganizationMemberService {
         @Path("organizationId") organizationId: Int,
         @Body body: RegisterMemberRequest
     ): NofficeResult<Unit>
+
+    /* 소속 조직원 권한별 전체 조회 */
+    @GET("/api/v1/organizations/{organizationId}/members")
+    suspend fun fetchOrganizationMembers(
+        @Path("organizationId") organizationId: Int
+    ): NofficeResult<OrganizationMemberResponse>
 }

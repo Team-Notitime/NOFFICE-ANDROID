@@ -26,36 +26,35 @@ import com.easyhz.noffice.core.design_system.component.button.CircleCheck
 import com.easyhz.noffice.core.design_system.component.image.ProfileImage
 import com.easyhz.noffice.core.design_system.extension.skeletonEffect
 import com.easyhz.noffice.core.design_system.theme.SemiBold14
+import com.easyhz.noffice.core.model.common.Member
 import com.easyhz.noffice.core.model.organization.member.MemberType
 
 @Composable
 fun MemberItem(
     modifier: Modifier = Modifier,
-    name: String,
-    imageUrl: String?,
-    memberType: MemberType,
-    isChecked: Boolean? = null,
+    member: Member,
+    isEditMode: Boolean,
     onClick: () -> Unit = { }
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(enabled = isChecked != null) { onClick() }
+            .clickable(enabled = isEditMode) { onClick() }
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileImage(
             modifier = Modifier.size(36.dp),
-            imageUrl = imageUrl
+            imageUrl = member.profileImage
         )
         Row(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = name, style = SemiBold14)
-            if (memberType == MemberType.LEADER) {
+            Text(text = member.alias, style = SemiBold14)
+            if (member.role == MemberType.LEADER) {
                 Image(
                     modifier = Modifier.size(16.dp),
                     painter = painterResource(id = R.drawable.ic_crown),
@@ -64,12 +63,12 @@ fun MemberItem(
             }
         }
         AnimatedVisibility(
-            visible = isChecked != null,
+            visible = isEditMode,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
             CircleCheck(
-                isChecked = isChecked ?: false,
+                isChecked = member.isSelected,
                 enabled = false
             )
         }
@@ -105,5 +104,15 @@ fun MemberItemSkeleton(
 @Preview(showBackground = true)
 @Composable
 private fun MemberItemPrev() {
-    MemberItem(name = "방장", imageUrl = "23", memberType = MemberType.LEADER, isChecked = true)
+    MemberItem(
+        member = Member(
+            id = 1,
+            alias = "김철수",
+            profileImage = "https://randomuser.me/api",
+            role = MemberType.LEADER,
+            isSelected = false,
+            name = "김철수"
+        ),
+        isEditMode = true
+    )
 }

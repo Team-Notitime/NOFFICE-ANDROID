@@ -141,7 +141,7 @@ private fun Card(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(cardItems) { cardImage ->
+                items(cardItems, key = { it }) { cardImage ->
                     Box(
                         modifier = modifier
                             .weight(1f)

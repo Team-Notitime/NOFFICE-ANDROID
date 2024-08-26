@@ -81,6 +81,7 @@ internal fun NavGraphBuilder.organizationGraph(
     composable<MemberManagement> {
         val args = it.toRoute<MemberManagement>()
         MemberScreen(
+            snackBarHostState = snackBarHostState,
             organizationId = args.organizationId,
             imageUrl = args.imageUrl,
             navigateToUp = navController::navigateUp,
