@@ -11,6 +11,7 @@ data class HomeState(
     val date: String,
     val isJoinLoading: Boolean,
     val isInitLoading: Boolean,
+    val isTaskLoading: Boolean,
 ): UiState() {
     companion object {
         fun init() = HomeState(
@@ -26,6 +27,7 @@ data class HomeState(
             date = "",
             isJoinLoading = false,
             isInitLoading = true,
+            isTaskLoading = false
         )
     }
 }

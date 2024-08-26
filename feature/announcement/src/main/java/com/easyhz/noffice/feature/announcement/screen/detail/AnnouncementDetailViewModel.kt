@@ -1,15 +1,21 @@
 package com.easyhz.noffice.feature.announcement.screen.detail
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.NofficeError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.model.announcement.Announcement
 import com.easyhz.noffice.core.model.announcement.detail.AnnouncementReader
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.member.MemberType
+import com.easyhz.noffice.core.model.task.Task
+import com.easyhz.noffice.core.model.task.param.toTaskParam
 import com.easyhz.noffice.domain.announcement.usecase.announcement.FetchAnnouncementUseCase
 import com.easyhz.noffice.domain.announcement.usecase.reader.FetchAnnouncementNonReadersUseCase
 import com.easyhz.noffice.domain.announcement.usecase.reader.FetchAnnouncementReadersUseCase
 import com.easyhz.noffice.domain.announcement.usecase.task.FetchAnnouncementTaskUseCase
+import com.easyhz.noffice.domain.announcement.usecase.task.UpdateTaskStatusUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationInfoUseCase
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailIntent
 import com.easyhz.noffice.feature.announcement.contract.detail.DetailSideEffect
@@ -27,6 +33,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     private val fetchAnnouncementTaskUseCase: FetchAnnouncementTaskUseCase,
     private val fetchAnnouncementReadersUseCase: FetchAnnouncementReadersUseCase,
     private val fetchAnnouncementNonReadersUseCase: FetchAnnouncementNonReadersUseCase,
+    private val updateTaskStatusUseCase: UpdateTaskStatusUseCase
 ) : BaseViewModel<DetailState, DetailIntent, DetailSideEffect>(
     initialState = DetailState.init()
 ) {
@@ -159,6 +166,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     private fun fetchAllReaders() = viewModelScope.launch {
         if (currentState.organizationInformation.role != MemberType.LEADER) return@launch
         val id = currentState.announcement.announcementId
+        if (id == -1) return@launch
         val readerDeferred = async { fetchAnnouncementReaders(id) }
         val nonReaderDeferred = async { fetchAnnouncementNonReaders(id) }
 
@@ -190,11 +198,24 @@ class AnnouncementDetailViewModel @Inject constructor(
     }
 
 
-    private fun onCheckTask(index: Int) {
-//        val updatedTaskList = currentState.detail.taskList.mapIndexed { i, task ->
-//            if (i == index) task.copy(isDone = !task.isDone) else task
-//        }.sortedWith(compareBy<Task> { it.isDone }.thenBy { it.content })
-//        val newState = currentState.detail.copy(taskList = updatedTaskList)
-//        reduce { copy(detail = newState) }
+    private fun onCheckTask(index: Int) = viewModelScope.launch {
+        val task = currentState.taskList[index]
+        updateTaskList(index)
+        updateTaskStatusUseCase.invoke(task.toTaskParam()).onSuccess {
+        }.onFailure {
+            if(it is NofficeError.NoContent) {
+                Log.d("AnnouncementDetailViewModel", "onCheckTask: NoContent")
+                return@onFailure
+            }
+
+            errorLogging(this.javaClass.name, "updateTaskStatus", it)
+        }
+    }
+
+    private fun updateTaskList(index: Int) {
+        val updatedTaskList = currentState.taskList.mapIndexed { i, task ->
+            if (i == index) task.copy(isDone = !task.isDone) else task
+        }.sortedWith(compareBy<Task> { it.isDone }.thenBy { it.content })
+        reduce { copy(taskList = updatedTaskList) }
     }
 }

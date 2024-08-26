@@ -146,14 +146,14 @@ fun HomeScreen(
                         HomeTopBarMenu.TASK -> {
                             TaskView(
                                 modifier = Modifier
-                                    .screenHorizonPadding()
+                                    .screenHorizonPadding(),
                             ) { organizationId, organizationName ->
                                 viewModel.postIntent(HomeIntent.ClickOrganizationHeader(organizationId, organizationName))
                             }
                         }
                     }
                 }
-                if (!uiState.isInitLoading) {
+                if (!uiState.isInitLoading && uiState.topBarMenu == HomeTopBarMenu.NOTICE) {
                     PullRefreshIndicator(
                         refreshing = isRefreshing,
                         contentColor = Green500,

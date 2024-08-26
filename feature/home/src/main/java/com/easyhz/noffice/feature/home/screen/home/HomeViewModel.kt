@@ -130,9 +130,20 @@ class HomeViewModel @Inject constructor(
 
     private fun refresh() {
         if (currentState.isInitLoading) return
+        when(currentState.topBarMenu) {
+            HomeTopBarMenu.NOTICE -> { refreshNotice() }
+            HomeTopBarMenu.TASK -> { refreshTask() }
+        }
+    }
+
+    private fun refreshNotice() {
         postSideEffect { HomeSideEffect.Refresh }
         fetchUserInfo()
         getDateNow()
+    }
+
+    private fun refreshTask() {
+        reduce { copy(isTaskLoading = true) }
     }
 
     private fun showSnackBar(@StringRes stringId: Int) {

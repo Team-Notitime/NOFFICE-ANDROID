@@ -7,8 +7,11 @@ import androidx.paging.map
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
 import com.easyhz.noffice.core.model.task.AssignedTask
+import com.easyhz.noffice.core.model.task.param.TaskParam
 import com.easyhz.noffice.core.network.api.task.TaskService
+import com.easyhz.noffice.core.network.util.toResult
 import com.easyhz.noffice.data.announcement.mapper.task.toModel
+import com.easyhz.noffice.data.announcement.mapper.task.toRequest
 import com.easyhz.noffice.data.announcement.pagingsource.AssignedTaskPagingSource
 import com.easyhz.noffice.data.announcement.pagingsource.AssignedTaskPagingSource.Companion.PAGE_SIZE
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,4 +39,8 @@ class TaskRepositoryImpl @Inject constructor(
                 }
             }
         }
+
+    override suspend fun updateTaskStatus(taskParam: TaskParam): Result<Unit> = withContext(dispatcher) {
+        return@withContext taskService.updateTaskStatus(taskParam.toRequest()).toResult()
+    }
 }
