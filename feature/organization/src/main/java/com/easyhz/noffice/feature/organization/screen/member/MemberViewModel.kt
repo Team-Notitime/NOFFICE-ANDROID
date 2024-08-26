@@ -105,13 +105,6 @@ class MemberViewModel @Inject constructor(
 
             MemberViewType.EDIT -> {
                 handleEditBackButton()
-//                reduce {
-//                    copy(
-//                        viewType = MemberViewType.MANAGEMENT,
-//                        memberList = mutableStateListOf(*memberList.map { it.copy(isSelected = false) }
-//                            .toTypedArray())
-//                    )
-//                }
             }
 
             MemberViewType.STANDBY -> {}
