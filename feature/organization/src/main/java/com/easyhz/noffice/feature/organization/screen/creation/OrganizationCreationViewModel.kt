@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
-import com.easyhz.noffice.core.common.deepLink.toNofficeDeepLink
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.common.util.updateStepButton
@@ -18,6 +17,7 @@ import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUs
 import com.easyhz.noffice.domain.organization.usecase.creation.CreateOrganizationUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
+import com.easyhz.noffice.domain.organization.usecase.organization.CreateOrganizationDeepLinkUseCase
 import com.easyhz.noffice.domain.organization.usecase.promotion.VerifyPromotionUseCase
 import com.easyhz.noffice.feature.organization.contract.creation.CreationIntent
 import com.easyhz.noffice.feature.organization.contract.creation.CreationSideEffect
@@ -36,7 +36,8 @@ class OrganizationCreationViewModel @Inject constructor(
     private val createOrganizationUseCase: CreateOrganizationUseCase,
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
-    private val verifyPromotionUseCase: VerifyPromotionUseCase
+    private val verifyPromotionUseCase: VerifyPromotionUseCase,
+    private val createOrganizationDeepLinkUseCase: CreateOrganizationDeepLinkUseCase
 ) : BaseViewModel<CreationState, CreationIntent, CreationSideEffect>(
     initialState = CreationState.init()
 ) {
@@ -290,7 +291,7 @@ class OrganizationCreationViewModel @Inject constructor(
             promotionCode = currentState.promotionCode.ifBlank { null }
         )
         createOrganizationUseCase.invoke(param).onSuccess {
-            onNavigateToInvitation(it)
+            createOrganizationDeepLink(it)
         }.onFailure {
             errorLogging(this.javaClass.name, "createOrganization", it)
             showSnackBar(it.handleError())
@@ -308,13 +309,23 @@ class OrganizationCreationViewModel @Inject constructor(
         }
     }
 
-    private fun onNavigateToInvitation(organization: Organization) = viewModelScope.launch {
+    private fun onNavigateToInvitation(url: String, profileUrl: String?) = viewModelScope.launch {
         postSideEffect {
             CreationSideEffect.NavigateToInvitation(
-                organization.id.toNofficeDeepLink(),
-                organization.profileImageUrl
+                url, profileUrl
             )
         }
+    }
+
+    private fun createOrganizationDeepLink(organization: Organization) = viewModelScope.launch {
+        createOrganizationDeepLinkUseCase(organization.id)
+            .onSuccess { deepLink ->
+                onNavigateToInvitation(deepLink.toString(), organization.profileImageUrl)
+            }
+            .onFailure { throwable ->
+                errorLogging(javaClass.simpleName, "onNavigateToInvitation", throwable)
+                showSnackBar(throwable.handleError())
+            }
     }
 
     private fun setEnabledStepButton() {

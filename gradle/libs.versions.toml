@@ -20,7 +20,6 @@ desugaring = "2.0.4"
 hilt = "2.51.1"
 hiltNavigation = "1.2.0"
 gmsPlugin = "4.4.0"
-#firebaseCrashlyticsPlugin = "2.9.9"
 kotlinxCoroutines = "1.8.1"
 androidxComposeCompiler = "1.5.11"
 firebaseBom = "33.1.0"
@@ -35,11 +34,14 @@ webkit = "1.11.0"
 material3 = "1.2.1"
 playServicesAuth = "21.2.0"
 playServicesCoroutines = "1.6.4"
-androidxDataStore = "1.0.0"
+androidxDataStore = "1.1.1"
 coreSplashscreen = "1.0.1"
 paging = "3.3.2"
 lottie = "6.4.0"
-fcm = "23.2.1"
+fcm = "24.0.1"
+dynamicLinks = "21.1.0"
+analytics = "22.1.0"
+firebaseCrashlyticsPlugin = "3.0.2"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -95,11 +97,14 @@ paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.r
 paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "fcm" }
+firebase-dynamic-links = { group = "com.google.firebase", name = "firebase-dynamic-links-ktx", version.ref = "dynamicLinks" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-#firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

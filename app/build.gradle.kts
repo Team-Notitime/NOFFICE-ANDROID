@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.noffice.android.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val keystoreProperties = Properties()
@@ -70,6 +71,7 @@ dependencies {
 
     implementation(projects.domain.home)
     implementation(projects.domain.sign)
+    implementation(projects.domain.organization)
 
     implementation(projects.feature.announcement)
     implementation(projects.feature.home)
@@ -78,4 +80,6 @@ dependencies {
     implementation(projects.feature.sign)
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.firebase.crashlytics)
 }
