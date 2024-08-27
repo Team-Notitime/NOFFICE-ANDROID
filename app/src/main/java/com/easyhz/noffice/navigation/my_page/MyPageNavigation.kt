@@ -1,5 +1,6 @@
 package com.easyhz.noffice.navigation.my_page
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -19,6 +20,7 @@ import com.easyhz.noffice.navigation.my_page.screen.Terms
 import com.easyhz.noffice.navigation.my_page.screen.Withdrawal
 
 internal fun NavGraphBuilder.myPageGraph(
+    snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
     navigateToTerms: (TermsType) -> Unit,
     navigateToNotice: () -> Unit,
@@ -29,6 +31,7 @@ internal fun NavGraphBuilder.myPageGraph(
 ) {
     composable<MyPage> {
         MyPageScreen(
+            snackBarHostState = snackBarHostState,
             navigateToUp = navigateToUp,
             navigateToTerms = navigateToTerms,
             navigateToNotice = navigateToNotice,

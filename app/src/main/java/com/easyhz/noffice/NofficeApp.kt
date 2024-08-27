@@ -144,6 +144,7 @@ internal fun NofficeApp(
                 navController = navController,
             )
             myPageGraph(
+                snackBarHostState = snackBarHostState,
                 navigateToUp = navController::navigateUp,
                 navigateToTerms = navController::navigateToTerms,
                 navigateToNotice = navController::navigateToNotice,

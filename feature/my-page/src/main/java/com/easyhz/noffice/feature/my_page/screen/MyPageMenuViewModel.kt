@@ -1,5 +1,6 @@
 package com.easyhz.noffice.feature.my_page.screen
 
+import android.net.Uri
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuIntent
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuSideEffect
@@ -24,10 +25,8 @@ class MyPageMenuViewModel @Inject constructor(
 
     private fun onClickMenuItem(item: MyPageMenu) {
         when(item) {
-            MyPageMenu.INQUIRY -> { }
-            MyPageMenu.NOTICE -> {
-                handleNoticeMenu()
-            }
+            MyPageMenu.INQUIRY -> { navigateToInquiry() }
+            MyPageMenu.NOTICE -> { handleNoticeMenu() }
             MyPageMenu.TERMS_OF_SERVICE -> { handleTermsOfService() }
             MyPageMenu.PRIVACY_POLICY -> { handlePrivacyPolicy() }
             MyPageMenu.NOTIFICATION -> { handleNotificationMenu() }
@@ -38,6 +37,11 @@ class MyPageMenuViewModel @Inject constructor(
             }
             else -> { }
         }
+    }
+
+    private fun navigateToInquiry() {
+        val uri = Uri.parse("http://pf.kakao.com/_IsRgG")
+        postSideEffect { MenuSideEffect.NavigateToInquiry(uri) }
     }
 
     private fun handleNotificationMenu() {

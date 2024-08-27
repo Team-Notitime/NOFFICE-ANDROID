@@ -1,5 +1,8 @@
 package com.easyhz.noffice.feature.my_page.screen
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -23,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -61,6 +66,7 @@ fun MyPageScreen(
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
     menuViewModel: MyPageMenuViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
     navigateToTerms: (TermsType) -> Unit,
     navigateToNotice: () -> Unit,
@@ -69,7 +75,7 @@ fun MyPageScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuState by menuViewModel.uiState.collectAsStateWithLifecycle()
-
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val focusRequester = remember { FocusRequester() }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -209,11 +215,18 @@ fun MyPageScreen(
             is MyPageSideEffect.RequestFocus -> {
                 focusRequester.requestFocus()
             }
+            is MyPageSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
+            }
         }
     }
 
     menuViewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
+            is MenuSideEffect.NavigateToInquiry -> { startActivity(context, sideEffect.uri) }
             is MenuSideEffect.NavigateToNotice -> { navigateToNotice() }
             is MenuSideEffect.NavigateToServiceOfTerms -> { navigateToTerms(TermsType.SERVICE_OF_TERMS) }
             is MenuSideEffect.NavigateToPrivacyPolicy -> { navigateToTerms(TermsType.PRIVACY_POLICY) }
@@ -221,4 +234,9 @@ fun MyPageScreen(
             is MenuSideEffect.NavigateToWithdrawal -> { navigateToWithdrawal() }
         }
     }
+}
+
+private fun startActivity(context: Context, uri: Uri) {
+    val intent = Intent(Intent.ACTION_VIEW, uri)
+    context.startActivity(intent)
 }
