@@ -11,4 +11,5 @@ sealed class HomeSideEffect: UiSideEffect() {
     data class NavigateToAnnouncementDetail(val organizationId: Int, val announcementId: Int): HomeSideEffect()
     data class ShowSnackBar(@StringRes val stringId: Int): HomeSideEffect()
     data object Refresh: HomeSideEffect()
+    data object NavigateToNotification: HomeSideEffect()
 }

@@ -22,6 +22,7 @@ import com.easyhz.noffice.navigation.home.screen.Home
 import com.easyhz.noffice.navigation.home.screen.Onboarding
 import com.easyhz.noffice.navigation.home.screen.Splash
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
+import com.easyhz.noffice.navigation.notification.navigateToNotification
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationJoin
 import com.easyhz.noffice.navigation.sign.navigateToLogIn
@@ -69,7 +70,8 @@ internal fun NavGraphBuilder.homeGraph(
             navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail,
             navigateToOrganizationDetail = navController::navigateToOrganizationDetail,
             navigateToMyPage = navController::navigateToMyPage,
-            navigateToOrganizationJoin = navController::navigateToOrganizationJoin
+            navigateToOrganizationJoin = navController::navigateToOrganizationJoin,
+            navigateToNotification = navController::navigateToNotification
         )
     }
 }

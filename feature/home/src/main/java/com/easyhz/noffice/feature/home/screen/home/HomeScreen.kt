@@ -51,7 +51,8 @@ fun HomeScreen(
     navigateToAnnouncementDetail: (Int, Int) -> Unit,
     navigateToOrganizationDetail: (Int, String) -> Unit,
     navigateToMyPage: () -> Unit,
-    navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit
+    navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit,
+    navigateToNotification: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
@@ -193,6 +194,7 @@ fun HomeScreen(
             is HomeSideEffect.Refresh -> {
                 organizationList.refresh()
             }
+            is HomeSideEffect.NavigateToNotification -> { navigateToNotification() }
         }
     }
 }
