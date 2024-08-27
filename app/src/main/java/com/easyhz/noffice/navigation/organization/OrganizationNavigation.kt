@@ -103,6 +103,7 @@ internal fun NavGraphBuilder.organizationGraph(
             }
         }
         OrganizationInvitationScreen(
+            snackBarHostState = snackBarHostState,
             invitationUrl = args.invitationUrl,
             imageUrl = args.imageUrl ?: "",
             isCreation = args.isCreation,
