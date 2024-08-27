@@ -18,6 +18,9 @@ import com.easyhz.noffice.navigation.my_page.screen.Notice
 import com.easyhz.noffice.navigation.my_page.screen.NoticeDetail
 import com.easyhz.noffice.navigation.my_page.screen.Terms
 import com.easyhz.noffice.navigation.my_page.screen.Withdrawal
+import com.easyhz.noffice.transition.SlideDirection
+import com.easyhz.noffice.transition.enterSlide
+import com.easyhz.noffice.transition.exitSlide
 
 internal fun NavGraphBuilder.myPageGraph(
     snackBarHostState: SnackbarHostState,
@@ -48,7 +51,11 @@ internal fun NavGraphBuilder.myPageGraph(
     }
 
     composable<Terms>(
-        typeMap = Terms.typeMap
+        typeMap = Terms.typeMap,
+        enterTransition = { enterSlide(SlideDirection.Up) },
+        exitTransition = { exitSlide(SlideDirection.Down) },
+        popEnterTransition = { enterSlide(SlideDirection.Up) },
+        popExitTransition = { exitSlide(SlideDirection.Down) }
     ) {
         val args = it.toRoute<Terms>()
         TermsScreen(
