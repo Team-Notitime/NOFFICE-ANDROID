@@ -253,4 +253,7 @@
         리더에게는 더욱 편리한 공지 발행 과정을,
         \n멤버에게는 복잡하지 않은 공지를 선물할게요
     </string>
+
+    <string name="notification_title">알림</string>
+    <string name="notification_empty">알림이 없어요.</string>
 </resources>
