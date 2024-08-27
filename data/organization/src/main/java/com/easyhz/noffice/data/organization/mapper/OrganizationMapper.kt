@@ -24,7 +24,7 @@ internal fun OrganizationResponse.toModel(): Organization = Organization(
     id = this.id,
     name = this.name,
     profileImageUrl = this.profileImage,
-    role = this.role,
+    role = MemberType.valueOf(this.role ?: MemberType.PARTICIPANT.name),
     joinStatus = null
 )
 
@@ -42,7 +42,7 @@ fun OrganizationCapsuleResponse.toModel(): Organization = Organization(
     id = this.organizationId,
     name = this.organizationName,
     profileImageUrl = this.profileImage,
-    role = this.role,
+    role = MemberType.valueOf(this.role),
     joinStatus = JoinStatus.valueOf(this.joinStatus)
 )
 
