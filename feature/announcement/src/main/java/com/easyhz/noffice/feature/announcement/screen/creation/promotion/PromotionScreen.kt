@@ -175,7 +175,7 @@ fun PromotionScreen(
             }
             if(uiState.isShowPromotionBottomSheet) {
                 PromotionBottomSheet(
-                    sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                    sheetState = sheetState,
                     selectedCard = uiState.bottomSheetSelectCardIndex,
                     coverImages = uiState.coverList,
                     hasPromotion = uiState.hasPromotion,

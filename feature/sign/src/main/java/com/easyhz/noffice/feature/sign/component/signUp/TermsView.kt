@@ -2,6 +2,7 @@ package com.easyhz.noffice.feature.sign.component.signUp
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -195,7 +196,7 @@ private fun TermsItem(
             }
         }
         Row(
-            modifier = Modifier.noRippleClickable { onClickDetail() },
+            modifier = Modifier.clickable { onClickDetail() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(

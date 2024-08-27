@@ -14,5 +14,8 @@ enum class TermsType(
     PRIVACY_POLICY(
         title = R.string.privacy_policy_title,
         fileName = "privacy_policy.html"
+    ),MARKETING(
+        title = R.string.marketing,
+        fileName = "marketing.html"
     ),
 }
