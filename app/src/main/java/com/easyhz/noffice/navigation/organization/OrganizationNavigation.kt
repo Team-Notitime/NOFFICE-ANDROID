@@ -24,6 +24,7 @@ import com.easyhz.noffice.feature.organization.screen.standby.StandbyMemberScree
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.my_page.navigateToMyPage
+import com.easyhz.noffice.navigation.notification.navigateToNotification
 import com.easyhz.noffice.navigation.organization.screen.MemberManagement
 import com.easyhz.noffice.navigation.organization.screen.Organization
 import com.easyhz.noffice.navigation.organization.screen.OrganizationCreation
@@ -52,7 +53,8 @@ internal fun NavGraphBuilder.organizationGraph(
             modifier = modifier,
             navigateToMyPage = navController::navigateToMyPage,
             navigateToCreation = navController::navigateToOrganizationCreation,
-            navigateToDetail = navController::navigateToOrganizationDetail
+            navigateToDetail = navController::navigateToOrganizationDetail,
+            navigateToNotification = navController::navigateToNotification,
         )
     }
     composable<OrganizationDetail> {

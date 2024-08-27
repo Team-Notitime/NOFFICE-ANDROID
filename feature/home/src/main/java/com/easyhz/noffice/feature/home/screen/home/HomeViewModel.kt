@@ -82,13 +82,17 @@ class HomeViewModel @Inject constructor(
 
     private fun onClickTopBarIconMenu(iconMenu: TopBarIconMenu) {
         when(iconMenu) {
-            TopBarIconMenu.NOTIFICATION -> { }
+            TopBarIconMenu.NOTIFICATION -> { navigateToNotification() }
             TopBarIconMenu.USER -> { navigateToMyPageScreen() }
         }
     }
 
     private fun navigateToMyPageScreen() {
         postSideEffect { HomeSideEffect.NavigateToMyPage }
+    }
+
+    private fun navigateToNotification() {
+        postSideEffect { HomeSideEffect.NavigateToNotification }
     }
 
     private fun navigateToOrganizationDetail(id: Int, name: String) {

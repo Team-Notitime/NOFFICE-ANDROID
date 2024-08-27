@@ -56,9 +56,13 @@ class OrganizationViewModel @Inject constructor(
 
     private fun onClickTopBarIconMenu(iconMenu: TopBarIconMenu) {
         when(iconMenu) {
-            TopBarIconMenu.NOTIFICATION -> { /* TODO 네비게이션 처리 */ }
+            TopBarIconMenu.NOTIFICATION -> { navigateToNotification() }
             TopBarIconMenu.USER -> { navigateToMyPage() }
         }
+    }
+
+    private fun navigateToNotification() {
+        postSideEffect { OrganizationSideEffect.NavigateToNotification }
     }
 
     private fun onClickOrganizationCreation() {

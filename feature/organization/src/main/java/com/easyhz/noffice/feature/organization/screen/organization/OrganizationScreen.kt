@@ -43,7 +43,8 @@ fun OrganizationScreen(
     viewModel: OrganizationViewModel = hiltViewModel(),
     navigateToMyPage: () -> Unit,
     navigateToDetail: (Int, String) -> Unit,
-    navigateToCreation: () -> Unit
+    navigateToCreation: () -> Unit,
+    navigateToNotification: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
@@ -129,6 +130,7 @@ fun OrganizationScreen(
             is OrganizationSideEffect.NavigateToDetail -> { navigateToDetail(sideEffect.id, sideEffect.name) }
             is OrganizationSideEffect.NavigateToMyPage -> { navigateToMyPage() }
             is OrganizationSideEffect.Refresh -> { organizationList.refresh() }
+            is OrganizationSideEffect.NavigateToNotification -> { navigateToNotification() }
         }
     }
 }

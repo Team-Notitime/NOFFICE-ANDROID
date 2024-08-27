@@ -21,6 +21,7 @@ import com.easyhz.noffice.core.design_system.util.snackBar.SnackBarType
 import com.easyhz.noffice.core.design_system.util.snackBar.snackBarPadding
 import com.easyhz.noffice.navigation.NofficeNavController
 import com.easyhz.noffice.navigation.announcement.announcementGraph
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.screen.Splash
@@ -30,6 +31,7 @@ import com.easyhz.noffice.navigation.my_page.navigateToNotice
 import com.easyhz.noffice.navigation.my_page.navigateToNoticeDetail
 import com.easyhz.noffice.navigation.my_page.navigateToTerms
 import com.easyhz.noffice.navigation.my_page.navigateToWithdrawal
+import com.easyhz.noffice.navigation.notification.notificationGraph
 import com.easyhz.noffice.navigation.organization.organizationGraph
 import com.easyhz.noffice.navigation.sign.navigateToLogIn
 import com.easyhz.noffice.navigation.sign.signGraph
@@ -129,6 +131,10 @@ internal fun NofficeApp(
                 navigateToConsent = navController::navigateToConsent,
                 navigateToWithdrawal = navController::navigateToWithdrawal,
                 navigateToLogIn = navController::navigateToLogIn
+            )
+            notificationGraph(
+                navigateToUp = navController::navigateUp,
+                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail
             )
         }
     }
