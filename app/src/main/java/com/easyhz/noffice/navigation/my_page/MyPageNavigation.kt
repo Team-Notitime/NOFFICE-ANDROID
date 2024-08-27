@@ -1,22 +1,28 @@
 package com.easyhz.noffice.navigation.my_page
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.easyhz.noffice.core.design_system.util.terms.TermsType
 import com.easyhz.noffice.feature.my_page.screen.MyPageScreen
 import com.easyhz.noffice.feature.my_page.screen.detail.consent.ConsentToInformationScreen
 import com.easyhz.noffice.feature.my_page.screen.detail.notice.NoticeScreen
 import com.easyhz.noffice.feature.my_page.screen.detail.noticeDetail.NoticeDetailScreen
+import com.easyhz.noffice.feature.my_page.screen.detail.terms.TermsScreen
 import com.easyhz.noffice.feature.my_page.screen.detail.withdrawal.WithdrawalScreen
 import com.easyhz.noffice.navigation.my_page.screen.Consent
 import com.easyhz.noffice.navigation.my_page.screen.MyPage
 import com.easyhz.noffice.navigation.my_page.screen.Notice
 import com.easyhz.noffice.navigation.my_page.screen.NoticeDetail
+import com.easyhz.noffice.navigation.my_page.screen.Terms
 import com.easyhz.noffice.navigation.my_page.screen.Withdrawal
 
 internal fun NavGraphBuilder.myPageGraph(
+    snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
+    navigateToTerms: (TermsType) -> Unit,
     navigateToNotice: () -> Unit,
     navigateToNoticeDetail: (com.easyhz.noffice.core.model.notice.Notice) -> Unit,
     navigateToConsent: () -> Unit,
@@ -25,7 +31,9 @@ internal fun NavGraphBuilder.myPageGraph(
 ) {
     composable<MyPage> {
         MyPageScreen(
+            snackBarHostState = snackBarHostState,
             navigateToUp = navigateToUp,
+            navigateToTerms = navigateToTerms,
             navigateToNotice = navigateToNotice,
             navigateToConsent = navigateToConsent,
             navigateToWithdrawal = navigateToWithdrawal,
@@ -36,6 +44,16 @@ internal fun NavGraphBuilder.myPageGraph(
         NoticeScreen(
             navigateToUp = navigateToUp,
             navigateToNoticeDetail = navigateToNoticeDetail
+        )
+    }
+
+    composable<Terms>(
+        typeMap = Terms.typeMap
+    ) {
+        val args = it.toRoute<Terms>()
+        TermsScreen(
+            termsType = args.termsType,
+            navigateToUp = navigateToUp
         )
     }
 
@@ -81,4 +99,8 @@ internal fun NavController.navigateToConsent() {
 
 internal fun NavController.navigateToWithdrawal() {
     navigate(route = Withdrawal)
+}
+
+internal fun NavController.navigateToTerms(termsType: TermsType) {
+    navigate(route = Terms(termsType))
 }

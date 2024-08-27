@@ -4,6 +4,8 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.feature.my_page.contract.MyPageIntent
@@ -72,8 +74,8 @@ class MyPageViewModel @Inject constructor(
                 postSideEffect { MyPageSideEffect.NavigateToCamera(it) }
             }
             .onFailure {
-                // TODO fail 처리
-                println("fail: $it")
+                errorLogging(this.javaClass.simpleName, "navigateToCamera", it)
+                showSnackBar(it.handleError())
             }
     }
     private fun onTakePicture(isUsed: Boolean) {
@@ -118,5 +120,9 @@ class MyPageViewModel @Inject constructor(
 
     private fun navigateToUp() {
         postSideEffect { MyPageSideEffect.NavigateToUp }
+    }
+
+    private fun showSnackBar(stringId: Int) {
+        postSideEffect { MyPageSideEffect.ShowSnackBar(stringId) }
     }
 }

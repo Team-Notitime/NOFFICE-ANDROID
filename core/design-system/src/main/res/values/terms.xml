@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_of_terms_title">
+        서비스 이용약관
+    </string>
+    <string name="privacy_policy_title">
+        개인정보 처리방침
+    </string>
+</resources>
