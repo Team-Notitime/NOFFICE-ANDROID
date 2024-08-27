@@ -76,6 +76,7 @@ dependencies {
     implementation(projects.feature.announcement)
     implementation(projects.feature.home)
     implementation(projects.feature.myPage)
+    implementation(projects.feature.notification)
     implementation(projects.feature.organization)
     implementation(projects.feature.sign)
 
