@@ -1,5 +1,7 @@
 package com.easyhz.noffice.data.organization.di.repository
 
+import com.easyhz.noffice.data.organization.repository.deepLink.DeepLinkRepository
+import com.easyhz.noffice.data.organization.repository.deepLink.DeepLinkRepositoryImpl
 import com.easyhz.noffice.data.organization.repository.member.OrganizationMemberRepository
 import com.easyhz.noffice.data.organization.repository.member.OrganizationMemberRepositoryImpl
 import com.easyhz.noffice.data.organization.repository.organization.OrganizationRepository
@@ -28,4 +30,9 @@ interface OrganizationRepositoryModule {
     fun bindPromotionRepository(
         promotionRepositoryImpl: PromotionRepositoryImpl
     ): PromotionRepository
+
+    @Binds
+    fun bindDeepLinkRepository(
+        deepLinkRepositoryImpl: DeepLinkRepositoryImpl
+    ): DeepLinkRepository
 }
