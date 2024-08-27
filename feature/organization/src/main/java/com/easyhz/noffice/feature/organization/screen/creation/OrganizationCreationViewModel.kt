@@ -136,7 +136,7 @@ class OrganizationCreationViewModel @Inject constructor(
     }
 
     private fun onClearOrganizationName() {
-        reduce { copy(organizationName = "") }
+        reduce { copy(organizationName = "", enabledStepButton = enabledStepButton.updateStepButton(step.currentStep, false)) }
     }
 
     private fun onClearFocus() {
