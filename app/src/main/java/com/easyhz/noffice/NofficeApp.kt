@@ -1,6 +1,5 @@
 package com.easyhz.noffice
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -36,7 +35,9 @@ import com.easyhz.noffice.navigation.sign.navigateToLogIn
 import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
-import com.easyhz.noffice.navigation.util.DURATION
+import com.easyhz.noffice.transition.SlideDirection
+import com.easyhz.noffice.transition.enterSlide
+import com.easyhz.noffice.transition.exitSlide
 
 @Composable
 internal fun NofficeApp(
@@ -96,34 +97,10 @@ internal fun NofficeApp(
         NavHost(
             navController = navController,
             startDestination = Splash(),
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                        DURATION
-                    )
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                        DURATION
-                    )
-                )
-            },
-            popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(
-                        DURATION
-                    )
-                )
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(
-                        DURATION
-                    )
-                )
-            }
+            enterTransition = { enterSlide(SlideDirection.Start) },
+            exitTransition = { exitSlide(SlideDirection.Start) },
+            popEnterTransition = { enterSlide(SlideDirection.End) },
+            popExitTransition = { exitSlide(SlideDirection.End) }
         ) {
             homeGraph(
                 modifier = Modifier.padding(it),
