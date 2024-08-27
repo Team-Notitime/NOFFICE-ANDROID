@@ -7,4 +7,5 @@ sealed class OrganizationIntent: UiIntent() {
     data object ClickOrganizationCreation: OrganizationIntent()
     data class ClickTopBarIconMenu(val iconMenu: TopBarIconMenu): OrganizationIntent()
     data class ClickOrganization(val id: Int, val name: String): OrganizationIntent()
+    data object Refresh: OrganizationIntent()
 }

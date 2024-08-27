@@ -33,7 +33,7 @@ import com.easyhz.noffice.core.design_system.theme.SemiBold16
 internal fun OrganizationItem(
     modifier: Modifier = Modifier,
     organizationName: String,
-    imageUrl: String,
+    imageUrl: String?,
     onClick: () -> Unit,
 ) {
     Row(
