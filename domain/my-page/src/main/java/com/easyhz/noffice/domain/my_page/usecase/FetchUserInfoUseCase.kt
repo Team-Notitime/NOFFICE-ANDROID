@@ -1,4 +1,4 @@
-package com.easyhz.noffice.domain.home.usecase.member
+package com.easyhz.noffice.domain.my_page.usecase
 
 import com.easyhz.noffice.core.common.base.BaseUseCase
 import com.easyhz.noffice.core.model.auth.UserInfo
