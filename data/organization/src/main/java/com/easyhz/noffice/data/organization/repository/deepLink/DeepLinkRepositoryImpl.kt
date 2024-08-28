@@ -27,7 +27,7 @@ class DeepLinkRepositoryImpl @Inject constructor(
     override suspend fun createOrganizationDeepLink(organizationId: Int): Result<Uri> =
         runCatching {
             val id = Encryption.encrypt(organizationId.toString())
-            val url = "https://wwww.noffice.page.link/organization?organizationId=$id"
+            val url = "https://www.noffice.page.link/organization?token=$id"
             val dynamicLinks = dynamicLinks.shortLinkAsync {
                 link = Uri.parse(url)
                 domainUriPrefix = "https://noffice.page.link"
