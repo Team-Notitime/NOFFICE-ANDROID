@@ -15,5 +15,6 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.model)
 
+    implementation(projects.domain.myPage)
     implementation(projects.domain.organization)
 }

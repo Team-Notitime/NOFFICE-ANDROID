@@ -2,6 +2,7 @@ package com.easyhz.noffice.core.network.uploader
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.easyhz.noffice.core.network.di.PureClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -30,6 +31,7 @@ class ImageUploader @Inject constructor(
             val response = client.newCall(request).execute()
 
             if (response.isSuccessful) {
+                Log.d(this.javaClass.name, "uploadImage - success")
                 Unit
             } else {
                 throw Exception("Failed to upload file: ${response.code}")

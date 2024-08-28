@@ -35,7 +35,7 @@ internal fun ProfileField(
     modifier: Modifier = Modifier,
     name: String,
     email: String,
-    imageUrl: String,
+    imageUrl: String?,
     onChangeProfileImage: () -> Unit,
     onChangeName: () -> Unit
 ) {
@@ -90,7 +90,7 @@ internal fun ProfileField(
 @Composable
 private fun Profile(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    imageUrl: String?,
     onClick: () -> Unit
 ) {
     Box(modifier = modifier.size(84.dp).noRippleClickable { onClick() }) {

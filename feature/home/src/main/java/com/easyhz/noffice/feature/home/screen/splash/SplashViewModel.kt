@@ -24,14 +24,9 @@ class SplashViewModel @Inject constructor(
     override fun handleIntent(intent: SplashIntent) {
         when (intent) {
             is SplashIntent.InitScreen -> {
-                println("hello ${intent.announcementId} ${intent.organizationId}")
                 initScreen(intent.announcementId, intent.organizationId)
             }
         }
-    }
-    init {
-
-        println("왜 안타!")
     }
 
     private fun initScreen(announcementId: Int, organizationId: Int) = viewModelScope.launch {

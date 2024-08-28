@@ -23,6 +23,7 @@ data class OrganizationManagement(
             savedStateHandle.toRoute<OrganizationManagement>(typeMap)
 
         fun OrganizationInformation.encode(): OrganizationInformation {
+            if(this.profileImageUrl.isNullOrBlank()) return this
             val encodeProfileUrl = URLEncoder.encode(
                 this.profileImageUrl,
                 StandardCharsets.UTF_8.toString()
@@ -31,6 +32,7 @@ data class OrganizationManagement(
         }
 
         fun OrganizationInformation.decode(): OrganizationInformation {
+            if(this.profileImageUrl.isNullOrBlank()) return this
             val decodeProfileUrl = URLDecoder.decode(
                 this.profileImageUrl,
                 StandardCharsets.UTF_8.toString()

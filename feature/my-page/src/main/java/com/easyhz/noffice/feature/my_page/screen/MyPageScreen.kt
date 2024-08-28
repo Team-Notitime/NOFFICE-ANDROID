@@ -120,9 +120,9 @@ fun MyPageScreen(
         ) {
             ProfileField(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
-                name = uiState.user.name,
-                email = uiState.user.email,
-                imageUrl = uiState.user.profileImageUrl,
+                name = uiState.user.alias,
+                email = uiState.user.name,
+                imageUrl = uiState.selectedImage,
                 onChangeProfileImage = { viewModel.postIntent(MyPageIntent.ChangeProfileImage) }
             ) {
                 viewModel.postIntent(MyPageIntent.ClickUserName)
@@ -140,7 +140,7 @@ fun MyPageScreen(
         if (uiState.isShowImageBottomSheet) {
             ImageSelectionBottomSheet(
                 sheetState = sheetState,
-                isEmptyProfile = uiState.user.profileImageUrl.isBlank(),
+                isEmptyProfile = (uiState.selectedImage.isNullOrBlank() || uiState.selectedImage == "null"),
                 onDismissRequest = { viewModel.postIntent(MyPageIntent.HideImageBottomSheet) },
             ) {
                 viewModel.postIntent(MyPageIntent.ClickImageBottomSheetItem(it))

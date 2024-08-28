@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.domain.home)
     implementation(projects.domain.announcement)
     implementation(projects.domain.notification)
+    implementation(projects.domain.myPage)
     implementation(projects.domain.organization)
 
     // splash

@@ -9,7 +9,7 @@ data class ManagementState(
     val isSaveLoading: Boolean,
     val isLoading: Boolean,
     val organizationInformation: OrganizationInformation,
-    val selectedImage: String,
+    val selectedImage: String?,
     val isShowImageBottomSheet: Boolean,
     val categoryList: List<Category>
 ): UiState() {
