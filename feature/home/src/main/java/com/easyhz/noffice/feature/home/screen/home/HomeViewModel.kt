@@ -60,10 +60,14 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchUserInfo() = viewModelScope.launch {
         if (currentState.userInfo.id != -1) return@launch
+        fetchUser()
+    }
+
+    private fun fetchUser() = viewModelScope.launch {
         fetchUserInfoUseCase.invoke(Unit).onSuccess {
             reduce { copy(userInfo = it, name = it.alias) }
         }.onFailure {
-            errorLogging(this.javaClass.name, "fetchUserInfo", it)
+            errorLogging(this.javaClass.name, "fetchUser", it)
             showSnackBar(it.handleError())
             reduce { copy(isInitLoading = false)}
         }
@@ -141,7 +145,7 @@ class HomeViewModel @Inject constructor(
 
     private fun refreshNotice() {
         postSideEffect { HomeSideEffect.Refresh }
-        fetchUserInfo()
+        fetchUser()
         getDateNow()
     }
 
