@@ -1,10 +1,12 @@
 package com.easyhz.noffice.feature.my_page.screen
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.NofficeError
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
@@ -13,6 +15,7 @@ import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.image.UpdateImageParam
 import com.easyhz.noffice.domain.my_page.usecase.FetchUserInfoUseCase
 import com.easyhz.noffice.domain.my_page.usecase.UpdateMemberProfileImageUseCase
+import com.easyhz.noffice.domain.my_page.usecase.UpdateUserAliasUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UpdateImageUseCase
 import com.easyhz.noffice.feature.my_page.contract.MyPageIntent
@@ -29,6 +32,7 @@ class MyPageViewModel @Inject constructor(
     private val updateMemberProfileImageUseCase: UpdateMemberProfileImageUseCase,
     private val updateImageUseCase: UpdateImageUseCase,
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
+    private val updateUserAliasUseCase: UpdateUserAliasUseCase,
 ): BaseViewModel<MyPageState, MyPageIntent, MyPageSideEffect>(
     initialState = MyPageState.init()
 ) {
@@ -126,7 +130,7 @@ class MyPageViewModel @Inject constructor(
     }
 
     private fun hideUserNameBottomSheet() {
-        reduce { copy(isShowUserNameBottomSheet = false) }
+        reduce { copy(isShowUserNameBottomSheet = false, userNameText = "") }
     }
 
     private fun onChangeUserNameText(newText: String) {
@@ -134,9 +138,9 @@ class MyPageViewModel @Inject constructor(
     }
 
     private fun saveUserName() {
-        // TODO 저장 로직
         if (currentState.userNameText.isBlank()) return
-        reduce { copy(user = user.copy(name = userNameText), userNameText = "") }
+        reduce { copy(user = user.copy(alias = userNameText)) }
+        updateUserAlias()
         hideUserNameBottomSheet()
     }
 
@@ -183,13 +187,22 @@ class MyPageViewModel @Inject constructor(
             handleException(it, "updateMemberProfileImage")
         }
     }
-//
+
     private suspend fun updateImage(param: UpdateImageParam): String? {
         return updateImageUseCase.invoke(param).getOrElse {
             handleException(it, "updateImage")
         }
     }
 
+    private fun updateUserAlias() = viewModelScope.launch {
+        updateUserAliasUseCase.invoke(currentState.user.alias).getOrElse {
+            if(it is NofficeError.NoContent) {
+                Log.d(this.javaClass.name, "updateUserAlias: NoContent")
+                return@getOrElse
+            }
+            handleException(it, "updateUserAlias")
+        }
+    }
 
     private fun handleException(exception: Throwable, methodName: String): String? {
         errorLogging(this.javaClass.name, methodName, exception)
