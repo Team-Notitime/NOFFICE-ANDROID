@@ -76,6 +76,10 @@ class ImageRepositoryImpl @Inject constructor(
         ).toResult()
     }
 
+    override suspend fun deleteOrganizationProfileImage(organizationId: Int): Result<Unit> = withContext(dispatcher) {
+        return@withContext imageService.deleteOrganizationProfileImage(organizationId).toResult()
+    }
+
     private fun Int.getResourceUri(context: Context): Uri {
         return context.resources.let {
             Uri.Builder()

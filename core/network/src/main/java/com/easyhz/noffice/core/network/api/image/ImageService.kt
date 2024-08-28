@@ -5,6 +5,7 @@ import com.easyhz.noffice.core.network.model.request.image.ProfileImageRequest
 import com.easyhz.noffice.core.network.model.response.image.ImageUrlResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -37,4 +38,11 @@ interface ImageService {
     suspend fun updateMemberProfileImage(
         @Body request: ProfileImageRequest
     ): NofficeResult<Unit>
+
+    /* 조직 프로필 이미지 삭제 */
+    @DELETE("/api/v1/organizations/{organizationId}/profile-image")
+    suspend fun deleteOrganizationProfileImage(
+        @Path("organizationId") organizationId: Int
+    ): NofficeResult<Unit>
+
 }
