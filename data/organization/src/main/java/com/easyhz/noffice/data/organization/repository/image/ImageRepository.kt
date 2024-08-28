@@ -12,4 +12,5 @@ interface ImageRepository {
     suspend fun completeImageUpload(fileName: String): Result<Unit>
     suspend fun getDrawableUri(drawableId: Int): Result<Uri>
     suspend fun updateOrganizationProfileImage(organizationId: Int, imageUrl: String): Result<Unit>
+    suspend fun updateMemberProfileImage(imageUrl: String): Result<Unit>
 }

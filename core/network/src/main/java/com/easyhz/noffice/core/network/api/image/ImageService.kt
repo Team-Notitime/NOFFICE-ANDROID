@@ -31,4 +31,10 @@ interface ImageService {
         @Path("organizationId") organizationId: Int,
         @Body request: ProfileImageRequest
     ): NofficeResult<Unit>
+
+    /* 회원 프로필 사진 이미지 변경 */
+    @PATCH("/api/v1/member/profile-image")
+    suspend fun updateMemberProfileImage(
+        @Body request: ProfileImageRequest
+    ): NofficeResult<Unit>
 }
