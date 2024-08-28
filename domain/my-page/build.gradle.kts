@@ -12,4 +12,7 @@ dependencies {
     api(projects.core.model)
     implementation(projects.core.common)
     implementation(projects.data.member)
+    implementation(projects.data.organization)
+
+    implementation(projects.domain.organization)
 }
