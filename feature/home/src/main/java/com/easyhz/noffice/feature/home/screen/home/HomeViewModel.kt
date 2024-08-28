@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
             is HomeIntent.Refresh -> { refresh() }
             is HomeIntent.SetInitLoading -> { reduce { copy(isInitLoading = false) }}
             is HomeIntent.ClickOrganizationHeader -> { navigateToOrganizationDetail(intent.organizationId, intent.organizationName) }
-            is HomeIntent.ClickAnnouncementCard -> { navigateToAnnouncementDetail(intent.organizationId, intent.announcementId, intent.announcementTitle) }
+            is HomeIntent.ClickAnnouncementCard -> { navigateToAnnouncementDetail(intent.organizationId, intent.announcementId) }
         }
     }
 
@@ -82,7 +82,7 @@ class HomeViewModel @Inject constructor(
 
     private fun onClickTopBarIconMenu(iconMenu: TopBarIconMenu) {
         when(iconMenu) {
-            TopBarIconMenu.NOTIFICATION -> { }
+            TopBarIconMenu.NOTIFICATION -> { navigateToNotification() }
             TopBarIconMenu.USER -> { navigateToMyPageScreen() }
         }
     }
@@ -91,12 +91,16 @@ class HomeViewModel @Inject constructor(
         postSideEffect { HomeSideEffect.NavigateToMyPage }
     }
 
+    private fun navigateToNotification() {
+        postSideEffect { HomeSideEffect.NavigateToNotification }
+    }
+
     private fun navigateToOrganizationDetail(id: Int, name: String) {
         postSideEffect { HomeSideEffect.NavigateToOrganizationDetail(organizationId = id, organizationName = name) }
     }
 
-    private fun navigateToAnnouncementDetail(organizationId: Int, id: Int, title: String) {
-        postSideEffect { HomeSideEffect.NavigateToAnnouncementDetail(organizationId, id, title) }
+    private fun navigateToAnnouncementDetail(organizationId: Int, id: Int) {
+        postSideEffect { HomeSideEffect.NavigateToAnnouncementDetail(organizationId, id) }
     }
 
 
@@ -123,16 +127,27 @@ class HomeViewModel @Inject constructor(
             }
             showSnackBar(messageResId)
         }.also {
-            DeepLinkManager.setOrganizationIdToJoin(-1)
+            DeepLinkManager.clearOrganizationIdToJoin()
             reduce { copy(isJoinLoading = false) }
         }
     }
 
     private fun refresh() {
         if (currentState.isInitLoading) return
+        when(currentState.topBarMenu) {
+            HomeTopBarMenu.NOTICE -> { refreshNotice() }
+            HomeTopBarMenu.TASK -> { refreshTask() }
+        }
+    }
+
+    private fun refreshNotice() {
         postSideEffect { HomeSideEffect.Refresh }
         fetchUserInfo()
         getDateNow()
+    }
+
+    private fun refreshTask() {
+        reduce { copy(isTaskLoading = true) }
     }
 
     private fun showSnackBar(@StringRes stringId: Int) {

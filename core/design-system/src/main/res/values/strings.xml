@@ -71,8 +71,12 @@
     <string name="organization_creation_end_date_null_caption">활동을 종료할 예정된 날짜가 없어요.</string>
     <string name="organization_creation_promotion_title">프로모션 코드를 입력해 주세요</string>
     <string name="organization_creation_promotion_placeholder">코드를 입력해 주세요.</string>
+    <string name="organization_creation_promotion_caption_valid">유효한 프로모션 코드입니다.</string>
+    <string name="organization_creation_promotion_caption_invalid">유효하지 않은 프로모션 코드입니다.</string>
+    <string name="organization_creation_promotion_caption_loading">프로모션 코드를 확인 중입니다.</string>
 
     <string name="organization_creation_success_title">그룹을 만들었어요!</string>
+    <string name="organization_invitation_title">링크를 복사했습니다!</string>
     <string name="organization_creation_success_sub_title">링크를 통해 멤버들을 초대해 보세요.</string>
     <string name="organization_creation_success_home_button">그룹 메인으로</string>
     <string name="organization_creation_success_copy_button">초대 링크 복사</string>
@@ -164,10 +168,17 @@
     <string name="organization_management_member_management_title">그룹원 관리</string>
     <string name="organization_management_member_management_left_button">멤버 추가하기</string>
     <string name="organization_management_member_management_right_button">권한 설정</string>
+    <string name="organization_management_member_empty">조직원을 찾지 못했어요.</string>
     <string name="organization_management_member_edit_title">권한 설정</string>
     <string name="organization_management_member_edit_left_button">내보내기</string>
     <string name="organization_management_member_edit_right_button">권한 변경하기</string>
     <string name="organization_management_member_authority_button">확인</string>
+    <string name="organization_management_member_dialog_title">수정을 취소하고 나가시겠습니까?</string>
+    <string name="organization_management_member_dialog_content">저장되지 않은 변경사항이 있어요.</string>
+    <string name="organization_management_member_dialog_positive_button">저장하고 나가기</string>
+    <string name="organization_management_member_dialog_negative_button">나가기</string>
+    <string name="organization_management_member_message">변경사항이 저장되었어요.</string>
+    <string name="organization_management_member_select_message">멤버를 선택해 주세요.</string>
 
     <string name="organization_standby_member_title">가입 대기 멤버</string>
     <string name="organization_standby_member_left_button">전체 선택</string>
@@ -242,4 +253,7 @@
         리더에게는 더욱 편리한 공지 발행 과정을,
         \n멤버에게는 복잡하지 않은 공지를 선물할게요
     </string>
+
+    <string name="notification_title">알림</string>
+    <string name="notification_empty">알림이 없어요.</string>
 </resources>

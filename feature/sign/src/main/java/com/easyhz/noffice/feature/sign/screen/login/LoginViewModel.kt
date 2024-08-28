@@ -47,6 +47,10 @@ class LoginViewModel @Inject constructor(
         postSideEffect { LoginSideEffect.NavigateToHome }
     }
 
+    private fun navigateToSignUp() {
+        postSideEffect { LoginSideEffect.NavigateToSignUp("") }
+    }
+
     private fun setIsLoading(value: Boolean) {
         reduce { copy(isLoading = value) }
     }

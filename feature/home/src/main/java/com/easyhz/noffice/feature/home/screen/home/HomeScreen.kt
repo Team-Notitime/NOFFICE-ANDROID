@@ -48,10 +48,11 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     snackBarHostState: SnackbarHostState,
-    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int) -> Unit,
     navigateToOrganizationDetail: (Int, String) -> Unit,
     navigateToMyPage: () -> Unit,
-    navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit
+    navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit,
+    navigateToNotification: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val organizationList = viewModel.organizationState.collectAsLazyPagingItems()
@@ -132,12 +133,11 @@ fun HomeScreen(
                                 onClickOrganizationHeader = {
                                     viewModel.postIntent(HomeIntent.ClickOrganizationHeader(it.id, it.name))
                                 },
-                                onClickAnnouncementCard = { organizationId, announcementId, announcementTitle ->
+                                onClickAnnouncementCard = { organizationId, announcementId ->
                                     viewModel.postIntent(
                                         HomeIntent.ClickAnnouncementCard(
                                             organizationId,
-                                            announcementId,
-                                            announcementTitle
+                                            announcementId
                                         )
                                     )
                                 }
@@ -147,14 +147,14 @@ fun HomeScreen(
                         HomeTopBarMenu.TASK -> {
                             TaskView(
                                 modifier = Modifier
-                                    .screenHorizonPadding()
+                                    .screenHorizonPadding(),
                             ) { organizationId, organizationName ->
                                 viewModel.postIntent(HomeIntent.ClickOrganizationHeader(organizationId, organizationName))
                             }
                         }
                     }
                 }
-                if (!uiState.isInitLoading) {
+                if (!uiState.isInitLoading && uiState.topBarMenu == HomeTopBarMenu.NOTICE) {
                     PullRefreshIndicator(
                         refreshing = isRefreshing,
                         contentColor = Green500,
@@ -178,7 +178,7 @@ fun HomeScreen(
                 navigateToOrganizationDetail(sideEffect.organizationId, sideEffect.organizationName)
             }
             is HomeSideEffect.NavigateToAnnouncementDetail -> {
-                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.announcementId, sideEffect.announcementTitle)
+                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.announcementId)
             }
             is HomeSideEffect.NavigateToOrganizationJoin -> {
                 navigateToOrganizationJoin(sideEffect.organizationSignUpInformation)
@@ -194,6 +194,7 @@ fun HomeScreen(
             is HomeSideEffect.Refresh -> {
                 organizationList.refresh()
             }
+            is HomeSideEffect.NavigateToNotification -> { navigateToNotification() }
         }
     }
 }

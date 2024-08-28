@@ -18,6 +18,8 @@ data class CreationState(
     val organizationImage: Uri,
     val endDate: LocalDate?,
     val promotionCode: String,
+    val isPromotionCodeValid: Boolean,
+    val isLoadingPromotionVerification: Boolean,
     val isShowImageBottomSheet: Boolean,
     val isLoading: Boolean
 ): UiState() {
@@ -32,7 +34,9 @@ data class CreationState(
             endDate = null,
             promotionCode = "",
             isShowImageBottomSheet = false,
-            isLoading = true
+            isLoading = true,
+            isPromotionCodeValid = true,
+            isLoadingPromotionVerification = false
         )
     }
 

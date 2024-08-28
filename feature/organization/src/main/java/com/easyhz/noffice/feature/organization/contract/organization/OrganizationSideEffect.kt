@@ -6,4 +6,6 @@ sealed class OrganizationSideEffect: UiSideEffect() {
     data object NavigateToCreation: OrganizationSideEffect()
     data class NavigateToDetail(val id: Int, val name: String): OrganizationSideEffect()
     data object NavigateToMyPage: OrganizationSideEffect()
+    data object Refresh: OrganizationSideEffect()
+    data object NavigateToNotification: OrganizationSideEffect()
 }

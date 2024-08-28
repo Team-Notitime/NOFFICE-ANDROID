@@ -33,6 +33,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
     snackBarHostState: SnackbarHostState,
+    navigateToSignUp: () -> Unit,
     navigateToHome: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -84,7 +85,7 @@ fun LoginScreen(
             is LoginSideEffect.NavigateToHome -> {
                 navigateToHome()
             }
-            is LoginSideEffect.NavigateToSignUp -> {}
+            is LoginSideEffect.NavigateToSignUp -> { navigateToSignUp() }
             is LoginSideEffect.ShowSnackBar -> {
                 snackBarHostState.showSnackbar(
                     message = context.getString(sideEffect.stringId),

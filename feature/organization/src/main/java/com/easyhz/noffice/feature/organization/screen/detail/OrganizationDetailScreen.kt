@@ -55,7 +55,7 @@ fun OrganizationDetailScreen(
     organizationName: String,
     snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
-    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int) -> Unit,
     navigateToStandbyMember: (Int) -> Unit,
     navigateToOrganizationManagement: (OrganizationInformation) -> Unit
 ) {
@@ -156,10 +156,7 @@ fun OrganizationDetailScreen(
                         announcement = item,
                     ) {
                         viewModel.postIntent(
-                            DetailIntent.ClickAnnouncement(
-                                item.announcementId,
-                                item.title
-                            )
+                            DetailIntent.ClickAnnouncement(item.announcementId)
                         )
                     }
                 }
@@ -181,7 +178,7 @@ fun OrganizationDetailScreen(
             }
 
             is DetailSideEffect.NavigateToAnnouncementDetail -> {
-                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.id, sideEffect.title)
+                navigateToAnnouncementDetail(sideEffect.organizationId, sideEffect.id)
             }
 
             is DetailSideEffect.NavigateToOrganizationManagement -> {

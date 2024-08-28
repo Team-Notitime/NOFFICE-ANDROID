@@ -13,6 +13,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
@@ -45,6 +47,7 @@ fun OrganizationJoinScreen(
     snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
@@ -94,7 +97,7 @@ fun OrganizationJoinScreen(
             ) {
                 OrganizationImage(
                     modifier = Modifier.size(120.dp),
-                    imageUrl = ""
+                    imageUrl = uiState.organizationSignUpInformation.profileImage
                 )
                 Spacer(modifier = Modifier.height(18.dp))
                 Column(
@@ -102,7 +105,7 @@ fun OrganizationJoinScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = "조지기름",
+                        text = uiState.organizationSignUpInformation.organizationName,
                         style = Title4
                     )
                     Text(

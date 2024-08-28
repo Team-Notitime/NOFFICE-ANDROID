@@ -9,6 +9,8 @@ class AndroidApplicationTestConventionPlugin : Plugin<Project> {
         with(target) {
             dependencies {
                 add("testImplementation", libs.findLibrary("junit").get())
+                add("testImplementation", libs.findLibrary("mockk").get())
+                add("testImplementation", libs.findLibrary("mockito").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.junit").get())
                 add("androidTestImplementation", libs.findLibrary("androidx.espresso.core").get())
             }

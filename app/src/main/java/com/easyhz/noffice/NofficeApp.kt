@@ -1,6 +1,5 @@
 package com.easyhz.noffice
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -22,6 +21,7 @@ import com.easyhz.noffice.core.design_system.util.snackBar.SnackBarType
 import com.easyhz.noffice.core.design_system.util.snackBar.snackBarPadding
 import com.easyhz.noffice.navigation.NofficeNavController
 import com.easyhz.noffice.navigation.announcement.announcementGraph
+import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.navigateToAnnouncementNofficeSelection
 import com.easyhz.noffice.navigation.home.homeGraph
 import com.easyhz.noffice.navigation.home.screen.Splash
@@ -29,13 +29,17 @@ import com.easyhz.noffice.navigation.my_page.myPageGraph
 import com.easyhz.noffice.navigation.my_page.navigateToConsent
 import com.easyhz.noffice.navigation.my_page.navigateToNotice
 import com.easyhz.noffice.navigation.my_page.navigateToNoticeDetail
+import com.easyhz.noffice.navigation.my_page.navigateToTerms
 import com.easyhz.noffice.navigation.my_page.navigateToWithdrawal
+import com.easyhz.noffice.navigation.notification.notificationGraph
 import com.easyhz.noffice.navigation.organization.organizationGraph
 import com.easyhz.noffice.navigation.sign.navigateToLogIn
 import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
-import com.easyhz.noffice.navigation.util.DURATION
+import com.easyhz.noffice.transition.SlideDirection
+import com.easyhz.noffice.transition.enterSlide
+import com.easyhz.noffice.transition.exitSlide
 
 @Composable
 internal fun NofficeApp(
@@ -94,35 +98,11 @@ internal fun NofficeApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = Splash,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                        DURATION
-                    )
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(
-                        DURATION
-                    )
-                )
-            },
-            popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(
-                        DURATION
-                    )
-                )
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(
-                        DURATION
-                    )
-                )
-            }
+            startDestination = Splash(),
+            enterTransition = { enterSlide(SlideDirection.Start) },
+            exitTransition = { exitSlide(SlideDirection.Start) },
+            popEnterTransition = { enterSlide(SlideDirection.End) },
+            popExitTransition = { exitSlide(SlideDirection.End) }
         ) {
             homeGraph(
                 modifier = Modifier.padding(it),
@@ -143,12 +123,18 @@ internal fun NofficeApp(
                 navController = navController,
             )
             myPageGraph(
+                snackBarHostState = snackBarHostState,
                 navigateToUp = navController::navigateUp,
+                navigateToTerms = navController::navigateToTerms,
                 navigateToNotice = navController::navigateToNotice,
                 navigateToNoticeDetail = navController::navigateToNoticeDetail,
                 navigateToConsent = navController::navigateToConsent,
                 navigateToWithdrawal = navController::navigateToWithdrawal,
                 navigateToLogIn = navController::navigateToLogIn
+            )
+            notificationGraph(
+                navigateToUp = navController::navigateUp,
+                navigateToAnnouncementDetail = navController::navigateToAnnouncementDetail
             )
         }
     }

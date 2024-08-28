@@ -2,6 +2,7 @@ package com.easyhz.noffice.feature.sign.screen.signUp
 
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.util.updateStepButton
+import com.easyhz.noffice.core.design_system.util.terms.TermsType
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpIntent
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpSideEffect
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpState
@@ -21,9 +22,11 @@ class SignUpViewModel @Inject constructor(
             is SignUpIntent.ClickNextButton -> { onClickNextButton() }
             is SignUpIntent.ClickTermsAllCheck -> { onClickTermsAllCheck() }
             is SignUpIntent.ClickTermsCheck -> { onClickTermsCheck(intent.terms) }
-            is SignUpIntent.ClickTermsDetail -> { /* TODO */ }
+            is SignUpIntent.ClickTermsDetail -> { onClickTermsDetail(intent.terms) }
             is SignUpIntent.ChangeNameTextValue -> { onChangeNameTextValue(intent.text) }
             is SignUpIntent.ClearFocus -> { onClearFocus() }
+            is SignUpIntent.HideTermsBottomSheet -> { hideBottomSheet() }
+            is SignUpIntent.SetTermsBottomSheet -> { setBottomSheet(intent.isShow) }
         }
     }
 
@@ -37,7 +40,7 @@ class SignUpViewModel @Inject constructor(
         currentState.step.currentStep.nextStep()?.let { nextStep ->
             reduce { updateStep(currentStep = nextStep) }
         } ?: run {
-          /* TODO NEXT */
+           postSideEffect { SignUpSideEffect.NavigateToHome }
         }
     }
 
@@ -57,5 +60,19 @@ class SignUpViewModel @Inject constructor(
 
     private fun onClearFocus() {
         postSideEffect { SignUpSideEffect.ClearFocus }
+    }
+
+    private fun onClickTermsDetail(terms: Terms) {
+        val termsType = TermsType.valueOf(terms.name)
+        reduce { copy(selectedTerms = termsType) }
+        setBottomSheet(true)
+    }
+
+    private fun setBottomSheet(isShow: Boolean) {
+        reduce { copy(isShowTermsBottomSheet = isShow) }
+    }
+
+    private fun hideBottomSheet() {
+        postSideEffect { SignUpSideEffect.HideTermsBottomSheet }
     }
 }

@@ -1,11 +1,11 @@
 package com.easyhz.noffice.feature.sign.contract.signUp
 
-import androidx.compose.ui.text.input.TextFieldValue
 import com.easyhz.noffice.core.common.base.UiState
 import com.easyhz.noffice.core.common.extension.toEnumMap
 import com.easyhz.noffice.core.common.util.Step
 import com.easyhz.noffice.core.common.util.toEnabledStepButton
 import com.easyhz.noffice.core.common.util.updateStepButton
+import com.easyhz.noffice.core.design_system.util.terms.TermsType
 import com.easyhz.noffice.feature.sign.util.signUp.SignUpStep
 import com.easyhz.noffice.feature.sign.util.signUp.Terms
 import com.easyhz.noffice.feature.sign.util.signUp.toTermsMap
@@ -17,6 +17,8 @@ data class SignUpState(
     val isCheckedAllTerms: Boolean,
     val termsStatusMap: EnumMap<Terms, Boolean>,
     val name: String,
+    val isShowTermsBottomSheet: Boolean,
+    val selectedTerms: TermsType
 ) : UiState() {
     companion object {
         fun init() = SignUpState(
@@ -24,7 +26,9 @@ data class SignUpState(
             enabledStepButton = SignUpStep.entries.toEnabledStepButton(),
             isCheckedAllTerms = false,
             termsStatusMap = Terms.entries.toTermsMap(),
-            name = ""
+            name = "",
+            isShowTermsBottomSheet = false,
+            selectedTerms = TermsType.SERVICE_OF_TERMS
         )
     }
 

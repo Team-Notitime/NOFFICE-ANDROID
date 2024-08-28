@@ -12,7 +12,7 @@ import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.domain.announcement.usecase.announcement.CreateAnnouncementUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetDrawableUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
-import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardImage
+import com.easyhz.noffice.domain.organization.usecase.organization.FetchSelectableCoverUseCase
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionIntent
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionSideEffect
 import com.easyhz.noffice.feature.announcement.contract.creation.promotion.PromotionState
@@ -22,8 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PromotionViewModel @Inject constructor(
-    private val uploadImageUseCase: UploadImageUseCase,
-    private val getDrawableUriUseCase: GetDrawableUriUseCase,
+    private val fetchSelectableCoverUseCase: FetchSelectableCoverUseCase,
     private val createAnnouncementUseCase: CreateAnnouncementUseCase
 ): BaseViewModel<PromotionState, PromotionIntent, PromotionSideEffect>(
     initialState = PromotionState.init()
@@ -33,40 +32,51 @@ class PromotionViewModel @Inject constructor(
             is PromotionIntent.InitScreen -> { initScreen(intent.param) }
             is PromotionIntent.ClickBackButton -> { onClickBackButton() }
             is PromotionIntent.ClickSaveButton -> { saveButton() }
-            is PromotionIntent.ClickPromotionCard -> { onClickPromotionCard(intent.cardImage) }
+            is PromotionIntent.ClickPromotionCard -> { onClickPromotionCard(intent.index) }
             is PromotionIntent.HideUserNameBottomSheet -> { hideBottomSheet() }
             is PromotionIntent.SetPromotionBottomSheet -> { setBottomSheet(intent.isShow) }
-            is PromotionIntent.ClickBottomSheetCard -> { onClickBottomSheetCard(intent.cardImage) }
+            is PromotionIntent.ClickBottomSheetCard -> { onClickBottomSheetCard(intent.index) }
             is PromotionIntent.ClickBottomSheetSelectButton -> { onClickBottomSheetSelectButton() }
         }
     }
 
     private fun initScreen(param: AnnouncementParam) {
         reduce { copy(announcementParam = param) }
+        fetchSelectableCover(param.organizationId)
+    }
+
+    private fun fetchSelectableCover(organizationId: Int) = viewModelScope.launch {
+        fetchSelectableCoverUseCase.invoke(organizationId).onSuccess {
+            reduce { copy(coverList = it.images.sortedWith(compareBy { it.type == ImagePurpose.PROMOTION_COVER }), isLoading = false) }
+        }.onFailure {
+            showSnackBar(it.handleError())
+            reduce { copy(isLoading = false) }
+            errorLogging(this.javaClass.name, "fetchSelectableCover", it)
+        }
     }
 
     private fun onClickBackButton() {
         postSideEffect { PromotionSideEffect.NavigateToUp }
     }
 
-    private fun onClickPromotionCard(cardImage: CardImage) {
-        if (currentState.selectCard == cardImage) return
-        if (!currentState.hasPromotion && cardImage.isPromotion) {
+    private fun onClickPromotionCard(index: Int) {
+        if (currentState.selectCardIndex == index) return
+        if (!currentState.hasPromotion && currentState.coverList[index].type == ImagePurpose.PROMOTION_COVER) {
             setBottomSheet(true)
         } else {
-            reduce { copy(selectCard = cardImage, bottomSheetSelectCard = cardImage) }
+            reduce { copy(selectCardIndex = index, bottomSheetSelectCardIndex = index) }
             scrollToItem()
         }
     }
 
-    private fun onClickBottomSheetCard(cardImage: CardImage) {
-        if (currentState.bottomSheetSelectCard == cardImage) return
-        reduce { copy(bottomSheetSelectCard = cardImage) }
+    private fun onClickBottomSheetCard(index: Int) {
+        if (currentState.bottomSheetSelectCardIndex == index) return
+        reduce { copy(bottomSheetSelectCardIndex = index) }
     }
 
     private fun onClickBottomSheetSelectButton() {
         hideBottomSheet()
-        reduce { copy(selectCard = bottomSheetSelectCard) }
+        reduce { copy(selectCardIndex = bottomSheetSelectCardIndex) }
         scrollToItem()
     }
 
@@ -79,14 +89,12 @@ class PromotionViewModel @Inject constructor(
     }
 
     private fun scrollToItem() {
-        val index = CardImage.entries.indexOf(currentState.selectCard)
-        postSideEffect { PromotionSideEffect.ScrollToItem(index) }
+        postSideEffect { PromotionSideEffect.ScrollToItem(currentState.selectCardIndex) }
     }
 
     private fun saveButton() = viewModelScope.launch {
         setIsLoading(true)
-        val imageUri = getDrawableUri() ?: return@launch
-        val imageUrl = uploadImage(imageUri) ?: return@launch
+        val imageUrl = currentState.coverList.getOrNull(currentState.selectCardIndex)?.url ?: return@launch
         val param = currentState.announcementParam?.copy(
             profileImageUrl = imageUrl
         ) ?: return@launch
@@ -94,26 +102,9 @@ class PromotionViewModel @Inject constructor(
             postSideEffect { PromotionSideEffect.NavigateToSuccess(it.organizationId, it.announcementId, it.title) }
         }.onFailure {
             showSnackBar(it.handleError())
+            errorLogging(this.javaClass.name, "saveButton", it)
         }.also {
             setIsLoading(false)
-        }
-    }
-    private suspend fun uploadImage(imageUri: Uri): String? {
-        val param = ImageParam(uri = imageUri, purpose = ImagePurpose.ANNOUNCEMENT_PROFILE)
-        return uploadImageUseCase.invoke(param).getOrElse {
-            errorLogging(this.javaClass.name, "uploadImage", it)
-            setIsLoading(false)
-            showSnackBar(it.handleError())
-            null
-        }
-    }
-
-    private suspend fun getDrawableUri(): Uri? {
-        return getDrawableUriUseCase.invoke(currentState.selectCard.imageId).getOrElse {
-            errorLogging(this.javaClass.name, "getDrawableUri", it)
-            setIsLoading(false)
-            showSnackBar(it.handleError())
-            null
         }
     }
     

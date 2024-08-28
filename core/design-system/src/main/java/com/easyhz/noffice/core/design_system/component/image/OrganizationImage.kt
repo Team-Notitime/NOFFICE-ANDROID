@@ -21,9 +21,9 @@ import com.easyhz.noffice.core.design_system.R
 @Composable
 fun OrganizationImage(
     modifier: Modifier = Modifier,
-    imageUrl: String
+    imageUrl: String?
 ) {
-    if (imageUrl.isBlank() || imageUrl == "null") {
+    if (imageUrl.isNullOrBlank() || imageUrl == "null") {
         Image(
             modifier = modifier.clip(CircleShape),
             painter = painterResource(id = R.drawable.ic_profile_group),

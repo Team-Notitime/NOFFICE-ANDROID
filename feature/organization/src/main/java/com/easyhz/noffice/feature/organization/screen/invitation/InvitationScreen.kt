@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
@@ -41,12 +43,15 @@ import com.easyhz.noffice.feature.organization.contract.invitation.InvitationSid
 fun OrganizationInvitationScreen(
     modifier: Modifier = Modifier,
     viewModel: InvitationViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     invitationUrl: String,
     imageUrl: String,
+    isCreation: Boolean,
     navigateToHome: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.postIntent(InvitationIntent.InitScreen(invitationUrl, imageUrl))
@@ -76,8 +81,15 @@ fun OrganizationInvitationScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.organization_creation_success_title), style = Title4)
-                    Text(text = stringResource(id = R.string.organization_creation_success_sub_title), style = SubTitle1, color = Grey500)
+                    Text(
+                        text = stringResource(id = if (isCreation) R.string.organization_creation_success_title else R.string.organization_invitation_title),
+                        style = Title4
+                    )
+                    Text(
+                        text = stringResource(id = R.string.organization_creation_success_sub_title),
+                        style = SubTitle1,
+                        color = Grey500
+                    )
                 }
                 Spacer(modifier = Modifier.height(18.dp))
                 UrlView(
@@ -90,33 +102,51 @@ fun OrganizationInvitationScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }
-            Row(
-                modifier = Modifier
-                    .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
+            if (isCreation) {
+                Row(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    MediumButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(id = R.string.organization_creation_success_home_button),
+                        contentColor = Grey600,
+                        containerColor = Grey100
+                    ) {
+                        viewModel.postIntent(InvitationIntent.ClickHomeButton)
+                    }
+                    MediumButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(id = R.string.organization_creation_success_copy_button)
+                    ) {
+                        viewModel.postIntent(InvitationIntent.ClickCopyUrl)
+                    }
+                }
+            } else {
                 MediumButton(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.organization_creation_success_home_button),
-                    contentColor = Grey600,
-                    containerColor = Grey100
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.organization_management_member_authority_button)
                 ) {
                     viewModel.postIntent(InvitationIntent.ClickHomeButton)
-                }
-                MediumButton(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.organization_creation_success_copy_button)
-                ) {
-                    viewModel.postIntent(InvitationIntent.ClickCopyUrl)
                 }
             }
         }
     }
 
-    viewModel.sideEffect.collectInSideEffectWithLifecycle {sideEffect ->
-        when(sideEffect) {
-            is InvitationSideEffect.NavigateToHome -> { navigateToHome() }
-            is InvitationSideEffect.CopyUrl -> { clipboardManager.setText(AnnotatedString(sideEffect.url)) }
+    viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
+        when (sideEffect) {
+            is InvitationSideEffect.NavigateToHome -> {
+                navigateToHome()
+            }
+
+            is InvitationSideEffect.CopyUrl -> {
+                clipboardManager.setText(AnnotatedString(sideEffect.url))
+                snackBarHostState.showSnackbar(
+                    message = context.getString(R.string.organization_invitation_title),
+                    withDismissAction = true
+                )
+            }
         }
     }
 }

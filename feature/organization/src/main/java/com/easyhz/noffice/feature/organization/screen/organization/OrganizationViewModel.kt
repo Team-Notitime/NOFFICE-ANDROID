@@ -21,7 +21,7 @@ import javax.inject.Inject
 class OrganizationViewModel @Inject constructor(
     private val fetchOrganizationsUseCase: FetchOrganizationsUseCase
 ) : BaseViewModel<OrganizationState, OrganizationIntent, OrganizationSideEffect>(
-    initialState = OrganizationState
+    initialState = OrganizationState.init()
 ) {
     private val _organizationState: MutableStateFlow<PagingData<Organization>> =
         MutableStateFlow(value = PagingData.empty())
@@ -38,6 +38,7 @@ class OrganizationViewModel @Inject constructor(
             }
 
             is OrganizationIntent.ClickTopBarIconMenu -> { onClickTopBarIconMenu(intent.iconMenu) }
+            is OrganizationIntent.Refresh -> { refresh() }
         }
     }
 
@@ -55,9 +56,13 @@ class OrganizationViewModel @Inject constructor(
 
     private fun onClickTopBarIconMenu(iconMenu: TopBarIconMenu) {
         when(iconMenu) {
-            TopBarIconMenu.NOTIFICATION -> { /* TODO 네비게이션 처리 */ }
+            TopBarIconMenu.NOTIFICATION -> { navigateToNotification() }
             TopBarIconMenu.USER -> { navigateToMyPage() }
         }
+    }
+
+    private fun navigateToNotification() {
+        postSideEffect { OrganizationSideEffect.NavigateToNotification }
     }
 
     private fun onClickOrganizationCreation() {
@@ -73,5 +78,11 @@ class OrganizationViewModel @Inject constructor(
 
     private fun navigateToMyPage() {
         postSideEffect { OrganizationSideEffect.NavigateToMyPage }
+    }
+
+    private fun refresh() {
+        reduce { copy(isRefreshing = true) }
+        postSideEffect { OrganizationSideEffect.Refresh }
+        reduce { copy(isRefreshing = false) }
     }
 }

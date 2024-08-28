@@ -7,20 +7,18 @@ import androidx.paging.map
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
 import com.easyhz.noffice.core.common.util.DateFormat
-import com.easyhz.noffice.core.model.common.Member
 import com.easyhz.noffice.core.model.organization.Organization
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.OrganizationJoin
 import com.easyhz.noffice.core.model.organization.OrganizationSignUpInformation
+import com.easyhz.noffice.core.model.organization.SelectableCover
 import com.easyhz.noffice.core.model.organization.announcement.OrganizationAnnouncement
 import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.param.OrganizationCreationParam
-import com.easyhz.noffice.core.model.organization.param.RegisterMemberParam
 import com.easyhz.noffice.core.network.api.organization.OrganizationService
 import com.easyhz.noffice.core.network.model.request.organization.CategoryRequest
 import com.easyhz.noffice.core.network.util.toResult
 import com.easyhz.noffice.data.announcement.mapper.announcement.toDetail
-import com.easyhz.noffice.data.announcement.mapper.announcement.toModel
 import com.easyhz.noffice.data.organization.mapper.toModel
 import com.easyhz.noffice.data.organization.mapper.toRequest
 import com.easyhz.noffice.data.organization.pagingsource.OrganizationAnnouncementPagingSource
@@ -108,17 +106,7 @@ class OrganizationRepositoryImpl @Inject constructor(
                 .toResult().map { it.toModel() }
         }
 
-    override suspend fun fetchOrganizationPendingMembers(organizationId: Int): Result<List<Member>> =
-        withContext(dispatcher) {
-            return@withContext organizationService.fetchOrganizationPendingMembers(organizationId)
-                .toResult().map { it.map { item -> item.toModel() } }
-        }
-
-    override suspend fun acceptRegisterMember(param: RegisterMemberParam): Result<Unit> =
-        withContext(dispatcher) {
-            return@withContext organizationService.acceptRegisterMember(
-                organizationId = param.organizationId,
-                body = param.toRequest()
-            ).toResult()
-        }
+    override suspend fun fetchSelectableCover(organizationId: Int): Result<SelectableCover> = withContext(dispatcher) {
+        return@withContext organizationService.fetchSelectableCover(organizationId).toResult().map { it.toModel() }
+    }
 }

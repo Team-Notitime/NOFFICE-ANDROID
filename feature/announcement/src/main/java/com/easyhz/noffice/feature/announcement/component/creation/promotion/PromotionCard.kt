@@ -1,6 +1,5 @@
 package com.easyhz.noffice.feature.announcement.component.creation.promotion
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,19 +13,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.easyhz.noffice.core.design_system.component.image.AnnouncementImage
 import com.easyhz.noffice.core.design_system.theme.Grey800
-import com.easyhz.noffice.feature.announcement.contract.creation.promotion.CardImage
+import com.easyhz.noffice.core.model.image.ImagePurpose
+import com.easyhz.noffice.core.model.organization.CoverImage
 
 @Composable
 internal fun PromotionCard(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
-    hasPromotion: Boolean,
-    cardImage: CardImage,
+    isPromotion: Boolean,
+    cardImage: CoverImage,
     onClick: () -> Unit
 ) {
     Box(
@@ -42,20 +42,18 @@ internal fun PromotionCard(
             .clip(RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center
     ) {
-        Image(
+        AnnouncementImage(
             modifier = Modifier
                 .then(
                     Modifier
                         .blur(16.dp)
-                        .takeIf { !hasPromotion && cardImage.isPromotion } ?: Modifier
+                        .takeIf { isPromotion } ?: Modifier
                 )
                 .height(184.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            painter = painterResource(id = cardImage.imageId),
-            contentDescription = cardImage.imageId.toString(),
-            contentScale = ContentScale.Crop,
+            imageUrl = cardImage.url
         )
-        if (!hasPromotion && cardImage.isPromotion) {
+        if (isPromotion) {
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -74,7 +72,5 @@ internal fun PromotionCard(
 @Preview
 @Composable
 private fun PromotionCardPrev() {
-    PromotionCard(isSelected = true, hasPromotion = false, cardImage = CardImage.CARD3) {
-
-    }
+    PromotionCard(isSelected = true, isPromotion = false, cardImage = CoverImage(1,ImagePurpose.PROMOTION_COVER, ""), onClick = {})
 }

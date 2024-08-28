@@ -35,9 +35,8 @@ fun SuccessScreen(
     modifier: Modifier = Modifier,
     organizationId: Int,
     id: Int,
-    title: String,
     navigateToHome: () -> Unit,
-    navigateToAnnouncementDetail: (Int, Int, String) -> Unit,
+    navigateToAnnouncementDetail: (Int, Int) -> Unit,
 ) {
     NofficeBasicScaffold(
         statusBarColor = White,
@@ -76,7 +75,7 @@ fun SuccessScreen(
                     modifier = Modifier.weight(1f),
                     text = stringResource(id = R.string.announcement_creation_success_to_detail)
                 ) {
-                    navigateToAnnouncementDetail(organizationId, id, title)
+                    navigateToAnnouncementDetail(organizationId, id)
                 }
             }
         }

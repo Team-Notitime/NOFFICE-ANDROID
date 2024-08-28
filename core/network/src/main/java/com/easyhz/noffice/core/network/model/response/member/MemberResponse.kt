@@ -1,4 +1,4 @@
-package com.easyhz.noffice.core.network.model.response.announcement
+package com.easyhz.noffice.core.network.model.response.member
 
 data class MemberResponse(
     val alias: String,
