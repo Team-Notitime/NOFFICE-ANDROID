@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class OrganizationInformation(
     val id: Int,
     val name: String,
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
     val category: List<String>,
     val members: LinkedHashMap<MemberType, Int>,
     val hasStandbyMember: Boolean,

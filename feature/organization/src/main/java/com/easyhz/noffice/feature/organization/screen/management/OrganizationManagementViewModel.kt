@@ -1,11 +1,13 @@
 package com.easyhz.noffice.feature.organization.screen.management
 
 import android.net.Uri
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.NofficeError
 import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
@@ -19,6 +21,7 @@ import com.easyhz.noffice.core.model.organization.category.Category
 import com.easyhz.noffice.core.model.organization.param.CategoryParam
 import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUseCase
 import com.easyhz.noffice.domain.organization.usecase.category.UpdateOrganizationCategoryUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.DeleteOrganizationProfileImageUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UpdateImageUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UpdateOrganizationProfileImageUseCase
@@ -39,6 +42,7 @@ class OrganizationManagementViewModel @Inject constructor(
     private val updateImageUseCase: UpdateImageUseCase,
     private val updateOrganizationProfileImageUseCase: UpdateOrganizationProfileImageUseCase,
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
+    private val deleteOrganizationProfileImageUseCase: DeleteOrganizationProfileImageUseCase
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
     initialState = ManagementState.init()
 ) {
@@ -218,7 +222,7 @@ class OrganizationManagementViewModel @Inject constructor(
         val imageUri = currentState.selectedImage?.toUri() ?: Uri.EMPTY
         val profileImageUrl = currentState.organizationInformation.profileImageUrl
 
-        return if (profileImageUrl.isEmpty() || profileImageUrl == "null") {
+        return if (profileImageUrl.isNullOrBlank() || profileImageUrl == "null") {
             val param = ProfileImageParam(
                 organizationId = currentState.organizationInformation.id,
                 imageParam = ImageParam(
@@ -227,7 +231,11 @@ class OrganizationManagementViewModel @Inject constructor(
                 )
             )
             updateOrganizationProfileImage(param)
-        } else {
+        } else if(imageUri == Uri.EMPTY)  {
+            deleteImage()
+            null
+        }
+        else {
             val param = UpdateImageParam(
                 uri = imageUri,
                 url = profileImageUrl,
@@ -246,6 +254,16 @@ class OrganizationManagementViewModel @Inject constructor(
     private suspend fun updateImage(param: UpdateImageParam): String? {
         return updateImageUseCase.invoke(param).getOrElse {
             handleException(it, "uploadImage")
+        }
+    }
+
+    private suspend fun deleteImage() {
+        return deleteOrganizationProfileImageUseCase.invoke(currentState.organizationInformation.id).getOrElse {
+            if(it is NofficeError.NoContent) {
+                Log.d(this.javaClass.name, "deleteImage: NoContent")
+                return
+            }
+            handleException(it, "deleteOrganizationProfileImage")
         }
     }
 
