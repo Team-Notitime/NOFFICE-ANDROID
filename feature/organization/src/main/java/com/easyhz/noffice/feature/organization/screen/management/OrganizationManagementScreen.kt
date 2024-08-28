@@ -129,7 +129,7 @@ fun OrganizationManagementScreen(
             }
             if (uiState.isShowImageBottomSheet) {
                 ImageSelectionBottomSheet(
-                    isEmptyProfile = uiState.selectedImage.isBlank(),
+                    isEmptyProfile = (uiState.selectedImage.isNullOrBlank() || uiState.selectedImage == "null"),
                     onDismissRequest = { viewModel.postIntent(ManagementIntent.HideImageBottomSheet) },
                 ) {
                     viewModel.postIntent(ManagementIntent.ClickImageBottomSheetItem(it))

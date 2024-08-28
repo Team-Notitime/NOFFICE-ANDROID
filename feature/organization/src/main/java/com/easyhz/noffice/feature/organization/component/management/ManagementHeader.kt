@@ -24,7 +24,7 @@ import com.easyhz.noffice.core.design_system.theme.Title1
 internal fun ManagementHeader(
     modifier: Modifier = Modifier,
     organizationName: String,
-    organizationProfileImage: String,
+    organizationProfileImage: String?,
     onClick: () -> Unit
 ) {
     Column(

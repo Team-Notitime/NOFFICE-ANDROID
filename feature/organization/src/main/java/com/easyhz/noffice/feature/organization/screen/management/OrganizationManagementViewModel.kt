@@ -10,7 +10,9 @@ import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.bottomSheet.ImageSelectionBottomSheetItem
+import com.easyhz.noffice.core.model.image.ImageParam
 import com.easyhz.noffice.core.model.image.ImagePurpose
+import com.easyhz.noffice.core.model.image.ProfileImageParam
 import com.easyhz.noffice.core.model.image.UpdateImageParam
 import com.easyhz.noffice.core.model.organization.OrganizationInformation
 import com.easyhz.noffice.core.model.organization.category.Category
@@ -19,7 +21,7 @@ import com.easyhz.noffice.domain.organization.usecase.category.FetchCategoriesUs
 import com.easyhz.noffice.domain.organization.usecase.category.UpdateOrganizationCategoryUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.GetTakePictureUriUseCase
 import com.easyhz.noffice.domain.organization.usecase.image.UpdateImageUseCase
-import com.easyhz.noffice.domain.organization.usecase.image.UploadImageUseCase
+import com.easyhz.noffice.domain.organization.usecase.image.UpdateOrganizationProfileImageUseCase
 import com.easyhz.noffice.feature.organization.contract.management.ManagementIntent
 import com.easyhz.noffice.feature.organization.contract.management.ManagementSideEffect
 import com.easyhz.noffice.feature.organization.contract.management.ManagementState
@@ -35,7 +37,7 @@ class OrganizationManagementViewModel @Inject constructor(
     private val getTakePictureUriUseCase: GetTakePictureUriUseCase,
     private val updateOrganizationCategoryUseCase: UpdateOrganizationCategoryUseCase,
     private val updateImageUseCase: UpdateImageUseCase,
-    private val uploadImageUseCase: UploadImageUseCase,
+    private val updateOrganizationProfileImageUseCase: UpdateOrganizationProfileImageUseCase,
     private val fetchCategoriesUseCase: FetchCategoriesUseCase,
 ) : BaseViewModel<ManagementState, ManagementIntent, ManagementSideEffect>(
     initialState = ManagementState.init()
@@ -88,8 +90,8 @@ class OrganizationManagementViewModel @Inject constructor(
     private fun initScreen(
         organizationInformation: OrganizationInformation
     ) = viewModelScope.launch {
-        fetchCategoriesUseCase.invoke(Unit).onSuccess {
-            val updatedCategories = it.map { item ->
+        fetchCategoriesUseCase.invoke(Unit).onSuccess { list ->
+            val updatedCategories = list.map { item ->
                 organizationInformation.category.find { it == item.title }?.let {
                     Category(item.id, item.title, true)
                 } ?: item
@@ -213,16 +215,44 @@ class OrganizationManagementViewModel @Inject constructor(
     }
 
     private suspend fun onSaveImage(): String? {
-        val param = UpdateImageParam(
-            uri = currentState.selectedImage.toUri(),
-            url = currentState.organizationInformation.profileImageUrl,
-            purpose = ImagePurpose.ORGANIZATION_LOGO
-        )
-        return updateImageUseCase.invoke(param).getOrElse {
-            errorLogging(this.javaClass.name, "uploadImage", it)
-            showSnackBar(it.handleError())
-            null
+        val imageUri = currentState.selectedImage?.toUri() ?: Uri.EMPTY
+        val profileImageUrl = currentState.organizationInformation.profileImageUrl
+
+        return if (profileImageUrl.isEmpty() || profileImageUrl == "null") {
+            val param = ProfileImageParam(
+                organizationId = currentState.organizationInformation.id,
+                imageParam = ImageParam(
+                    uri = imageUri,
+                    purpose = ImagePurpose.ORGANIZATION_LOGO
+                )
+            )
+            updateOrganizationProfileImage(param)
+        } else {
+            val param = UpdateImageParam(
+                uri = imageUri,
+                url = profileImageUrl,
+                purpose = ImagePurpose.ORGANIZATION_LOGO
+            )
+            updateImage(param)
         }
+    }
+
+    private suspend fun updateOrganizationProfileImage(param: ProfileImageParam): String? {
+        return updateOrganizationProfileImageUseCase.invoke(param).getOrElse {
+            handleException(it, "updateOrganizationProfileImage")
+        }
+    }
+
+    private suspend fun updateImage(param: UpdateImageParam): String? {
+        return updateImageUseCase.invoke(param).getOrElse {
+            handleException(it, "uploadImage")
+        }
+    }
+
+    private fun handleException(exception: Throwable, methodName: String): String? {
+        errorLogging(this.javaClass.name, methodName, exception)
+        showSnackBar(exception.handleError())
+        return null
     }
 
     private fun showSnackBar(@StringRes stringId: Int) {

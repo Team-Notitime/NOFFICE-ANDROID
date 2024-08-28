@@ -9,7 +9,9 @@ import com.easyhz.noffice.core.model.image.ImagePurpose
 import com.easyhz.noffice.core.model.image.ImageUrl
 import com.easyhz.noffice.core.network.api.image.ImageService
 import com.easyhz.noffice.core.network.model.request.image.ImageRequest
+import com.easyhz.noffice.core.network.model.request.image.ProfileImageRequest
 import com.easyhz.noffice.core.network.uploader.ImageUploader
+import com.easyhz.noffice.core.network.util.toResult
 import com.easyhz.noffice.data.organization.mapper.toModel
 import com.easyhz.noffice.data.organization.provider.NofficeFileProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -56,6 +58,16 @@ class ImageRepositoryImpl @Inject constructor(
        return kotlin.runCatching {
            drawableId.getResourceUri(context)
        }
+    }
+
+    override suspend fun updateOrganizationProfileImage(
+        organizationId: Int,
+        imageUrl: String
+    ): Result<Unit> = withContext(dispatcher) {
+        return@withContext imageService.updateOrganizationProfileImage(
+            organizationId = organizationId,
+            request = ProfileImageRequest(imageUrl = imageUrl)
+        ).toResult()
     }
 
     private fun Int.getResourceUri(context: Context): Uri {
