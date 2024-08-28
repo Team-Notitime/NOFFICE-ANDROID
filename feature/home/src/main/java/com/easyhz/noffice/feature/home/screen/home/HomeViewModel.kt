@@ -13,7 +13,6 @@ import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.util.topBar.TopBarIconMenu
 import com.easyhz.noffice.core.model.organization.Organization
-import com.easyhz.noffice.domain.home.usecase.member.FetchUserInfoUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationSignUpInfoUseCase
 import com.easyhz.noffice.domain.organization.usecase.organization.FetchOrganizationsUseCase
 import com.easyhz.noffice.feature.home.contract.home.HomeIntent
@@ -30,7 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val fetchUserInfoUseCase: FetchUserInfoUseCase,
+    private val fetchUserInfoUseCase: com.easyhz.noffice.domain.my_page.usecase.FetchUserInfoUseCase,
     private val fetchOrganizationsUseCase: FetchOrganizationsUseCase,
     private val fetchOrganizationSignUpInfoUseCase: FetchOrganizationSignUpInfoUseCase,
 ): BaseViewModel<HomeState, HomeIntent, HomeSideEffect>(
