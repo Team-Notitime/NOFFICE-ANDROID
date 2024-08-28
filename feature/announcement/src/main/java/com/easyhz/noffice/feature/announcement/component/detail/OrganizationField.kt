@@ -29,7 +29,7 @@ import com.easyhz.noffice.core.design_system.theme.SubBody14
 internal fun LazyListScope.organizationField(
     modifier: Modifier = Modifier,
     organizationName: String,
-    profileImage: String,
+    profileImage: String?,
     category: String,
     isLoading: Boolean,
 ) {

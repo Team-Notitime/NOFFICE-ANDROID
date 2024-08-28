@@ -8,4 +8,5 @@ interface UserRepository {
     suspend fun getMemberId(): Result<Int>
     suspend fun setMemberId(newValue: Int): Result<Unit>
     suspend fun fetchUserInfo(): Result<UserInfo>
+    suspend fun updateUserAlias(alias: String): Result<Unit>
 }
