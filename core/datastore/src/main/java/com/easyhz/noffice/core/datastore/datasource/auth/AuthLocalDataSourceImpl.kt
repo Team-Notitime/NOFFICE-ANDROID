@@ -68,6 +68,12 @@ class AuthLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteAuthProvider() {
+        dataStore.edit { preferences ->
+            preferences.remove(authProvider)
+        }
+    }
+
     private fun generateNullException(authKey: AuthKey): Exception {
         return Exception("${authKey.key} is null")
     }

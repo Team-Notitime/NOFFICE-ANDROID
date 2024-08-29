@@ -1,7 +1,7 @@
 package com.easyhz.noffice.data.auth.di.repository
 
-import com.easyhz.noffice.data.auth.repository.login.LoginRepository
-import com.easyhz.noffice.data.auth.repository.login.LoginRepositoryIml
+import com.easyhz.noffice.data.auth.repository.auth.AuthRepository
+import com.easyhz.noffice.data.auth.repository.auth.AuthRepositoryIml
 import com.easyhz.noffice.data.auth.repository.token.TokenRepository
 import com.easyhz.noffice.data.auth.repository.token.TokenRepositoryIml
 import dagger.Binds
@@ -14,9 +14,9 @@ import dagger.hilt.components.SingletonComponent
 interface AuthRepositoryModule {
 
     @Binds
-    fun bindLoginRepository(
-        loginRepositoryIml: LoginRepositoryIml
-    ): LoginRepository
+    fun bindAuthRepository(
+        authRepositoryIml: AuthRepositoryIml
+    ): AuthRepository
 
     @Binds
     fun bindTokenRepository(

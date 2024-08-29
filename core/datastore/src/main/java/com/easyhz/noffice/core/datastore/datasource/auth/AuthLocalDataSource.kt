@@ -9,4 +9,5 @@ interface AuthLocalDataSource {
     suspend fun updateTokens(access: String, refresh: String)
     suspend fun getAuthProvider(): Result<String>
     suspend fun updateAuthProvider(provider: String)
+    suspend fun deleteAuthProvider()
 }

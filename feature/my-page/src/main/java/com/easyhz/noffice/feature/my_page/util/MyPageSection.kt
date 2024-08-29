@@ -31,7 +31,7 @@ enum class MyPageSection(
         items = listOf(
             MyPageMenu.CONSENT_TO_INFORMATION,
             MyPageMenu.WITHDRAWAL,
-            MyPageMenu.SIGN_OUT
+            MyPageMenu.LOGOUT
         )
     )
 }
@@ -69,7 +69,7 @@ enum class MyPageMenu(
         titleId = R.string.my_page_menu_withdrawal,
         textColor = Red
     ),
-    SIGN_OUT(
+    LOGOUT(
         titleId = R.string.my_page_menu_sign_out,
         textColor = Red
     )

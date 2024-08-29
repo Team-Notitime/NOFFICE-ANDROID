@@ -30,7 +30,7 @@ internal fun NavGraphBuilder.myPageGraph(
     navigateToNoticeDetail: (com.easyhz.noffice.core.model.notice.Notice) -> Unit,
     navigateToConsent: () -> Unit,
     navigateToWithdrawal: () -> Unit,
-    navigateToLogIn: () -> Unit,
+    navigateToLogin: () -> Unit,
 ) {
     composable<MyPage> {
         MyPageScreen(
@@ -40,6 +40,7 @@ internal fun NavGraphBuilder.myPageGraph(
             navigateToNotice = navigateToNotice,
             navigateToConsent = navigateToConsent,
             navigateToWithdrawal = navigateToWithdrawal,
+            navigateToLogin = navigateToLogin
         )
     }
 
@@ -83,7 +84,7 @@ internal fun NavGraphBuilder.myPageGraph(
     composable<Withdrawal> {
         WithdrawalScreen(
             navigateToUp = navigateToUp,
-            navigateToLogIn = navigateToLogIn
+            navigateToLogin = navigateToLogin
         )
     }
 }

@@ -4,7 +4,7 @@ import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
 import com.easyhz.noffice.core.datastore.datasource.user.UserLocalDataSource
 import com.easyhz.noffice.core.model.auth.UserInfo
-import com.easyhz.noffice.core.network.api.auth.AuthService
+import com.easyhz.noffice.core.network.api.member.MemberService
 import com.easyhz.noffice.core.network.model.request.member.AliasRequest
 import com.easyhz.noffice.core.network.util.toResult
 import com.easyhz.noffice.data.member.mapper.toModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     @Dispatcher(NofficeDispatchers.IO) private val dispatcher: CoroutineDispatcher,
     private val userLocalDataSource: UserLocalDataSource,
-    private val authService: AuthService,
+    private val memberService: MemberService,
 ): UserRepository {
     override suspend fun getIsFirstRun(): Result<Boolean> {
         return userLocalDataSource.getFirstRun()
@@ -34,10 +34,10 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchUserInfo(): Result<UserInfo> = withContext(dispatcher) {
-        return@withContext authService.fetchUserInfo().toResult().map { it.toModel() }
+        return@withContext memberService.fetchUserInfo().toResult().map { it.toModel() }
     }
 
     override suspend fun updateUserAlias(alias: String): Result<Unit> = withContext(dispatcher) {
-        return@withContext authService.updateUserAlias(AliasRequest(alias)).toResult()
+        return@withContext memberService.updateUserAlias(AliasRequest(alias)).toResult()
     }
 }

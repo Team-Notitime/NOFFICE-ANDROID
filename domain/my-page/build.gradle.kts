@@ -11,7 +11,9 @@ android {
 dependencies {
     api(projects.core.model)
     implementation(projects.core.common)
+    implementation(projects.data.auth)
     implementation(projects.data.member)
+    implementation(projects.data.notification)
     implementation(projects.data.organization)
 
     implementation(projects.domain.organization)

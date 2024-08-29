@@ -25,8 +25,8 @@ import com.easyhz.noffice.navigation.my_page.navigateToMyPage
 import com.easyhz.noffice.navigation.notification.navigateToNotification
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationJoin
-import com.easyhz.noffice.navigation.sign.navigateToLogIn
-import com.easyhz.noffice.navigation.sign.screen.LogIn
+import com.easyhz.noffice.navigation.sign.navigateToLogin
+import com.easyhz.noffice.navigation.sign.screen.Login
 
 internal fun NavGraphBuilder.homeGraph(
     modifier: Modifier,
@@ -44,7 +44,7 @@ internal fun NavGraphBuilder.homeGraph(
             announcementId = args.announcementId,
             organizationId = args.organizationId,
             navigateToOnboarding = { navController.navigateToOnboarding(navOptions) },
-            navigateToLogin = navController::navigateToLogIn,
+            navigateToLogin = navController::navigateToLogin,
             navigateToHome = { navController.navigateToHome(navOptions) },
             navigateToAnnouncementDetail = { organizationId, id -> navController.navigateToAnnouncementDetail(organizationId, id, isDeepLinkIn = true, navOptions)},
             navigateToOrganizationJoin = { organizationId -> navController.navigateToOrganizationJoin(organizationId, navOptions) }
@@ -52,7 +52,7 @@ internal fun NavGraphBuilder.homeGraph(
     }
     composable<Onboarding> {
         OnboardingScreen(
-            navigateToLogin = navController::navigateToLogIn
+            navigateToLogin = navController::navigateToLogin
         )
     }
     composable<Home>(
@@ -88,4 +88,4 @@ internal fun NavController.navigateToOnboarding(navOptions: NavOptions?) {
 }
 
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.enabledSlide() =
-    this.initialState.destination.route == LogIn::class.java.name
+    this.initialState.destination.route == Login::class.java.name
