@@ -3,6 +3,7 @@ package com.easyhz.noffice.data.notification.repository.messaging
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
 import com.easyhz.noffice.core.network.api.auth.AuthService
+import com.easyhz.noffice.core.network.model.request.token.MessagingToken
 import com.easyhz.noffice.core.network.util.toResult
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,6 +23,6 @@ class CloudMessagingRepositoryImpl @Inject constructor(
     }
 
     override suspend fun registerToken(token: String): Result<Unit> = withContext(dispatcher) {
-        return@withContext authService.registerMessagingToken(token).toResult()
+        return@withContext authService.registerMessagingToken(MessagingToken(token)).toResult()
     }
 }

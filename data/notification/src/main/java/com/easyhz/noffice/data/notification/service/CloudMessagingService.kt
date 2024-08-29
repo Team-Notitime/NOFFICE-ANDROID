@@ -2,6 +2,7 @@ package com.easyhz.noffice.data.notification.service
 
 import android.util.Log
 import com.easyhz.noffice.core.network.api.auth.AuthService
+import com.easyhz.noffice.core.network.model.request.token.MessagingToken
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +33,7 @@ class CloudMessagingService: FirebaseMessagingService() {
 
     private fun registerToken(token: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = authService.registerMessagingToken(token)
+            val response = authService.registerMessagingToken(MessagingToken(token))
             response.onSuccess {
                 Log.d(this.javaClass.name, "Success registering token")
             }.onFailure { e ->

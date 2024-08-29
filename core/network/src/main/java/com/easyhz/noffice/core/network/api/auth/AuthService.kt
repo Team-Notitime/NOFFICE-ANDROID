@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.network.api.auth
 
 import com.easyhz.noffice.core.network.model.request.sign.LoginRequest
+import com.easyhz.noffice.core.network.model.request.token.MessagingToken
 import com.easyhz.noffice.core.network.model.response.auth.UserResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import retrofit2.http.Body
@@ -25,7 +26,7 @@ interface AuthService {
     /* fcm 토큰 저장 */
     @POST("/api/v1/notifications/fcm-token")
     suspend fun registerMessagingToken(
-        @Body fcmToken: String
+        @Body fcmToken: MessagingToken
     ): NofficeResult<Unit>
 
     /* 회원 탈퇴 */
