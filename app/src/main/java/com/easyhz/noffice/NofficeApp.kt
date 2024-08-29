@@ -33,7 +33,7 @@ import com.easyhz.noffice.navigation.my_page.navigateToTerms
 import com.easyhz.noffice.navigation.my_page.navigateToWithdrawal
 import com.easyhz.noffice.navigation.notification.notificationGraph
 import com.easyhz.noffice.navigation.organization.organizationGraph
-import com.easyhz.noffice.navigation.sign.navigateToLogIn
+import com.easyhz.noffice.navigation.sign.navigateToLogin
 import com.easyhz.noffice.navigation.sign.signGraph
 import com.easyhz.noffice.navigation.util.BOTTOM_BAR_DURATION
 import com.easyhz.noffice.navigation.util.BottomMenuTabs
@@ -130,7 +130,7 @@ internal fun NofficeApp(
                 navigateToNoticeDetail = navController::navigateToNoticeDetail,
                 navigateToConsent = navController::navigateToConsent,
                 navigateToWithdrawal = navController::navigateToWithdrawal,
-                navigateToLogIn = navController::navigateToLogIn
+                navigateToLogin = navController::navigateToLogin
             )
             notificationGraph(
                 navigateToUp = navController::navigateUp,

@@ -51,7 +51,7 @@ fun WithdrawalScreen(
     modifier: Modifier = Modifier,
     viewModel: WithdrawalViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
-    navigateToLogIn: () -> Unit
+    navigateToLogin: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -159,7 +159,7 @@ fun WithdrawalScreen(
     viewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
             is WithdrawalSideEffect.NavigateToUp -> { navigateToUp() }
-            is WithdrawalSideEffect.NavigateToLogIn -> { navigateToLogIn() }
+            is WithdrawalSideEffect.NavigateToLogIn -> { navigateToLogin() }
         }
     }
 }

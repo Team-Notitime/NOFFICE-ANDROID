@@ -1,26 +1,29 @@
 package com.easyhz.noffice.feature.my_page.screen
 
+import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.domain.my_page.usecase.LogoutUseCase
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuIntent
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuSideEffect
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuState
 import com.easyhz.noffice.feature.my_page.util.MyPageMenu
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageMenuViewModel @Inject constructor(
-
+    private val logoutUseCase: LogoutUseCase
 ): BaseViewModel<MenuState, MenuIntent, MenuSideEffect>(
     initialState = MenuState.init()
 ) {
     override fun handleIntent(intent: MenuIntent) {
         when(intent) {
             is MenuIntent.ClickMenuItem -> { onClickMenuItem(intent.item) }
-            is MenuIntent.ClickSignOutButton -> { onClickSignOutButton(intent.isPositive) }
+            is MenuIntent.ClickLogoutButton -> { onClickLogoutButton(intent.context, intent.isPositive) }
         }
-
     }
 
     private fun onClickMenuItem(item: MyPageMenu) {
@@ -32,8 +35,8 @@ class MyPageMenuViewModel @Inject constructor(
             MyPageMenu.NOTIFICATION -> { handleNotificationMenu() }
             MyPageMenu.CONSENT_TO_INFORMATION -> { handleConsentToInformation() }
             MyPageMenu.WITHDRAWAL -> { handleWithdrawal() }
-            MyPageMenu.SIGN_OUT -> {
-                handleSignOutMenu()
+            MyPageMenu.LOGOUT -> {
+                handleLogoutMenu()
             }
             else -> { }
         }
@@ -68,15 +71,29 @@ class MyPageMenuViewModel @Inject constructor(
         postSideEffect { MenuSideEffect.NavigateToWithdrawal }
     }
 
-    private fun handleSignOutMenu() {
-        reduce { copy(isShowSignOutDialog = true) }
+    private fun handleLogoutMenu() {
+        reduce { copy(isShowLogoutDialog = true) }
     }
 
-    private fun onClickSignOutButton(isPositive: Boolean) {
+    private fun onClickLogoutButton(context: Context, isPositive: Boolean) = viewModelScope.launch {
         if (isPositive) {
-            //로그아웃 로직
+            handleLogout(context)
         } else {
-            reduce { copy(isShowSignOutDialog = false) }
+            updateLogoutState(isLoading = false)
         }
+    }
+
+    private suspend fun handleLogout(context: Context) {
+        updateLogoutState(isLoading = true)
+        logoutUseCase.invoke(context)
+            .onSuccess {
+                postSideEffect { MenuSideEffect.NavigateToLogin }
+            }.also {
+                reduce { copy(isLoading = false) }
+            }
+    }
+
+    private fun updateLogoutState(isShowLogoutDialog: Boolean = false, isLoading: Boolean) {
+        reduce { copy(isShowLogoutDialog = isShowLogoutDialog, isLoading = isLoading) }
     }
 }

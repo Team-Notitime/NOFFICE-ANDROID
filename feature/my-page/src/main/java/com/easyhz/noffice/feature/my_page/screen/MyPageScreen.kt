@@ -40,6 +40,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.bottomSheet.FloatingBottomSheet
 import com.easyhz.noffice.core.design_system.component.bottomSheet.ImageSelectionBottomSheet
 import com.easyhz.noffice.core.design_system.component.dialog.MainDialog
+import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
 import com.easyhz.noffice.core.design_system.component.textField.MainTextField
 import com.easyhz.noffice.core.design_system.component.topBar.DetailTopBar
@@ -72,6 +73,7 @@ fun MyPageScreen(
     navigateToNotice: () -> Unit,
     navigateToConsent: () -> Unit,
     navigateToWithdrawal: () -> Unit,
+    navigateToLogin: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuState by menuViewModel.uiState.collectAsStateWithLifecycle()
@@ -90,105 +92,109 @@ fun MyPageScreen(
             contract = ActivityResultContracts.TakePicture(),
             onResult = { viewModel.postIntent(MyPageIntent.TakePicture(it)) }
         )
-    NofficeBasicScaffold(
-        containerColor = Grey50,
+    LoadingScreenProvider(
+        isLoading = menuState.isLoading,
         statusBarColor = Grey50,
-        navigationBarColor = Grey50,
-        topBar = {
-            DetailTopBar(
-                modifier = Modifier.background(Grey50),
-                leadingItem = DetailTopBarMenu(
-                    content = {
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = R.drawable.ic_chevron_left),
-                            contentDescription = "left",
-                            tint = Grey400
-                        )
-                    },
-                    onClick = { viewModel.postIntent(MyPageIntent.ClickBackButton) }
+        navigationBarColor = Grey50
+    ) {
+        NofficeBasicScaffold(
+            containerColor = Grey50,
+            topBar = {
+                DetailTopBar(
+                    modifier = Modifier.background(Grey50),
+                    leadingItem = DetailTopBarMenu(
+                        content = {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = R.drawable.ic_chevron_left),
+                                contentDescription = "left",
+                                tint = Grey400
+                            )
+                        },
+                        onClick = { viewModel.postIntent(MyPageIntent.ClickBackButton) }
+                    )
                 )
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .verticalScroll(scrollState)
-                .padding(paddingValues)
-                .screenHorizonPadding(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            ProfileField(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
-                name = uiState.user.alias,
-                email = uiState.user.name,
-                imageUrl = uiState.selectedImage,
-                onChangeProfileImage = { viewModel.postIntent(MyPageIntent.ChangeProfileImage) }
-            ) {
-                viewModel.postIntent(MyPageIntent.ClickUserName)
             }
-            MyPageSection.entries.forEach {
-                SectionItem(
-                    section = it,
-                    isChecked = menuState.isCheckedNotification
-                ) { menu ->
-                    menuViewModel.postIntent(MenuIntent.ClickMenuItem(menu))
+        ) { paddingValues ->
+            Column(
+                modifier = modifier
+                    .verticalScroll(scrollState)
+                    .padding(paddingValues)
+                    .screenHorizonPadding(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                ProfileField(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
+                    name = uiState.user.alias,
+                    email = uiState.user.name,
+                    imageUrl = uiState.selectedImage,
+                    onChangeProfileImage = { viewModel.postIntent(MyPageIntent.ChangeProfileImage) }
+                ) {
+                    viewModel.postIntent(MyPageIntent.ClickUserName)
+                }
+                MyPageSection.entries.forEach {
+                    SectionItem(
+                        section = it,
+                        isChecked = menuState.isCheckedNotification
+                    ) { menu ->
+                        menuViewModel.postIntent(MenuIntent.ClickMenuItem(menu))
+                    }
                 }
             }
-        }
 
-        if (uiState.isShowImageBottomSheet) {
-            ImageSelectionBottomSheet(
-                sheetState = sheetState,
-                isEmptyProfile = (uiState.selectedImage.isNullOrBlank() || uiState.selectedImage == "null"),
-                onDismissRequest = { viewModel.postIntent(MyPageIntent.HideImageBottomSheet) },
-            ) {
-                viewModel.postIntent(MyPageIntent.ClickImageBottomSheetItem(it))
+            if (uiState.isShowImageBottomSheet) {
+                ImageSelectionBottomSheet(
+                    sheetState = sheetState,
+                    isEmptyProfile = (uiState.selectedImage.isNullOrBlank() || uiState.selectedImage == "null"),
+                    onDismissRequest = { viewModel.postIntent(MyPageIntent.HideImageBottomSheet) },
+                ) {
+                    viewModel.postIntent(MyPageIntent.ClickImageBottomSheetItem(it))
+                }
             }
-        }
 
-        if (uiState.isShowUserNameBottomSheet) {
-            FloatingBottomSheet(
-                modifier = Modifier.padding(bottom = 32.dp),
-                onDismissRequest = { viewModel.postIntent(MyPageIntent.HideUserNameBottomSheet) }
-            ) {
-                MainTextField(
-                    modifier = Modifier.focusRequester(focusRequester),
-                    value = uiState.userNameText,
-                    onValueChange = { viewModel.postIntent(MyPageIntent.ChangeUserNameText(it)) },
-                    title = null,
-                    placeholder = stringResource(id = R.string.my_page_menu_user_name_placeholder),
-                    isFilled = false,
-                    singleLine = true,
-                    icon = TextFieldIcon.CLEAR,
-                    onClickIcon = { viewModel.postIntent(MyPageIntent.ClearUserNameText) },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(onDone = {
-                        viewModel.postIntent(MyPageIntent.SaveUserName)
-                    })
-                )
+            if (uiState.isShowUserNameBottomSheet) {
+                FloatingBottomSheet(
+                    modifier = Modifier.padding(bottom = 32.dp),
+                    onDismissRequest = { viewModel.postIntent(MyPageIntent.HideUserNameBottomSheet) }
+                ) {
+                    MainTextField(
+                        modifier = Modifier.focusRequester(focusRequester),
+                        value = uiState.userNameText,
+                        onValueChange = { viewModel.postIntent(MyPageIntent.ChangeUserNameText(it)) },
+                        title = null,
+                        placeholder = stringResource(id = R.string.my_page_menu_user_name_placeholder),
+                        isFilled = false,
+                        singleLine = true,
+                        icon = TextFieldIcon.CLEAR,
+                        onClickIcon = { viewModel.postIntent(MyPageIntent.ClearUserNameText) },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = {
+                            viewModel.postIntent(MyPageIntent.SaveUserName)
+                        })
+                    )
+                }
             }
-        }
 
-        if (menuState.isShowSignOutDialog) {
-            MainDialog(
-                negativeButton = InputDialogButton(
-                    stringResource(id = R.string.my_page_menu_sign_out_negative_button_text)
-                ) { menuViewModel.postIntent(MenuIntent.ClickSignOutButton(false)) },
-                positiveButton = InputDialogButton(
-                    stringResource(id = R.string.my_page_menu_sign_out_positive_button_text)
-                ) { menuViewModel.postIntent(MenuIntent.ClickSignOutButton(true)) }
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp, horizontal = 4.dp),
-                    text = stringResource(id = R.string.my_page_menu_sign_out_dialog_title),
-                    style = InputDialogTitle,
-                    color = Grey800,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+            if (menuState.isShowLogoutDialog) {
+                MainDialog(
+                    negativeButton = InputDialogButton(
+                        stringResource(id = R.string.my_page_menu_sign_out_negative_button_text)
+                    ) { menuViewModel.postIntent(MenuIntent.ClickLogoutButton(context, false)) },
+                    positiveButton = InputDialogButton(
+                        stringResource(id = R.string.my_page_menu_sign_out_positive_button_text)
+                    ) { menuViewModel.postIntent(MenuIntent.ClickLogoutButton(context, true)) }
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp, horizontal = 4.dp),
+                        text = stringResource(id = R.string.my_page_menu_sign_out_dialog_title),
+                        style = InputDialogTitle,
+                        color = Grey800,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
@@ -232,6 +238,7 @@ fun MyPageScreen(
             is MenuSideEffect.NavigateToPrivacyPolicy -> { navigateToTerms(TermsType.PRIVACY_POLICY) }
             is MenuSideEffect.NavigateToConsentToInformation -> { navigateToConsent() }
             is MenuSideEffect.NavigateToWithdrawal -> { navigateToWithdrawal() }
+            is MenuSideEffect.NavigateToLogin -> { navigateToLogin() }
         }
     }
 }

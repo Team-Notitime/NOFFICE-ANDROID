@@ -10,4 +10,5 @@ sealed class MenuSideEffect: UiSideEffect() {
     data object NavigateToPrivacyPolicy: MenuSideEffect()
     data object NavigateToConsentToInformation: MenuSideEffect()
     data object NavigateToWithdrawal: MenuSideEffect()
+    data object NavigateToLogin: MenuSideEffect()
 }
