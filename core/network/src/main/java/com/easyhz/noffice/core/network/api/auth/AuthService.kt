@@ -6,6 +6,7 @@ import com.easyhz.noffice.core.network.model.response.auth.UserResponse
 import com.easyhz.noffice.core.network.util.NofficeResult
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -26,7 +27,13 @@ interface AuthService {
     /* fcm 토큰 저장 */
     @POST("/api/v1/notifications/fcm-token")
     suspend fun registerMessagingToken(
-        @Body fcmToken: MessagingToken
+        @Body messagingToken: MessagingToken
+    ): NofficeResult<Unit>
+
+    /* fcm 토큰 삭제 */
+    @HTTP(method = "DELETE", path = "/api/v1/notifications/fcm-token", hasBody = true)
+    suspend fun deleteMessagingToken(
+        @Body messagingToken: MessagingToken
     ): NofficeResult<Unit>
 
     /* 회원 탈퇴 */

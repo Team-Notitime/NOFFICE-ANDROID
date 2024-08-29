@@ -25,4 +25,8 @@ class CloudMessagingRepositoryImpl @Inject constructor(
     override suspend fun registerMessagingToken(token: String): Result<Unit> = withContext(dispatcher) {
         return@withContext authService.registerMessagingToken(MessagingToken(token)).toResult()
     }
+
+    override suspend fun deleteMessagingToken(token: String): Result<Unit> = withContext(dispatcher) {
+        return@withContext authService.deleteMessagingToken(MessagingToken(token)).toResult()
+    }
 }
