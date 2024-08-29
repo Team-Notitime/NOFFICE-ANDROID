@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.NofficeError
+import com.easyhz.noffice.core.common.error.handleError
 import com.easyhz.noffice.core.common.util.errorLogging
-import com.easyhz.noffice.domain.my_page.usecase.WithdrawUserCase
+import com.easyhz.noffice.domain.my_page.usecase.WithdrawUseCase
 import com.easyhz.noffice.feature.my_page.contract.detail.withdrawal.WithdrawalIntent
 import com.easyhz.noffice.feature.my_page.contract.detail.withdrawal.WithdrawalSideEffect
 import com.easyhz.noffice.feature.my_page.contract.detail.withdrawal.WithdrawalState
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WithdrawalViewModel @Inject constructor(
-    private val withdrawUserCase: WithdrawUserCase
+    private val withdrawUseCase: WithdrawUseCase
 ): BaseViewModel<WithdrawalState, WithdrawalIntent, WithdrawalSideEffect>(
     initialState = WithdrawalState.init()
 ) {
@@ -33,13 +34,14 @@ class WithdrawalViewModel @Inject constructor(
 
     private fun onClickWithdrawalButton(context: Context) = viewModelScope.launch {
         reduce { copy(isLoading = true) }
-        withdrawUserCase.invoke(context).onSuccess {
+        withdrawUseCase.invoke(context).onSuccess {
             navigateToLogIn()
         }.onFailure {
             if (it is NofficeError.NoContent) {
                 navigateToLogIn()
             } else {
                 errorLogging(this.javaClass.name, "withdraw", it)
+                showSnackBar(it.handleError())
             }
         }.also {
             reduce { copy(isLoading = false) }
@@ -52,5 +54,9 @@ class WithdrawalViewModel @Inject constructor(
 
     private fun onClickBackButton() {
         postSideEffect { WithdrawalSideEffect.NavigateToUp }
+    }
+
+    private fun showSnackBar(stringId: Int) {
+        postSideEffect { WithdrawalSideEffect.ShowSnackBar(stringId) }
     }
 }

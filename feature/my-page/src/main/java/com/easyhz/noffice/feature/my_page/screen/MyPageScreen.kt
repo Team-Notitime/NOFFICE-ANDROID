@@ -241,6 +241,12 @@ fun MyPageScreen(
             is MenuSideEffect.NavigateToConsentToInformation -> { navigateToConsent() }
             is MenuSideEffect.NavigateToWithdrawal -> { navigateToWithdrawal() }
             is MenuSideEffect.NavigateToLogin -> { navigateToLogin() }
+            is MenuSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
+            }
         }
     }
 }

@@ -7,13 +7,13 @@ import com.easyhz.noffice.data.auth.repository.auth.AuthRepository
 import com.easyhz.noffice.domain.notification.usecase.DeleteMessagingTokenUseCase
 import javax.inject.Inject
 
-class LogoutUseCase @Inject constructor(
+class WithdrawUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val deleteMessagingTokenUseCase: DeleteMessagingTokenUseCase
 ): BaseUseCase<Context, Unit>() {
     override suspend fun invoke(param: Context): Result<Unit> = runCatching {
         deleteMessagingToken()
-        authRepository.logout(param)
+        authRepository.withdraw(param)
     }
 
     private suspend fun deleteMessagingToken() {

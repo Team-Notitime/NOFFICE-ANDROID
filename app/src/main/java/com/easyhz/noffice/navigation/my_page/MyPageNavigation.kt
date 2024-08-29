@@ -84,7 +84,8 @@ internal fun NavGraphBuilder.myPageGraph(
     composable<Withdrawal> {
         WithdrawalScreen(
             navigateToUp = navigateToUp,
-            navigateToLogin = navigateToLogin
+            navigateToLogin = navigateToLogin,
+            snackBarHostState = snackBarHostState
         )
     }
 }
