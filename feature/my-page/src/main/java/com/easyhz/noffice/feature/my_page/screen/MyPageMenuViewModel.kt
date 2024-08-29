@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.domain.my_page.usecase.LogoutUseCase
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuIntent
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuSideEffect
@@ -88,6 +90,9 @@ class MyPageMenuViewModel @Inject constructor(
         logoutUseCase.invoke(context)
             .onSuccess {
                 postSideEffect { MenuSideEffect.NavigateToLogin }
+            }.onFailure {
+                errorLogging(this.javaClass.name, "handleLogout", it)
+                showSnackBar(it.handleError())
             }.also {
                 reduce { copy(isLoading = false) }
             }
@@ -95,5 +100,9 @@ class MyPageMenuViewModel @Inject constructor(
 
     private fun updateLogoutState(isShowLogoutDialog: Boolean = false, isLoading: Boolean) {
         reduce { copy(isShowLogoutDialog = isShowLogoutDialog, isLoading = isLoading) }
+    }
+
+    private fun showSnackBar(stringId: Int) {
+        postSideEffect { MenuSideEffect.ShowSnackBar(stringId) }
     }
 }

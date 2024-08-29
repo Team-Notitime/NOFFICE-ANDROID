@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,6 +53,7 @@ import com.easyhz.noffice.feature.my_page.util.WithdrawalType
 fun WithdrawalScreen(
     modifier: Modifier = Modifier,
     viewModel: WithdrawalViewModel = hiltViewModel(),
+    snackBarHostState: SnackbarHostState,
     navigateToUp: () -> Unit,
     navigateToLogin: () -> Unit
 ) {
@@ -169,6 +171,12 @@ fun WithdrawalScreen(
         when(sideEffect) {
             is WithdrawalSideEffect.NavigateToUp -> { navigateToUp() }
             is WithdrawalSideEffect.NavigateToLogin -> { navigateToLogin() }
+            is WithdrawalSideEffect.ShowSnackBar -> {
+                snackBarHostState.showSnackbar(
+                    message = context.getString(sideEffect.stringId),
+                    withDismissAction = true
+                )
+            }
         }
     }
 }
