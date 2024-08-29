@@ -22,7 +22,7 @@ class CloudMessagingRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun registerToken(token: String): Result<Unit> = withContext(dispatcher) {
+    override suspend fun registerMessagingToken(token: String): Result<Unit> = withContext(dispatcher) {
         return@withContext authService.registerMessagingToken(MessagingToken(token)).toResult()
     }
 }

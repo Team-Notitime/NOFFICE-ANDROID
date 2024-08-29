@@ -17,6 +17,6 @@ class RegisterMessagingTokenUseCase @Inject constructor(
     }
 
     private suspend fun registerMessagingToken(token: String): Result<Unit> {
-        return cloudMessagingRepository.registerToken(token)
+        return cloudMessagingRepository.registerMessagingToken(token)
     }
 }
