@@ -27,7 +27,6 @@ class GoogleStrategy @Inject constructor(
 ) : BaseStrategy() {
     private val tag = this.javaClass.name
     override suspend fun login(context: Context): Result<String> = runCatching {
-        logout(context = context) // FIXME
         val result = authenticateGoogleSignIn(context)
         handleGoogleSignIn(context, result)
     }
