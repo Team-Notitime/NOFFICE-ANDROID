@@ -1,6 +1,8 @@
 package com.easyhz.noffice.data.notification.service
 
 import android.util.Log
+import com.easyhz.noffice.core.common.util.errorLogging
+import com.easyhz.noffice.core.datastore.datasource.user.UserLocalDataSource
 import com.easyhz.noffice.core.network.api.auth.AuthService
 import com.easyhz.noffice.core.network.model.request.token.MessagingToken
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -15,6 +17,9 @@ import javax.inject.Inject
 class CloudMessagingService: FirebaseMessagingService() {
     @Inject
     lateinit var authService: AuthService
+
+    @Inject
+    lateinit var userLocalDataSource: UserLocalDataSource
 
     @Inject
     lateinit var notificationService: NotificationService
@@ -33,13 +38,17 @@ class CloudMessagingService: FirebaseMessagingService() {
 
     private fun registerToken(token: String) {
         CoroutineScope(Dispatchers.IO).launch {
+            val memberId = userLocalDataSource.getMemberId().getOrNull()
+            if (memberId == null || memberId == -1) {
+                Log.w(this.javaClass.name, "memberId is $memberId")
+                return@launch
+            }
             val response = authService.registerMessagingToken(MessagingToken(token))
             response.onSuccess {
                 Log.d(this.javaClass.name, "Success registering token")
             }.onFailure { e ->
-                Log.e(this.javaClass.name, "Error registering token", e)
+                errorLogging(this.javaClass.name, "Error registering token", e)
             }
         }
     }
-
 }
