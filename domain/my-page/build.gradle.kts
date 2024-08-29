@@ -16,5 +16,6 @@ dependencies {
     implementation(projects.data.notification)
     implementation(projects.data.organization)
 
+    implementation(projects.domain.notification)
     implementation(projects.domain.organization)
 }
