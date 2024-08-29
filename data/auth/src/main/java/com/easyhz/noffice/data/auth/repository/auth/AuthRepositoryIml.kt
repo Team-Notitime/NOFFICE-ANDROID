@@ -40,12 +40,15 @@ class AuthRepositoryIml @Inject constructor(
     override suspend fun logout(context: Context): Result<Unit> = withContext(dispatcher) {
         runCatching {
             logoutFromServer()
-            val provider = getAuthProvider().getOrThrow()
-            authStrategyContext.setStrategy(provider)
-            val logoutJob = async { authStrategyContext.logout(context) }
-            val deleteJob = async { deleteLocalUserInfo() }
+            localLogout(context)
+            Unit
+        }
+    }
 
-            awaitAll(logoutJob, deleteJob)
+    override suspend fun withdraw(context: Context): Result<Unit> = withContext(dispatcher) {
+        runCatching {
+            authService.withdrawal().toResult()
+            localLogout(context)
             Unit
         }
     }
@@ -62,6 +65,20 @@ class AuthRepositoryIml @Inject constructor(
         awaitAll(authJob, userJob)
     }
 
+    /**
+     *  로컬에서 로그아웃을 처리합니다.
+     */
+    private suspend fun localLogout(context: Context) = coroutineScope {
+        val provider = getAuthProvider().getOrThrow()
+        authStrategyContext.setStrategy(provider)
+        val logoutJob = async { authStrategyContext.logout(context) }
+        val deleteJob = async { deleteLocalUserInfo() }
+        awaitAll(logoutJob, deleteJob)
+    }
+
+    /**
+     *  로컬에 저장된 유저 정보를 삭제합니다.
+     */
     private suspend fun deleteLocalUserInfo() = coroutineScope {
         val authJob = async {
             authLocalDataSource.deleteToken()
@@ -73,12 +90,18 @@ class AuthRepositoryIml @Inject constructor(
         awaitAll(authJob, userJob)
     }
 
+    /**
+     * 로컬에 저장된 인증 방식을 가져옵니다.
+     */
     private suspend fun getAuthProvider(): Result<String> {
         return authLocalDataSource.getAuthProvider()
     }
 
+    /**
+     * 서버에서 로그아웃을 처리합니다.
+     */
     private suspend fun logoutFromServer() {
         val token = cloudMessagingRepository.getToken().getOrThrow()
-        authService.logout(token)
+        authService.logout(token).toResult()
     }
 }

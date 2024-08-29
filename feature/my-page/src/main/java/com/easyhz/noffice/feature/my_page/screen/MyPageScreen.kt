@@ -99,6 +99,8 @@ fun MyPageScreen(
     ) {
         NofficeBasicScaffold(
             containerColor = Grey50,
+            statusBarColor = Grey50,
+            navigationBarColor = Grey50,
             topBar = {
                 DetailTopBar(
                     modifier = Modifier.background(Grey50),
