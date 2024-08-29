@@ -14,6 +14,8 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.model)
 
+    implementation(projects.data.notification)
+
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.googleid)
     implementation(libs.gms.play.services.auth)
