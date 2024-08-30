@@ -57,7 +57,8 @@ class MyPageMenuViewModel @Inject constructor(
     }
 
     private fun handleNotificationMenu() {
-        reduce { copy(isCheckedNotification = !currentState.isCheckedNotification) }
+        navigateNotificationSetting()
+//        reduce { copy(isCheckedNotification = !currentState.isCheckedNotification) }
     }
 
     private fun handleNoticeMenu() {
@@ -112,5 +113,36 @@ class MyPageMenuViewModel @Inject constructor(
 
     private fun showSnackBar(stringId: Int) {
         postSideEffect { MenuSideEffect.ShowSnackBar(stringId) }
+    }
+
+    private fun navigateNotificationSetting() {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationSettingOreo(context)
+        } else {
+            notificationSettingOreoLess(context)
+        }
+        try {
+            context.startActivity(intent)
+        }catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun notificationSettingOreo(context: Context): Intent {
+        return Intent().also { intent ->
+            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
+
+    private fun notificationSettingOreoLess(context: Context): Intent {
+        return Intent().also { intent ->
+            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+            intent.putExtra("app_package", context.packageName)
+            intent.putExtra("app_uid", context.applicationInfo?.uid)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
     }
 }
