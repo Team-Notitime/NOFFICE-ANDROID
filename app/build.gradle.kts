@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.easyhz.noffice"
-        versionCode = 16
+        versionCode = 19
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
