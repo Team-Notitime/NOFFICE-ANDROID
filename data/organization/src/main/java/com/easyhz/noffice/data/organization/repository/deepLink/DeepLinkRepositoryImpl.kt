@@ -6,6 +6,7 @@ import android.net.Uri
 import com.easyhz.noffice.core.common.util.Encryption
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.androidParameters
+import com.google.firebase.dynamiclinks.ktx.iosParameters
 import com.google.firebase.dynamiclinks.shortLinkAsync
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
@@ -34,6 +35,10 @@ class DeepLinkRepositoryImpl @Inject constructor(
                 androidParameters(context.packageName) {
                     fallbackUrl = Uri.parse("https://play.google.com/store/apps/details?id=com.easyhz.noffice.release")
                     minimumVersion = 1
+                }
+                iosParameters("noontime.noffice.app") {
+                    appStoreId = "6529546973"
+                    minimumVersion = "1.0.0"
                 }
             }
             val links = dynamicLinks.await()
