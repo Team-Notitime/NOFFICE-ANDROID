@@ -28,6 +28,7 @@ import com.easyhz.noffice.navigation.announcement.screen.AnnouncementDetail
 import com.easyhz.noffice.navigation.announcement.screen.AnnouncementSuccess
 import com.easyhz.noffice.navigation.home.navigateToHome
 import com.easyhz.noffice.navigation.home.screen.Home
+import com.easyhz.noffice.navigation.organization.navigateToOrganizationCreation
 import com.easyhz.noffice.navigation.util.sharedViewModel
 
 internal fun NavGraphBuilder.announcementGraph(
@@ -53,6 +54,7 @@ internal fun NavGraphBuilder.announcementGraph(
         composable<AnnouncementCreation.NofficeSelection> {
             NofficeSelectionScreen(
                 navigateToUp = navController::navigateUp,
+                navigateToOrganizationCreation = navController::navigateToOrganizationCreation,
                 navigateToAnnouncementCreationContent = navController::navigateToAnnouncementCreationContent
             )
         }
