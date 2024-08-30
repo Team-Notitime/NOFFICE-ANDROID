@@ -32,6 +32,7 @@ class DeepLinkRepositoryImpl @Inject constructor(
                 link = Uri.parse(url)
                 domainUriPrefix = "https://noffice.page.link"
                 androidParameters(context.packageName) {
+                    fallbackUrl = Uri.parse("https://play.google.com/store/apps/details?id=com.easyhz.noffice.release")
                     minimumVersion = 1
                 }
             }
