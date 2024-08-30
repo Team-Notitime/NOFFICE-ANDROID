@@ -5,9 +5,11 @@ import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers.IO
 import com.easyhz.noffice.core.datastore.datasource.auth.AuthLocalDataSource
 import com.easyhz.noffice.core.datastore.datasource.user.UserLocalDataSource
+import com.easyhz.noffice.core.model.auth.UserType
 import com.easyhz.noffice.core.network.api.auth.AuthService
 import com.easyhz.noffice.core.network.model.response.auth.UserResponse
 import com.easyhz.noffice.core.network.util.toResult
+import com.easyhz.noffice.data.auth.mapper.auth.toUserType
 import com.easyhz.noffice.data.auth.strategy.AuthStrategyContext
 import com.easyhz.noffice.data.auth.util.Provider
 import com.easyhz.noffice.data.notification.repository.messaging.CloudMessagingRepository
@@ -26,14 +28,14 @@ class AuthRepositoryIml @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource,
     private val cloudMessagingRepository: CloudMessagingRepository
 ) : AuthRepository {
-    override suspend fun login(context: Context, provider: String): Result<Unit> = withContext(dispatcher) {
+    override suspend fun login(context: Context, provider: String): Result<UserType> = withContext(dispatcher) {
         runCatching {
             authStrategyContext.setStrategy(provider)
             val authCode = authStrategyContext.login(context).getOrThrow()
             val request = Provider.valueOf(provider).getLoginRequest(authCode)
             val user = authService.login(request).toResult().getOrThrow()
             saveLocalUserInfo(user)
-            Unit
+            user.toUserType()
         }
     }
 
@@ -61,6 +63,9 @@ class AuthRepositoryIml @Inject constructor(
         }
         val userJob = async {
             userLocalDataSource.updateMemberId(user.memberId)
+            if(user.isAlreadyMember) {
+                userLocalDataSource.updateMemberName(user.memberName)
+            }
         }
         awaitAll(authJob, userJob)
     }
@@ -86,6 +91,7 @@ class AuthRepositoryIml @Inject constructor(
         }
         val userJob = async {
             userLocalDataSource.deleteMemberId()
+            userLocalDataSource.deleteMemberName()
         }
         awaitAll(authJob, userJob)
     }

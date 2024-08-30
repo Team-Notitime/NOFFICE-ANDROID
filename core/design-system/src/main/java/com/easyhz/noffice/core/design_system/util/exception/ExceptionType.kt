@@ -17,5 +17,10 @@ enum class ExceptionType(
         resId = R.drawable.ic_empty_no_task,
         titleStringId = R.string.exception_no_task_title,
         subTitleStringId = R.string.exception_no_task_sub_title,
-    )
+    ), NO_CREATION(
+        resId = R.drawable.ic_empty_no_group,
+        titleStringId = R.string.home_organization_dialog_title,
+        subTitleStringId = R.string.home_organization_dialog_content,
+    ),
+
 }

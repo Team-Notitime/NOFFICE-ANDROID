@@ -19,6 +19,10 @@ class GetSplashInfoUseCase @Inject constructor(
             return@runCatching EnterScreenType.LOGIN
         }
 
+        userRepository.getMemberName().getOrElse {
+            return@runCatching EnterScreenType.SIGN_UP
+        }
+
         EnterScreenType.HOME
     }
 }

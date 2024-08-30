@@ -1,7 +1,7 @@
 package com.easyhz.noffice.core.common.deepLink
 
 object DeepLinkPatterns {
-    const val ANNOUNCEMENT = "noffice://announcement?announcementId={announcementId}&organizationId={organizationId}"
+    private const val ANNOUNCEMENT = "noffice://announcement?announcementId={announcementId}&organizationId={organizationId}"
     private const val JOIN = "noffice://join?organizationId={organizationId}"
 
     fun join(id: String?) = JOIN.replace("{organizationId}", id ?: "null")

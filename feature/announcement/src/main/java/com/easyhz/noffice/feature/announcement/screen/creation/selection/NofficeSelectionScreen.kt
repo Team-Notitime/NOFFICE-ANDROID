@@ -27,6 +27,7 @@ import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.button.CheckButton
 import com.easyhz.noffice.core.design_system.component.button.CheckButtonDefaults
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
+import com.easyhz.noffice.core.design_system.component.dialog.MainDialog
 import com.easyhz.noffice.core.design_system.component.exception.ExceptionView
 import com.easyhz.noffice.core.design_system.component.loading.LoadingScreenProvider
 import com.easyhz.noffice.core.design_system.component.scaffold.NofficeBasicScaffold
@@ -38,6 +39,7 @@ import com.easyhz.noffice.core.design_system.theme.Grey300
 import com.easyhz.noffice.core.design_system.theme.Grey400
 import com.easyhz.noffice.core.design_system.theme.Grey50
 import com.easyhz.noffice.core.design_system.theme.Grey600
+import com.easyhz.noffice.core.design_system.util.dialog.InputDialogButton
 import com.easyhz.noffice.core.design_system.util.exception.ExceptionType
 import com.easyhz.noffice.core.design_system.util.topBar.DetailTopBarMenu
 import com.easyhz.noffice.core.model.organization.member.MemberType
@@ -50,6 +52,7 @@ fun NofficeSelectionScreen(
     modifier: Modifier = Modifier,
     viewModel: SelectionViewModel = hiltViewModel(),
     navigateToUp: () -> Unit,
+    navigateToOrganizationCreation: () -> Unit,
     navigateToAnnouncementCreationContent: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -75,7 +78,7 @@ fun NofficeSelectionScreen(
                 )
             },
             bottomBar = {
-                AnimatedVisibility(visible = organizationList.itemCount != 0) {
+                AnimatedVisibility(visible = (organizationList.itemCount != 0 && organizationList.itemSnapshotList.items.any { it.role == MemberType.LEADER })) {
                     MediumButton(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -89,7 +92,7 @@ fun NofficeSelectionScreen(
                 }
             }
         ) { paddingValues ->
-            if(organizationList.itemCount == 0 && organizationList.loadState.refresh != LoadState.Loading) {
+            if((organizationList.itemCount == 0 || organizationList.itemSnapshotList.items.none { it.role == MemberType.LEADER }) && organizationList.loadState.refresh != LoadState.Loading) {
                 ExceptionView(
                     modifier = Modifier.fillMaxSize(),
                     type = ExceptionType.NO_ORGANIZATION
@@ -134,6 +137,20 @@ fun NofficeSelectionScreen(
                     }
                 }
             }
+            if (uiState.isShowOrganizationDialog) {
+                MainDialog(
+                    negativeButton = InputDialogButton(
+                        stringResource(id = R.string.home_organization_dialog_negative_button)
+                    ) { viewModel.postIntent(SelectionIntent.ClickOrganizationCreation) },
+                    positiveButton = InputDialogButton(
+                        stringResource(id = R.string.home_organization_dialog_positive_button)
+                    ) { viewModel.postIntent(SelectionIntent.ClickPositiveButton) }
+                ) {
+                    ExceptionView(
+                        type = ExceptionType.NO_CREATION
+                    )
+                }
+            }
         }
     }
 
@@ -141,6 +158,7 @@ fun NofficeSelectionScreen(
         when(sideEffect) {
             is SelectionSideEffect.NavigateToUp -> { navigateToUp() }
             is SelectionSideEffect.NavigateToNext -> { navigateToAnnouncementCreationContent(sideEffect.id) }
+            is SelectionSideEffect.NavigateToOrganizationCreation -> { navigateToOrganizationCreation() }
         }
     }
 }

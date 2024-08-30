@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.easyhz.noffice.core.common.util.UrlUtil
 import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.bottomSheet.BottomSheet
 import com.easyhz.noffice.core.design_system.component.button.MediumButton
@@ -141,7 +142,7 @@ private fun Card(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(cardItems, key = { it }) { cardImage ->
+                items(cardItems, key = { UrlUtil.decode(it.url) }) { cardImage ->
                     Box(
                         modifier = modifier
                             .weight(1f)

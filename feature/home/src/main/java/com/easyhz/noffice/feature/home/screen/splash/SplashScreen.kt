@@ -26,6 +26,7 @@ fun SplashScreen(
     organizationId: Int = -1,
     navigateToOnboarding: () -> Unit,
     navigateToLogin: () -> Unit,
+    navigateToSignUp: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToAnnouncementDetail: (Int, Int) -> Unit,
     navigateToOrganizationJoin: (OrganizationSignUpInformation) -> Unit
@@ -55,6 +56,7 @@ fun SplashScreen(
         when(sideEffect) {
             is SplashSideEffect.NavigateToOnboarding -> { navigateToOnboarding() }
             is SplashSideEffect.NavigateToLogin -> { navigateToLogin() }
+            is SplashSideEffect.NavigateToSignUp -> { navigateToSignUp() }
             is SplashSideEffect.NavigateToHome -> { navigateToHome() }
             is SplashSideEffect.NavigateToAnnouncementDetail -> {
                 navigateToAnnouncementDetail(sideEffect.announcementId, sideEffect.organizationId)

@@ -65,6 +65,7 @@ class SplashViewModel @Inject constructor(
         val sideEffect = when (enterScreenType) {
             EnterScreenType.ONBOARDING -> SplashSideEffect.NavigateToOnboarding
             EnterScreenType.LOGIN -> SplashSideEffect.NavigateToLogin
+            EnterScreenType.SIGN_UP -> SplashSideEffect.NavigateToSignUp
             EnterScreenType.HOME -> SplashSideEffect.NavigateToHome
         }
         postSideEffect { sideEffect }

@@ -7,6 +7,7 @@ sealed class SplashSideEffect: UiSideEffect() {
     data object NavigateToHome: SplashSideEffect()
     data object NavigateToOnboarding: SplashSideEffect()
     data object NavigateToLogin: SplashSideEffect()
+    data object NavigateToSignUp: SplashSideEffect()
     data class NavigateToAnnouncementDetail(val announcementId: Int, val organizationId: Int): SplashSideEffect()
     data class NavigateToOrganizationJoin(val organizationSignUpInformation: OrganizationSignUpInformation): SplashSideEffect()
     // FIXME 약관 창 가야 하는지 질문

@@ -31,7 +31,11 @@ class SelectionViewModel @Inject constructor(
         when(intent) {
             is SelectionIntent.ClickBackButton -> { onClickBackButton() }
             is SelectionIntent.ClickNextButton -> { onClickNextButton() }
+            is SelectionIntent.ClickPositiveButton -> { onClickPositiveButton() }
             is SelectionIntent.SelectedOrganization -> { onSelectedOrganization(organizationId = intent.id) }
+            is SelectionIntent.ShowOrganizationCreationDialog -> { setOrganizationCreationDialog(true) }
+            is SelectionIntent.HideOrganizationCreationDialog -> { setOrganizationCreationDialog(false) }
+            is SelectionIntent.ClickOrganizationCreation -> { onClickOrganizationCreation() }
         }
     }
     init {
@@ -56,6 +60,20 @@ class SelectionViewModel @Inject constructor(
 
     private fun onSelectedOrganization(organizationId: Int) {
         reduce { copy(selectedOrganization = organizationId, enabledButton = true) }
+    }
+
+    private fun setOrganizationCreationDialog(value: Boolean) {
+        reduce { copy(isShowOrganizationDialog = value) }
+    }
+
+    private fun onClickOrganizationCreation() {
+        setOrganizationCreationDialog(false)
+        postSideEffect { SelectionSideEffect.NavigateToOrganizationCreation }
+    }
+
+    private fun onClickPositiveButton() {
+        setOrganizationCreationDialog(false)
+        onClickBackButton()
     }
 
 }

@@ -19,10 +19,11 @@ class NotificationService
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     fun showNotification(message: RemoteMessage) {
-        val title = message.data["title"]
-        val body = message.data["body"]
-        val announcementId = message.data["announcementId"]?.toIntOrNull()
-        val organizationId = message.data["organizationId"]?.toIntOrNull()
+        val messageData = message.data
+        val title = messageData["title"]
+        val body = messageData["content"]
+        val announcementId = messageData["announcementId"]?.toIntOrNull()
+        val organizationId = messageData["organizationId"]?.toIntOrNull()
 
         val pendingIntent = setIntent(announcementId = announcementId, organizationId = organizationId)
         val notification = NotificationCompat.Builder(context, context.getString(CHANNEL_ID))

@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.easyhz.noffice.core.common.di.Dispatcher
 import com.easyhz.noffice.core.common.di.NofficeDispatchers
 import com.easyhz.noffice.core.datastore.di.UserDataStore
@@ -20,6 +21,7 @@ class UserLocalDataSourceImpl @Inject constructor(
 ) : UserLocalDataSource {
     private val isFirstRun = booleanPreferencesKey(UserKey.IS_FIRST_RUN.key)
     private val memberId = intPreferencesKey(UserKey.MEMBER_ID.key)
+    private val memberName = stringPreferencesKey(UserKey.MEMBER_NAME.key)
 
     override suspend fun getFirstRun(): Result<Boolean> = withContext(dispatcher) {
         runCatching {
@@ -52,6 +54,27 @@ class UserLocalDataSourceImpl @Inject constructor(
     override suspend fun deleteMemberId() {
         dataStore.edit { preferences ->
             preferences.remove(memberId)
+        }
+    }
+
+    override suspend fun getMemberName(): Result<String>  = withContext(dispatcher) {
+        runCatching {
+            val preferences = dataStore.data.first()
+            return@runCatching preferences[memberName]
+                ?: throw generateNullException(UserKey.MEMBER_NAME)
+        }
+    }
+
+
+    override suspend fun updateMemberName(newValue: String): Unit = withContext(dispatcher) {
+        dataStore.edit { preferences ->
+            preferences[memberName] = newValue
+        }
+    }
+
+    override suspend fun deleteMemberName() {
+        dataStore.edit { preferences ->
+            preferences.remove(memberName)
         }
     }
 
