@@ -42,7 +42,7 @@ class DeepLinkRepositoryImpl @Inject constructor(
     override suspend fun handleDeepLink(intent: Intent): Result<Int> {
         return runCatching {
             val id = dynamicLinks.getDynamicLink(intent).await()
-                ?.link?.getQueryParameter("organizationId")
+                ?.link?.getQueryParameter("token")
 
             val organizationId = Encryption.decrypt(id.toString())?.toIntOrNull() ?: -1
 
