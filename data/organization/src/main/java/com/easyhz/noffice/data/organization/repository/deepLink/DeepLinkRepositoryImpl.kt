@@ -36,7 +36,7 @@ class DeepLinkRepositoryImpl @Inject constructor(
                     fallbackUrl = Uri.parse("https://play.google.com/store/apps/details?id=com.easyhz.noffice.release")
                     minimumVersion = 1
                 }
-                iosParameters("noontime.noffice.app") {
+                iosParameters("notitime.noffice.app") {
                     appStoreId = "6529546973"
                     minimumVersion = "1.0.0"
                 }
