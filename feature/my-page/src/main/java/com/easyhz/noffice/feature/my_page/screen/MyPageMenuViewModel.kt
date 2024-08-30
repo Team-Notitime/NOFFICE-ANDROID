@@ -1,7 +1,12 @@
 package com.easyhz.noffice.feature.my_page.screen
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
@@ -12,11 +17,13 @@ import com.easyhz.noffice.feature.my_page.contract.menu.MenuSideEffect
 import com.easyhz.noffice.feature.my_page.contract.menu.MenuState
 import com.easyhz.noffice.feature.my_page.util.MyPageMenu
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageMenuViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val logoutUseCase: LogoutUseCase
 ): BaseViewModel<MenuState, MenuIntent, MenuSideEffect>(
     initialState = MenuState.init()
@@ -54,7 +61,8 @@ class MyPageMenuViewModel @Inject constructor(
     }
 
     private fun handleNoticeMenu() {
-        postSideEffect { MenuSideEffect.NavigateToNotice }
+        val uri = Uri.parse("https://gkftndltek.notion.site/Noffice-accc5b9fc84941de9625e45da03d4ab8?pvs=4")
+        postSideEffect { MenuSideEffect.NavigateToNotice(uri) }
     }
 
     private fun handleTermsOfService() {
