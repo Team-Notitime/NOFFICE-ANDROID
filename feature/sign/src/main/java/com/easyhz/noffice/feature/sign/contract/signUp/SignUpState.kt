@@ -18,7 +18,8 @@ data class SignUpState(
     val termsStatusMap: EnumMap<Terms, Boolean>,
     val name: String,
     val isShowTermsBottomSheet: Boolean,
-    val selectedTerms: TermsType
+    val selectedTerms: TermsType,
+    val isLoading: Boolean
 ) : UiState() {
     companion object {
         fun init() = SignUpState(
@@ -28,7 +29,8 @@ data class SignUpState(
             termsStatusMap = Terms.entries.toTermsMap(),
             name = "",
             isShowTermsBottomSheet = false,
-            selectedTerms = TermsType.SERVICE_OF_TERMS
+            selectedTerms = TermsType.SERVICE_OF_TERMS,
+            isLoading = false
         )
     }
 

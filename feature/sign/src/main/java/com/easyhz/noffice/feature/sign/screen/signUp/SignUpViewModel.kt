@@ -1,18 +1,26 @@
 package com.easyhz.noffice.feature.sign.screen.signUp
 
+import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
+import com.easyhz.noffice.core.common.error.NofficeError
+import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.common.util.errorLogging
 import com.easyhz.noffice.core.common.util.updateStepButton
 import com.easyhz.noffice.core.design_system.util.terms.TermsType
+import com.easyhz.noffice.domain.my_page.usecase.UpdateUserAliasUseCase
+import com.easyhz.noffice.domain.sign.usecase.SetMemberNameUseCase
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpIntent
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpSideEffect
 import com.easyhz.noffice.feature.sign.contract.signUp.SignUpState
 import com.easyhz.noffice.feature.sign.util.signUp.Terms
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-
+    private val updateUserAliasUseCase: UpdateUserAliasUseCase,
+    private val setMemberNameUseCase: SetMemberNameUseCase
 ): BaseViewModel<SignUpState, SignUpIntent, SignUpSideEffect>(
     initialState = SignUpState.init()
 ) {
@@ -33,6 +41,8 @@ class SignUpViewModel @Inject constructor(
     private fun onClickBackButton() {
         currentState.step.currentStep.beforeStep()?.let { beforeStep ->
             reduce { updateStep(currentStep = beforeStep) }
+        } ?: run {
+            navigateToUp()
         }
     }
 
@@ -40,8 +50,33 @@ class SignUpViewModel @Inject constructor(
         currentState.step.currentStep.nextStep()?.let { nextStep ->
             reduce { updateStep(currentStep = nextStep) }
         } ?: run {
-           postSideEffect { SignUpSideEffect.NavigateToHome }
+            handleSubmit()
         }
+    }
+
+    private fun handleSubmit() = viewModelScope.launch {
+        setLoading(true)
+        try {
+            updateUserAliasUseCase.invoke(currentState.name).getOrElse {
+                if (it is NofficeError.NoContent) return@getOrElse
+                throw it
+            }
+            setMemberNameUseCase(currentState.name).getOrThrow()
+            postSideEffect { SignUpSideEffect.NavigateToHome }
+        } catch (exception: Throwable) {
+            handleFailure(exception)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        reduce { copy(isLoading = isLoading) }
+    }
+
+    private fun handleFailure(exception: Throwable) {
+        errorLogging(this.javaClass.name, "handleSubmit", exception)
+        postSideEffect { SignUpSideEffect.ShowSnackBar(exception.handleError()) }
     }
 
 
@@ -74,5 +109,9 @@ class SignUpViewModel @Inject constructor(
 
     private fun hideBottomSheet() {
         postSideEffect { SignUpSideEffect.HideTermsBottomSheet }
+    }
+
+    private fun navigateToUp() {
+        postSideEffect { SignUpSideEffect.NavigateToUp }
     }
 }

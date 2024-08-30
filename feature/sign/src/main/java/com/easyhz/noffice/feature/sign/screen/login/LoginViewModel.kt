@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.easyhz.noffice.core.common.base.BaseViewModel
 import com.easyhz.noffice.core.common.error.handleError
+import com.easyhz.noffice.core.model.auth.UserType
 import com.easyhz.noffice.core.model.auth.param.AuthParam
 import com.easyhz.noffice.domain.notification.usecase.RegisterMessagingTokenUseCase
 import com.easyhz.noffice.domain.sign.usecase.LoginUseCase
@@ -32,9 +33,11 @@ class LoginViewModel @Inject constructor(
     private fun onClickToSocialLogin(type: SocialLoginType, context: Context) = viewModelScope.launch {
         setIsLoading(true)
         loginUseCase.invoke(AuthParam(context, type.name)).onSuccess {
-            // FIXME 가입 된 유저 네비게이션 처리
             registerMessagingTokenUseCase(Unit).getOrNull()
-            navigateToHome()
+            when(it) {
+                UserType.NEW_USER -> navigateToSignUp()
+                UserType.EXISTING_USER -> navigateToHome()
+            }
         }.onFailure {
             it.printStackTrace()
             showSnackBar(it.handleError())
@@ -48,7 +51,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToSignUp() {
-        postSideEffect { LoginSideEffect.NavigateToSignUp("") }
+        postSideEffect { LoginSideEffect.NavigateToSignUp }
     }
 
     private fun setIsLoading(value: Boolean) {

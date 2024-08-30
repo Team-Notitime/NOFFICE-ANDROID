@@ -19,5 +19,7 @@ internal enum class UserKey(
         key = "IS_FIRST_RUN"
     ), MEMBER_ID(
         key = "MEMBER_ID"
+    ), MEMBER_NAME(
+        key = "MEMBER_NAME"
     )
 }

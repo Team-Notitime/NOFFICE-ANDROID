@@ -6,4 +6,7 @@ interface UserLocalDataSource {
     suspend fun getMemberId(): Result<Int>
     suspend fun updateMemberId(newValue: Int)
     suspend fun deleteMemberId()
+    suspend fun getMemberName(): Result<String>
+    suspend fun updateMemberName(newValue: String)
+    suspend fun deleteMemberName()
 }

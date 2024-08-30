@@ -3,6 +3,7 @@ package com.easyhz.noffice.navigation.sign
 import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import com.easyhz.noffice.feature.sign.screen.login.LoginScreen
@@ -17,7 +18,7 @@ internal fun NavGraphBuilder.signGraph(
 ) {
     composable<Login> {
         val navOptions = navOptions {
-            popUpTo(navController.graph.startDestinationId) {
+            popUpTo(navController.graph.id) {
                 inclusive = true
             }
             launchSingleTop = true
@@ -30,12 +31,14 @@ internal fun NavGraphBuilder.signGraph(
     }
     composable<SignUp> {
         val navOptions = navOptions {
-            popUpTo(navController.graph.startDestinationId) {
+            popUpTo(navController.graph.id) {
                 inclusive = true
             }
             launchSingleTop = true
         }
         SignUpScreen(
+            snackBarHostState = snackBarHostState,
+            navigateToUp = navController::navigateUp,
             navigateToHome = { navController.navigateToHome(navOptions) }
         )
     }
@@ -51,12 +54,13 @@ internal fun NavController.navigateToLogin() {
     navigate(Login, navOptions)
 }
 
-internal fun NavController.navigateToSignUp() {
-    val navOptions = navOptions {
-        popUpTo(this@navigateToSignUp.graph.id) {
-            inclusive = true
+internal fun NavController.navigateToSignUp(navOptions: NavOptions? = null) {
+    val navOption = navOptions
+        ?: navOptions {
+            popUpTo(this@navigateToSignUp.graph.id) {
+                inclusive = true
+            }
+            launchSingleTop = true
         }
-        launchSingleTop = true
-    }
-    navigate(SignUp, navOptions)
+    navigate(SignUp, navOption)
 }

@@ -26,6 +26,7 @@ import com.easyhz.noffice.navigation.notification.navigateToNotification
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationDetail
 import com.easyhz.noffice.navigation.organization.navigateToOrganizationJoin
 import com.easyhz.noffice.navigation.sign.navigateToLogin
+import com.easyhz.noffice.navigation.sign.navigateToSignUp
 import com.easyhz.noffice.navigation.sign.screen.Login
 
 internal fun NavGraphBuilder.homeGraph(
@@ -37,16 +38,19 @@ internal fun NavGraphBuilder.homeGraph(
         deepLinks = listOf(NofficeDeepLink.announcement,)
     ) {
         val args = it.toRoute<Splash>()
+        println(">>> $it")
         val navOptions = navOptions {
             popUpTo(navController.graph.id) { inclusive = true }
+            launchSingleTop = true
         }
         SplashScreen(
             announcementId = args.announcementId,
             organizationId = args.organizationId,
             navigateToOnboarding = { navController.navigateToOnboarding(navOptions) },
             navigateToLogin = navController::navigateToLogin,
+            navigateToSignUp = { navController.navigateToSignUp(navOptions) },
             navigateToHome = { navController.navigateToHome(navOptions) },
-            navigateToAnnouncementDetail = { organizationId, id -> navController.navigateToAnnouncementDetail(organizationId, id, isDeepLinkIn = true, navOptions)},
+            navigateToAnnouncementDetail = { id, organizationId -> navController.navigateToAnnouncementDetail(organizationId, id, isDeepLinkIn = true, navOptions)},
             navigateToOrganizationJoin = { organizationId -> navController.navigateToOrganizationJoin(organizationId, navOptions) }
         )
     }

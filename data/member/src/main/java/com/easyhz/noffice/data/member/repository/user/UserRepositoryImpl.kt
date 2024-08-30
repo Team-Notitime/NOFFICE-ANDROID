@@ -33,11 +33,27 @@ class UserRepositoryImpl @Inject constructor(
         return@runCatching userLocalDataSource.updateMemberId(newValue)
     }
 
+    override suspend fun deleteMemberId(): Result<Unit> = runCatching{
+        return@runCatching userLocalDataSource.deleteMemberId()
+    }
+
     override suspend fun fetchUserInfo(): Result<UserInfo> = withContext(dispatcher) {
         return@withContext memberService.fetchUserInfo().toResult().map { it.toModel() }
     }
 
     override suspend fun updateUserAlias(alias: String): Result<Unit> = withContext(dispatcher) {
         return@withContext memberService.updateUserAlias(AliasRequest(alias)).toResult()
+    }
+
+    override suspend fun getMemberName(): Result<String> {
+        return userLocalDataSource.getMemberName()
+    }
+
+    override suspend fun setMemberName(newValue: String): Result<Unit> = runCatching {
+        userLocalDataSource.updateMemberName(newValue)
+    }
+
+    override suspend fun deleteMemberName(): Result<Unit> = runCatching{
+        userLocalDataSource.deleteMemberName()
     }
 }
