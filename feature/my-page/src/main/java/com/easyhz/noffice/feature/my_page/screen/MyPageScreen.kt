@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhz.noffice.core.common.util.collectInSideEffectWithLifecycle
@@ -137,7 +138,7 @@ fun MyPageScreen(
                 MyPageSection.entries.forEach {
                     SectionItem(
                         section = it,
-                        isChecked = menuState.isCheckedNotification
+                        isChecked = NotificationManagerCompat.from(context).areNotificationsEnabled()
                     ) { menu ->
                         menuViewModel.postIntent(MenuIntent.ClickMenuItem(menu))
                     }
@@ -235,7 +236,7 @@ fun MyPageScreen(
     menuViewModel.sideEffect.collectInSideEffectWithLifecycle { sideEffect ->
         when(sideEffect) {
             is MenuSideEffect.NavigateToInquiry -> { startActivity(context, sideEffect.uri) }
-            is MenuSideEffect.NavigateToNotice -> { navigateToNotice() }
+            is MenuSideEffect.NavigateToNotice -> { startActivity(context, sideEffect.uri) }
             is MenuSideEffect.NavigateToServiceOfTerms -> { navigateToTerms(TermsType.SERVICE_OF_TERMS) }
             is MenuSideEffect.NavigateToPrivacyPolicy -> { navigateToTerms(TermsType.PRIVACY_POLICY) }
             is MenuSideEffect.NavigateToConsentToInformation -> { navigateToConsent() }
