@@ -111,6 +111,7 @@ fun AnnouncementDetailScreen(
         },
         content = {
             NofficeBasicScaffold(
+                modifier = Modifier.padding(paddingValues = it),
                 containerColor = Grey50,
                 statusBarColor = Grey50,
                 navigationBarColor = Grey50,

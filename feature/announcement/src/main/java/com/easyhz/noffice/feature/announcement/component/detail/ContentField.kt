@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.easyhz.noffice.core.design_system.component.skeleton.Skeleton
@@ -46,7 +47,7 @@ internal fun LazyListScope.contentField(
                     }
                 }
             ) {
-                Text(text = content, style = SubBody14, lineHeight = (14 * 1.8).sp, color = Grey800)
+                Text(text = content, style = SubBody14, lineHeight = (14 * 1.8).sp, color = Grey800, textAlign = TextAlign.Start)
             }
         }
     }

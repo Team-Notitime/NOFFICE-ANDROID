@@ -76,7 +76,7 @@ internal fun AnnouncementCard(
                 )
             }
 
-            announcement.taskSize?.takeIf { it < 1 }?.run {
+            announcement.taskSize?.takeIf { it >= 1 }?.run {
                 Badge(
                     modifier = Modifier,
                     string = stringResource(
