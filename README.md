@@ -19,3 +19,4 @@ etc.
 ```
 
 ## Documentation
+1. [Learning Point](https://github.com/Team-Notitime/NOFFICE-ANDROID/blob/dev/docs/LearningPoint.md)
