@@ -3,6 +3,7 @@
 ### 로그인 및 회원가입
 
 <img alt="sign" src="https://github.com/user-attachments/assets/07d9039c-29f4-43e5-b97b-1e6940b11f3c"  width="300" />
+
 - Requirements
     1. 소셜로그인으로 로그인 및 회원가입 할 수 있어야 한다.
     2. 신규 유저는 이용약관 동의, 닉네임 입력 등의 과정을 거쳐야 한다.
@@ -12,6 +13,7 @@
 ### 그룹 생성 및 딥링크 생성
 
 <img alt="organizationCreation" src="https://github.com/user-attachments/assets/85405aba-d320-493e-80f4-ca720789ce0f"  width="300" />
+
 - Requirements
     1. 사용자는 누구나 그룹을 만들 수 있어야 한다.   
     2. 선택 사항과 필수 사항은 구분 되어야한다.
@@ -26,6 +28,7 @@
 ### 대기 멤버 수락
 
 <img alt="pending" src="https://github.com/user-attachments/assets/713b04a6-e62d-443a-92e6-31f23e0b796f"  width="300" />
+
 - Requirements
     1. 그룹 내 역할이 "리더"는 가입 대기 멤버를 수락할 수 있어야 한다.
 
@@ -33,6 +36,7 @@
 ### 공지 생성
 
 <img alt="announcementCreation" src="https://github.com/user-attachments/assets/419db9db-5d8f-41a8-a5ea-d35920c00481"  width="300" />
+
 - Requirements
     1. 그룹 내 역할이 "리더"는 자유롭게 공지를 만들 수 있어야 한다.   
     2. `약속 날짜 및 시간` , `약속 장소` , `약속을 위해 할 일` , `약속 시간 전 리마인드 알림`은 사용자가 선택할 수 있다.
@@ -46,6 +50,7 @@
 ### 그룹 상세 및 열람자/미열람자 확인
 
 <img alt="announcement" src="https://github.com/user-attachments/assets/a213c97d-17ec-4725-b3ef-65a0a6bcb754"  width="300" />
+
 - Requirements
     1. 홈 화면뿐 아니라 그룹 상세 화면에서도 그룹에 해당하는 공지를 확인할 수 있다.
     2. 리더는 해당 공지의 열람자/미열람자를 확인할 수 있다.
@@ -54,6 +59,7 @@
 
 ### 새 공지 알림 및 리마인드 알림
 <img alt="notification" src="https://github.com/user-attachments/assets/f13db485-ea51-4836-acd7-0de41334777a"  width="300" />
+
 - Requirements
     1. 속한 그룹의 새로운 공지를 푸시 알림으로 받을 수 있어야 한다.
     2. 새로운 공지가 리마인드 알림을 옵션으로 선택했을 경우, 설정한 시간에 푸시 알림으로 받을 수 있어야 한다.
