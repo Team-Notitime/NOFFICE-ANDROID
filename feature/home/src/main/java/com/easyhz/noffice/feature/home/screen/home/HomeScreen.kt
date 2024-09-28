@@ -96,13 +96,8 @@ fun HomeScreen(
         NofficeScaffold(
             modifier = modifier,
             topBar = {
-                HomeTopBar(
-                    tabs = enumValues<HomeTopBarMenu>(),
-                    onClickIconMenu = {
-                        viewModel.postIntent(HomeIntent.ClickTopBarIconMenu(it))
-                    }
-                ) {
-                    viewModel.postIntent(HomeIntent.ChangeTopBarMenu(it))
+                HomeTopBar {
+                    viewModel.postIntent(HomeIntent.ClickTopBarIconMenu(it))
                 }
             }
         ) { paddingValues ->
