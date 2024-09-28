@@ -1,6 +1,7 @@
 package com.easyhz.noffice.core.design_system.component.topBar
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.easyhz.noffice.core.design_system.R
 import com.easyhz.noffice.core.design_system.component.tab.TabRow
 import com.easyhz.noffice.core.design_system.component.tab.TabRowDefaults.tabIndicatorOffset
 import com.easyhz.noffice.core.design_system.extension.noRippleClickable
@@ -111,6 +113,49 @@ fun <T> HomeTopBar(
             }
         }
     }
+}
+
+@Composable
+fun HomeTopBar(
+    modifier: Modifier = Modifier,
+    onClickIconMenu: (TopBarIconMenu) -> Unit
+) {
+    Row(
+        modifier = modifier.padding(top = 8.dp).screenHorizonPadding().fillMaxWidth().height(44.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_logo_top),
+            contentDescription = "logo",
+            tint = Green500
+        )
+        Row(
+            modifier = Modifier
+        ) {
+            TopBarIconMenu.entries.forEach {
+                Box(modifier = Modifier
+                    .size(44.dp)
+                    .noRippleClickable {
+                        onClickIconMenu(it)
+                    }) {
+                    Icon(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .size(24.dp),
+                        painter = painterResource(id = it.iconId),
+                        contentDescription = it.label,
+                        tint = Grey500
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeTopBarPreview() {
+    HomeTopBar {  }
 }
 
 @Preview(showBackground = true)

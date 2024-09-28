@@ -14,7 +14,7 @@ sealed class OptionData<T> {
             return linkedMapOf(
                 Options.DATE_TIME to DateTime(data = SelectionDateTimeState(), isSelected = false),
                 Options.PLACE to Place(data = ContactState(), isSelected = false),
-                Options.TASK to Task(data = emptyList(), isSelected = false),
+//                Options.TASK to Task(data = emptyList(), isSelected = false),
                 Options.REMIND to Remind(data = emptyList(), isSelected = false)
             )
         }

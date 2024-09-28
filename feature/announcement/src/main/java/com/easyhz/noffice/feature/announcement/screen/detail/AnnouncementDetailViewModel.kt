@@ -90,7 +90,7 @@ class AnnouncementDetailViewModel @Inject constructor(
     private fun fetchData(organizationId: Int, id: Int) = viewModelScope.launch {
         val organizationDeferred = async { fetchOrganization(organizationId) }
         val announcementDeferred = async { fetchAnnouncement(id) }
-        fetchAnnouncementTask(id)
+//        fetchAnnouncementTask(id)
         val organizationResult = organizationDeferred.await()
         val announcementResult = announcementDeferred.await()
 
