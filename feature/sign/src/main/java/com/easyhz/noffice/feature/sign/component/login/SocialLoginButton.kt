@@ -38,6 +38,10 @@ internal fun LoginView(
             socialLoginType = SocialLoginType.GOOGLE,
             onClick = onClick
         )
+        SocialLoginButton(
+            socialLoginType = SocialLoginType.KAKAO,
+            onClick = onClick
+        )
     }
 }
 
