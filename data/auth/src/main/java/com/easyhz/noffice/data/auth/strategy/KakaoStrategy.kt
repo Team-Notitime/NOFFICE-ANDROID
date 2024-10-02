@@ -45,6 +45,11 @@ class KakaoStrategy @Inject constructor() : BaseStrategy() {
                 else -> continuation.resumeWithException(IllegalStateException("Unexpected error during KakaoTalk login"))
             }
         }
+
+        continuation.invokeOnCancellation {
+            Log.d(tag, "loginWithKakaoTalk: invokeOnCancellation")
+            // TODO LOGGING
+        }
     }
 
     /**
@@ -62,6 +67,11 @@ class KakaoStrategy @Inject constructor() : BaseStrategy() {
                 token != null -> continuation.resume(token)
                 else -> continuation.resumeWithException(IllegalStateException("Unexpected error during KakaoAccount login"))
             }
+        }
+
+        continuation.invokeOnCancellation {
+            Log.d(tag, "loginWithKakaoAccount: invokeOnCancellation")
+            // TODO LOGGING
         }
     }
 }
