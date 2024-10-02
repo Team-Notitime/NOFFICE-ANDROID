@@ -104,6 +104,7 @@ firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-mes
 firebase-dynamic-links = { group = "com.google.firebase", name = "firebase-dynamic-links-ktx", version.ref = "dynamicLinks" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+kakao-v2-user = { group = "com.kakao.sdk", name = "v2-user", version = "2.10.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

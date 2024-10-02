@@ -90,3 +90,8 @@ val DimColor = Color(0xFF121212).copy(alpha = 0.5f)
 val Red100 = Color(0xFFFFF0EF)
 @Stable
 val Red = Color(0xFFFF3F3F)
+
+@Stable
+val KakaoYellow = Color(0xFFFEE500)
+@Stable
+val KakaoBlack = Color(0xFF000000)

@@ -21,4 +21,6 @@ dependencies {
     implementation(libs.gms.play.services.auth)
     runtimeOnly(libs.androidx.credentials.play.services.auth)
 
+    // 카카오 로그인
+    implementation(libs.kakao.v2.user)
 }
