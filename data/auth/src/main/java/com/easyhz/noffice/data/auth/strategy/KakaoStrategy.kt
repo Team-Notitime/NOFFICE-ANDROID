@@ -6,10 +6,10 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class KakaoStrategy @Inject constructor() : BaseStrategy() {
     private val tag = this.javaClass.name
@@ -37,18 +37,13 @@ class KakaoStrategy @Inject constructor() : BaseStrategy() {
      * @param context Context
      * @return [OAuthToken] 로그인 성공 시 발급되는 토큰
      */
-    private suspend fun loginWithKakaoTalk(context: Context): OAuthToken = suspendCancellableCoroutine { continuation ->
+    private suspend fun loginWithKakaoTalk(context: Context): OAuthToken = suspendCoroutine { continuation ->
         UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
             when {
                 error != null -> continuation.resumeWithException(error)
                 token != null -> continuation.resume(token)
                 else -> continuation.resumeWithException(IllegalStateException("Unexpected error during KakaoTalk login"))
             }
-        }
-
-        continuation.invokeOnCancellation {
-            Log.d(tag, "loginWithKakaoTalk: invokeOnCancellation")
-            // TODO LOGGING
         }
     }
 
@@ -60,18 +55,13 @@ class KakaoStrategy @Inject constructor() : BaseStrategy() {
      * @param context Context
      * @return [OAuthToken] 로그인 성공 시 발급되는 토큰
      */
-    private suspend fun loginWithKakaoAccount(context: Context): OAuthToken = suspendCancellableCoroutine { continuation ->
+    private suspend fun loginWithKakaoAccount(context: Context): OAuthToken = suspendCoroutine { continuation ->
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
             when {
                 error != null -> continuation.resumeWithException(error)
                 token != null -> continuation.resume(token)
                 else -> continuation.resumeWithException(IllegalStateException("Unexpected error during KakaoAccount login"))
             }
-        }
-
-        continuation.invokeOnCancellation {
-            Log.d(tag, "loginWithKakaoAccount: invokeOnCancellation")
-            // TODO LOGGING
         }
     }
 }
