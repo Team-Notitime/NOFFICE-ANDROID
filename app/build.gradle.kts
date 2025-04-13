@@ -16,6 +16,9 @@ plugins {
 val keystoreProperties = Properties()
 keystoreProperties.load(project.rootProject.file("keystore.properties").inputStream())
 
+val localProperties = Properties()
+localProperties.load(project.rootProject.file("local.properties").inputStream())
+
 android {
     namespace = "com.easyhz.noffice"
 
@@ -28,6 +31,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", localProperties["kakao.native.app.key"].toString())
+        resValue("string", "kakao_native_app_key", "kakao${localProperties["kakao.native.app.key"].toString()}")
     }
 
     signingConfigs {
@@ -51,6 +56,9 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {
@@ -83,4 +91,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.firebase.crashlytics)
+
+    implementation(libs.kakao.v2.user)
 }
